@@ -204,7 +204,8 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
                         Date buySheepBeginTime = DateUtil.addDay(now, -30);
                         Date buySheepEndTime = now;
                         int buySheepCount = sheepOrderDao.countSheepOrderByCustomerIdAndBeginTimeAndEndTimeAndState(customerId, buySheepBeginTime, buySheepEndTime, Constants.SHEEP_IN_THE_BAR_STATE);
-                        if (buySheepCount <= 0) { // 没买羊默认奖励红包
+                        if (buySheepCount <= 0) {
+                            // 没买羊默认奖励红包
                             signGift = Constants.SIGN_GIFT_LIST.get(0);
                         } else {
                             signGiftAddressViewModel = formartAddress(customerId);
@@ -471,7 +472,7 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
             case MERGE_CARD:
                 return "合并卡" + count + "张";
             case TELEPHONE_CARD:
-                return price + "元话费充值卡";
+                return (int)price + "元话费充值卡";
             default:
                 return "";
         }
@@ -488,7 +489,7 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
             case MERGE_CARD:
                 return "合并卡";
             case TELEPHONE_CARD:
-                return price + "元话费充值卡";
+                return (int)price + "元话费充值卡";
             default:
                 return "";
         }
