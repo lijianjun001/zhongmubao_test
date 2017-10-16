@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhongmubao.api.dao.SheepProjectDao">
+    <!-- 目的：为dao接口方法提供sql语句配置 -->
+
+    <select id="getSheepProjectById" resultType="SheepProject">
+        <!-- 具体的sql -->
+        SELECT
+        *
+        FROM
+        SheepProject
+        WHERE
+        id = #{id} limit 1
+    </select>
+
+    <select id="getIndexSheepProject" resultType="SheepProjectIndex">
+        <!-- 具体的sql -->
+        SELECT
+        IFNULL(sum(o.count),0) AS NoPayCount,
+        p.*
+        FROM
+        (
+        SELECT
+        *
+        FROM
+        (
+        SELECT
+        IFNULL(sum(o.count),0) AS PaidCount,
+        p.*
+        FROM
+        SheepProject AS p
+        LEFT JOIN SheepOrder AS o ON p.id = o.projectid
+        AND o.state IN (#{paidState}) and p.Deleted = 0
+        GROUP BY
+        p.id
+        ) AS x
+        WHERE
+        x.begintime >= #{beginTime}
+        ) AS p
+        LEFT JOIN SheepOrder AS o ON p.id = o.projectid and o.Deleted = 0
+        AND o.state IN (#{noPayState})
+        GROUP BY
+        p.id ORDER BY BeginTime ASC, sort ASC
+    </select>
+
+    <select id="pagerSheepProjectList" resultType="SheepProject">
+        SELECT
+        *
+        FROM
+        SheepProject
+        ORDER BY
+        id
+        LIMIT #{offset}, #{limit}
+    </select>
+
+    <insert id="insertSheepProject">
+        <!-- ignore 主键冲突，报错 -->
+        INSERT ignore INTO SheepProject (
+        VendorId,
+        SheepTypeId,
+        Code,
+        Type,
+        Title,
+        Count,
+        Price,
+        Rate,
+        Period,
+        PurchaseCount,
+        LibraryCount,
+        DeductibleCount,
+        BeginTime,
+        EndTime,
+        EffectiveTime,
+        RedemTime,
+        NewMemberPrice,
+        State,
+        Remark,
+        Sort,
+        Deleted,
+        Created,
+        Modified,
+        CustomerActivityId,
+        IsAlreadyRemittance,
+        IsAlreadyReturn
+        )
+        VALUES (
+        #{vendorId},
+        #{sheepTypeId},
+        #{code},
+        #{type},
+        #{title},
+        #{count},
+        #{price},
+        #{rate},
+        #{period},
+        #{purchaseCount},
+        #{libraryCount},
+        #{deductibleCount},
+        #{beginTime},
+        #{endTime},
+        #{effectiveTime},
+        #{redemTime},
+        #{newMemberPrice},
+        #{state},
+        #{remark},
+        #{sort},
+        #{deleted},
+        #{created},
+        #{modified},
+        #{customerActivityId},
+        #{isAlreadyRemittance},
+        #{isAlreadyReturn}
+        )
+    </insert>
+
+    <select id="GetPastureDetailById" resultType="PastureDetailExtModel">
+        <!-- 具体的sql -->
+        SELECT sp.Id,sp.Title,sp.Price,sp.Period,sp.EffectiveTime,sp.RedemTime,sv.`Name`,sv.Attrs,sv.Pics
+        FROM SheepProject sp
+        INNER JOIN SheepVendor sv ON sp.VendorId=sv.Id
+        WHERE sp.Id=#{id}
+        AND sp.deleted = 0
+    </select>
+
+</mapper>

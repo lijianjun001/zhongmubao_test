@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhongmubao.api.dao.SystemUserRoleDao">
+    <!-- 目的：为dao接口方法提供sql语句配置 -->
+
+    <select id="getSystemUserRoleById" resultType="SystemUserRole">
+        <!-- 具体的sql -->
+        SELECT
+        *
+        FROM
+        SystemUserRole
+        WHERE
+        id = #{id} limit 1
+    </select>
+
+    <select id="pagerSystemUserRoleList" resultType="SystemUserRole">
+        SELECT
+        *
+        FROM
+        SystemUserRole
+        ORDER BY
+        id
+        LIMIT #{offset}, #{limit}
+    </select>
+
+    <insert id="insertSystemUserRole">
+        <!-- ignore 主键冲突，报错 -->
+        INSERT ignore INTO SystemUserRole (
+        SystemUserId,
+        SystemRoleId,
+        Deleted,
+        Created,
+        Modified
+        )
+        VALUES (
+        #{systemUserId},
+        #{systemRoleId},
+        #{deleted},
+        #{created},
+        #{modified}
+        )
+    </insert>
+</mapper>

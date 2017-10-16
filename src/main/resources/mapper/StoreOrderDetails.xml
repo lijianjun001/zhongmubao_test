@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhongmubao.api.dao.StoreOrderDetailsDao">
+    <!-- 目的：为dao接口方法提供sql语句配置 -->
+
+    <select id="getStoreOrderDetailsById" resultType="StoreOrderDetails">
+        <!-- 具体的sql -->
+        SELECT
+        *
+        FROM
+        StoreOrderDetails
+        WHERE
+        id = #{id} limit 1
+    </select>
+
+    <select id="pagerStoreOrderDetailsList" resultType="StoreOrderDetails">
+        SELECT
+        *
+        FROM
+        StoreOrderDetails
+        ORDER BY
+        id
+        LIMIT #{offset}, #{limit}
+    </select>
+
+    <insert id="insertStoreOrderDetails">
+        <!-- ignore 主键冲突，报错 -->
+        INSERT ignore INTO StoreOrderDetails (
+        OrderId,
+        ProductId,
+        ProductName,
+        Count,
+        Price,
+        Discount,
+        Amount,
+        Deleted,
+        Created,
+        Modified
+        )
+        VALUES (
+        #{orderId},
+        #{productId},
+        #{productName},
+        #{count},
+        #{price},
+        #{discount},
+        #{amount},
+        #{deleted},
+        #{created},
+        #{modified}
+        )
+    </insert>
+</mapper>

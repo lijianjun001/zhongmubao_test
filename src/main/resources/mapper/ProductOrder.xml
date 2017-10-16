@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhongmubao.api.dao.ProductOrderDao">
+    <!-- 目的：为dao接口方法提供sql语句配置 -->
+
+    <select id="getProductOrderById" resultType="ProductOrder">
+        <!-- 具体的sql -->
+        SELECT
+        *
+        FROM
+        ProductOrder
+        WHERE
+        id = #{id} limit 1
+    </select>
+
+    <select id="pagerProductOrderList" resultType="ProductOrder">
+        SELECT
+        *
+        FROM
+        ProductOrder
+        ORDER BY
+        id
+        LIMIT #{offset}, #{limit}
+    </select>
+
+    <insert id="insertProductOrder">
+        <!-- ignore 主键冲突，报错 -->
+        INSERT ignore INTO ProductOrder (
+        Code,
+        TotalAmount,
+        PayableAmount,
+        FreightAmount,
+        LibraryCount,
+        DeductionAmount,
+        CustomerId,
+        DeliveryAddress,
+        DeliveryName,
+        DeliveryPhone,
+        Remark,
+        Status,
+        PaymentStatus,
+        PaymentType,
+        Transaction,
+        ExpiredTime,
+        Deleted,
+        Created,
+        Modified
+        )
+        VALUES (
+        #{code},
+        #{totalAmount},
+        #{payableAmount},
+        #{freightAmount},
+        #{libraryCount},
+        #{deductionAmount},
+        #{customerId},
+        #{deliveryAddress},
+        #{deliveryName},
+        #{deliveryPhone},
+        #{remark},
+        #{status},
+        #{paymentStatus},
+        #{paymentType},
+        #{transaction},
+        #{expiredTime},
+        #{deleted},
+        #{created},
+        #{modified}
+        )
+    </insert>
+</mapper>

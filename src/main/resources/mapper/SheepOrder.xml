@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhongmubao.api.dao.SheepOrderDao">
+    <!-- 目的：为dao接口方法提供sql语句配置 -->
+
+    <select id="getSheepOrderById" resultType="SheepOrder">
+        <!-- 具体的sql -->
+        SELECT
+        *
+        FROM
+        SheepOrder
+        WHERE
+        id = #{id} limit 1
+    </select>
+
+    <select id="pagerSheepOrderList" resultType="SheepOrder">
+        SELECT
+        *
+        FROM
+        SheepOrder
+        ORDER BY
+        id
+        LIMIT #{offset}, #{limit}
+    </select>
+
+    <insert id="insertSheepOrder">
+        <!-- ignore 主键冲突，报错 -->
+        INSERT ignore INTO SheepOrder (
+        ProjectId,
+        CustomerId,
+        Code,
+        Count,
+        TotalAmount,
+        DeductibleAmount,
+        DeductibleCount,
+        AdvanceAmount,
+        PayableAmount,
+        PaymentAmount,
+        PaymentTN,
+        PaymentType,
+        PaymentPlatform,
+        OrderPlatform,
+        State,
+        Expired,
+        RedemAmount,
+        RedemName,
+        RedemBank,
+        RedemBankAccount,
+        Remark,
+        Frozened,
+        Deleted,
+        Created,
+        Modified,
+        IsBouns,
+        PaymentTime,
+        IsSendLibrary,
+        Sign
+        )
+        VALUES (
+        #{projectId},
+        #{customerId},
+        #{code},
+        #{count},
+        #{totalAmount},
+        #{deductibleAmount},
+        #{deductibleCount},
+        #{advanceAmount},
+        #{payableAmount},
+        #{paymentAmount},
+        #{paymentTN},
+        #{paymentType},
+        #{paymentPlatform},
+        #{orderPlatform},
+        #{state},
+        #{expired},
+        #{redemAmount},
+        #{redemName},
+        #{redemBank},
+        #{redemBankAccount},
+        #{remark},
+        #{frozened},
+        #{deleted},
+        #{created},
+        #{modified},
+        #{isBouns},
+        #{paymentTime},
+        #{isSendLibrary},
+        #{sign}
+        )
+    </insert>
+
+    <select id="sumSheepOrderCountByCustomerAndStates" resultType="int">
+        <!-- 具体的sql -->
+        select IFNULL(sum(count),0) from SheepOrder where customerid = #{customerId} and
+        state in
+        <foreach collection="states" item="item" index="index" open="(" close=")" separator=",">
+            #{item}
+        </foreach>
+        and deleted = 0
+    </select>
+
+    <select id="getSheepOrderCountAndMinCreatedByCustomerAndStatesAndProjectType"
+            resultType="SheepOrderCountAndMinCreated">
+        <!-- 具体的sql -->
+        select IFNULL(sum(o.count),0)AS count,min(o.Created)as created from SheepOrder as o RIGHT JOIN SheepProject as p
+        on o.projectid = p.id
+        and p.type = #{projectType}
+        and o.deleted = 0
+        and o.state in
+        <foreach collection="states" item="item" index="index" open="(" close=")" separator=",">
+            #{item}
+        </foreach>
+        and o.customerid=#{customerId}
+        GROUP BY o.projectid
+    </select>
+
+    <select id="countSheepOrderByCustomerIdAndBeginTimeAndEndTimeAndState" resultType="int">
+        <!-- 具体的sql -->
+        select IFNULL(count(1),0) from SheepOrder where
+        state in
+        <foreach collection="states" item="item" index="index" open="(" close=")" separator=",">
+            #{item}
+        </foreach>
+        and deleted = 0
+        and created &gt;= #{beginTime}
+        and created &lt;= #{endTime}
+        and customerid = #{customerId}
+    </select>
+
+    <select id="pageSheepOrderByCustomerId" resultType="SheepOrderInfo">
+        <!-- 具体的sql -->
+        SELECT so.Id,so.CustomerId,so.`Code`,so.Count,so.TotalAmount,sp.Title,st.`Name`,st.Photo
+        FROM SheepOrder so
+        INNER JOIN SheepProject sp ON so.ProjectId=sp.Id
+        INNER JOIN SheepType st ON sp.SheepTypeId=st.Id
+        WHERE so.CustomerId=#{customerId}
+        AND
+        so.state IN
+        <foreach collection="states" item="item" index="index" open="(" close=")" separator=",">
+            #{item}
+        </foreach>
+        AND so.deleted = 0
+    </select>
+
+    <select id="GetDetailByIdAndCustomerId" resultType="SheepOrderDetailInfo">
+        <!-- 具体的sql -->
+        SELECT Id,ProjectId,CustomerId,`Code`,`Count`,TotalAmount,DeductibleAmount,`State`,PaymentAmount,RedemAmount,
+        (SELECT SUM(Price) FROM ExtRedPackage WHERE SheepOrderId=so.Id AND IsUsed=1) AS
+        RedPackageAmount,Created,PaymentTime,
+        (SELECT RedemTime FROM SheepProject WHERE Id=so.ProjectId) AS RedeemTime
+        FROM SheepOrder AS so
+        WHERE Id=#{id}
+        AND so.CustomerId=#{customerId}
+        AND so.deleted = 0
+    </select>
+
+</mapper>

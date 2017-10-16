@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhongmubao.api.dao.ExtLeaveMessageDao">
+    <!-- 目的：为dao接口方法提供sql语句配置 -->
+
+    <select id="getExtLeaveMessageById" resultType="ExtLeaveMessage">
+        <!-- 具体的sql -->
+        SELECT
+        *
+        FROM
+        ExtLeaveMessage
+        WHERE
+        id = #{id} limit 1
+    </select>
+
+    <select id="pagerExtLeaveMessageList" resultType="ExtLeaveMessage">
+        SELECT
+        *
+        FROM
+        ExtLeaveMessage
+        ORDER BY
+        id
+        LIMIT #{offset}, #{limit}
+    </select>
+
+    <insert id="insertExtLeaveMessage">
+        <!-- ignore 主键冲突，报错 -->
+        INSERT ignore INTO ExtLeaveMessage (
+        CustomerId,
+        ActivityId,
+        Message,
+        Deleted,
+        Created,
+        Modified
+        )
+        VALUES (
+        #{customerId},
+        #{activityId},
+        #{message},
+        #{deleted},
+        #{created},
+        #{modified}
+        )
+    </insert>
+</mapper>

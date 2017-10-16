@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhongmubao.api.dao.CustomerGrabLibraryLogDao">
+    <!-- 目的：为dao接口方法提供sql语句配置 -->
+
+    <select id="getCustomerGrabLibraryLogById" resultType="CustomerGrabLibraryLog">
+        <!-- 具体的sql -->
+        SELECT
+        *
+        FROM
+        CustomerGrabLibraryLog
+        WHERE
+        id = #{id} limit 1
+    </select>
+
+    <select id="pagerCustomerGrabLibraryLogList" resultType="CustomerGrabLibraryLog">
+        SELECT
+        *
+        FROM
+        CustomerGrabLibraryLog
+        ORDER BY
+        id
+        LIMIT #{offset}, #{limit}
+    </select>
+
+    <insert id="insertCustomerGrabLibraryLog">
+        <!-- ignore 主键冲突，报错 -->
+        INSERT ignore INTO CustomerGrabLibraryLog (
+        CustomerId,
+        ShareCustomerId,
+        Count,
+        Created,
+        CustomerActivityId
+        )
+        VALUES (
+        #{customerId},
+        #{shareCustomerId},
+        #{count},
+        #{created},
+        #{customerActivityId}
+        )
+    </insert>
+</mapper>
