@@ -14,7 +14,8 @@ public enum ResultStatus {
     RED_PACKAGE_NOT_EXIT(-1005, "红包不存在"),
     MERGE_CARD_NOT_EXIT(-1006, "合并卡不存在"),
     SECRET_GIFT_NOT_EXIT(-1007, "神秘礼物不存在"),
-    TELEPHONE_CARD_NOT_EXIT(-1008, "充值卡不存在或已使用");
+    TELEPHONE_CARD_NOT_EXIT(-1008, "充值卡不存在或已使用"),
+    MAX_MONTH_SHAY(-1009, "本月分享达到最大分享数,请下月再来");
 
     /**
      * 返回码
