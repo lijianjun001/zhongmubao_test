@@ -8,11 +8,9 @@ import java.util.List;
 import java.math.BigDecimal;
 
 public interface ExBlackListDao {
-
+   
     ExBlackList getExBlackListrById(@Param("id") int id);
-
     List<ExBlackList> pagerExBlackListList(@Param("offset") int offset, @Param("limit") int limit);
-
-    int insertExBlackList(ExBlackList exBlackList);
+	int insertExBlackList(ExBlackList exBlackList);
 
 }

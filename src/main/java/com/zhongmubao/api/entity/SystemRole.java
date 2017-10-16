@@ -5,69 +5,69 @@ import java.util.List;
 import java.math.BigDecimal;
 
 public class SystemRole {
-
-    public SystemRole() {
+    
+	public SystemRole() {
 
     }
 
-    private int id;
+	private int id;
 
-    public int getId() {
-        return id;
-    }
+	public int getId() {
+		return id;
+	}
 
-    public void setId(int id) {
-        this.id = id;
-    }
+	public void setId(int id) {
+		this.id = id;
+	}
 
-    private String code;
+	private String code;
 
-    public String getCode() {
-        return code;
-    }
+	public String getCode() {
+		return code;
+	}
 
-    public void setCode(String code) {
-        this.code = code;
-    }
+	public void setCode(String code) {
+		this.code = code;
+	}
 
-    private String name;
+	private String name;
 
-    public String getName() {
-        return name;
-    }
+	public String getName() {
+		return name;
+	}
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	public void setName(String name) {
+		this.name = name;
+	}
 
-    private boolean deleted;
+	private boolean deleted;
 
-    public boolean getDeleted() {
-        return deleted;
-    }
+	public boolean getDeleted() {
+		return deleted;
+	}
 
-    public void setDeleted(boolean deleted) {
-        this.deleted = deleted;
-    }
+	public void setDeleted(boolean deleted) {
+		this.deleted = deleted;
+	}
 
-    private Date created;
+	private Date created;
 
-    public Date getCreated() {
-        return created;
-    }
+	public Date getCreated() {
+		return created;
+	}
 
-    public void setCreated(Date created) {
-        this.created = created;
-    }
+	public void setCreated(Date created) {
+		this.created = created;
+	}
 
-    private Date modified;
+	private Date modified;
 
-    public Date getModified() {
-        return modified;
-    }
+	public Date getModified() {
+		return modified;
+	}
 
-    public void setModified(Date modified) {
-        this.modified = modified;
-    }
+	public void setModified(Date modified) {
+		this.modified = modified;
+	}
 
 }

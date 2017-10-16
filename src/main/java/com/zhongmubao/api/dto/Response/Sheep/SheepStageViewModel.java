@@ -17,7 +17,7 @@ public class SheepStageViewModel {
     public SheepStageViewModel() {
     }
 
-    public SheepStageViewModel(String name, int period, String icon, int isSelect) {
+    public SheepStageViewModel( String name, int period, String icon, int isSelect) {
         this.name = name;
         this.period = period;
         this.icon = icon;

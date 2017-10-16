@@ -8,12 +8,11 @@ public class SerializeUtil {
      * @param o
      * @return
      */
-    public static String serialize(Object o) {
+    public static String serialize(Object o){
         try {
             ObjectMapper mapper = new ObjectMapper();
             return mapper.writeValueAsString(o);
-        } catch (Exception ex) {
-        }
+        }catch (Exception ex){}
         return "";
     }
 
@@ -24,12 +23,11 @@ public class SerializeUtil {
      * @param <T>
      * @return
      */
-    public static <T> T deSerialize(String jsonStr, Class<T> _class) {
+    public static <T> T deSerialize(String jsonStr,Class<T> _class){
         try {
             ObjectMapper mapper = new ObjectMapper();
-            return mapper.readValue(jsonStr, _class);
-        } catch (Exception ex) {
-        }
+            return mapper.readValue(jsonStr,_class);
+        }catch (Exception ex){}
         return null;
     }
 }

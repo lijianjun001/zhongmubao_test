@@ -8,11 +8,9 @@ import java.util.List;
 import java.math.BigDecimal;
 
 public interface SheepPhotoDao {
-
+   
     SheepPhoto getSheepPhotorById(@Param("id") int id);
-
     List<SheepPhoto> pagerSheepPhotoList(@Param("offset") int offset, @Param("limit") int limit);
-
-    int insertSheepPhoto(SheepPhoto sheepPhoto);
+	int insertSheepPhoto(SheepPhoto sheepPhoto);
 
 }

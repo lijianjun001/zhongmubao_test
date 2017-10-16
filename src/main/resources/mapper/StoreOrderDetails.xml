@@ -28,28 +28,28 @@
     <insert id="insertStoreOrderDetails">
         <!-- ignore 主键冲突，报错 -->
         INSERT ignore INTO StoreOrderDetails (
-        OrderId,
-        ProductId,
-        ProductName,
-        Count,
-        Price,
-        Discount,
-        Amount,
-        Deleted,
-        Created,
-        Modified
-        )
+			     OrderId, 
+	     ProductId, 
+	     ProductName, 
+	     Count, 
+	     Price, 
+	     Discount, 
+	     Amount, 
+	     Deleted, 
+	     Created, 
+	     Modified 
+		)
         VALUES (
-        #{orderId},
-        #{productId},
-        #{productName},
-        #{count},
-        #{price},
-        #{discount},
-        #{amount},
-        #{deleted},
-        #{created},
-        #{modified}
-        )
+			     #{orderId}, 
+	     #{productId}, 
+	     #{productName}, 
+	     #{count}, 
+	     #{price}, 
+	     #{discount}, 
+	     #{amount}, 
+	     #{deleted}, 
+	     #{created}, 
+	     #{modified} 
+		)
     </insert>
 </mapper>

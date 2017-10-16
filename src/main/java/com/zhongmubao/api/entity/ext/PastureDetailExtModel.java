@@ -4,7 +4,6 @@ import java.util.Date;
 
 /**
  * 牧场详情扩展Model
- *
  * @author 米立林
  */
 public class PastureDetailExtModel {
@@ -14,11 +13,11 @@ public class PastureDetailExtModel {
     private double price;
     private int period;
     /**
-     * 入栏时间
+     *  入栏时间
      */
     private Date effectiveTime;
     /**
-     * 赎回时间
+     *  赎回时间
      */
     private Date redemTime;
     private String name;

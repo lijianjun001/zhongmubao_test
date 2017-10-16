@@ -5,79 +5,79 @@ import java.util.List;
 import java.math.BigDecimal;
 
 public class SheepLevel {
-
-    public SheepLevel() {
+    
+	public SheepLevel() {
 
     }
 
-    private int id;
+	private int id;
 
-    public int getId() {
-        return id;
-    }
+	public int getId() {
+		return id;
+	}
 
-    public void setId(int id) {
-        this.id = id;
-    }
+	public void setId(int id) {
+		this.id = id;
+	}
 
-    private int level;
+	private int level;
 
-    public int getLevel() {
-        return level;
-    }
+	public int getLevel() {
+		return level;
+	}
 
-    public void setLevel(int level) {
-        this.level = level;
-    }
+	public void setLevel(int level) {
+		this.level = level;
+	}
 
-    private int sheepCount;
+	private int sheepCount;
 
-    public int getSheepCount() {
-        return sheepCount;
-    }
+	public int getSheepCount() {
+		return sheepCount;
+	}
 
-    public void setSheepCount(int sheepCount) {
-        this.sheepCount = sheepCount;
-    }
+	public void setSheepCount(int sheepCount) {
+		this.sheepCount = sheepCount;
+	}
 
-    private String remark;
+	private String remark;
 
-    public String getRemark() {
-        return remark;
-    }
+	public String getRemark() {
+		return remark;
+	}
 
-    public void setRemark(String remark) {
-        this.remark = remark;
-    }
+	public void setRemark(String remark) {
+		this.remark = remark;
+	}
 
-    private boolean deleted;
+	private boolean deleted;
 
-    public boolean getDeleted() {
-        return deleted;
-    }
+	public boolean getDeleted() {
+		return deleted;
+	}
 
-    public void setDeleted(boolean deleted) {
-        this.deleted = deleted;
-    }
+	public void setDeleted(boolean deleted) {
+		this.deleted = deleted;
+	}
 
-    private Date created;
+	private Date created;
 
-    public Date getCreated() {
-        return created;
-    }
+	public Date getCreated() {
+		return created;
+	}
 
-    public void setCreated(Date created) {
-        this.created = created;
-    }
+	public void setCreated(Date created) {
+		this.created = created;
+	}
 
-    private Date modified;
+	private Date modified;
 
-    public Date getModified() {
-        return modified;
-    }
+	public Date getModified() {
+		return modified;
+	}
 
-    public void setModified(Date modified) {
-        this.modified = modified;
-    }
+	public void setModified(Date modified) {
+		this.modified = modified;
+	}
 
 }

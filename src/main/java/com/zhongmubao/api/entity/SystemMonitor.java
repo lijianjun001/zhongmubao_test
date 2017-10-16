@@ -5,99 +5,99 @@ import java.util.List;
 import java.math.BigDecimal;
 
 public class SystemMonitor {
-
-    public SystemMonitor() {
+    
+	public SystemMonitor() {
 
     }
 
-    private int id;
+	private int id;
 
-    public int getId() {
-        return id;
-    }
+	public int getId() {
+		return id;
+	}
 
-    public void setId(int id) {
-        this.id = id;
-    }
+	public void setId(int id) {
+		this.id = id;
+	}
 
-    private String type;
+	private String type;
 
-    public String getType() {
-        return type;
-    }
+	public String getType() {
+		return type;
+	}
 
-    public void setType(String type) {
-        this.type = type;
-    }
+	public void setType(String type) {
+		this.type = type;
+	}
 
-    private String deviceId;
+	private String deviceId;
 
-    public String getDeviceId() {
-        return deviceId;
-    }
+	public String getDeviceId() {
+		return deviceId;
+	}
 
-    public void setDeviceId(String deviceId) {
-        this.deviceId = deviceId;
-    }
+	public void setDeviceId(String deviceId) {
+		this.deviceId = deviceId;
+	}
 
-    private String shareId;
+	private String shareId;
 
-    public String getShareId() {
-        return shareId;
-    }
+	public String getShareId() {
+		return shareId;
+	}
 
-    public void setShareId(String shareId) {
-        this.shareId = shareId;
-    }
+	public void setShareId(String shareId) {
+		this.shareId = shareId;
+	}
 
-    private String uKey;
+	private String uKey;
 
-    public String getUKey() {
-        return uKey;
-    }
+	public String getUKey() {
+		return uKey;
+	}
 
-    public void setUKey(String uKey) {
-        this.uKey = uKey;
-    }
+	public void setUKey(String uKey) {
+		this.uKey = uKey;
+	}
 
-    private String state;
+	private String state;
 
-    public String getState() {
-        return state;
-    }
+	public String getState() {
+		return state;
+	}
 
-    public void setState(String state) {
-        this.state = state;
-    }
+	public void setState(String state) {
+		this.state = state;
+	}
 
-    private boolean deleted;
+	private boolean deleted;
 
-    public boolean getDeleted() {
-        return deleted;
-    }
+	public boolean getDeleted() {
+		return deleted;
+	}
 
-    public void setDeleted(boolean deleted) {
-        this.deleted = deleted;
-    }
+	public void setDeleted(boolean deleted) {
+		this.deleted = deleted;
+	}
 
-    private Date created;
+	private Date created;
 
-    public Date getCreated() {
-        return created;
-    }
+	public Date getCreated() {
+		return created;
+	}
 
-    public void setCreated(Date created) {
-        this.created = created;
-    }
+	public void setCreated(Date created) {
+		this.created = created;
+	}
 
-    private Date modified;
+	private Date modified;
 
-    public Date getModified() {
-        return modified;
-    }
+	public Date getModified() {
+		return modified;
+	}
 
-    public void setModified(Date modified) {
-        this.modified = modified;
-    }
+	public void setModified(Date modified) {
+		this.modified = modified;
+	}
 
 }

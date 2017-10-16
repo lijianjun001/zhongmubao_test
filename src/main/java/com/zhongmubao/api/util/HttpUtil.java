@@ -53,7 +53,7 @@ public class HttpUtil {
      * @throws IOException io异常
      * @author XXG
      */
-    public static <T> T get(String url, Class<T> c) throws IOException {
+    public static <T> T get(String url,Class<T> c) throws IOException {
         String response = get(url, "UTF-8");
         return SerializeUtil.deSerialize(response, c);
     }
@@ -121,7 +121,7 @@ public class HttpUtil {
      *
      * @param url        URL
      * @param postString 提交的字符串
-     * @param c          类
+     *  @param c 类
      * @return web返回内容
      * @throws IOException io异常
      * @author XXG

@@ -60,13 +60,13 @@ public class ExtBannerMongoDao implements BaseDao<ExtBannerMongo> {
     public PageModel<ExtBannerMongo> Pager(PageModel<ExtBannerMongo> page) {
         Query query = new Query();
         //查询总数
-        int count = (int) mongoTemplate.count(query, ExtBannerMongo.class);
+        int count=(int) mongoTemplate.count(query,ExtBannerMongo.class);
         page.setRowCount(count);
 
         //排序
         query.with(new Sort(Sort.Direction.DESC, "Sort"));
         query.skip(page.getSkip()).limit(page.getPageSize());
-        List<ExtBannerMongo> list = mongoTemplate.find(query, ExtBannerMongo.class);
+        List<ExtBannerMongo>list=mongoTemplate.find(query,ExtBannerMongo.class);
         page.setDatas(list);
         return page;
     }

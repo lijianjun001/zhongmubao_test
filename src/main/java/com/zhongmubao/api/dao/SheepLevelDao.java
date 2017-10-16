@@ -8,11 +8,10 @@ import java.util.List;
 import java.math.BigDecimal;
 
 public interface SheepLevelDao {
-
+   
     SheepLevel getSheepLevelrById(@Param("id") int id);
-
     List<SheepLevel> pagerSheepLevelList(@Param("offset") int offset, @Param("limit") int limit);
-
-    int insertSheepLevel(SheepLevel sheepLevel);
+	int insertSheepLevel(SheepLevel sheepLevel);
+    int getLevelBySheepCount(@Param("sheepCount") int sheepCount);
 
 }

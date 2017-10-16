@@ -8,11 +8,9 @@ import java.util.List;
 import java.math.BigDecimal;
 
 public interface CustomerTransferDao {
-
+   
     CustomerTransfer getCustomerTransferrById(@Param("id") int id);
-
     List<CustomerTransfer> pagerCustomerTransferList(@Param("offset") int offset, @Param("limit") int limit);
-
-    int insertCustomerTransfer(CustomerTransfer customerTransfer);
+	int insertCustomerTransfer(CustomerTransfer customerTransfer);
 
 }

@@ -4,6 +4,7 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.zhongmubao.api.authorization.manager.TokenManager;
 import com.zhongmubao.api.cache.RedisCache;
+import com.zhongmubao.api.components.recharge.Recharge;
 import com.zhongmubao.api.config.Constants;
 import com.zhongmubao.api.config.ResultStatus;
 import com.zhongmubao.api.config.enmu.*;
@@ -12,6 +13,8 @@ import com.zhongmubao.api.dto.Request.OnlyPrimaryIdRequestModel;
 import com.zhongmubao.api.dto.Request.*;
 import com.zhongmubao.api.dto.Request.Address.CustomerAddressRequestModel;
 import com.zhongmubao.api.dto.Request.Address.UpdateCustomerAddressRequestModel;
+import com.zhongmubao.api.dto.Request.customer.AutoRedeemRequestModel;
+import com.zhongmubao.api.dto.Request.customer.ResetPasswordRequestModel;
 import com.zhongmubao.api.dto.Response.Address.CustomerAddressResponseModel;
 import com.zhongmubao.api.dto.Response.Address.CustomerAddressViewModel;
 import com.zhongmubao.api.dto.Response.Ext.PageExtRedPackageModel;
@@ -25,14 +28,17 @@ import com.zhongmubao.api.dto.SignGift;
 import com.zhongmubao.api.entity.*;
 import com.zhongmubao.api.exception.ApiException;
 import com.zhongmubao.api.mongo.dao.ShareCardMongoDao;
+import com.zhongmubao.api.mongo.dao.SystemSMSLogMongoDao;
 import com.zhongmubao.api.mongo.entity.ShareCardMongo;
+import com.zhongmubao.api.mongo.entity.SystemSMSLogMongo;
 import com.zhongmubao.api.mongo.entity.base.PageModel;
 import com.zhongmubao.api.service.BaseService;
 import com.zhongmubao.api.service.CustomerService;
 import com.zhongmubao.api.util.*;
-import com.zhongmubao.api.util.redis.RedisHelper;
 import com.zhongmubao.api.util.redis.RedisLock;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
@@ -42,7 +48,7 @@ import java.util.stream.Collectors;
 
 import static com.zhongmubao.api.config.enmu.SignGiftType.*;
 
-//
+
 @Service
 public class CustomerServiceImpl extends BaseService implements CustomerService {
 
@@ -54,9 +60,10 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
     private final ExtActivityRecordDao activityRecordDao;
     private final TokenManager tokenManager;
     private final RedisCache redisCache;
+    private final SystemSMSLogMongoDao systemSMSLogMongoDao;
 
     @Autowired
-    public CustomerServiceImpl(CustomerDao customerDao, ExtRedPackageDao extRedPackageDao, SheepOrderDao sheepOrderDao, ShareCardMongoDao shareCardMongoDao, CustomerAddressDao customerAddressDao, ExtActivityRecordDao activityRecordDao, TokenManager tokenManager, RedisCache redisCache) {
+    public CustomerServiceImpl(CustomerDao customerDao, ExtRedPackageDao extRedPackageDao, SheepOrderDao sheepOrderDao, ShareCardMongoDao shareCardMongoDao, CustomerAddressDao customerAddressDao, ExtActivityRecordDao activityRecordDao, TokenManager tokenManager, RedisCache redisCache, SystemSMSLogMongoDao systemSMSLogMongoDao) {
         this.customerDao = customerDao;
         this.extRedPackageDao = extRedPackageDao;
         this.sheepOrderDao = sheepOrderDao;
@@ -65,6 +72,7 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
         this.activityRecordDao = activityRecordDao;
         this.tokenManager = tokenManager;
         this.redisCache = redisCache;
+        this.systemSMSLogMongoDao = systemSMSLogMongoDao;
     }
 
     @Override
@@ -139,11 +147,13 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
         try {
             if (lock.lock()) {
                 //region 逻辑
+                // 分享天数
                 int shareDayCount = extRedPackageDao.countExtRedPackageByCustomerIdAndBeginTimeAndEndTimeAndType(customerId, monthBegin, monthEnd, dayShareType);
 
                 //region 验证
                 boolean todayIsShare = extRedPackageDao.countExtRedPackageByCustomerIdAndBeginTimeAndEndTimeAndType(customerId, dayBegin, dayEnd, dayShareType) > 0;// redisCache.getCustomerIsShare(customerId);
-                if (todayIsShare) {
+                // todo:去掉测试账号代码
+                if (todayIsShare && customer.getId() != 4194) {
                     return new com.zhongmubao.api.dto.Response.Sign.SignModel(shareDayCount, "0.00", null, null, todayIsShare, false);
                 }
 
@@ -157,7 +167,7 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
                 //endregion
 
                 //region 每日分享送红包
-                double price = redisCache.getShareRandom(MathUtil.radom(1, 10000));
+                double price = redisCache.getShareRandom(MathUtil.random(1, 10000));
 
                 int signCount = extRedPackageDao.countExtRedPackageByBeginTimeAndEndTimeAndType(dayBegin, dayEnd, dayShareType);
                 signCount = signCount == 0 ? 1 : signCount;
@@ -175,13 +185,20 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
 
                 //endregion
 
-                //region 礼物
-                if (giftDayList.contains(shareDayCount)) {//
-                    int radomIndex = MathUtil.radom(0, Constants.SIGN_GIFT_LIST.size());
+                //region 礼物 todo:去掉测试账号代码
+                if (giftDayList.contains(shareDayCount) || customer.getId() == 4194) {
+                    // 随机获取神秘礼物
+                    int randomIndex = MathUtil.random(0, Constants.SIGN_GIFT_LIST.size());
+                    if (customer.getId() == 4194) {
+                        randomIndex = shareDayCount / 2 == 0 ? 8 : 9;
+                    }
                     SignGiftRedPackageViewModel signGiftRedPackageViewModel = null;
 
-                    SignGift signGift = Constants.SIGN_GIFT_LIST.get(radomIndex);
-                    //神秘礼物
+                    double giftPrice = 0;
+                    // 得到具体礼物类型
+                    SignGift signGift = Constants.SIGN_GIFT_LIST.get(randomIndex);
+
+                    // 神秘礼物
                     if (signGift.getType().equals(SECRET_GIFT)) {
                         //判断30天内是否买羊
                         Date buySheepBeginTime = DateUtil.addDay(now, -30);
@@ -193,27 +210,46 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
                             signGiftAddressViewModel = formartAddress(customerId);
                         }
                     }
-                    //如果中奖是红包
+                    // 如果中奖是红包
                     double redPackagePrice = 0;
                     if (signGift.getType().equals(RED_PACKAGE)) {
                         signGiftRedPackageViewModel = new SignGiftRedPackageViewModel();
-                        redPackagePrice = MathUtil.radom(10, 200) * 0.01;
+                        redPackagePrice = MathUtil.random(10, 200) * 0.01;
                         signGiftRedPackageViewModel.setPrice(DoubleUtil.toFixed(redPackagePrice, "0.00"));
                         //添加红包
                         sendRedPackage(customer, dayShareType, redPackagePrice, expTime, 1);
+                        giftPrice = redPackagePrice;
+                    }
+
+                    // 如果中奖的是话费卡
+                    int telephoneMoney = 0;
+                    if (signGift.getType().equals(TELEPHONE_CARD)) {
+                        // 得出话费金额
+                        telephoneMoney = signGift.getCount();
+                        // 话费卡设置count=1，让循环一次
+                        signGift.setCount(1);
+                        giftPrice = telephoneMoney;
+                    }
+
+                    // 如果是神秘礼物或者话费卡，状态为未领取
+                    String status;
+                    if (signGift.getType().equals(SECRET_GIFT) || signGift.getType().equals(TELEPHONE_CARD)) {
+                        status = ShareCardState.UNCLAIMED.getName();
+                    } else {
+                        status = ShareCardState.RECEIVED.getName();
                     }
 
                     //添加礼物到Mongo
                     for (int i = 0; i < signGift.getCount(); i++) {
-                        Date mongoNow = DateUtil.formartMongo(now);
+                        Date mongoNow = DateUtil.formatMongo(now);
                         shareCard = new ShareCardMongo();
                         shareCard.setCustomerId(customerId);
-                        shareCard.setTitle(formartGiftTitle(signGift.getType(), 1, redPackagePrice));
+                        shareCard.setTitle(formatGiftTitle(signGift.getType(), 1, giftPrice));
                         shareCard.setType(signGift.getType().getName());
-                        shareCard.setCount(1);
+                        shareCard.setCount(signGift.getType().equals(TELEPHONE_CARD) ? telephoneMoney : 1);
                         shareCard.setCreated(mongoNow);
                         shareCard.setExceed(DateUtil.addDay(mongoNow, 30));
-                        shareCard.setStatus(signGift.getType().equals(SECRET_GIFT) ? ShareCardState.UNCLAIMED.getName() : ShareCardState.RECEIVED.getName());
+                        shareCard.setStatus(status);
                         shareCard.setDelete(false);
                         shareCardMongoDao.add(shareCard);
                     }
@@ -224,8 +260,9 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
                     signGiftViewModel.setCount(signGift.getCount());
                     signGiftViewModel.setSignGiftRedPackage(signGiftRedPackageViewModel);
                     signGiftViewModel.setSignGiftAddress(signGiftAddressViewModel);
-                    signGiftViewModel.setTitle(formartGiftShortTitle(signGift.getType(), shareCard.getCount(), redPackagePrice));
-                    signGiftViewModel.setUnit(formartGiftUnit(signGift.getType()));
+                    signGiftViewModel.setTitle(formatGiftShortTitle(signGift.getType(), shareCard.getCount(), giftPrice));
+                    signGiftViewModel.setUnit(formatGiftUnit(signGift.getType()));
+                    signGiftViewModel.setTelephoneCharge(telephoneMoney);
                 }
 
                 redisCache.saveCustomerIsShare(customerId);//设置今天已分享
@@ -257,7 +294,13 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
         pager = shareCardMongoDao.pager(customerId, true, pager);
 
         List<PageSignGiftViewModel> list = pager.getDatas().stream()
-                .map(en -> new PageSignGiftViewModel(en.id, en.getTitle(), en.getCount(), en.getStatus(), en.getType(), DateUtil.formart(en.getCreated(), "yyyy.MM.dd")))
+                .map(en -> new PageSignGiftViewModel(
+                        en.id,
+                        en.getTitle(),
+                        en.getCount(),
+                        en.getStatus(),
+                        en.getType(),
+                        DateUtil.format(en.getCreated(), "yyyy.MM.dd")))
                 .collect(Collectors.toList());
         return new PageSignGiftModel(pager.getTotalPages(), list, formartAddress(customerId));
     }
@@ -265,8 +308,8 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
     @Override
     public MyGiftCardModel myGiftCard(int customerId) throws Exception {
         int delayedCardCount = shareCardMongoDao.countByCustomerIdAndType(customerId, SignGiftType.DELAYED_CARD.getName());
-        int megreCardCount = shareCardMongoDao.countByCustomerIdAndType(customerId, SignGiftType.MERGE_CARD.getName());
-        return new MyGiftCardModel(delayedCardCount, megreCardCount);
+        int mergeCardCount = shareCardMongoDao.countByCustomerIdAndType(customerId, SignGiftType.MERGE_CARD.getName());
+        return new MyGiftCardModel(delayedCardCount, mergeCardCount);
     }
 
     @Override
@@ -281,7 +324,7 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
         }
         ShareCardMongo shareCardMongo = shareCardMongoDao.getByCustomerIdAndType(customerId, SignGiftType.MERGE_CARD.getName());
         if (null == shareCardMongo) {
-            throw new ApiException(ResultStatus.MEGRE_CARD_NOT_EXIT);
+            throw new ApiException(ResultStatus.MERGE_CARD_NOT_EXIT);
         }
         List<ExtRedPackage> packageList = extRedPackageDao.getEffectiveExtRedPackageByCustomerIdAndIds(customerId, ids);
         if (packageList.size() != 2) {
@@ -291,7 +334,7 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
 
         ExtRedPackage firstPackage = packageList.get(0);
         extRedPackageDao.updateExtRedPackageIsUsedByCustomerIdAndIds(customerId, ids);
-        sendRedPackage(customer, RedPackageType.MEGRE_CARD.getName(), totalPrice, firstPackage.getExpTime(), 1);
+        sendRedPackage(customer, RedPackageType.MERGE_CARD.getName(), totalPrice, firstPackage.getExpTime(), 1);
 
         shareCardMongo.setDelete(true);
         shareCardMongoDao.save(shareCardMongo);
@@ -318,28 +361,6 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
         shareCardMongoDao.save(shareCardMongo);
     }
 
-    /**
-     * 充值话费
-     *
-     * @param customerId
-     * @param model
-     * @throws Exception
-     */
-    @Override
-    public void recevieTelePhoneFare(int customerId, PhoneFareRequestModel model) throws Exception {
-        if (null == model) {
-            throw new ApiException(ResultStatus.PARAMETER_MISSING);
-        }
-        String type = SignGiftType.FARE_CARD.getName();
-        //获取话费礼物记录
-        ShareCardMongo shareCard = shareCardMongoDao.getByCustomerIdAndIdAndType(customerId, model.getGiftId(), type);
-        if (null == shareCard || shareCard.getStatus().equals(ShareCardState.RECEIVED.getName())) {
-            throw new ApiException(ResultStatus.SECRET_GIFT_NOT_EXIT);
-        }
-
-        //充话费 并修改 状态
-    }
-
     @Override
     public PageSignPackageModel pageSignPackage(int customerId, PageSignPackageRequestModel model) {
         PageHelper.startPage(model.getPageIndex(), Constants.PAGE_SIZE);
@@ -349,7 +370,7 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
                 en -> new SignPackageViewModel(
                         en.getId(),
                         DoubleUtil.toFixed(en.getPrice(), "0.00"),
-                        DateUtil.formart(en.getExpTime(), "yyyy-MM-dd"),
+                        DateUtil.format(en.getExpTime(), "yyyy-MM-dd"),
                         DateUtil.subDateOfDay(en.getExpTime(), new Date()) < 0 ? 0 : DateUtil.subDateOfDay(en.getExpTime(), new Date())))
                 .collect(Collectors.toList());
         PageHelper.clearPage();
@@ -357,7 +378,14 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
         return new PageSignPackageModel(pages, cardCount, list);
     }
 
-
+    /**
+     * 领取神秘卡
+     *
+     * @param customerId 用户id
+     * @param model      请求参数
+     * @throws Exception
+     * @author 孙阿龙
+     */
     @Override
     public void recevieSecretGift(int customerId, RrcevieSecretGiftRequestModel model) throws Exception {
         if (null == model) {
@@ -388,7 +416,51 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
         activityRecordDao.insertExtActivityRecord(activityRecord);
     }
 
-    private String formartGiftTitle(SignGiftType type, int count, double price) {
+    /**
+     * 领取话费充值卡
+     *
+     * @param customer 当前用户
+     * @param model    请求参数
+     * @throws Exception
+     * @author 米立林 2017-10-10
+     */
+    @Override
+    public void receiveRechargeGift(Customer customer, ReceiveRechargeGiftRequestModel model) throws Exception {
+        if (null == model) {
+            throw new ApiException(ResultStatus.PARAMETER_MISSING);
+        }
+        String type = SignGiftType.TELEPHONE_CARD.getName();
+        int activityId = Activity.TELEPHONE_CARD_ID.getName();
+
+        ShareCardMongo shareCard = shareCardMongoDao.getByCustomerIdAndIdAndType(customer.getId(), model.getGiftId(), type);
+        if (null == shareCard || shareCard.getStatus().equals(ShareCardState.RECEIVED.getName())) {
+            throw new ApiException(ResultStatus.TELEPHONE_CARD_NOT_EXIT);
+        }
+
+        // 1、充值话费（先充值再修改领取状态和添加领取记录，客户至上）
+        Recharge.submit(model.getPhone(), shareCard.getCount());
+
+        // 2、修改话费卡状态为已领取
+        shareCard.setStatus(ShareCardState.RECEIVED.getName());
+        shareCardMongoDao.save(shareCard);
+
+        // 3、添加领取活动记录
+        String info = "用户" + customer.getName() + "给手机号" + model.getPhone() + "使用充值卡：" + model.getGiftId();
+        ExtActivityRecord activityRecord = new ExtActivityRecord(
+                customer.getId(),
+                activityId,
+                customer.getName(),
+                model.getPhone(),
+                "领取话费充值卡活动",
+                new Date(),
+                false,
+                info,
+                ActivityState.Audited.getName(),
+                ActivityState.Audited.getName());
+        activityRecordDao.insertExtActivityRecord(activityRecord);
+    }
+
+    private String formatGiftTitle(SignGiftType type, int count, double price) {
         switch (type) {
             case RED_PACKAGE:
                 return "收益红包" + DoubleUtil.toFixed(price, "0.00") + "元";
@@ -398,12 +470,14 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
                 return "延时卡" + count + "张";
             case MERGE_CARD:
                 return "合并卡" + count + "张";
+            case TELEPHONE_CARD:
+                return price + "元话费充值卡";
             default:
                 return "";
         }
     }
 
-    private String formartGiftShortTitle(SignGiftType type, int count, double price) {
+    private String formatGiftShortTitle(SignGiftType type, int count, double price) {
         switch (type) {
             case RED_PACKAGE:
                 return DoubleUtil.toFixed(price, "0.00");
@@ -413,20 +487,22 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
                 return "延时卡";
             case MERGE_CARD:
                 return "合并卡";
+            case TELEPHONE_CARD:
+                return price + "元话费充值卡";
             default:
                 return "";
         }
     }
 
-    private String formartGiftUnit(SignGiftType type) {
+    private String formatGiftUnit(SignGiftType type) {
         switch (type) {
             case RED_PACKAGE:
                 return "个";
             case SECRET_GIFT:
                 return "份";
             case DELAYED_CARD:
-                return "张";
             case MERGE_CARD:
+            case TELEPHONE_CARD:
                 return "张";
             default:
                 return "";
@@ -471,7 +547,7 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
         List<PageExtRedPackageViewModel> list = page.getResult().stream().map(
                 en -> new PageExtRedPackageViewModel(
                         Double.toString(en.getPrice()),
-                        DateUtil.formart(en.getExpTime(), "yyyy-MM-dd")
+                        DateUtil.format(en.getExpTime(), "yyyy-MM-dd")
                 ))
                 .collect(Collectors.toList());
         PageHelper.clearPage();
@@ -532,11 +608,11 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
      * @return 受影响的行数
      */
     @Override
-    public int deleteCustomerAddressByIdAndCustomerId(int customerId, OnlyPrimaryIdRequestModel model) throws Exception {
+    public int deleteCustomerAddress(int customerId, OnlyPrimaryIdRequestModel model) throws Exception {
         if (null == model) {
             throw new ApiException(ResultStatus.PARAMETER_MISSING);
         }
-//        int sucRows = customerAddressDao.deleteCustomerAddressByIdAndCustomerId(model.getId());
+//        int sucRows = customerAddressDao.deleteCustomerAddress(model.getId());
         // 此处修改为逻辑删除
         int sucRows = customerAddressDao.logicDeleteByIdAndCustomerId(customerId, model.getId());
 
@@ -550,7 +626,7 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
      * @return 受影响的行数
      */
     @Override
-    public int updateCustomerAddressByIdAndCustomerId(int customerId, UpdateCustomerAddressRequestModel model) throws Exception {
+    public int updateCustomerAddress(int customerId, UpdateCustomerAddressRequestModel model) throws Exception {
         if (null == model) {
             throw new ApiException(ResultStatus.PARAMETER_MISSING);
         }
@@ -568,7 +644,7 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
         }
 
         // 更新数据
-        int sucRows = customerAddressDao.updateInfoByIdAndCustomerId(
+        int sucRows = customerAddressDao.updateCustomerAddressInfo(
                 model.getCustomerId(),
                 model.getId(),
                 model.getProvinceCode(),
@@ -580,7 +656,7 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
                 model.getAddress(),
                 model.getName(),
                 model.getPhone(),
-                DateUtil.formart(new Date(), "yyyy-MM-dd HH:mm:ss")
+                DateUtil.format(new Date(), "yyyy-MM-dd HH:mm:ss")
         );
 
         return sucRows;
@@ -608,8 +684,8 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
                         en.getCountyCode(), en.getCountyName(),
                         en.getAddress(), en.getName(), en.getPhone(),
                         en.getIsDefault(), en.getDeleted(),
-                        DateUtil.formart(en.getCreated(), "yyyy-MM-dd"),
-                        DateUtil.formart(en.getModified(), "yyyy-MM-dd")
+                        DateUtil.format(en.getCreated(), "yyyy-MM-dd"),
+                        DateUtil.format(en.getModified(), "yyyy-MM-dd")
                 ))
                 .collect(Collectors.toList());
         return new CustomerAddressResponseModel(list);
@@ -652,6 +728,111 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
         return isNoPass;
     }
 
+    //endregion
+
+    //region 个人中心--设置
+
+    /**
+     * 重置登录密码
+     *
+     * @param customerId 当前用户
+     * @param model      参数请求request
+     * @throws Exception
+     * @author 米立林 2017-09-30
+     */
+    @Override
+    public void resetPassword(int customerId, ResetPasswordRequestModel model) throws Exception {
+        if (null == model) {
+            throw new ApiException(ResultStatus.PARAMETER_MISSING);
+        }
+        // 1、校验用户
+        Customer customer = customerDao.getCustomerById(customerId);
+        if (null == customer || customer.getPhone() != model.getPhone()) {
+            throw new ApiException(ResultStatus.PARAMETER_ERROR);
+        }
+        // 2、校验验证码类型
+        if (SmsType.VERIFICATION.getName() != model.getType()) {
+            throw new ApiException(ResultStatus.PARAMETER_ERROR);
+        }
+        Query query = new Query();
+        query.addCriteria(Criteria.where("Type").is(model.getType()));
+        query.addCriteria(Criteria.where("Phone").is(model.getPhone()));
+        query.addCriteria(Criteria.where("Expired").gt(DateUtil.formatMongo(new Date())));
+        SystemSMSLogMongo smsAuthMongo = systemSMSLogMongoDao.getListByPeriod(query);
+        if (smsAuthMongo.getCode() != model.getVerificationCode()) {
+            throw new ApiException(ResultStatus.PARAMETER_CODE_ERROR);
+        }
+        // 3、修改登录密码
+        customerDao.UpdatePassword(customer.getId(), model.getNewPassword());
+        // 4、修改验证码为已过期
+        smsAuthMongo.setExpired(DateUtil.formatMongo(new Date()));
+        systemSMSLogMongoDao.update(smsAuthMongo);
+    }
+
+    /**
+     * 重置赎回密码
+     *
+     * @param customerId 当前用户
+     * @param model      参数请求request
+     * @throws Exception
+     * @author 米立林 2017-09-30
+     */
+    @Override
+    public void resetRedeemPassword(int customerId, ResetPasswordRequestModel model) throws Exception {
+        if (null == model) {
+            throw new ApiException(ResultStatus.PARAMETER_MISSING);
+        }
+        // 1、校验用户
+        Customer customer = customerDao.getCustomerById(customerId);
+        if (null == customer || customer.getPhone() != model.getPhone()) {
+            throw new ApiException(ResultStatus.PARAMETER_ERROR);
+        }
+        // 2、校验验证码类型
+        if (SmsType.REDEEM_PWD.getName() != model.getType()) {
+            throw new ApiException(ResultStatus.PARAMETER_ERROR);
+        }
+        Query query = new Query();
+        query.addCriteria(Criteria.where("Type").is(model.getType()));
+        query.addCriteria(Criteria.where("Phone").is(model.getPhone()));
+        query.addCriteria(Criteria.where("Expired").gt(DateUtil.formatMongo(new Date())));
+        SystemSMSLogMongo smsAuthMongo = systemSMSLogMongoDao.getListByPeriod(query);
+        if (smsAuthMongo.getCode() != model.getVerificationCode()) {
+            throw new ApiException(ResultStatus.PARAMETER_CODE_ERROR);
+        }
+        // 3、修改赎回密码
+        customerDao.UpdateRedeemPassword(customer.getId(), model.getNewPassword());
+        // 4、修改验证码为已过期
+        smsAuthMongo.setExpired(DateUtil.formatMongo(new Date()));
+        systemSMSLogMongoDao.update(smsAuthMongo);
+
+    }
+
+    /**
+     * 开启/关闭自动赎回
+     *
+     * @param customerId 当前用户
+     * @param model      赎回密码
+     * @throws Exception
+     */
+    @Override
+    public boolean autoRedeemAmount(int customerId, AutoRedeemRequestModel model) throws Exception {
+        if (null == model) {
+            throw new ApiException(ResultStatus.PARAMETER_MISSING);
+        }
+        boolean isSuccess = false;
+        // 1、验证参数
+        Customer customer = customerDao.getCustomerById(customerId);
+        if (null == customer || StringUtil.isNullOrEmpty(model.getRedeemPassword())) {
+            throw new ApiException(ResultStatus.PARAMETER_ERROR);
+        }
+        // 2、校验用户赎回密码
+        if (model.getRedeemPassword().equals(customer.getRedeemPassword())) {
+            // 设置自动赎回
+            customerDao.UpdateIsAutoRedeem(customerId, model.getIsAutoRedeem());
+            isSuccess = true;
+        }
+        return isSuccess;
+    }
     //endregion
 
 }

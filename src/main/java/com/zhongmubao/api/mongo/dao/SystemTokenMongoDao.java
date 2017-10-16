@@ -52,7 +52,7 @@ public class SystemTokenMongoDao implements BaseDao<SystemTokenMongo> {
 
     @Override
     public void delete(SystemTokenMongo entity) throws Exception {
-        mongoTemplate.remove(entity);
+         mongoTemplate.remove(entity);
     }
 
     @Override
@@ -60,28 +60,28 @@ public class SystemTokenMongoDao implements BaseDao<SystemTokenMongo> {
         return null;
     }
 
-    public PageModel<SystemTokenMongo> Pager(PageModel<SystemTokenMongo> page) {
+    public PageModel<SystemTokenMongo>Pager(PageModel<SystemTokenMongo> page) {
         Query query = new Query();
         //查询总数
-        int count = (int) mongoTemplate.count(query, SystemTokenMongo.class);
+        int count=(int) mongoTemplate.count(query,SystemTokenMongo.class);
         page.setRowCount(count);
 
         //排序
         //query.with(new Sort(Sort.Direction.ASC, "onumber"));
         query.skip(page.getSkip()).limit(page.getPageSize());
-        List<SystemTokenMongo> list = mongoTemplate.find(query, SystemTokenMongo.class);
+        List<SystemTokenMongo>list=mongoTemplate.find(query,SystemTokenMongo.class);
         page.setDatas(list);
         return page;
     }
 
-    public SystemTokenMongo getByCustomerIdAndPlatform(int customerId, String platform) throws Exception {
+    public SystemTokenMongo getByCustomerIdAndPlatform(int customerId, String platform)throws Exception{
         Query query = new Query();
         query.addCriteria(Criteria.where("CustomerId").is(customerId));
         query.addCriteria(Criteria.where("Platform").is(platform));
         return this.get(query);
     }
 
-    public SystemTokenMongo getByTokenAndPlatform(String token, String platform) throws Exception {
+    public SystemTokenMongo getByTokenAndPlatform(String token, String platform)throws Exception{
         Query query = new Query();
         query.addCriteria(Criteria.where("Token").is(token));
         query.addCriteria(Criteria.where("Platform").is(platform));

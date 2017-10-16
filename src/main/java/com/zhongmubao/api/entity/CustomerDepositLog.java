@@ -5,109 +5,109 @@ import java.util.List;
 import java.math.BigDecimal;
 
 public class CustomerDepositLog {
-
-    public CustomerDepositLog() {
+    
+	public CustomerDepositLog() {
 
     }
 
-    private int id;
+	private int id;
 
-    public int getId() {
-        return id;
-    }
+	public int getId() {
+		return id;
+	}
 
-    public void setId(int id) {
-        this.id = id;
-    }
+	public void setId(int id) {
+		this.id = id;
+	}
 
-    private String code;
+	private String code;
 
-    public String getCode() {
-        return code;
-    }
+	public String getCode() {
+		return code;
+	}
 
-    public void setCode(String code) {
-        this.code = code;
-    }
+	public void setCode(String code) {
+		this.code = code;
+	}
 
-    private int customerId;
+	private int customerId;
 
-    public int getCustomerId() {
-        return customerId;
-    }
+	public int getCustomerId() {
+		return customerId;
+	}
 
-    public void setCustomerId(int customerId) {
-        this.customerId = customerId;
-    }
+	public void setCustomerId(int customerId) {
+		this.customerId = customerId;
+	}
 
-    private BigDecimal amount;
+	private BigDecimal amount;
 
-    public BigDecimal getAmount() {
-        return amount;
-    }
+	public BigDecimal getAmount() {
+		return amount;
+	}
 
-    public void setAmount(BigDecimal amount) {
-        this.amount = amount;
-    }
+	public void setAmount(BigDecimal amount) {
+		this.amount = amount;
+	}
 
-    private String state;
+	private String state;
 
-    public String getState() {
-        return state;
-    }
+	public String getState() {
+		return state;
+	}
 
-    public void setState(String state) {
-        this.state = state;
-    }
+	public void setState(String state) {
+		this.state = state;
+	}
 
-    private String paymentTN;
+	private String paymentTN;
 
-    public String getPaymentTN() {
-        return paymentTN;
-    }
+	public String getPaymentTN() {
+		return paymentTN;
+	}
 
-    public void setPaymentTN(String paymentTN) {
-        this.paymentTN = paymentTN;
-    }
+	public void setPaymentTN(String paymentTN) {
+		this.paymentTN = paymentTN;
+	}
 
-    private Date paymentTime;
+	private Date paymentTime;
 
-    public Date getPaymentTime() {
-        return paymentTime;
-    }
+	public Date getPaymentTime() {
+		return paymentTime;
+	}
 
-    public void setPaymentTime(Date paymentTime) {
-        this.paymentTime = paymentTime;
-    }
+	public void setPaymentTime(Date paymentTime) {
+		this.paymentTime = paymentTime;
+	}
 
-    private boolean deleted;
+	private boolean deleted;
 
-    public boolean getDeleted() {
-        return deleted;
-    }
+	public boolean getDeleted() {
+		return deleted;
+	}
 
-    public void setDeleted(boolean deleted) {
-        this.deleted = deleted;
-    }
+	public void setDeleted(boolean deleted) {
+		this.deleted = deleted;
+	}
 
-    private Date created;
+	private Date created;
 
-    public Date getCreated() {
-        return created;
-    }
+	public Date getCreated() {
+		return created;
+	}
 
-    public void setCreated(Date created) {
-        this.created = created;
-    }
+	public void setCreated(Date created) {
+		this.created = created;
+	}
 
-    private Date modified;
+	private Date modified;
 
-    public Date getModified() {
-        return modified;
-    }
+	public Date getModified() {
+		return modified;
+	}
 
-    public void setModified(Date modified) {
-        this.modified = modified;
-    }
+	public void setModified(Date modified) {
+		this.modified = modified;
+	}
 
 }

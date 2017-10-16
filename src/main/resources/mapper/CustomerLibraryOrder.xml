@@ -28,30 +28,30 @@
     <insert id="insertCustomerLibraryOrder">
         <!-- ignore 主键冲突，报错 -->
         INSERT ignore INTO CustomerLibraryOrder (
-        Code,
-        CustomerId,
-        Sign,
-        Count,
-        State,
-        StoreId,
-        StoreName,
-        Expired,
-        Deleted,
-        Created,
-        Modified
-        )
+			     Code, 
+	     CustomerId, 
+	     Sign, 
+	     Count, 
+	     State, 
+	     StoreId, 
+	     StoreName, 
+	     Expired, 
+	     Deleted, 
+	     Created, 
+	     Modified 
+		)
         VALUES (
-        #{code},
-        #{customerId},
-        #{sign},
-        #{count},
-        #{state},
-        #{storeId},
-        #{storeName},
-        #{expired},
-        #{deleted},
-        #{created},
-        #{modified}
-        )
+			     #{code}, 
+	     #{customerId}, 
+	     #{sign}, 
+	     #{count}, 
+	     #{state}, 
+	     #{storeId}, 
+	     #{storeName}, 
+	     #{expired}, 
+	     #{deleted}, 
+	     #{created}, 
+	     #{modified} 
+		)
     </insert>
 </mapper>

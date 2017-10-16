@@ -28,20 +28,20 @@
     <insert id="insertSystemDistrict">
         <!-- ignore 主键冲突，报错 -->
         INSERT ignore INTO SystemDistrict (
-        Code,
-        ParentCode,
-        Name,
-        Deleted,
-        Created,
-        Modified
-        )
+			     Code, 
+	     ParentCode, 
+	     Name, 
+	     Deleted, 
+	     Created, 
+	     Modified 
+		)
         VALUES (
-        #{code},
-        #{parentCode},
-        #{name},
-        #{deleted},
-        #{created},
-        #{modified}
-        )
+			     #{code}, 
+	     #{parentCode}, 
+	     #{name}, 
+	     #{deleted}, 
+	     #{created}, 
+	     #{modified} 
+		)
     </insert>
 </mapper>

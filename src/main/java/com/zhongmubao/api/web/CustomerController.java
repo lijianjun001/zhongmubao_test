@@ -2,11 +2,13 @@ package com.zhongmubao.api.web;
 
 import com.zhongmubao.api.authorization.annotation.Authorization;
 import com.zhongmubao.api.authorization.annotation.CurrentUser;
-import com.zhongmubao.api.components.recharge.Recharge;
+import com.zhongmubao.api.config.ResultStatus;
 import com.zhongmubao.api.dto.Request.OnlyPrimaryIdRequestModel;
 import com.zhongmubao.api.dto.Request.*;
 import com.zhongmubao.api.dto.Request.Address.CustomerAddressRequestModel;
 import com.zhongmubao.api.dto.Request.Address.UpdateCustomerAddressRequestModel;
+import com.zhongmubao.api.dto.Request.customer.AutoRedeemRequestModel;
+import com.zhongmubao.api.dto.Request.customer.ResetPasswordRequestModel;
 import com.zhongmubao.api.dto.Response.Address.CustomerAddressResponseModel;
 import com.zhongmubao.api.dto.Response.Ext.PageExtRedPackageModel;
 import com.zhongmubao.api.dto.Response.ReponseModel;
@@ -190,13 +192,34 @@ public class CustomerController {
         }
     }
 
+    /***
+     * 领取话费充值卡
+     * @param customer
+     * @param model
+     * @author 米立林 2017-10-10
+     * @return
+     */
+    @RequestMapping(value = "/sign/receiveRechargeGift", method = RequestMethod.POST, consumes = "application/json")
+    @Authorization
+    public ResponseEntity<ReponseModel> receiveRechargeGift(@CurrentUser Customer customer, HttpEntity<ReceiveRechargeGiftRequestModel> model) {
+        try {
+            customerService.receiveRechargeGift(customer, model.getBody());
+            return new ResponseEntity<>(ReponseModel.ok(), HttpStatus.OK);
+        } catch (ApiException ex) {
+            return new ResponseEntity<>(ReponseModel.error(ex.getStatus()), HttpStatus.OK);
+        } catch (Exception ex) {
+            return new ResponseEntity<>(ReponseModel.error(ex, this.getClass()), HttpStatus.OK);
+        }
+    }
+
     //endregion
 
+    // region ExtRedPackage
 
     /**
      * @param customer 主键ID
      * @param model    请求参数Model
-     * @return
+     * @return 获取用户红包列表
      * @author 米立林
      */
     @RequestMapping(value = "/pageRedPackage", method = RequestMethod.POST, consumes = "application/json")
@@ -211,12 +234,12 @@ public class CustomerController {
             return new ResponseEntity<>(ReponseModel.error(ex, this.getClass()), HttpStatus.OK);
         }
     }
+    // endregion
 
     //region 地址管理 SystemDistrict
 
     /**
      * 新增
-     *
      * @param customer 所属用户
      * @param model    地址请求实体
      * @return
@@ -226,9 +249,7 @@ public class CustomerController {
     @Authorization
     public ResponseEntity<ReponseModel> addCustomerAddress(@CurrentUser Customer customer, HttpEntity<CustomerAddressRequestModel> model) {
         try {
-
             customerService.addCustomerAddress(customer.getId(), model.getBody());
-
             return new ResponseEntity<>(ReponseModel.ok(), HttpStatus.OK);
         } catch (ApiException ex) {
             return new ResponseEntity<>(ReponseModel.error(ex.getStatus()), HttpStatus.OK);
@@ -239,7 +260,6 @@ public class CustomerController {
 
     /**
      * 删除
-     *
      * @param customer 所属用户
      * @param model    地址请求实体
      * @return
@@ -249,7 +269,7 @@ public class CustomerController {
     @Authorization
     public ResponseEntity<ReponseModel> deleteCustomerAddress(@CurrentUser Customer customer, HttpEntity<OnlyPrimaryIdRequestModel> model) {
         try {
-            customerService.deleteCustomerAddressByIdAndCustomerId(customer.getId(), model.getBody());
+            customerService.deleteCustomerAddress(customer.getId(), model.getBody());
 
             return new ResponseEntity<>(ReponseModel.ok(), HttpStatus.OK);
         } catch (ApiException ex) {
@@ -261,7 +281,6 @@ public class CustomerController {
 
     /**
      * 修改
-     *
      * @param customer 所属用户
      * @param model    地址请求实体
      * @return
@@ -271,7 +290,7 @@ public class CustomerController {
     @Authorization
     public ResponseEntity<ReponseModel> updateCustomerAddress(@CurrentUser Customer customer, HttpEntity<UpdateCustomerAddressRequestModel> model) {
         try {
-            customerService.updateCustomerAddressByIdAndCustomerId(customer.getId(), model.getBody());
+            customerService.updateCustomerAddress(customer.getId(), model.getBody());
 
             return new ResponseEntity<>(ReponseModel.ok(), HttpStatus.OK);
         } catch (ApiException ex) {
@@ -283,7 +302,6 @@ public class CustomerController {
 
     /**
      * 获取用户地址
-     *
      * @param customer 当前用户
      * @param model    地址信息
      * @return 用户地址集合
@@ -303,5 +321,67 @@ public class CustomerController {
     }
 
     //endregion
+
+    // region 个人中心 -- 设置
+
+    /***
+     * 重置登录密码
+     * @param customer
+     * @param model
+     * @author 米立林 2017-09-30
+     * @return
+     */
+    @RequestMapping(value = "/customer/resetPassword", method = RequestMethod.POST, consumes = "application/json")
+    @Authorization
+    public ResponseEntity<ReponseModel> resetPassword(@CurrentUser Customer customer, HttpEntity<ResetPasswordRequestModel> model) {
+        try {
+            customerService.resetPassword(customer.getId(), model.getBody());
+            return new ResponseEntity<>(ReponseModel.ok(), HttpStatus.OK);
+        } catch (Exception ex) {
+            return new ResponseEntity<>(ReponseModel.error(ex, this.getClass()), HttpStatus.OK);
+        }
+    }
+
+    /***
+     * 重置赎回密码
+     * @param customer
+     * @param model
+     * @author 米立林 2017-09-30
+     * @return
+     */
+    @RequestMapping(value = "/customer/resetRedeemPassword", method = RequestMethod.POST, consumes = "application/json")
+    @Authorization
+    public ResponseEntity<ReponseModel> resetRedeemPassword(@CurrentUser Customer customer, HttpEntity<ResetPasswordRequestModel> model) {
+        try {
+            customerService.resetRedeemPassword(customer.getId(), model.getBody());
+            return new ResponseEntity<>(ReponseModel.ok(), HttpStatus.OK);
+        } catch (Exception ex) {
+            return new ResponseEntity<>(ReponseModel.error(ex, this.getClass()), HttpStatus.OK);
+        }
+    }
+
+    /***
+     * 开启/关闭 自动赎回
+     * @param customer
+     * @author 米立林 2017-09-30
+     * @return
+     */
+    @RequestMapping(value = "/customer/autoRedeemAmount", method = RequestMethod.POST, consumes = "application/json")
+    @Authorization
+    public ResponseEntity<ReponseModel> autoRedeemAmount(@CurrentUser Customer customer, HttpEntity<AutoRedeemRequestModel> model) {
+        try {
+            boolean isSuccess = customerService.autoRedeemAmount(customer.getId(), model.getBody());
+            if (isSuccess) {
+                return new ResponseEntity<>(ReponseModel.ok(), HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(ReponseModel.error(ResultStatus.REDEEM_PASSWORD_ERROR), HttpStatus.OK);
+            }
+        } catch (Exception ex) {
+            return new ResponseEntity<>(ReponseModel.error(ex, this.getClass()), HttpStatus.OK);
+        }
+    }
+
+    // endregion
+
 
 }

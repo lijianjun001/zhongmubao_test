@@ -5,132 +5,132 @@ import java.util.List;
 import java.math.BigDecimal;
 
 public class ExtActivityRecord {
-
-    public ExtActivityRecord() {
+    
+	public ExtActivityRecord() {
 
     }
 
-    private int id;
+	private int id;
 
-    public ExtActivityRecord(int customerId, int extActivityId, String name, String phone, String remark, Date created, boolean deleted, String info, String state, String auditReason) {
-        this.customerId = customerId;
-        this.extActivityId = extActivityId;
-        this.name = name;
-        this.phone = phone;
-        this.remark = remark;
-        this.created = created;
-        this.deleted = deleted;
-        this.info = info;
-        this.state = state;
-        this.auditReason = auditReason;
-    }
+	public ExtActivityRecord(int customerId, int extActivityId, String name, String phone, String remark, Date created, boolean deleted, String info, String state, String auditReason) {
+		this.customerId = customerId;
+		this.extActivityId = extActivityId;
+		this.name = name;
+		this.phone = phone;
+		this.remark = remark;
+		this.created = created;
+		this.deleted = deleted;
+		this.info = info;
+		this.state = state;
+		this.auditReason = auditReason;
+	}
 
-    public int getId() {
-        return id;
-    }
+	public int getId() {
+		return id;
+	}
 
-    public void setId(int id) {
-        this.id = id;
-    }
+	public void setId(int id) {
+		this.id = id;
+	}
 
-    private int customerId;
+	private int customerId;
 
-    public int getCustomerId() {
-        return customerId;
-    }
+	public int getCustomerId() {
+		return customerId;
+	}
 
-    public void setCustomerId(int customerId) {
-        this.customerId = customerId;
-    }
+	public void setCustomerId(int customerId) {
+		this.customerId = customerId;
+	}
 
-    private int extActivityId;
+	private int extActivityId;
 
-    public int getExtActivityId() {
-        return extActivityId;
-    }
+	public int getExtActivityId() {
+		return extActivityId;
+	}
 
-    public void setExtActivityId(int extActivityId) {
-        this.extActivityId = extActivityId;
-    }
+	public void setExtActivityId(int extActivityId) {
+		this.extActivityId = extActivityId;
+	}
 
-    private String name;
+	private String name;
 
-    public String getName() {
-        return name;
-    }
+	public String getName() {
+		return name;
+	}
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	public void setName(String name) {
+		this.name = name;
+	}
 
-    private String phone;
+	private String phone;
 
-    public String getPhone() {
-        return phone;
-    }
+	public String getPhone() {
+		return phone;
+	}
 
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
 
-    private String remark;
+	private String remark;
 
-    public String getRemark() {
-        return remark;
-    }
+	public String getRemark() {
+		return remark;
+	}
 
-    public void setRemark(String remark) {
-        this.remark = remark;
-    }
+	public void setRemark(String remark) {
+		this.remark = remark;
+	}
 
-    private Date created;
+	private Date created;
 
-    public Date getCreated() {
-        return created;
-    }
+	public Date getCreated() {
+		return created;
+	}
 
-    public void setCreated(Date created) {
-        this.created = created;
-    }
+	public void setCreated(Date created) {
+		this.created = created;
+	}
 
-    private boolean deleted;
+	private boolean deleted;
 
-    public boolean getDeleted() {
-        return deleted;
-    }
+	public boolean getDeleted() {
+		return deleted;
+	}
 
-    public void setDeleted(boolean deleted) {
-        this.deleted = deleted;
-    }
+	public void setDeleted(boolean deleted) {
+		this.deleted = deleted;
+	}
 
-    private String info;
+	private String info;
 
-    public String getInfo() {
-        return info;
-    }
+	public String getInfo() {
+		return info;
+	}
 
-    public void setInfo(String info) {
-        this.info = info;
-    }
+	public void setInfo(String info) {
+		this.info = info;
+	}
 
-    private String state;
+	private String state;
 
-    public String getState() {
-        return state;
-    }
+	public String getState() {
+		return state;
+	}
 
-    public void setState(String state) {
-        this.state = state;
-    }
+	public void setState(String state) {
+		this.state = state;
+	}
 
-    private String auditReason;
+	private String auditReason;
 
-    public String getAuditReason() {
-        return auditReason;
-    }
+	public String getAuditReason() {
+		return auditReason;
+	}
 
-    public void setAuditReason(String auditReason) {
-        this.auditReason = auditReason;
-    }
+	public void setAuditReason(String auditReason) {
+		this.auditReason = auditReason;
+	}
 
 }

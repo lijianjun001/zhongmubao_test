@@ -3,8 +3,7 @@ package com.zhongmubao.api.util;
 public class DoubleUtil {
     /**
      * 浮点精确小数点后N位
-     *
-     * @param d         浮点
+     * @param d 浮点
      * @param formatStr 格式:0.00
      * @return 被格式化的浮点，字符串
      */

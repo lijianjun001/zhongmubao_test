@@ -28,20 +28,20 @@
     <insert id="insertSystemToken">
         <!-- ignore 主键冲突，报错 -->
         INSERT ignore INTO SystemToken (
-        Platform,
-        CustomerId,
-        Token,
-        Expired,
-        Created,
-        Modified
-        )
+			     Platform, 
+	     CustomerId, 
+	     Token, 
+	     Expired, 
+	     Created, 
+	     Modified 
+		)
         VALUES (
-        #{platform},
-        #{customerId},
-        #{token},
-        #{expired},
-        #{created},
-        #{modified}
-        )
+			     #{platform}, 
+	     #{customerId}, 
+	     #{token}, 
+	     #{expired}, 
+	     #{created}, 
+	     #{modified} 
+		)
     </insert>
 </mapper>

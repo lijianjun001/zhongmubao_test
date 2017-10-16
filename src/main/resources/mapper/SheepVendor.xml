@@ -15,13 +15,13 @@
         id = #{id} limit 1
     </select>
 
-    <select id="getSheepVendorList" resultType="SheepVendor">
-        <!-- 具体的sql -->
-        SELECT
-        *
-        FROM
-        SheepVendor
-    </select>
+	<select id="getSheepVendorList" resultType="SheepVendor">
+		<!-- 具体的sql -->
+		SELECT
+		*
+		FROM
+		SheepVendor
+	</select>
 
     <select id="pagerSheepVendorList" resultType="SheepVendor">
         SELECT
@@ -36,38 +36,38 @@
     <insert id="insertSheepVendor">
         <!-- ignore 主键冲突，报错 -->
         INSERT ignore INTO SheepVendor (
-        Name,
-        Temperature,
-        Humidity,
-        Remark,
-        Deleted,
-        Created,
-        Modified,
-        LoginName,
-        LoginPwd,
-        ContactName,
-        Phone,
-        CardId,
-        Shorthand,
-        Attrs,
-        Pics
-        )
+			     Name, 
+	     Temperature, 
+	     Humidity, 
+	     Remark, 
+	     Deleted, 
+	     Created, 
+	     Modified, 
+	     LoginName, 
+	     LoginPwd, 
+	     ContactName, 
+	     Phone, 
+	     CardId, 
+	     Shorthand, 
+	     Attrs, 
+	     Pics 
+		)
         VALUES (
-        #{name},
-        #{temperature},
-        #{humidity},
-        #{remark},
-        #{deleted},
-        #{created},
-        #{modified},
-        #{loginName},
-        #{loginPwd},
-        #{contactName},
-        #{phone},
-        #{cardId},
-        #{shorthand},
-        #{attrs},
-        #{pics}
-        )
+			     #{name}, 
+	     #{temperature}, 
+	     #{humidity}, 
+	     #{remark}, 
+	     #{deleted}, 
+	     #{created}, 
+	     #{modified}, 
+	     #{loginName}, 
+	     #{loginPwd}, 
+	     #{contactName}, 
+	     #{phone}, 
+	     #{cardId}, 
+	     #{shorthand}, 
+	     #{attrs}, 
+	     #{pics} 
+		)
     </insert>
 </mapper>

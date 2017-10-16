@@ -8,11 +8,9 @@ import java.util.List;
 import java.math.BigDecimal;
 
 public interface ExtZhongouDao {
-
+   
     ExtZhongou getExtZhongourById(@Param("id") int id);
-
     List<ExtZhongou> pagerExtZhongouList(@Param("offset") int offset, @Param("limit") int limit);
-
-    int insertExtZhongou(ExtZhongou extZhongou);
+	int insertExtZhongou(ExtZhongou extZhongou);
 
 }

@@ -1,6 +1,6 @@
 package com.zhongmubao.api.config.enmu;
 
-public enum SheepOrderState {
+public enum  SheepOrderState {
     /**
      * 00 未付款
      */

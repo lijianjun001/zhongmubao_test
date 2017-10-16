@@ -28,22 +28,22 @@
     <insert id="insertCustomerLibrary">
         <!-- ignore 主键冲突，报错 -->
         INSERT ignore INTO CustomerLibrary (
-        CustomerId,
-        OriginalCount,
-        Count,
-        Type,
-        Remark,
-        Created,
-        Reason
-        )
+			     CustomerId, 
+	     OriginalCount, 
+	     Count, 
+	     Type, 
+	     Remark, 
+	     Created, 
+	     Reason 
+		)
         VALUES (
-        #{customerId},
-        #{originalCount},
-        #{count},
-        #{type},
-        #{remark},
-        #{created},
-        #{reason}
-        )
+			     #{customerId}, 
+	     #{originalCount}, 
+	     #{count}, 
+	     #{type}, 
+	     #{remark}, 
+	     #{created}, 
+	     #{reason} 
+		)
     </insert>
 </mapper>

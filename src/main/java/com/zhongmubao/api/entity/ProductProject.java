@@ -5,109 +5,109 @@ import java.util.List;
 import java.math.BigDecimal;
 
 public class ProductProject {
-
-    public ProductProject() {
+    
+	public ProductProject() {
 
     }
 
-    private int id;
+	private int id;
 
-    public int getId() {
-        return id;
-    }
+	public int getId() {
+		return id;
+	}
 
-    public void setId(int id) {
-        this.id = id;
-    }
+	public void setId(int id) {
+		this.id = id;
+	}
 
-    private String title;
+	private String title;
 
-    public String getTitle() {
-        return title;
-    }
+	public String getTitle() {
+		return title;
+	}
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
+	public void setTitle(String title) {
+		this.title = title;
+	}
 
-    private String desc;
+	private String desc;
 
-    public String getDesc() {
-        return desc;
-    }
+	public String getDesc() {
+		return desc;
+	}
 
-    public void setDesc(String desc) {
-        this.desc = desc;
-    }
+	public void setDesc(String desc) {
+		this.desc = desc;
+	}
 
-    private BigDecimal amount;
+	private BigDecimal amount;
 
-    public BigDecimal getAmount() {
-        return amount;
-    }
+	public BigDecimal getAmount() {
+		return amount;
+	}
 
-    public void setAmount(BigDecimal amount) {
-        this.amount = amount;
-    }
+	public void setAmount(BigDecimal amount) {
+		this.amount = amount;
+	}
 
-    private Date beginTime;
+	private Date beginTime;
 
-    public Date getBeginTime() {
-        return beginTime;
-    }
+	public Date getBeginTime() {
+		return beginTime;
+	}
 
-    public void setBeginTime(Date beginTime) {
-        this.beginTime = beginTime;
-    }
+	public void setBeginTime(Date beginTime) {
+		this.beginTime = beginTime;
+	}
 
-    private Date endTime;
+	private Date endTime;
 
-    public Date getEndTime() {
-        return endTime;
-    }
+	public Date getEndTime() {
+		return endTime;
+	}
 
-    public void setEndTime(Date endTime) {
-        this.endTime = endTime;
-    }
+	public void setEndTime(Date endTime) {
+		this.endTime = endTime;
+	}
 
-    private boolean deleted;
+	private boolean deleted;
 
-    public boolean getDeleted() {
-        return deleted;
-    }
+	public boolean getDeleted() {
+		return deleted;
+	}
 
-    public void setDeleted(boolean deleted) {
-        this.deleted = deleted;
-    }
+	public void setDeleted(boolean deleted) {
+		this.deleted = deleted;
+	}
 
-    private Date created;
+	private Date created;
 
-    public Date getCreated() {
-        return created;
-    }
+	public Date getCreated() {
+		return created;
+	}
 
-    public void setCreated(Date created) {
-        this.created = created;
-    }
+	public void setCreated(Date created) {
+		this.created = created;
+	}
 
-    private Date modified;
+	private Date modified;
 
-    public Date getModified() {
-        return modified;
-    }
+	public Date getModified() {
+		return modified;
+	}
 
-    public void setModified(Date modified) {
-        this.modified = modified;
-    }
+	public void setModified(Date modified) {
+		this.modified = modified;
+	}
 
-    private BigDecimal libraryAmount;
+	private BigDecimal libraryAmount;
 
-    public BigDecimal getLibraryAmount() {
-        return libraryAmount;
-    }
+	public BigDecimal getLibraryAmount() {
+		return libraryAmount;
+	}
 
-    public void setLibraryAmount(BigDecimal libraryAmount) {
-        this.libraryAmount = libraryAmount;
-    }
+	public void setLibraryAmount(BigDecimal libraryAmount) {
+		this.libraryAmount = libraryAmount;
+	}
 
 }

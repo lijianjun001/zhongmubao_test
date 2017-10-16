@@ -8,11 +8,9 @@ import java.util.List;
 import java.math.BigDecimal;
 
 public interface ExtBadEggLogDao {
-
+   
     ExtBadEggLog getExtBadEggLogrById(@Param("id") int id);
-
     List<ExtBadEggLog> pagerExtBadEggLogList(@Param("offset") int offset, @Param("limit") int limit);
-
-    int insertExtBadEggLog(ExtBadEggLog extBadEggLog);
+	int insertExtBadEggLog(ExtBadEggLog extBadEggLog);
 
 }

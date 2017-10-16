@@ -5,99 +5,99 @@ import java.util.List;
 import java.math.BigDecimal;
 
 public class SheepPhoto {
-
-    public SheepPhoto() {
+    
+	public SheepPhoto() {
 
     }
 
-    private int id;
+	private int id;
 
-    public int getId() {
-        return id;
-    }
+	public int getId() {
+		return id;
+	}
 
-    public void setId(int id) {
-        this.id = id;
-    }
+	public void setId(int id) {
+		this.id = id;
+	}
 
-    private int projectId;
+	private int projectId;
 
-    public int getProjectId() {
-        return projectId;
-    }
+	public int getProjectId() {
+		return projectId;
+	}
 
-    public void setProjectId(int projectId) {
-        this.projectId = projectId;
-    }
+	public void setProjectId(int projectId) {
+		this.projectId = projectId;
+	}
 
-    private int orderId;
+	private int orderId;
 
-    public int getOrderId() {
-        return orderId;
-    }
+	public int getOrderId() {
+		return orderId;
+	}
 
-    public void setOrderId(int orderId) {
-        this.orderId = orderId;
-    }
+	public void setOrderId(int orderId) {
+		this.orderId = orderId;
+	}
 
-    private String orderNo;
+	private String orderNo;
 
-    public String getOrderNo() {
-        return orderNo;
-    }
+	public String getOrderNo() {
+		return orderNo;
+	}
 
-    public void setOrderNo(String orderNo) {
-        this.orderNo = orderNo;
-    }
+	public void setOrderNo(String orderNo) {
+		this.orderNo = orderNo;
+	}
 
-    private int customerId;
+	private int customerId;
 
-    public int getCustomerId() {
-        return customerId;
-    }
+	public int getCustomerId() {
+		return customerId;
+	}
 
-    public void setCustomerId(int customerId) {
-        this.customerId = customerId;
-    }
+	public void setCustomerId(int customerId) {
+		this.customerId = customerId;
+	}
 
-    private String photo;
+	private String photo;
 
-    public String getPhoto() {
-        return photo;
-    }
+	public String getPhoto() {
+		return photo;
+	}
 
-    public void setPhoto(String photo) {
-        this.photo = photo;
-    }
+	public void setPhoto(String photo) {
+		this.photo = photo;
+	}
 
-    private boolean deleted;
+	private boolean deleted;
 
-    public boolean getDeleted() {
-        return deleted;
-    }
+	public boolean getDeleted() {
+		return deleted;
+	}
 
-    public void setDeleted(boolean deleted) {
-        this.deleted = deleted;
-    }
+	public void setDeleted(boolean deleted) {
+		this.deleted = deleted;
+	}
 
-    private Date created;
+	private Date created;
 
-    public Date getCreated() {
-        return created;
-    }
+	public Date getCreated() {
+		return created;
+	}
 
-    public void setCreated(Date created) {
-        this.created = created;
-    }
+	public void setCreated(Date created) {
+		this.created = created;
+	}
 
-    private Date modified;
+	private Date modified;
 
-    public Date getModified() {
-        return modified;
-    }
+	public Date getModified() {
+		return modified;
+	}
 
-    public void setModified(Date modified) {
-        this.modified = modified;
-    }
+	public void setModified(Date modified) {
+		this.modified = modified;
+	}
 
 }

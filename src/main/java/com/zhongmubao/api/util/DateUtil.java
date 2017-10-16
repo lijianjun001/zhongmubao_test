@@ -65,12 +65,26 @@ public class DateUtil {
     }
 
     /**
+     * 给一个时间添加小时
+     *
+     * @param date 时间
+     * @param minute 分钟
+     * @return 新时间
+     */
+    public static Date addMinute(Date date, int minute) {
+        Calendar calendar = new GregorianCalendar();
+        calendar.setTime(date);
+        calendar.add(Calendar.MINUTE, minute);
+        return calendar.getTime();
+    }
+
+    /**
      * 时间格式化成Mongo时间
      *
      * @param date 时间
      * @return 新时间
      */
-    public static Date formartMongo(Date date) {
+    public static Date formatMongo(Date date) {
         Calendar calendar = new GregorianCalendar();
         calendar.setTime(date);
         calendar.add(Calendar.HOUR_OF_DAY, 8);
@@ -122,7 +136,7 @@ public class DateUtil {
      *
      * @param date 日期
      */
-    public static String formartDefault(Date date) {
+    public static String formatDefault(Date date) {
         try {
             SimpleDateFormat formater = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             return formater.format(date);
@@ -137,7 +151,7 @@ public class DateUtil {
      * @param date    日期
      * @param pattern 要格式成的样子
      */
-    public static String formart(Date date, String pattern) {
+    public static String format(Date date, String pattern) {
         try {
             return new SimpleDateFormat(pattern).format(date);
         } catch (Exception ex) {
@@ -150,7 +164,7 @@ public class DateUtil {
      *
      * @param date 日期
      */
-    public static String formartShort(Date date) {
+    public static String formatShort(Date date) {
         try {
             SimpleDateFormat formater = new SimpleDateFormat("yyyy-MM-dd");
             return formater.format(date);

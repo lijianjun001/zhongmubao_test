@@ -13,7 +13,6 @@ import java.util.UUID;
 
 /**
  * 通过Redis存储和验证token的实现类
- *
  * @see com.zhongmubao.api.authorization.manager.TokenManager
  */
 @Component
@@ -23,22 +22,22 @@ public class TokenManagerImpl implements TokenManager {
     private SystemTokenMongoDao systemTokenMongoDao;
 
     @Override
-    public TokenModel createToken(int customerId, String platform) throws Exception {
+    public TokenModel createToken(int customerId,String platform) throws Exception  {
         Date now = new Date();
         String token = UUID.randomUUID().toString().replace("-", "");
-        SystemTokenMongo systemToken = systemTokenMongoDao.getByCustomerIdAndPlatform(customerId, platform);
+        SystemTokenMongo systemToken = systemTokenMongoDao.getByCustomerIdAndPlatform(customerId,platform);
 
-        if (systemToken == null) {
-            systemToken = new SystemTokenMongo();
+        if(systemToken==null){
+            systemToken=new SystemTokenMongo();
             systemToken.created = now;
             systemToken.customerId = customerId;
             systemToken.platform = platform;
         }
         systemToken.token = token;
-        systemToken.expired = DateUtil.addDay(now, 7);
+        systemToken.expired = DateUtil.addDay(now,7);
         systemTokenMongoDao.save(systemToken);
 
-        return new TokenModel(customerId, token);
+        return new TokenModel(customerId,token);
     }
 
     @Override
@@ -48,17 +47,17 @@ public class TokenManagerImpl implements TokenManager {
     }
 
     @Override
-    public TokenModel getToken(String authentication, String platform) {
+    public TokenModel getToken(String authentication,String platform) {
 
         try {
-            SystemTokenMongo systemToken = systemTokenMongoDao.getByTokenAndPlatform(authentication, platform);
-            if (systemToken == null) return null;
+            SystemTokenMongo systemToken = systemTokenMongoDao.getByTokenAndPlatform(authentication,platform);
+            if(systemToken==null)return null;
             Date now = new Date();
-            if (systemToken.expired.getTime() < now.getTime()) {
+            if(systemToken.expired.getTime()<now.getTime()){
                 return null;
             }
-            return new TokenModel(systemToken.customerId, systemToken.token);
-        } catch (Exception ex) {
+            return new TokenModel(systemToken.customerId,systemToken.token);
+        }catch (Exception ex){
             return null;
         }
     }

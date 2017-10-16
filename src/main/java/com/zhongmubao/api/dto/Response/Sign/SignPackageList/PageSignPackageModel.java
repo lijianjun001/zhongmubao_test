@@ -6,7 +6,7 @@ public class PageSignPackageModel {
     public PageSignPackageModel() {
     }
 
-    public PageSignPackageModel(int pageCount, int cardTotalCount, List<SignPackageViewModel> list) {
+    public PageSignPackageModel(int pageCount,int cardTotalCount, List<SignPackageViewModel> list) {
         this.pageCount = pageCount;
         this.list = list;
         this.cardTotalCount = cardTotalCount;

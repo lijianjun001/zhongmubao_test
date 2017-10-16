@@ -1,6 +1,9 @@
 package com.zhongmubao.api.dto.Response.Sheep;
 
 
+/**
+ * 买羊订单详情
+ */
 public class SheepOrderDetailModel {
 
     public SheepOrderDetailModel() {

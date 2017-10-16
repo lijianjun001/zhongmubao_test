@@ -28,24 +28,24 @@
     <insert id="insertSheepVendorMoneyHistory">
         <!-- ignore 主键冲突，报错 -->
         INSERT ignore INTO SheepVendorMoneyHistory (
-        VendorId,
-        Money,
-        Transaction,
-        SinaInfo,
-        Remark,
-        Created,
-        SysUserId,
-        State
-        )
+			     VendorId, 
+	     Money, 
+	     Transaction, 
+	     SinaInfo, 
+	     Remark, 
+	     Created, 
+	     SysUserId, 
+	     State 
+		)
         VALUES (
-        #{vendorId},
-        #{money},
-        #{transaction},
-        #{sinaInfo},
-        #{remark},
-        #{created},
-        #{sysUserId},
-        #{state}
-        )
+			     #{vendorId}, 
+	     #{money}, 
+	     #{transaction}, 
+	     #{sinaInfo}, 
+	     #{remark}, 
+	     #{created}, 
+	     #{sysUserId}, 
+	     #{state} 
+		)
     </insert>
 </mapper>

@@ -28,16 +28,16 @@
     <insert id="insertCustomerJPush">
         <!-- ignore 主键冲突，报错 -->
         INSERT ignore INTO CustomerJPush (
-        CustomerId,
-        RegId,
-        Platform,
-        Created
-        )
+			     CustomerId, 
+	     RegId, 
+	     Platform, 
+	     Created 
+		)
         VALUES (
-        #{customerId},
-        #{regId},
-        #{platform},
-        #{created}
-        )
+			     #{customerId}, 
+	     #{regId}, 
+	     #{platform}, 
+	     #{created} 
+		)
     </insert>
 </mapper>

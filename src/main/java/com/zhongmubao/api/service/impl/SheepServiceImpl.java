@@ -8,34 +8,24 @@ import com.zhongmubao.api.config.ResultStatus;
 import com.zhongmubao.api.config.enmu.ProjectSaleState;
 import com.zhongmubao.api.config.enmu.ProjectType;
 import com.zhongmubao.api.config.enmu.SheepOrderState;
-import com.zhongmubao.api.dao.CustomerSinaDao;
-import com.zhongmubao.api.dao.ExtActivityRecordDao;
-import com.zhongmubao.api.dao.SheepOrderDao;
-import com.zhongmubao.api.dao.SheepProjectDao;
+import com.zhongmubao.api.dao.*;
 import com.zhongmubao.api.dto.Request.OnlyPrimaryIdRequestModel;
 import com.zhongmubao.api.dto.Request.Sheep.SheepOrderRequestModel;
 import com.zhongmubao.api.dto.Response.Index.*;
-import com.zhongmubao.api.dto.Response.Sheep.PageSheepOrderModel;
-import com.zhongmubao.api.dto.Response.Sheep.PageSheepOrderViewModel;
-import com.zhongmubao.api.dto.Response.Sheep.SheepOrderDetailModel;
-import com.zhongmubao.api.dto.Response.Sheep.SheepVendorViewModel;
-import com.zhongmubao.api.entity.Customer;
-import com.zhongmubao.api.entity.CustomerSina;
-import com.zhongmubao.api.entity.SheepProjectIndex;
-import com.zhongmubao.api.entity.SheepVendor;
-import com.zhongmubao.api.entity.ext.PastureDetailExtModel;
-import com.zhongmubao.api.entity.ext.SheepOrderCountAndMinCreated;
-import com.zhongmubao.api.entity.ext.SheepOrderDetailInfo;
-import com.zhongmubao.api.entity.ext.SheepOrderInfo;
+import com.zhongmubao.api.dto.Response.Sheep.*;
+import com.zhongmubao.api.entity.*;
+import com.zhongmubao.api.entity.ext.*;
 import com.zhongmubao.api.exception.ApiException;
 import com.zhongmubao.api.mongo.dao.ExtBannerMongoDao;
+import com.zhongmubao.api.mongo.dao.SheepStageMongoDao;
+import com.zhongmubao.api.mongo.entity.SheepStageMongo;
 import com.zhongmubao.api.mongo.entity.base.PageModel;
 import com.zhongmubao.api.service.SheepService;
 import com.zhongmubao.api.util.ApiUtil;
 import com.zhongmubao.api.util.DateUtil;
 import com.zhongmubao.api.util.SerializeUtil;
 import com.zhongmubao.api.util.StringUtil;
-import com.zhongmubao.api.util.common.SheepVendorAttrs;
+import com.zhongmubao.api.dto.common.SheepVendorAttrs;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -47,20 +37,26 @@ public class SheepServiceImpl implements SheepService {
 
     //region 注入
     private final ExtBannerMongoDao extBannerMongoDao;
+    private final SheepStageMongoDao sheepStageMongoDao;
     private final SheepProjectDao sheepProjectDao;
+    private final SheepProjectPlanDao sheepProjectPlanDao;
     private final SheepOrderDao sheepOrderDao;
+    private final SheepLevelDao levelDao;
     private final ExtActivityRecordDao extActivityRecordDao;
     private final CustomerSinaDao customerSinaDao;
     private final RedisCache redisCache;
 
     @Autowired
-    public SheepServiceImpl(RedisCache redisCache, CustomerSinaDao customerSinaDao, ExtActivityRecordDao extActivityRecordDao, SheepOrderDao sheepOrderDao, SheepProjectDao sheepProjectDao, ExtBannerMongoDao extBannerMongoDao) {
+    public SheepServiceImpl(RedisCache redisCache, CustomerSinaDao customerSinaDao, ExtActivityRecordDao extActivityRecordDao, SheepOrderDao sheepOrderDao, SheepProjectDao sheepProjectDao, ExtBannerMongoDao extBannerMongoDao, SheepProjectPlanDao sheepProjectPlanDao, SheepStageMongoDao sheepStageMongoDao, SheepLevelDao levelDao) {
         this.redisCache = redisCache;
         this.customerSinaDao = customerSinaDao;
         this.extActivityRecordDao = extActivityRecordDao;
         this.sheepOrderDao = sheepOrderDao;
         this.sheepProjectDao = sheepProjectDao;
         this.extBannerMongoDao = extBannerMongoDao;
+        this.sheepProjectPlanDao = sheepProjectPlanDao;
+        this.sheepStageMongoDao = sheepStageMongoDao;
+        this.levelDao = levelDao;
     }
 
 
@@ -81,7 +77,7 @@ public class SheepServiceImpl implements SheepService {
 
         //region 首页轮播
         List<BannerViewModel> bannerList = extBannerMongoDao.Pager(new PageModel<>()).getDatas().stream()
-                .map(en -> new BannerViewModel("", en.getTitle(), en.getLink(), ApiUtil.formartImg(en.getImgUrl())))
+                .map(en -> new BannerViewModel("", en.getTitle(), en.getLink(), ApiUtil.formatImg(en.getImgUrl())))
                 .collect(Collectors.toList());
         //endregion
 
@@ -193,6 +189,50 @@ public class SheepServiceImpl implements SheepService {
     }
 
     /**
+     * 获取已售羊只订单（包括收益金额）
+     *
+     * @param customerId 当前用户
+     * @param model      订单状态
+     * @return 订单列表
+     * @throws Exception
+     * @author 米立林 2017-09-30
+     */
+    @Override
+    public PageSheepOrderEarningsModel pageSheepOrderEarnings(int customerId, SheepOrderRequestModel model) throws Exception {
+        if (null == model) {
+            throw new ApiException(ResultStatus.PARAMETER_MISSING);
+        }
+        PageHelper.startPage(model.getPageIndex(), Constants.PAGE_SIZE);
+
+        List<String> states = new LinkedList<String>();
+        // 判断状态是否为已付款
+        if (SheepOrderState.PAYMENTED.getName().equals(model.getState())) {
+            states = Constants.SHEEP_IN_THE_BAR_STATE_AND_REDEMING_ANDREDEMED;
+        } else {
+            states.add(model.getState());
+        }
+        Page<SheepOrderEarnings> page = sheepOrderDao.pageSheepOrderByCustomerIdAndState(customerId, states);
+
+        int pages = page.getPages();
+        List<PageOrderEarningsViewModel> list = page.getResult().stream().map(
+                en -> new PageOrderEarningsViewModel(
+                        en.getId(),
+                        en.getCustomerId(),
+                        en.getTitle(),
+                        en.getCount(),
+                        en.getPayableAmount(),
+                        en.getDeductibleAmount(),
+                        en.getRedPackageAmount(),
+                        "0",  // todo:收益金额另算
+                        DateUtil.format(en.getEffectiveTime(), "yyyy-MM-dd HH:mm:ss"),
+                        DateUtil.format(DateUtil.addDay(en.getRedemTime(), -1), "yyyy-MM-dd HH:mm:ss")
+                ))
+                .collect(Collectors.toList());
+        PageHelper.clearPage();
+        return new PageSheepOrderEarningsModel(pages, list);
+    }
+
+    /**
      * 买羊订单详情
      *
      * @param customerId 当前用户
@@ -202,12 +242,12 @@ public class SheepServiceImpl implements SheepService {
      * @author 米立林
      */
     @Override
-    public SheepOrderDetailModel GetDetailByIdAndCustomerId(int customerId, OnlyPrimaryIdRequestModel model) throws Exception {
+    public SheepOrderDetailModel sheepOrderDetail(int customerId, OnlyPrimaryIdRequestModel model) throws Exception {
         if (null == model || model.getId() <= 0) {
             throw new ApiException(ResultStatus.PARAMETER_MISSING);
         }
         // 获取订单详情
-        SheepOrderDetailInfo detailInfo = sheepOrderDao.GetDetailByIdAndCustomerId(customerId, model.getId());
+        SheepOrderDetailInfo detailInfo = sheepOrderDao.getDetailByIdAndCustomerId(customerId, model.getId());
         if (null == detailInfo) {
             return new SheepOrderDetailModel();
         }
@@ -223,10 +263,10 @@ public class SheepServiceImpl implements SheepService {
                 detailInfo.getPaymentAmount(),
                 detailInfo.getState(),
                 detailInfo.getRedemAmount(),
-                DateUtil.formart(detailInfo.getCreated(), "yyyy-MM-dd HH:mm:ss"),
-                DateUtil.formart(detailInfo.getPaymentTime(), "yyyy-MM-dd HH:mm:ss"),
+                DateUtil.format(detailInfo.getCreated(), "yyyy-MM-dd HH:mm:ss"),
+                DateUtil.format(detailInfo.getPaymentTime(), "yyyy-MM-dd HH:mm:ss"),
                 DateUtil.subDateOfDay(detailInfo.getRedeemTime(), new Date()),
-                DateUtil.formart(detailInfo.getRedeemTime(), "yyyy-MM-dd HH:mm:ss"),
+                DateUtil.format(detailInfo.getRedeemTime(), "yyyy-MM-dd HH:mm:ss"),
                 detailInfo.getRedPackageAmount(),
                 "0"   // todo:totalIncome 收益总额
         );
@@ -242,7 +282,7 @@ public class SheepServiceImpl implements SheepService {
      * @author 米立林
      */
     @Override
-    public SheepVendorViewModel GetPastureDetailById(int customerId, OnlyPrimaryIdRequestModel model) throws Exception {
+    public SheepVendorViewModel pastureDetail(int customerId, OnlyPrimaryIdRequestModel model) throws Exception {
         if (null == model || model.getId() <= 0) {
             throw new ApiException(ResultStatus.PARAMETER_MISSING);
         }
@@ -288,9 +328,9 @@ public class SheepServiceImpl implements SheepService {
                 incomeConversionMethod,
                 productIntroduction,
                 payMethod,
-                DateUtil.formart(detailInfo.getEffectiveTime(), "yyyy-MM-dd HH:mm:ss"),
-                DateUtil.formart(slaughterTime, "yyyy-MM-dd HH:mm:ss"),
-                DateUtil.formart(detailInfo.getRedemTime(), "yyyy-MM-dd HH:mm:ss"),
+                DateUtil.format(detailInfo.getEffectiveTime(), "yyyy-MM-dd HH:mm:ss"),
+                DateUtil.format(slaughterTime, "yyyy-MM-dd HH:mm:ss"),
+                DateUtil.format(detailInfo.getRedemTime(), "yyyy-MM-dd HH:mm:ss"),
                 detailInfo.getName(),
                 licenseNo,
                 enterpriseAddress,
@@ -302,6 +342,141 @@ public class SheepServiceImpl implements SheepService {
         return detailModel;
     }
     // endregion
+
+    /**
+     * @param customerId 当前用户
+     * @param model      SheepProjectPlan主键
+     * @return 获取养标计划
+     * @throws Exception
+     * @author 米立林
+     */
+    @Override
+    public SheepProjectPlanViewModel sheepProjectPlan(int customerId, OnlyPrimaryIdRequestModel model) throws Exception {
+        if (null == model || model.getId() <= 0) {
+            throw new ApiException(ResultStatus.PARAMETER_MISSING);
+        }
+        // 获取订单详情
+        SheepProjectPlan plan = sheepProjectPlanDao.getSheepProjectPlanById(model.getId());
+        if (null == plan) {
+            return new SheepProjectPlanViewModel();
+        }
+
+        SheepProjectPlanViewModel detailModel = new SheepProjectPlanViewModel(
+                plan.getId(),
+                plan.getTime(),
+                plan.getInfo(),
+                DateUtil.format(plan.getCreateTime(), "yyyy-MM-dd HH:mm:ss")
+        );
+
+        return detailModel;
+    }
+
+    /**
+     * @param customerId 当前用户
+     * @param model      projectId
+     * @return 养殖流程
+     * @throws Exception
+     * @author 米立林 2017-09-27
+     */
+    @Override
+    public PageSheepStageModel sheepStage(int customerId, OnlyPrimaryIdRequestModel model) throws Exception {
+        if (null == model || model.getId() <= 0) {
+            throw new ApiException(ResultStatus.PARAMETER_MISSING);
+        }
+        SheepProject sheepProject = sheepProjectDao.getSheepProjectById(model.getId());
+        if (null == sheepProject) {
+            throw new ApiException(ResultStatus.PARAMETER_ERROR);
+        }
+        // 根据周期获取养殖流程
+        List<SheepStageMongo> stages = sheepStageMongoDao.getListByPeriod(sheepProject.getPeriod());
+
+        // 已养殖天数
+        int curStageDay = DateUtil.subDateOfDay(new Date(), sheepProject.getEffectiveTime());
+        int pages = stages.size();
+
+        boolean isNotFind = true; // 是否没找到当前养殖进度
+        List<SheepStageViewModel> list = new ArrayList<SheepStageViewModel>();
+        for (int i = 0; i < pages; i++) {
+            SheepStageViewModel viewModel = new SheepStageViewModel();
+            SheepStageMongo tmp = stages.get(i);
+            viewModel.setName(tmp.getName());
+            viewModel.setPeriod(tmp.getPeriod());
+            if (isNotFind) {
+                if (i == pages - 1) {
+                    // 如果是最后一个，则直接选中
+                    isNotFind = false;
+                    viewModel.setIcon(tmp.getSelectIcon());
+                    viewModel.setIsSelect(1);
+                } else {
+                    // 计算养殖进度
+                    SheepStageMongo tempStage = stages.get(i + 1);
+                    if (curStageDay > tmp.getDay()) {
+                        // 大于养殖天数时，选择选中图标
+                        viewModel.setIcon(tmp.getSelectIcon());
+                        if (curStageDay < tempStage.getDay()) {
+                            // 大于并小于下一进度，选中
+                            isNotFind = false;
+                            viewModel.setIsSelect(1);
+                        } else {
+                            viewModel.setIsSelect(0);
+                        }
+                    } else {
+                        viewModel.setIcon(tmp.getIcon());
+                        viewModel.setIsSelect(0);
+                    }
+                }
+            } else {
+                viewModel.setIcon(tmp.getIcon());
+                viewModel.setIsSelect(0);
+            }
+            list.add(viewModel);
+        }
+
+        return new PageSheepStageModel(pages, list);
+    }
+
+    @Override
+    public MySheepfoldModel mySheepfold(int customerId) throws Exception {
+        if (customerId <= 0) {
+            throw new ApiException(ResultStatus.PARAMETER_MISSING);
+        }
+        MySheepfoldModel mySheepfoldModel = new MySheepfoldModel();
+        List<SheepOrderInfoViewModel> list = new ArrayList<>();
+
+        // 1、获取在栏中羊只订单
+        List<SheepOrderInfo> sheepOrderInfos = sheepOrderDao.getSheepOrderByCustomerId(customerId, Constants.SHEEP_IN_THE_BAR_STATE);
+
+        int count = 0;
+        for (SheepOrderInfo info : sheepOrderInfos) {
+            // 累计羊只数
+            count += info.getCount();
+            SheepOrderInfoViewModel orderInfo = new SheepOrderInfoViewModel(
+                    info.getTitle(),
+                    DateUtil.format(info.getEffectiveTime(), "yyyy-MM-dd HH:mm:ss"),
+                    DateUtil.format(DateUtil.addDay(info.getRedemTime(), -1), "yyyy-MM-dd HH:mm:ss"),
+                    info.getCount(),
+                    DateUtil.subDateOfDay(info.getRedemTime(), new Date()),
+                    info.getShorthand()
+            );
+            list.add(orderInfo);
+        }
+
+        mySheepfoldModel.setSheepOrderInfoList(list);
+        mySheepfoldModel.setSheepCount(count);
+        if (count == 0) {
+            mySheepfoldModel.setLevel(0);
+            mySheepfoldModel.setLevelName("游民");
+        } else {
+            List<SheepLevel> sheepLevels = redisCache.getCustomerLevel();
+            int finalCount = count;
+            SheepLevel level = sheepLevels.stream().filter(en -> en.getSheepCount() >= finalCount).findFirst().get();
+            // 获取等级信息
+            mySheepfoldModel.setLevel(level.getLevel());
+            mySheepfoldModel.setLevelName(level.getRemark());
+        }
+
+        return mySheepfoldModel;
+    }
 
     private NewPeopleProjectViewModel newPeopleProject(Customer customer) {
         Date now = new Date();
@@ -402,8 +577,8 @@ public class SheepServiceImpl implements SheepService {
                 projectIndex.getPrice(),
                 rate,
                 rateImg,
-                DateUtil.formartDefault(projectIndex.getEffectiveTime()),
-                DateUtil.formartDefault(projectIndex.getBeginTime()),
+                DateUtil.formatDefault(projectIndex.getEffectiveTime()),
+                DateUtil.formatDefault(projectIndex.getBeginTime()),
                 projectIndex.getPeriod(),
                 saleState.getName(),
                 countdown,

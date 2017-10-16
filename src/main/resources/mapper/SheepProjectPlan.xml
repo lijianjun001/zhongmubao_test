@@ -28,14 +28,14 @@
     <insert id="insertSheepProjectPlan">
         <!-- ignore 主键冲突，报错 -->
         INSERT ignore INTO SheepProjectPlan (
-        Time,
-        Info,
-        CreateTime
-        )
+			     Time, 
+	     Info, 
+	     CreateTime 
+		)
         VALUES (
-        #{time},
-        #{info},
-        #{createTime}
-        )
+			     #{time}, 
+	     #{info}, 
+	     #{createTime} 
+		)
     </insert>
 </mapper>

@@ -1,6 +1,6 @@
 package com.zhongmubao.api.entity;
 
-public class SheepProjectIndex extends SheepProject {
+public class SheepProjectIndex extends  SheepProject {
 
     private int noPayCount;
     private int paidCount;

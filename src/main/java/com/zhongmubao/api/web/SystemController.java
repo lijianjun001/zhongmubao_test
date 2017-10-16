@@ -1,10 +1,14 @@
 package com.zhongmubao.api.web;
 
+import com.zhongmubao.api.authorization.annotation.Authorization;
+import com.zhongmubao.api.authorization.annotation.CurrentUser;
+import com.zhongmubao.api.dto.Request.SendSmsCodeRequestModel;
 import com.zhongmubao.api.dto.Request.PageNoticeRequestModel;
-import com.zhongmubao.api.dto.Request.Address.SystemDistriceRequestModel;
+import com.zhongmubao.api.dto.Request.Address.SystemDistrictRequestModel;
 import com.zhongmubao.api.dto.Response.Address.ListSystemDistrictModel;
 import com.zhongmubao.api.dto.Response.ReponseModel;
 import com.zhongmubao.api.dto.Response.Notice.PageNoticeModel;
+import com.zhongmubao.api.entity.Customer;
 import com.zhongmubao.api.exception.ApiException;
 import com.zhongmubao.api.service.SystemService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,10 +31,9 @@ public class SystemController {
 
     /**
      * 获取消息通知列表
-     *
      * @param model 参数对象
-     * @return
      * @author 米立林
+     * @return
      */
     @RequestMapping(value = "/pageNotice", method = RequestMethod.POST, consumes = "application/json")
     public ResponseEntity<ReponseModel> pageNotice(HttpEntity<PageNoticeRequestModel> model) {
@@ -47,16 +50,15 @@ public class SystemController {
     /**
      * 获取省市区列表ByParentCode
      * 省份列表 parentCode不传或传空值
-     *
      * @param model 给参数parentCode赋值
-     * @return 省/市/区集合
      * @author 米立林
+     * @return 省/市/区集合
      */
-    @RequestMapping(value = "/GetSystemDistrictByParentCode", method = RequestMethod.POST, consumes = "application/json")
-    public ResponseEntity<ReponseModel> GetSystemDistrictByParentCode(HttpEntity<SystemDistriceRequestModel> model) {
+    @RequestMapping(value = "/getSystemDistrict", method = RequestMethod.POST, consumes = "application/json")
+    public ResponseEntity<ReponseModel> getSystemDistrict(HttpEntity<SystemDistrictRequestModel> model) {
         try {
 
-            ListSystemDistrictModel listSystemDistrictModel = systemService.GetSystemDistrictByParentCode(model.getBody());
+            ListSystemDistrictModel listSystemDistrictModel = systemService.getSystemDistrictList(model.getBody());
             return new ResponseEntity<>(ReponseModel.ok(listSystemDistrictModel), HttpStatus.OK);
         } catch (ApiException ex) {
             return new ResponseEntity<>(ReponseModel.error(ex.getStatus()), HttpStatus.OK);
@@ -65,5 +67,23 @@ public class SystemController {
         }
     }
 
+    /**
+     * 发送验证码
+     * @param model 手机号码
+     * @author 米立林 2017-10-09
+     * @return 成功or失败
+     */
+    @RequestMapping(value = "/sendSmsCode", method = RequestMethod.POST, consumes = "application/json")
+    @Authorization
+    public ResponseEntity<ReponseModel> sendSmsCode(@CurrentUser Customer customer, HttpEntity<SendSmsCodeRequestModel> model) {
+        try {
+            systemService.sendSmsCode(customer,model.getBody());
+            return new ResponseEntity<>(ReponseModel.ok(), HttpStatus.OK);
+        } catch (ApiException ex) {
+            return new ResponseEntity<>(ReponseModel.error(ex.getStatus()), HttpStatus.OK);
+        } catch (Exception ex) {
+            return new ResponseEntity<>(ReponseModel.error(ex, this.getClass()), HttpStatus.OK);
+        }
+    }
 
 }

@@ -5,79 +5,79 @@ import java.util.List;
 import java.math.BigDecimal;
 
 public class SystemToken {
-
-    public SystemToken() {
+    
+	public SystemToken() {
 
     }
 
-    private int id;
+	private int id;
 
-    public int getId() {
-        return id;
-    }
+	public int getId() {
+		return id;
+	}
 
-    public void setId(int id) {
-        this.id = id;
-    }
+	public void setId(int id) {
+		this.id = id;
+	}
 
-    private String platform;
+	private String platform;
 
-    public String getPlatform() {
-        return platform;
-    }
+	public String getPlatform() {
+		return platform;
+	}
 
-    public void setPlatform(String platform) {
-        this.platform = platform;
-    }
+	public void setPlatform(String platform) {
+		this.platform = platform;
+	}
 
-    private int customerId;
+	private int customerId;
 
-    public int getCustomerId() {
-        return customerId;
-    }
+	public int getCustomerId() {
+		return customerId;
+	}
 
-    public void setCustomerId(int customerId) {
-        this.customerId = customerId;
-    }
+	public void setCustomerId(int customerId) {
+		this.customerId = customerId;
+	}
 
-    private String token;
+	private String token;
 
-    public String getToken() {
-        return token;
-    }
+	public String getToken() {
+		return token;
+	}
 
-    public void setToken(String token) {
-        this.token = token;
-    }
+	public void setToken(String token) {
+		this.token = token;
+	}
 
-    private Date expired;
+	private Date expired;
 
-    public Date getExpired() {
-        return expired;
-    }
+	public Date getExpired() {
+		return expired;
+	}
 
-    public void setExpired(Date expired) {
-        this.expired = expired;
-    }
+	public void setExpired(Date expired) {
+		this.expired = expired;
+	}
 
-    private Date created;
+	private Date created;
 
-    public Date getCreated() {
-        return created;
-    }
+	public Date getCreated() {
+		return created;
+	}
 
-    public void setCreated(Date created) {
-        this.created = created;
-    }
+	public void setCreated(Date created) {
+		this.created = created;
+	}
 
-    private Date modified;
+	private Date modified;
 
-    public Date getModified() {
-        return modified;
-    }
+	public Date getModified() {
+		return modified;
+	}
 
-    public void setModified(Date modified) {
-        this.modified = modified;
-    }
+	public void setModified(Date modified) {
+		this.modified = modified;
+	}
 
 }

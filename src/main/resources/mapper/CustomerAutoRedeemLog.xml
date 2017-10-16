@@ -28,16 +28,16 @@
     <insert id="insertCustomerAutoRedeemLog">
         <!-- ignore 主键冲突，报错 -->
         INSERT ignore INTO CustomerAutoRedeemLog (
-        CustomerId,
-        ProjectId,
-        IsRead,
-        Created
-        )
+			     CustomerId, 
+	     ProjectId, 
+	     IsRead, 
+	     Created 
+		)
         VALUES (
-        #{customerId},
-        #{projectId},
-        #{isRead},
-        #{created}
-        )
+			     #{customerId}, 
+	     #{projectId}, 
+	     #{isRead}, 
+	     #{created} 
+		)
     </insert>
 </mapper>

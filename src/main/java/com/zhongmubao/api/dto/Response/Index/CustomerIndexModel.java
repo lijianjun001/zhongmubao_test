@@ -5,7 +5,7 @@ public class CustomerIndexModel {
     public CustomerIndexModel() {
     }
 
-    public CustomerIndexModel(int id, int sheepCount, boolean realName, boolean redeemPwd, boolean todayIsShare) {
+    public CustomerIndexModel(int id, int sheepCount, boolean realName, boolean redeemPwd,boolean todayIsShare) {
         this.id = id;
         this.sheepCount = sheepCount;
         this.realName = realName;
@@ -18,7 +18,6 @@ public class CustomerIndexModel {
     private boolean realName;
     private boolean redeemPwd;
     private boolean todayIsShare;
-
     public int getId() {
         return id;
     }

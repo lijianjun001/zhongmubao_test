@@ -2,8 +2,7 @@ package com.zhongmubao.api.dto.Request.Address;
 
 public class CustomerAddressRequestModel {
 
-    public CustomerAddressRequestModel() {
-    }
+    public CustomerAddressRequestModel(){}
 
     public CustomerAddressRequestModel(int id, int customerId, String provinceCode, String provinceName, String cityCode, String cityName, String countyCode, String countyName, String address, String name, String phone, boolean isDefault) {
         this.id = id;

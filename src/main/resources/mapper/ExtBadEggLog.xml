@@ -28,14 +28,14 @@
     <insert id="insertExtBadEggLog">
         <!-- ignore 主键冲突，报错 -->
         INSERT ignore INTO ExtBadEggLog (
-        SmashEggId,
-        CustomerId,
-        Created
-        )
+			     SmashEggId, 
+	     CustomerId, 
+	     Created 
+		)
         VALUES (
-        #{smashEggId},
-        #{customerId},
-        #{created}
-        )
+			     #{smashEggId}, 
+	     #{customerId}, 
+	     #{created} 
+		)
     </insert>
 </mapper>

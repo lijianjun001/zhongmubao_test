@@ -8,11 +8,9 @@ import java.util.List;
 import java.math.BigDecimal;
 
 public interface ExtExpressDao {
-
+   
     ExtExpress getExtExpressrById(@Param("id") int id);
-
     List<ExtExpress> pagerExtExpressList(@Param("offset") int offset, @Param("limit") int limit);
-
-    int insertExtExpress(ExtExpress extExpress);
+	int insertExtExpress(ExtExpress extExpress);
 
 }

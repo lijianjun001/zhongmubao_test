@@ -7,7 +7,6 @@ public class LoginResponseModel {
     public LoginResponseModel() {
 
     }
-
     public LoginResponseModel(String token) {
         this.token = token;
     }

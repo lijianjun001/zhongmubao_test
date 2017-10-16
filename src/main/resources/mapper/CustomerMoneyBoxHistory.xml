@@ -28,22 +28,22 @@
     <insert id="insertCustomerMoneyBoxHistory">
         <!-- ignore 主键冲突，报错 -->
         INSERT ignore INTO CustomerMoneyBoxHistory (
-        CustomerId,
-        OriginalMoeny,
-        AddMoney,
-        Type,
-        Transaction,
-        Remark,
-        Created
-        )
+			     CustomerId, 
+	     OriginalMoeny, 
+	     AddMoney, 
+	     Type, 
+	     Transaction, 
+	     Remark, 
+	     Created 
+		)
         VALUES (
-        #{customerId},
-        #{originalMoeny},
-        #{addMoney},
-        #{type},
-        #{transaction},
-        #{remark},
-        #{created}
-        )
+			     #{customerId}, 
+	     #{originalMoeny}, 
+	     #{addMoney}, 
+	     #{type}, 
+	     #{transaction}, 
+	     #{remark}, 
+	     #{created} 
+		)
     </insert>
 </mapper>

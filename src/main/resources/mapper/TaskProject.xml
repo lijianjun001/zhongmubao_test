@@ -28,26 +28,26 @@
     <insert id="insertTaskProject">
         <!-- ignore 主键冲突，报错 -->
         INSERT ignore INTO TaskProject (
-        Type,
-        Name,
-        Period,
-        Template,
-        ReleaseTime,
-        Released,
-        Deleted,
-        Created,
-        Modified
-        )
+			     Type, 
+	     Name, 
+	     Period, 
+	     Template, 
+	     ReleaseTime, 
+	     Released, 
+	     Deleted, 
+	     Created, 
+	     Modified 
+		)
         VALUES (
-        #{type},
-        #{name},
-        #{period},
-        #{template},
-        #{releaseTime},
-        #{released},
-        #{deleted},
-        #{created},
-        #{modified}
-        )
+			     #{type}, 
+	     #{name}, 
+	     #{period}, 
+	     #{template}, 
+	     #{releaseTime}, 
+	     #{released}, 
+	     #{deleted}, 
+	     #{created}, 
+	     #{modified} 
+		)
     </insert>
 </mapper>

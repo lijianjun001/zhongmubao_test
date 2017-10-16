@@ -2,9 +2,8 @@ package com.zhongmubao.api.exception;
 
 import com.zhongmubao.api.config.ResultStatus;
 
-public class ApiException extends RuntimeException {
+public class ApiException extends RuntimeException{
     private ResultStatus status;
-
     public ResultStatus getStatus() {
         return status;
     }
@@ -20,7 +19,6 @@ public class ApiException extends RuntimeException {
     public ApiException(ResultStatus status) {
         this.status = status;
     }
-
     public ApiException(String message, Throwable cause) {
         super(message, cause);
     }

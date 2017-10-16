@@ -28,14 +28,14 @@
     <insert id="insertExtExpress">
         <!-- ignore 主键冲突，报错 -->
         INSERT ignore INTO ExtExpress (
-        Name,
-        Remark,
-        Created
-        )
+			     Name, 
+	     Remark, 
+	     Created 
+		)
         VALUES (
-        #{name},
-        #{remark},
-        #{created}
-        )
+			     #{name}, 
+	     #{remark}, 
+	     #{created} 
+		)
     </insert>
 </mapper>

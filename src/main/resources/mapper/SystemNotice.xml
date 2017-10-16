@@ -28,24 +28,24 @@
     <insert id="insertSystemNotice">
         <!-- ignore 主键冲突，报错 -->
         INSERT ignore INTO SystemNotice (
-        Title,
-        Remark,
-        Photo,
-        Content,
-        State,
-        Deleted,
-        Created,
-        Modified
-        )
+			     Title, 
+	     Remark, 
+	     Photo, 
+	     Content, 
+	     State, 
+	     Deleted, 
+	     Created, 
+	     Modified 
+		)
         VALUES (
-        #{title},
-        #{remark},
-        #{photo},
-        #{content},
-        #{state},
-        #{deleted},
-        #{created},
-        #{modified}
-        )
+			     #{title}, 
+	     #{remark}, 
+	     #{photo}, 
+	     #{content}, 
+	     #{state}, 
+	     #{deleted}, 
+	     #{created}, 
+	     #{modified} 
+		)
     </insert>
 </mapper>

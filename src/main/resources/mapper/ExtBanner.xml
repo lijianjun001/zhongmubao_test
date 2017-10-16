@@ -28,20 +28,20 @@
     <insert id="insertExtBanner">
         <!-- ignore 主键冲突，报错 -->
         INSERT ignore INTO ExtBanner (
-        Title,
-        Link,
-        ImgUrl,
-        Sort,
-        Deleted,
-        Created
-        )
+			     Title, 
+	     Link, 
+	     ImgUrl, 
+	     Sort, 
+	     Deleted, 
+	     Created 
+		)
         VALUES (
-        #{title},
-        #{link},
-        #{imgUrl},
-        #{sort},
-        #{deleted},
-        #{created}
-        )
+			     #{title}, 
+	     #{link}, 
+	     #{imgUrl}, 
+	     #{sort}, 
+	     #{deleted}, 
+	     #{created} 
+		)
     </insert>
 </mapper>

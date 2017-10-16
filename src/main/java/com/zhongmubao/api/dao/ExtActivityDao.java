@@ -8,11 +8,9 @@ import java.util.List;
 import java.math.BigDecimal;
 
 public interface ExtActivityDao {
-
+   
     ExtActivity getExtActivityrById(@Param("id") int id);
-
     List<ExtActivity> pagerExtActivityList(@Param("offset") int offset, @Param("limit") int limit);
-
-    int insertExtActivity(ExtActivity extActivity);
+	int insertExtActivity(ExtActivity extActivity);
 
 }

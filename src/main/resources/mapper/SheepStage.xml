@@ -25,27 +25,36 @@
         LIMIT #{offset}, #{limit}
     </select>
 
+    <select id="GetAllSheepStage" resultType="SheepStage">
+        SELECT
+        *
+        FROM
+        SheepStage
+        ORDER BY
+        id
+    </select>
+
     <insert id="insertSheepStage">
         <!-- ignore 主键冲突，报错 -->
         INSERT ignore INTO SheepStage (
-        Name,
-        Period,
-        Icon,
-        SelectedIcon,
-        Remark,
-        Deleted,
-        Created,
-        Modified
-        )
+			     Name, 
+	     Period, 
+	     Icon, 
+	     SelectedIcon, 
+	     Remark, 
+	     Deleted, 
+	     Created, 
+	     Modified 
+		)
         VALUES (
-        #{name},
-        #{period},
-        #{icon},
-        #{selectedIcon},
-        #{remark},
-        #{deleted},
-        #{created},
-        #{modified}
-        )
+			     #{name}, 
+	     #{period}, 
+	     #{icon}, 
+	     #{selectedIcon}, 
+	     #{remark}, 
+	     #{deleted}, 
+	     #{created}, 
+	     #{modified} 
+		)
     </insert>
 </mapper>

@@ -8,11 +8,9 @@ import java.util.List;
 import java.math.BigDecimal;
 
 public interface CustomerMessageDao {
-
+   
     CustomerMessage getCustomerMessagerById(@Param("id") int id);
-
     List<CustomerMessage> pagerCustomerMessageList(@Param("offset") int offset, @Param("limit") int limit);
-
-    int insertCustomerMessage(CustomerMessage customerMessage);
+	int insertCustomerMessage(CustomerMessage customerMessage);
 
 }

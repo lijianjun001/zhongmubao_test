@@ -6,14 +6,14 @@
     <!-- 目的：为dao接口方法提供sql语句配置 -->
 
     <select id="getCustomerSinaById" resultType="CustomerSina">
-        <!-- 具体的sql -->
-        SELECT
-        *
-        FROM
-        CustomerSina
-        WHERE
-        id = #{id} limit 1
-    </select>
+    <!-- 具体的sql -->
+    SELECT
+    *
+    FROM
+    CustomerSina
+    WHERE
+    id = #{id} limit 1
+</select>
 
     <select id="getCustomerSinaByCustomerId" resultType="CustomerSina">
         <!-- 具体的sql -->
@@ -38,26 +38,26 @@
     <insert id="insertCustomerSina">
         <!-- ignore 主键冲突，报错 -->
         INSERT ignore INTO CustomerSina (
-        CustomerId,
-        UID,
-        IsRealName,
-        IsBindAuth,
-        IsBindCard,
-        IsSetPayPwd,
-        Created,
-        Modified,
-        CardId
-        )
+			     CustomerId, 
+	     UID, 
+	     IsRealName, 
+	     IsBindAuth, 
+	     IsBindCard, 
+	     IsSetPayPwd, 
+	     Created, 
+	     Modified, 
+	     CardId 
+		)
         VALUES (
-        #{customerId},
-        #{uID},
-        #{isRealName},
-        #{isBindAuth},
-        #{isBindCard},
-        #{isSetPayPwd},
-        #{created},
-        #{modified},
-        #{cardId}
-        )
+			     #{customerId}, 
+	     #{uID}, 
+	     #{isRealName}, 
+	     #{isBindAuth}, 
+	     #{isBindCard}, 
+	     #{isSetPayPwd}, 
+	     #{created}, 
+	     #{modified}, 
+	     #{cardId} 
+		)
     </insert>
 </mapper>

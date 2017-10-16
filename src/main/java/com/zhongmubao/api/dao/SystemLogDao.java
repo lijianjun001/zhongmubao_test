@@ -8,11 +8,9 @@ import java.util.List;
 import java.math.BigDecimal;
 
 public interface SystemLogDao {
-
+   
     SystemLog getSystemLogrById(@Param("id") int id);
-
     List<SystemLog> pagerSystemLogList(@Param("offset") int offset, @Param("limit") int limit);
-
-    int insertSystemLog(SystemLog systemLog);
+	int insertSystemLog(SystemLog systemLog);
 
 }

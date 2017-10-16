@@ -28,22 +28,22 @@
     <insert id="insertSheepOrderRedeemLog">
         <!-- ignore 主键冲突，报错 -->
         INSERT ignore INTO SheepOrderRedeemLog (
-        CustomerId,
-        ProjectId,
-        Price,
-        SinaInfo,
-        CreateTime,
-        OutTradeNo,
-        NotifyTradeStatus
-        )
+			     CustomerId, 
+	     ProjectId, 
+	     Price, 
+	     SinaInfo, 
+	     CreateTime, 
+	     OutTradeNo, 
+	     NotifyTradeStatus 
+		)
         VALUES (
-        #{customerId},
-        #{projectId},
-        #{price},
-        #{sinaInfo},
-        #{createTime},
-        #{outTradeNo},
-        #{notifyTradeStatus}
-        )
+			     #{customerId}, 
+	     #{projectId}, 
+	     #{price}, 
+	     #{sinaInfo}, 
+	     #{createTime}, 
+	     #{outTradeNo}, 
+	     #{notifyTradeStatus} 
+		)
     </insert>
 </mapper>

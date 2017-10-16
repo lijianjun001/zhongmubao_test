@@ -3,10 +3,8 @@ package com.zhongmubao.api.dto.Response.Index;
 import java.math.BigDecimal;
 
 public class ProjectViewModel {
-    public ProjectViewModel() {
-    }
-
-    public ProjectViewModel(int id, String title, BigDecimal price, String rate, String rateImg, String effectiveTime, String beginTime, int period, String state, long countdown, String type, String shorthand, String daoJiShiXianShiLeiXing, String daoJiShiStr, int purchaseCount) {
+    public ProjectViewModel(){}
+    public ProjectViewModel(int id, String title, BigDecimal price, String rate, String rateImg, String effectiveTime, String beginTime, int period, String state, long countdown, String type, String shorthand, String daoJiShiXianShiLeiXing, String daoJiShiStr,int purchaseCount) {
         this.id = id;
         this.title = title;
         this.price = price;

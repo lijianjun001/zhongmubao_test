@@ -3,8 +3,10 @@ package com.zhongmubao.api.cache;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.zhongmubao.api.config.Constants;
+import com.zhongmubao.api.dao.SheepLevelDao;
 import com.zhongmubao.api.dao.SheepVendorDao;
 import com.zhongmubao.api.dao.SystemDistrictDao;
+import com.zhongmubao.api.entity.SheepLevel;
 import com.zhongmubao.api.entity.SheepVendor;
 import com.zhongmubao.api.entity.SystemDistrict;
 import com.zhongmubao.api.util.DateUtil;
@@ -24,6 +26,9 @@ public class RedisCache {
 
     @Autowired
     private SheepVendorDao sheepVendorDao;
+
+    @Autowired
+    private SheepLevelDao sheepLevelDao;
 
     @Autowired
     private final SystemDistrictDao systemDistrictDao;
@@ -74,7 +79,7 @@ public class RedisCache {
     public boolean getCustomerIsShare(int customerId) {
         try {
             String str = String.valueOf(redisHelper.getHash(Constants.CACHE_CUSTOMER_IS_SHARE_KEY, customerId + ""));
-            String value = DateUtil.formartShort(new Date());
+            String value = DateUtil.formatShort(new Date());
 
             if (StringUtil.isNullOrEmpty(str)) {
                 return false;
@@ -88,7 +93,7 @@ public class RedisCache {
 
     public void saveCustomerIsShare(int customerId) {
         try {
-            String value = DateUtil.formartShort(new Date());
+            String value = DateUtil.formatShort(new Date());
             redisHelper.setHash(Constants.CACHE_CUSTOMER_IS_SHARE_KEY, customerId + "", value);
         } catch (Exception ex) {
 
@@ -106,11 +111,10 @@ public class RedisCache {
 
     /**
      * 获取所有省市区列表
-     *
+     * Redis Key:Constants.CACHE_SYSTEM_DISTRICT_KEY
      * @return 省市区集合
      * @author 米立林
      */
-    //CACHE_SYSTEM_DISTRICT_KEY
     public List<SystemDistrict> getDistrictList() {
         try {
             String str = redisHelper.get(Constants.CACHE_SYSTEM_DISTRICT_KEY);
@@ -145,6 +149,31 @@ public class RedisCache {
 
         } catch (Exception ex) {
 
+        }
+    }
+
+    /**
+     * 获取客户等级
+     * Redis Key:CACHE_CUSTOMER_LEVEL_KEY
+     * @return 省市区集合
+     * @author 米立林 2017-10-09
+     */
+    public List<SheepLevel> getCustomerLevel() {
+        try {
+            String str = redisHelper.get(Constants.CACHE_CUSTOMER_LEVEL_KEY);
+            ObjectMapper mapper = new ObjectMapper();
+
+            if (StringUtil.isNullOrEmpty(str)) {
+                List<SheepLevel> sheepLevels = sheepLevelDao.pagerSheepLevelList(0, 10);
+                String json = mapper.writeValueAsString(sheepLevels);
+                redisHelper.save(Constants.CACHE_CUSTOMER_LEVEL_KEY, json);
+                return sheepLevels;
+            } else {
+                return mapper.readValue(str, new TypeReference<List<SheepLevel>>() {
+                });
+            }
+        } catch (Exception ex) {
+            return null;
         }
     }
 

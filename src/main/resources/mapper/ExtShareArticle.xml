@@ -28,30 +28,30 @@
     <insert id="insertExtShareArticle">
         <!-- ignore 主键冲突，报错 -->
         INSERT ignore INTO ExtShareArticle (
-        CategoryId,
-        Title,
-        Remark,
-        Content,
-        Icon,
-        Photo,
-        AttributeValue,
-        State,
-        Deleted,
-        Created,
-        Modified
-        )
+			     CategoryId, 
+	     Title, 
+	     Remark, 
+	     Content, 
+	     Icon, 
+	     Photo, 
+	     AttributeValue, 
+	     State, 
+	     Deleted, 
+	     Created, 
+	     Modified 
+		)
         VALUES (
-        #{categoryId},
-        #{title},
-        #{remark},
-        #{content},
-        #{icon},
-        #{photo},
-        #{attributeValue},
-        #{state},
-        #{deleted},
-        #{created},
-        #{modified}
-        )
+			     #{categoryId}, 
+	     #{title}, 
+	     #{remark}, 
+	     #{content}, 
+	     #{icon}, 
+	     #{photo}, 
+	     #{attributeValue}, 
+	     #{state}, 
+	     #{deleted}, 
+	     #{created}, 
+	     #{modified} 
+		)
     </insert>
 </mapper>

@@ -8,11 +8,9 @@ import java.util.List;
 import java.math.BigDecimal;
 
 public interface CustomerGrabLogDao {
-
+   
     CustomerGrabLog getCustomerGrabLogrById(@Param("id") int id);
-
     List<CustomerGrabLog> pagerCustomerGrabLogList(@Param("offset") int offset, @Param("limit") int limit);
-
-    int insertCustomerGrabLog(CustomerGrabLog customerGrabLog);
+	int insertCustomerGrabLog(CustomerGrabLog customerGrabLog);
 
 }

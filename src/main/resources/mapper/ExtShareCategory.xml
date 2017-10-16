@@ -28,24 +28,24 @@
     <insert id="insertExtShareCategory">
         <!-- ignore 主键冲突，报错 -->
         INSERT ignore INTO ExtShareCategory (
-        Name,
-        Template,
-        Remark,
-        Attribute,
-        State,
-        Deleted,
-        Created,
-        Modified
-        )
+			     Name, 
+	     Template, 
+	     Remark, 
+	     Attribute, 
+	     State, 
+	     Deleted, 
+	     Created, 
+	     Modified 
+		)
         VALUES (
-        #{name},
-        #{template},
-        #{remark},
-        #{attribute},
-        #{state},
-        #{deleted},
-        #{created},
-        #{modified}
-        )
+			     #{name}, 
+	     #{template}, 
+	     #{remark}, 
+	     #{attribute}, 
+	     #{state}, 
+	     #{deleted}, 
+	     #{created}, 
+	     #{modified} 
+		)
     </insert>
 </mapper>

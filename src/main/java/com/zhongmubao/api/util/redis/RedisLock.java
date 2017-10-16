@@ -50,6 +50,7 @@ public class RedisLock {
 
     /**
      * Detailed constructor with default lock expiration of 60000 msecs.
+     *
      */
     public RedisLock(RedisTemplate redisTemplate, String lockKey, int timeoutMsecs) {
         this(redisTemplate, lockKey);
@@ -58,6 +59,7 @@ public class RedisLock {
 
     /**
      * Detailed constructor.
+     *
      */
     public RedisLock(RedisTemplate redisTemplate, String lockKey, int timeoutMsecs, int expireMsecs) {
         this(redisTemplate, lockKey, timeoutMsecs);

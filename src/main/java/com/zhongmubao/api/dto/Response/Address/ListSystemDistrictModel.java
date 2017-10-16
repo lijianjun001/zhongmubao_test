@@ -4,8 +4,8 @@ import java.util.List;
 
 public class ListSystemDistrictModel {
 
-    public ListSystemDistrictModel(List<SystemDistrictViewModel> list) {
-        this.list = list;
+    public ListSystemDistrictModel(List<SystemDistrictViewModel> list){
+        this.list=list;
     }
 
     private List<SystemDistrictViewModel> list;

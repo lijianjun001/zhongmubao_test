@@ -8,11 +8,9 @@ import java.util.List;
 import java.math.BigDecimal;
 
 public interface CustomerMoneyBoxHistoryDao {
-
+   
     CustomerMoneyBoxHistory getCustomerMoneyBoxHistoryrById(@Param("id") int id);
-
     List<CustomerMoneyBoxHistory> pagerCustomerMoneyBoxHistoryList(@Param("offset") int offset, @Param("limit") int limit);
-
-    int insertCustomerMoneyBoxHistory(CustomerMoneyBoxHistory customerMoneyBoxHistory);
+	int insertCustomerMoneyBoxHistory(CustomerMoneyBoxHistory customerMoneyBoxHistory);
 
 }

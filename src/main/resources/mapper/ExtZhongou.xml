@@ -28,28 +28,28 @@
     <insert id="insertExtZhongou">
         <!-- ignore 主键冲突，报错 -->
         INSERT ignore INTO ExtZhongou (
-        Code,
-        CustomerId,
-        Name,
-        Phone,
-        Address,
-        State,
-        PostState,
-        Deleted,
-        Created,
-        Modified
-        )
+			     Code, 
+	     CustomerId, 
+	     Name, 
+	     Phone, 
+	     Address, 
+	     State, 
+	     PostState, 
+	     Deleted, 
+	     Created, 
+	     Modified 
+		)
         VALUES (
-        #{code},
-        #{customerId},
-        #{name},
-        #{phone},
-        #{address},
-        #{state},
-        #{postState},
-        #{deleted},
-        #{created},
-        #{modified}
-        )
+			     #{code}, 
+	     #{customerId}, 
+	     #{name}, 
+	     #{phone}, 
+	     #{address}, 
+	     #{state}, 
+	     #{postState}, 
+	     #{deleted}, 
+	     #{created}, 
+	     #{modified} 
+		)
     </insert>
 </mapper>

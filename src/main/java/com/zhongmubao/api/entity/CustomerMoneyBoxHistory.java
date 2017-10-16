@@ -5,89 +5,89 @@ import java.util.List;
 import java.math.BigDecimal;
 
 public class CustomerMoneyBoxHistory {
-
-    public CustomerMoneyBoxHistory() {
+    
+	public CustomerMoneyBoxHistory() {
 
     }
 
-    private int id;
+	private int id;
 
-    public int getId() {
-        return id;
-    }
+	public int getId() {
+		return id;
+	}
 
-    public void setId(int id) {
-        this.id = id;
-    }
+	public void setId(int id) {
+		this.id = id;
+	}
 
-    private int customerId;
+	private int customerId;
 
-    public int getCustomerId() {
-        return customerId;
-    }
+	public int getCustomerId() {
+		return customerId;
+	}
 
-    public void setCustomerId(int customerId) {
-        this.customerId = customerId;
-    }
+	public void setCustomerId(int customerId) {
+		this.customerId = customerId;
+	}
 
-    private BigDecimal originalMoeny;
+	private BigDecimal originalMoeny;
 
-    public BigDecimal getOriginalMoeny() {
-        return originalMoeny;
-    }
+	public BigDecimal getOriginalMoeny() {
+		return originalMoeny;
+	}
 
-    public void setOriginalMoeny(BigDecimal originalMoeny) {
-        this.originalMoeny = originalMoeny;
-    }
+	public void setOriginalMoeny(BigDecimal originalMoeny) {
+		this.originalMoeny = originalMoeny;
+	}
 
-    private BigDecimal addMoney;
+	private BigDecimal addMoney;
 
-    public BigDecimal getAddMoney() {
-        return addMoney;
-    }
+	public BigDecimal getAddMoney() {
+		return addMoney;
+	}
 
-    public void setAddMoney(BigDecimal addMoney) {
-        this.addMoney = addMoney;
-    }
+	public void setAddMoney(BigDecimal addMoney) {
+		this.addMoney = addMoney;
+	}
 
-    private String type;
+	private String type;
 
-    public String getType() {
-        return type;
-    }
+	public String getType() {
+		return type;
+	}
 
-    public void setType(String type) {
-        this.type = type;
-    }
+	public void setType(String type) {
+		this.type = type;
+	}
 
-    private String transaction;
+	private String transaction;
 
-    public String getTransaction() {
-        return transaction;
-    }
+	public String getTransaction() {
+		return transaction;
+	}
 
-    public void setTransaction(String transaction) {
-        this.transaction = transaction;
-    }
+	public void setTransaction(String transaction) {
+		this.transaction = transaction;
+	}
 
-    private String remark;
+	private String remark;
 
-    public String getRemark() {
-        return remark;
-    }
+	public String getRemark() {
+		return remark;
+	}
 
-    public void setRemark(String remark) {
-        this.remark = remark;
-    }
+	public void setRemark(String remark) {
+		this.remark = remark;
+	}
 
-    private Date created;
+	private Date created;
 
-    public Date getCreated() {
-        return created;
-    }
+	public Date getCreated() {
+		return created;
+	}
 
-    public void setCreated(Date created) {
-        this.created = created;
-    }
+	public void setCreated(Date created) {
+		this.created = created;
+	}
 
 }

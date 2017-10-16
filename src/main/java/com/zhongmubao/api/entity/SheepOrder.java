@@ -5,309 +5,309 @@ import java.util.List;
 import java.math.BigDecimal;
 
 public class SheepOrder {
-
-    public SheepOrder() {
+    
+	public SheepOrder() {
 
     }
 
-    private int id;
+	private int id;
 
-    public int getId() {
-        return id;
-    }
+	public int getId() {
+		return id;
+	}
 
-    public void setId(int id) {
-        this.id = id;
-    }
+	public void setId(int id) {
+		this.id = id;
+	}
 
-    private int projectId;
+	private int projectId;
 
-    public int getProjectId() {
-        return projectId;
-    }
+	public int getProjectId() {
+		return projectId;
+	}
 
-    public void setProjectId(int projectId) {
-        this.projectId = projectId;
-    }
+	public void setProjectId(int projectId) {
+		this.projectId = projectId;
+	}
 
-    private int customerId;
+	private int customerId;
 
-    public int getCustomerId() {
-        return customerId;
-    }
+	public int getCustomerId() {
+		return customerId;
+	}
 
-    public void setCustomerId(int customerId) {
-        this.customerId = customerId;
-    }
+	public void setCustomerId(int customerId) {
+		this.customerId = customerId;
+	}
 
-    private String code;
+	private String code;
 
-    public String getCode() {
-        return code;
-    }
+	public String getCode() {
+		return code;
+	}
 
-    public void setCode(String code) {
-        this.code = code;
-    }
+	public void setCode(String code) {
+		this.code = code;
+	}
 
-    private int count;
+	private int count;
 
-    public int getCount() {
-        return count;
-    }
+	public int getCount() {
+		return count;
+	}
 
-    public void setCount(int count) {
-        this.count = count;
-    }
+	public void setCount(int count) {
+		this.count = count;
+	}
 
-    private BigDecimal totalAmount;
+	private BigDecimal totalAmount;
 
-    public BigDecimal getTotalAmount() {
-        return totalAmount;
-    }
+	public BigDecimal getTotalAmount() {
+		return totalAmount;
+	}
 
-    public void setTotalAmount(BigDecimal totalAmount) {
-        this.totalAmount = totalAmount;
-    }
+	public void setTotalAmount(BigDecimal totalAmount) {
+		this.totalAmount = totalAmount;
+	}
 
-    private BigDecimal deductibleAmount;
+	private BigDecimal deductibleAmount;
 
-    public BigDecimal getDeductibleAmount() {
-        return deductibleAmount;
-    }
+	public BigDecimal getDeductibleAmount() {
+		return deductibleAmount;
+	}
 
-    public void setDeductibleAmount(BigDecimal deductibleAmount) {
-        this.deductibleAmount = deductibleAmount;
-    }
+	public void setDeductibleAmount(BigDecimal deductibleAmount) {
+		this.deductibleAmount = deductibleAmount;
+	}
 
-    private int deductibleCount;
+	private int deductibleCount;
 
-    public int getDeductibleCount() {
-        return deductibleCount;
-    }
+	public int getDeductibleCount() {
+		return deductibleCount;
+	}
 
-    public void setDeductibleCount(int deductibleCount) {
-        this.deductibleCount = deductibleCount;
-    }
+	public void setDeductibleCount(int deductibleCount) {
+		this.deductibleCount = deductibleCount;
+	}
 
-    private BigDecimal advanceAmount;
+	private BigDecimal advanceAmount;
 
-    public BigDecimal getAdvanceAmount() {
-        return advanceAmount;
-    }
+	public BigDecimal getAdvanceAmount() {
+		return advanceAmount;
+	}
 
-    public void setAdvanceAmount(BigDecimal advanceAmount) {
-        this.advanceAmount = advanceAmount;
-    }
+	public void setAdvanceAmount(BigDecimal advanceAmount) {
+		this.advanceAmount = advanceAmount;
+	}
 
-    private BigDecimal payableAmount;
+	private BigDecimal payableAmount;
 
-    public BigDecimal getPayableAmount() {
-        return payableAmount;
-    }
+	public BigDecimal getPayableAmount() {
+		return payableAmount;
+	}
 
-    public void setPayableAmount(BigDecimal payableAmount) {
-        this.payableAmount = payableAmount;
-    }
+	public void setPayableAmount(BigDecimal payableAmount) {
+		this.payableAmount = payableAmount;
+	}
 
-    private BigDecimal paymentAmount;
+	private BigDecimal paymentAmount;
 
-    public BigDecimal getPaymentAmount() {
-        return paymentAmount;
-    }
+	public BigDecimal getPaymentAmount() {
+		return paymentAmount;
+	}
 
-    public void setPaymentAmount(BigDecimal paymentAmount) {
-        this.paymentAmount = paymentAmount;
-    }
+	public void setPaymentAmount(BigDecimal paymentAmount) {
+		this.paymentAmount = paymentAmount;
+	}
 
-    private String paymentTN;
+	private String paymentTN;
 
-    public String getPaymentTN() {
-        return paymentTN;
-    }
+	public String getPaymentTN() {
+		return paymentTN;
+	}
 
-    public void setPaymentTN(String paymentTN) {
-        this.paymentTN = paymentTN;
-    }
+	public void setPaymentTN(String paymentTN) {
+		this.paymentTN = paymentTN;
+	}
 
-    private String paymentType;
+	private String paymentType;
 
-    public String getPaymentType() {
-        return paymentType;
-    }
+	public String getPaymentType() {
+		return paymentType;
+	}
 
-    public void setPaymentType(String paymentType) {
-        this.paymentType = paymentType;
-    }
+	public void setPaymentType(String paymentType) {
+		this.paymentType = paymentType;
+	}
 
-    private String paymentPlatform;
+	private String paymentPlatform;
 
-    public String getPaymentPlatform() {
-        return paymentPlatform;
-    }
+	public String getPaymentPlatform() {
+		return paymentPlatform;
+	}
 
-    public void setPaymentPlatform(String paymentPlatform) {
-        this.paymentPlatform = paymentPlatform;
-    }
+	public void setPaymentPlatform(String paymentPlatform) {
+		this.paymentPlatform = paymentPlatform;
+	}
 
-    private String orderPlatform;
+	private String orderPlatform;
 
-    public String getOrderPlatform() {
-        return orderPlatform;
-    }
+	public String getOrderPlatform() {
+		return orderPlatform;
+	}
 
-    public void setOrderPlatform(String orderPlatform) {
-        this.orderPlatform = orderPlatform;
-    }
+	public void setOrderPlatform(String orderPlatform) {
+		this.orderPlatform = orderPlatform;
+	}
 
-    private String state;
+	private String state;
 
-    public String getState() {
-        return state;
-    }
+	public String getState() {
+		return state;
+	}
 
-    public void setState(String state) {
-        this.state = state;
-    }
+	public void setState(String state) {
+		this.state = state;
+	}
 
-    private Date expired;
+	private Date expired;
 
-    public Date getExpired() {
-        return expired;
-    }
+	public Date getExpired() {
+		return expired;
+	}
 
-    public void setExpired(Date expired) {
-        this.expired = expired;
-    }
+	public void setExpired(Date expired) {
+		this.expired = expired;
+	}
 
-    private BigDecimal redemAmount;
+	private BigDecimal redemAmount;
 
-    public BigDecimal getRedemAmount() {
-        return redemAmount;
-    }
+	public BigDecimal getRedemAmount() {
+		return redemAmount;
+	}
 
-    public void setRedemAmount(BigDecimal redemAmount) {
-        this.redemAmount = redemAmount;
-    }
+	public void setRedemAmount(BigDecimal redemAmount) {
+		this.redemAmount = redemAmount;
+	}
 
-    private String redemName;
+	private String redemName;
 
-    public String getRedemName() {
-        return redemName;
-    }
+	public String getRedemName() {
+		return redemName;
+	}
 
-    public void setRedemName(String redemName) {
-        this.redemName = redemName;
-    }
+	public void setRedemName(String redemName) {
+		this.redemName = redemName;
+	}
 
-    private String redemBank;
+	private String redemBank;
 
-    public String getRedemBank() {
-        return redemBank;
-    }
+	public String getRedemBank() {
+		return redemBank;
+	}
 
-    public void setRedemBank(String redemBank) {
-        this.redemBank = redemBank;
-    }
+	public void setRedemBank(String redemBank) {
+		this.redemBank = redemBank;
+	}
 
-    private String redemBankAccount;
+	private String redemBankAccount;
 
-    public String getRedemBankAccount() {
-        return redemBankAccount;
-    }
+	public String getRedemBankAccount() {
+		return redemBankAccount;
+	}
 
-    public void setRedemBankAccount(String redemBankAccount) {
-        this.redemBankAccount = redemBankAccount;
-    }
+	public void setRedemBankAccount(String redemBankAccount) {
+		this.redemBankAccount = redemBankAccount;
+	}
 
-    private String remark;
+	private String remark;
 
-    public String getRemark() {
-        return remark;
-    }
+	public String getRemark() {
+		return remark;
+	}
 
-    public void setRemark(String remark) {
-        this.remark = remark;
-    }
+	public void setRemark(String remark) {
+		this.remark = remark;
+	}
 
-    private boolean frozened;
+	private boolean frozened;
 
-    public boolean getFrozened() {
-        return frozened;
-    }
+	public boolean getFrozened() {
+		return frozened;
+	}
 
-    public void setFrozened(boolean frozened) {
-        this.frozened = frozened;
-    }
+	public void setFrozened(boolean frozened) {
+		this.frozened = frozened;
+	}
 
-    private boolean deleted;
+	private boolean deleted;
 
-    public boolean getDeleted() {
-        return deleted;
-    }
+	public boolean getDeleted() {
+		return deleted;
+	}
 
-    public void setDeleted(boolean deleted) {
-        this.deleted = deleted;
-    }
+	public void setDeleted(boolean deleted) {
+		this.deleted = deleted;
+	}
 
-    private Date created;
+	private Date created;
 
-    public Date getCreated() {
-        return created;
-    }
+	public Date getCreated() {
+		return created;
+	}
 
-    public void setCreated(Date created) {
-        this.created = created;
-    }
+	public void setCreated(Date created) {
+		this.created = created;
+	}
 
-    private Date modified;
+	private Date modified;
 
-    public Date getModified() {
-        return modified;
-    }
+	public Date getModified() {
+		return modified;
+	}
 
-    public void setModified(Date modified) {
-        this.modified = modified;
-    }
+	public void setModified(Date modified) {
+		this.modified = modified;
+	}
 
-    private boolean isBouns;
+	private boolean isBouns;
 
-    public boolean getIsBouns() {
-        return isBouns;
-    }
+	public boolean getIsBouns() {
+		return isBouns;
+	}
 
-    public void setIsBouns(boolean isBouns) {
-        this.isBouns = isBouns;
-    }
+	public void setIsBouns(boolean isBouns) {
+		this.isBouns = isBouns;
+	}
 
-    private Date paymentTime;
+	private Date paymentTime;
 
-    public Date getPaymentTime() {
-        return paymentTime;
-    }
+	public Date getPaymentTime() {
+		return paymentTime;
+	}
 
-    public void setPaymentTime(Date paymentTime) {
-        this.paymentTime = paymentTime;
-    }
+	public void setPaymentTime(Date paymentTime) {
+		this.paymentTime = paymentTime;
+	}
 
-    private boolean isSendLibrary;
+	private boolean isSendLibrary;
 
-    public boolean getIsSendLibrary() {
-        return isSendLibrary;
-    }
+	public boolean getIsSendLibrary() {
+		return isSendLibrary;
+	}
 
-    public void setIsSendLibrary(boolean isSendLibrary) {
-        this.isSendLibrary = isSendLibrary;
-    }
+	public void setIsSendLibrary(boolean isSendLibrary) {
+		this.isSendLibrary = isSendLibrary;
+	}
 
-    private String sign;
+	private String sign;
 
-    public String getSign() {
-        return sign;
-    }
+	public String getSign() {
+		return sign;
+	}
 
-    public void setSign(String sign) {
-        this.sign = sign;
-    }
+	public void setSign(String sign) {
+		this.sign = sign;
+	}
 
 }

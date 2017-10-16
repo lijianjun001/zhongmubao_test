@@ -8,11 +8,9 @@ import java.util.List;
 import java.math.BigDecimal;
 
 public interface SystemMonitorDao {
-
+   
     SystemMonitor getSystemMonitorrById(@Param("id") int id);
-
     List<SystemMonitor> pagerSystemMonitorList(@Param("offset") int offset, @Param("limit") int limit);
-
-    int insertSystemMonitor(SystemMonitor systemMonitor);
+	int insertSystemMonitor(SystemMonitor systemMonitor);
 
 }

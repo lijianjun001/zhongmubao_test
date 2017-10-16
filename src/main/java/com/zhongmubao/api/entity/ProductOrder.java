@@ -5,209 +5,209 @@ import java.util.List;
 import java.math.BigDecimal;
 
 public class ProductOrder {
-
-    public ProductOrder() {
+    
+	public ProductOrder() {
 
     }
 
-    private int id;
+	private int id;
 
-    public int getId() {
-        return id;
-    }
+	public int getId() {
+		return id;
+	}
 
-    public void setId(int id) {
-        this.id = id;
-    }
+	public void setId(int id) {
+		this.id = id;
+	}
 
-    private String code;
+	private String code;
 
-    public String getCode() {
-        return code;
-    }
+	public String getCode() {
+		return code;
+	}
 
-    public void setCode(String code) {
-        this.code = code;
-    }
+	public void setCode(String code) {
+		this.code = code;
+	}
 
-    private BigDecimal totalAmount;
+	private BigDecimal totalAmount;
 
-    public BigDecimal getTotalAmount() {
-        return totalAmount;
-    }
+	public BigDecimal getTotalAmount() {
+		return totalAmount;
+	}
 
-    public void setTotalAmount(BigDecimal totalAmount) {
-        this.totalAmount = totalAmount;
-    }
+	public void setTotalAmount(BigDecimal totalAmount) {
+		this.totalAmount = totalAmount;
+	}
 
-    private BigDecimal payableAmount;
+	private BigDecimal payableAmount;
 
-    public BigDecimal getPayableAmount() {
-        return payableAmount;
-    }
+	public BigDecimal getPayableAmount() {
+		return payableAmount;
+	}
 
-    public void setPayableAmount(BigDecimal payableAmount) {
-        this.payableAmount = payableAmount;
-    }
+	public void setPayableAmount(BigDecimal payableAmount) {
+		this.payableAmount = payableAmount;
+	}
 
-    private BigDecimal freightAmount;
+	private BigDecimal freightAmount;
 
-    public BigDecimal getFreightAmount() {
-        return freightAmount;
-    }
+	public BigDecimal getFreightAmount() {
+		return freightAmount;
+	}
 
-    public void setFreightAmount(BigDecimal freightAmount) {
-        this.freightAmount = freightAmount;
-    }
+	public void setFreightAmount(BigDecimal freightAmount) {
+		this.freightAmount = freightAmount;
+	}
 
-    private int libraryCount;
+	private int libraryCount;
 
-    public int getLibraryCount() {
-        return libraryCount;
-    }
+	public int getLibraryCount() {
+		return libraryCount;
+	}
 
-    public void setLibraryCount(int libraryCount) {
-        this.libraryCount = libraryCount;
-    }
+	public void setLibraryCount(int libraryCount) {
+		this.libraryCount = libraryCount;
+	}
 
-    private BigDecimal deductionAmount;
+	private BigDecimal deductionAmount;
 
-    public BigDecimal getDeductionAmount() {
-        return deductionAmount;
-    }
+	public BigDecimal getDeductionAmount() {
+		return deductionAmount;
+	}
 
-    public void setDeductionAmount(BigDecimal deductionAmount) {
-        this.deductionAmount = deductionAmount;
-    }
+	public void setDeductionAmount(BigDecimal deductionAmount) {
+		this.deductionAmount = deductionAmount;
+	}
 
-    private int customerId;
+	private int customerId;
 
-    public int getCustomerId() {
-        return customerId;
-    }
+	public int getCustomerId() {
+		return customerId;
+	}
 
-    public void setCustomerId(int customerId) {
-        this.customerId = customerId;
-    }
+	public void setCustomerId(int customerId) {
+		this.customerId = customerId;
+	}
 
-    private String deliveryAddress;
+	private String deliveryAddress;
 
-    public String getDeliveryAddress() {
-        return deliveryAddress;
-    }
+	public String getDeliveryAddress() {
+		return deliveryAddress;
+	}
 
-    public void setDeliveryAddress(String deliveryAddress) {
-        this.deliveryAddress = deliveryAddress;
-    }
+	public void setDeliveryAddress(String deliveryAddress) {
+		this.deliveryAddress = deliveryAddress;
+	}
 
-    private String deliveryName;
+	private String deliveryName;
 
-    public String getDeliveryName() {
-        return deliveryName;
-    }
+	public String getDeliveryName() {
+		return deliveryName;
+	}
 
-    public void setDeliveryName(String deliveryName) {
-        this.deliveryName = deliveryName;
-    }
+	public void setDeliveryName(String deliveryName) {
+		this.deliveryName = deliveryName;
+	}
 
-    private String deliveryPhone;
+	private String deliveryPhone;
 
-    public String getDeliveryPhone() {
-        return deliveryPhone;
-    }
+	public String getDeliveryPhone() {
+		return deliveryPhone;
+	}
 
-    public void setDeliveryPhone(String deliveryPhone) {
-        this.deliveryPhone = deliveryPhone;
-    }
+	public void setDeliveryPhone(String deliveryPhone) {
+		this.deliveryPhone = deliveryPhone;
+	}
 
-    private String remark;
+	private String remark;
 
-    public String getRemark() {
-        return remark;
-    }
+	public String getRemark() {
+		return remark;
+	}
 
-    public void setRemark(String remark) {
-        this.remark = remark;
-    }
+	public void setRemark(String remark) {
+		this.remark = remark;
+	}
 
-    private String status;
+	private String status;
 
-    public String getStatus() {
-        return status;
-    }
+	public String getStatus() {
+		return status;
+	}
 
-    public void setStatus(String status) {
-        this.status = status;
-    }
+	public void setStatus(String status) {
+		this.status = status;
+	}
 
-    private String paymentStatus;
+	private String paymentStatus;
 
-    public String getPaymentStatus() {
-        return paymentStatus;
-    }
+	public String getPaymentStatus() {
+		return paymentStatus;
+	}
 
-    public void setPaymentStatus(String paymentStatus) {
-        this.paymentStatus = paymentStatus;
-    }
+	public void setPaymentStatus(String paymentStatus) {
+		this.paymentStatus = paymentStatus;
+	}
 
-    private String paymentType;
+	private String paymentType;
 
-    public String getPaymentType() {
-        return paymentType;
-    }
+	public String getPaymentType() {
+		return paymentType;
+	}
 
-    public void setPaymentType(String paymentType) {
-        this.paymentType = paymentType;
-    }
+	public void setPaymentType(String paymentType) {
+		this.paymentType = paymentType;
+	}
 
-    private String transaction;
+	private String transaction;
 
-    public String getTransaction() {
-        return transaction;
-    }
+	public String getTransaction() {
+		return transaction;
+	}
 
-    public void setTransaction(String transaction) {
-        this.transaction = transaction;
-    }
+	public void setTransaction(String transaction) {
+		this.transaction = transaction;
+	}
 
-    private Date expiredTime;
+	private Date expiredTime;
 
-    public Date getExpiredTime() {
-        return expiredTime;
-    }
+	public Date getExpiredTime() {
+		return expiredTime;
+	}
 
-    public void setExpiredTime(Date expiredTime) {
-        this.expiredTime = expiredTime;
-    }
+	public void setExpiredTime(Date expiredTime) {
+		this.expiredTime = expiredTime;
+	}
 
-    private boolean deleted;
+	private boolean deleted;
 
-    public boolean getDeleted() {
-        return deleted;
-    }
+	public boolean getDeleted() {
+		return deleted;
+	}
 
-    public void setDeleted(boolean deleted) {
-        this.deleted = deleted;
-    }
+	public void setDeleted(boolean deleted) {
+		this.deleted = deleted;
+	}
 
-    private Date created;
+	private Date created;
 
-    public Date getCreated() {
-        return created;
-    }
+	public Date getCreated() {
+		return created;
+	}
 
-    public void setCreated(Date created) {
-        this.created = created;
-    }
+	public void setCreated(Date created) {
+		this.created = created;
+	}
 
-    private Date modified;
+	private Date modified;
 
-    public Date getModified() {
-        return modified;
-    }
+	public Date getModified() {
+		return modified;
+	}
 
-    public void setModified(Date modified) {
-        this.modified = modified;
-    }
+	public void setModified(Date modified) {
+		this.modified = modified;
+	}
 
 }

@@ -28,18 +28,18 @@
     <insert id="insertSystemBank">
         <!-- ignore 主键冲突，报错 -->
         INSERT ignore INTO SystemBank (
-        Code,
-        Name,
-        Deleted,
-        Created,
-        Modified
-        )
+			     Code, 
+	     Name, 
+	     Deleted, 
+	     Created, 
+	     Modified 
+		)
         VALUES (
-        #{code},
-        #{name},
-        #{deleted},
-        #{created},
-        #{modified}
-        )
+			     #{code}, 
+	     #{name}, 
+	     #{deleted}, 
+	     #{created}, 
+	     #{modified} 
+		)
     </insert>
 </mapper>

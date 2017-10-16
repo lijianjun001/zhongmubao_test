@@ -28,24 +28,24 @@
     <insert id="insertCustomerBank">
         <!-- ignore 主键冲突，报错 -->
         INSERT ignore INTO CustomerBank (
-        CustomerId,
-        BankName,
-        BankAccount,
-        BankOwner,
-        IsDefault,
-        Deleted,
-        Created,
-        Modified
-        )
+			     CustomerId, 
+	     BankName, 
+	     BankAccount, 
+	     BankOwner, 
+	     IsDefault, 
+	     Deleted, 
+	     Created, 
+	     Modified 
+		)
         VALUES (
-        #{customerId},
-        #{bankName},
-        #{bankAccount},
-        #{bankOwner},
-        #{isDefault},
-        #{deleted},
-        #{created},
-        #{modified}
-        )
+			     #{customerId}, 
+	     #{bankName}, 
+	     #{bankAccount}, 
+	     #{bankOwner}, 
+	     #{isDefault}, 
+	     #{deleted}, 
+	     #{created}, 
+	     #{modified} 
+		)
     </insert>
 </mapper>

@@ -28,20 +28,20 @@
     <insert id="insertTaskReminder">
         <!-- ignore 主键冲突，报错 -->
         INSERT ignore INTO TaskReminder (
-        Type,
-        Mode,
-        Interval,
-        Deleted,
-        Created,
-        Modified
-        )
+			     Type, 
+	     Mode, 
+	     Interval, 
+	     Deleted, 
+	     Created, 
+	     Modified 
+		)
         VALUES (
-        #{type},
-        #{mode},
-        #{interval},
-        #{deleted},
-        #{created},
-        #{modified}
-        )
+			     #{type}, 
+	     #{mode}, 
+	     #{interval}, 
+	     #{deleted}, 
+	     #{created}, 
+	     #{modified} 
+		)
     </insert>
 </mapper>

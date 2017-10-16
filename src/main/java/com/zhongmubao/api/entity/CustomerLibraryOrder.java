@@ -5,129 +5,129 @@ import java.util.List;
 import java.math.BigDecimal;
 
 public class CustomerLibraryOrder {
-
-    public CustomerLibraryOrder() {
+    
+	public CustomerLibraryOrder() {
 
     }
 
-    private int id;
+	private int id;
 
-    public int getId() {
-        return id;
-    }
+	public int getId() {
+		return id;
+	}
 
-    public void setId(int id) {
-        this.id = id;
-    }
+	public void setId(int id) {
+		this.id = id;
+	}
 
-    private String code;
+	private String code;
 
-    public String getCode() {
-        return code;
-    }
+	public String getCode() {
+		return code;
+	}
 
-    public void setCode(String code) {
-        this.code = code;
-    }
+	public void setCode(String code) {
+		this.code = code;
+	}
 
-    private int customerId;
+	private int customerId;
 
-    public int getCustomerId() {
-        return customerId;
-    }
+	public int getCustomerId() {
+		return customerId;
+	}
 
-    public void setCustomerId(int customerId) {
-        this.customerId = customerId;
-    }
+	public void setCustomerId(int customerId) {
+		this.customerId = customerId;
+	}
 
-    private String sign;
+	private String sign;
 
-    public String getSign() {
-        return sign;
-    }
+	public String getSign() {
+		return sign;
+	}
 
-    public void setSign(String sign) {
-        this.sign = sign;
-    }
+	public void setSign(String sign) {
+		this.sign = sign;
+	}
 
-    private int count;
+	private int count;
 
-    public int getCount() {
-        return count;
-    }
+	public int getCount() {
+		return count;
+	}
 
-    public void setCount(int count) {
-        this.count = count;
-    }
+	public void setCount(int count) {
+		this.count = count;
+	}
 
-    private String state;
+	private String state;
 
-    public String getState() {
-        return state;
-    }
+	public String getState() {
+		return state;
+	}
 
-    public void setState(String state) {
-        this.state = state;
-    }
+	public void setState(String state) {
+		this.state = state;
+	}
 
-    private int storeId;
+	private int storeId;
 
-    public int getStoreId() {
-        return storeId;
-    }
+	public int getStoreId() {
+		return storeId;
+	}
 
-    public void setStoreId(int storeId) {
-        this.storeId = storeId;
-    }
+	public void setStoreId(int storeId) {
+		this.storeId = storeId;
+	}
 
-    private String storeName;
+	private String storeName;
 
-    public String getStoreName() {
-        return storeName;
-    }
+	public String getStoreName() {
+		return storeName;
+	}
 
-    public void setStoreName(String storeName) {
-        this.storeName = storeName;
-    }
+	public void setStoreName(String storeName) {
+		this.storeName = storeName;
+	}
 
-    private Date expired;
+	private Date expired;
 
-    public Date getExpired() {
-        return expired;
-    }
+	public Date getExpired() {
+		return expired;
+	}
 
-    public void setExpired(Date expired) {
-        this.expired = expired;
-    }
+	public void setExpired(Date expired) {
+		this.expired = expired;
+	}
 
-    private boolean deleted;
+	private boolean deleted;
 
-    public boolean getDeleted() {
-        return deleted;
-    }
+	public boolean getDeleted() {
+		return deleted;
+	}
 
-    public void setDeleted(boolean deleted) {
-        this.deleted = deleted;
-    }
+	public void setDeleted(boolean deleted) {
+		this.deleted = deleted;
+	}
 
-    private Date created;
+	private Date created;
 
-    public Date getCreated() {
-        return created;
-    }
+	public Date getCreated() {
+		return created;
+	}
 
-    public void setCreated(Date created) {
-        this.created = created;
-    }
+	public void setCreated(Date created) {
+		this.created = created;
+	}
 
-    private Date modified;
+	private Date modified;
 
-    public Date getModified() {
-        return modified;
-    }
+	public Date getModified() {
+		return modified;
+	}
 
-    public void setModified(Date modified) {
-        this.modified = modified;
-    }
+	public void setModified(Date modified) {
+		this.modified = modified;
+	}
 
 }

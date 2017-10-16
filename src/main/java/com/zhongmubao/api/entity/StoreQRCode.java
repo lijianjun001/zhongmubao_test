@@ -5,119 +5,119 @@ import java.util.List;
 import java.math.BigDecimal;
 
 public class StoreQRCode {
-
-    public StoreQRCode() {
+    
+	public StoreQRCode() {
 
     }
 
-    private int id;
+	private int id;
 
-    public int getId() {
-        return id;
-    }
+	public int getId() {
+		return id;
+	}
 
-    public void setId(int id) {
-        this.id = id;
-    }
+	public void setId(int id) {
+		this.id = id;
+	}
 
-    private int customerId;
+	private int customerId;
 
-    public int getCustomerId() {
-        return customerId;
-    }
+	public int getCustomerId() {
+		return customerId;
+	}
 
-    public void setCustomerId(int customerId) {
-        this.customerId = customerId;
-    }
+	public void setCustomerId(int customerId) {
+		this.customerId = customerId;
+	}
 
-    private String code;
+	private String code;
 
-    public String getCode() {
-        return code;
-    }
+	public String getCode() {
+		return code;
+	}
 
-    public void setCode(String code) {
-        this.code = code;
-    }
+	public void setCode(String code) {
+		this.code = code;
+	}
 
-    private String qRCode;
+	private String qRCode;
 
-    public String getQRCode() {
-        return qRCode;
-    }
+	public String getQRCode() {
+		return qRCode;
+	}
 
-    public void setQRCode(String qRCode) {
-        this.qRCode = qRCode;
-    }
+	public void setQRCode(String qRCode) {
+		this.qRCode = qRCode;
+	}
 
-    private int storeId;
+	private int storeId;
 
-    public int getStoreId() {
-        return storeId;
-    }
+	public int getStoreId() {
+		return storeId;
+	}
 
-    public void setStoreId(int storeId) {
-        this.storeId = storeId;
-    }
+	public void setStoreId(int storeId) {
+		this.storeId = storeId;
+	}
 
-    private Date expired;
+	private Date expired;
 
-    public Date getExpired() {
-        return expired;
-    }
+	public Date getExpired() {
+		return expired;
+	}
 
-    public void setExpired(Date expired) {
-        this.expired = expired;
-    }
+	public void setExpired(Date expired) {
+		this.expired = expired;
+	}
 
-    private boolean deleted;
+	private boolean deleted;
 
-    public boolean getDeleted() {
-        return deleted;
-    }
+	public boolean getDeleted() {
+		return deleted;
+	}
 
-    public void setDeleted(boolean deleted) {
-        this.deleted = deleted;
-    }
+	public void setDeleted(boolean deleted) {
+		this.deleted = deleted;
+	}
 
-    private Date created;
+	private Date created;
 
-    public Date getCreated() {
-        return created;
-    }
+	public Date getCreated() {
+		return created;
+	}
 
-    public void setCreated(Date created) {
-        this.created = created;
-    }
+	public void setCreated(Date created) {
+		this.created = created;
+	}
 
-    private Date modified;
+	private Date modified;
 
-    public Date getModified() {
-        return modified;
-    }
+	public Date getModified() {
+		return modified;
+	}
 
-    public void setModified(Date modified) {
-        this.modified = modified;
-    }
+	public void setModified(Date modified) {
+		this.modified = modified;
+	}
 
-    private int giftId;
+	private int giftId;
 
-    public int getGiftId() {
-        return giftId;
-    }
+	public int getGiftId() {
+		return giftId;
+	}
 
-    public void setGiftId(int giftId) {
-        this.giftId = giftId;
-    }
+	public void setGiftId(int giftId) {
+		this.giftId = giftId;
+	}
 
-    private int libraryCount;
+	private int libraryCount;
 
-    public int getLibraryCount() {
-        return libraryCount;
-    }
+	public int getLibraryCount() {
+		return libraryCount;
+	}
 
-    public void setLibraryCount(int libraryCount) {
-        this.libraryCount = libraryCount;
-    }
+	public void setLibraryCount(int libraryCount) {
+		this.libraryCount = libraryCount;
+	}
 
 }

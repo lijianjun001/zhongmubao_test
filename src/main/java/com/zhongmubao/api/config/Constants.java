@@ -78,12 +78,17 @@ public class Constants {
      */
     public static final String CACHE_SYSTEM_DISTRICT_KEY = "SystemDistrict";
 
+    /**
+     * Cache客户等级
+     */
+    public static final String CACHE_CUSTOMER_LEVEL_KEY = "CustomerLevel";
+
     //endregion
 
     /**
      * 在栏羊只
      */
-    public static final List<String> SHEEP_IN_THE_BAR_STATE = Arrays.asList("01", "02", "03");
+    public static final List<String> SHEEP_IN_THE_BAR_STATE = Arrays.asList("01", "02", "03", "04");
 
     /**
      * 在栏羊只赎回中羊只和已赎回羊只
@@ -108,7 +113,7 @@ public class Constants {
     /***
      * 延时卡延时的天数
      */
-    public static final int DELAYED_CARD_DAY = 7;
+    public static final  int DELAYED_CARD_DAY= 7;
 
     /**
      * 签到礼物
@@ -121,7 +126,9 @@ public class Constants {
             new SignGift(4, "延时卡", 3, SignGiftType.DELAYED_CARD),
             new SignGift(5, "合并卡", 1, SignGiftType.MERGE_CARD),
             new SignGift(6, "合并卡", 2, SignGiftType.MERGE_CARD),
-            new SignGift(7, "合并卡", 3, SignGiftType.MERGE_CARD)
+            new SignGift(7, "合并卡", 3, SignGiftType.MERGE_CARD),
+            new SignGift(8, "话费卡", 1, SignGiftType.TELEPHONE_CARD),
+            new SignGift(9, "话费卡", 2, SignGiftType.TELEPHONE_CARD)
     );
 
     /**
@@ -138,6 +145,6 @@ public class Constants {
     /**
      * 签到lock锁
      */
-    public static final String LOCK_SIGN_KEY = "LOCK_SIGN_";
+    public static final String LOCK_SIGN_KEY="LOCK_SIGN_";
     //endregion
 }

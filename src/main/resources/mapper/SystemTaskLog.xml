@@ -28,20 +28,20 @@
     <insert id="insertSystemTaskLog">
         <!-- ignore 主键冲突，报错 -->
         INSERT ignore INTO SystemTaskLog (
-        Platform,
-        Category,
-        Level,
-        Message,
-        Exception,
-        Created
-        )
+			     Platform, 
+	     Category, 
+	     Level, 
+	     Message, 
+	     Exception, 
+	     Created 
+		)
         VALUES (
-        #{platform},
-        #{category},
-        #{level},
-        #{message},
-        #{exception},
-        #{created}
-        )
+			     #{platform}, 
+	     #{category}, 
+	     #{level}, 
+	     #{message}, 
+	     #{exception}, 
+	     #{created} 
+		)
     </insert>
 </mapper>

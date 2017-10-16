@@ -13,7 +13,7 @@ import java.util.List;
 
 @Repository
 
-public class SystemSMSLogMongoDao implements BaseDao<SystemSMSLogMongo> {
+public class SystemSMSLogMongoDao  implements BaseDao<SystemSMSLogMongo> {
     private final MongoTemplate mongoTemplate;
 
     public SystemSMSLogMongoDao(MongoTemplate mongoTemplate) {

@@ -8,11 +8,9 @@ import java.util.List;
 import java.math.BigDecimal;
 
 public interface ProductProjectDao {
-
+   
     ProductProject getProductProjectrById(@Param("id") int id);
-
     List<ProductProject> pagerProductProjectList(@Param("offset") int offset, @Param("limit") int limit);
-
-    int insertProductProject(ProductProject productProject);
+	int insertProductProject(ProductProject productProject);
 
 }

@@ -28,26 +28,26 @@
     <insert id="insertProductProject">
         <!-- ignore 主键冲突，报错 -->
         INSERT ignore INTO ProductProject (
-        Title,
-        Desc,
-        Amount,
-        BeginTime,
-        EndTime,
-        Deleted,
-        Created,
-        Modified,
-        LibraryAmount
-        )
+			     Title, 
+	     Desc, 
+	     Amount, 
+	     BeginTime, 
+	     EndTime, 
+	     Deleted, 
+	     Created, 
+	     Modified, 
+	     LibraryAmount 
+		)
         VALUES (
-        #{title},
-        #{desc},
-        #{amount},
-        #{beginTime},
-        #{endTime},
-        #{deleted},
-        #{created},
-        #{modified},
-        #{libraryAmount}
-        )
+			     #{title}, 
+	     #{desc}, 
+	     #{amount}, 
+	     #{beginTime}, 
+	     #{endTime}, 
+	     #{deleted}, 
+	     #{created}, 
+	     #{modified}, 
+	     #{libraryAmount} 
+		)
     </insert>
 </mapper>

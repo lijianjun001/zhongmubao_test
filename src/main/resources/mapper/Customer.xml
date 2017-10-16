@@ -149,4 +149,34 @@
         #{isSetPassword}
         )
     </insert>
+
+    <update id="UpdatePassword">
+        <!-- 具体的sql——重置密码 -->
+        UPDATE
+        Customer
+        SET
+        Password=#{password}
+        WHERE
+        id = #{id}
+    </update>
+
+    <update id="UpdateRedeemPassword">
+        <!-- 具体的sql——重置赎回密码 -->
+        UPDATE
+        Customer
+        SET
+        RedeemPassword=#{redeemPassword}
+        WHERE
+        id = #{id}
+    </update>
+
+    <update id="UpdateIsAutoRedeem">
+        <!-- 具体的sql——是否自动赎回 -->
+        UPDATE
+        Customer
+        SET
+        isAutoRedeem=#{isAutoRedeem}
+        WHERE
+        id = #{id}
+    </update>
 </mapper>

@@ -5,89 +5,89 @@ import java.util.List;
 import java.math.BigDecimal;
 
 public class ExtOrderExpress {
-
-    public ExtOrderExpress() {
+    
+	public ExtOrderExpress() {
 
     }
 
-    private int id;
+	private int id;
 
-    public int getId() {
-        return id;
-    }
+	public int getId() {
+		return id;
+	}
 
-    public void setId(int id) {
-        this.id = id;
-    }
+	public void setId(int id) {
+		this.id = id;
+	}
 
-    private int expressId;
+	private int expressId;
 
-    public int getExpressId() {
-        return expressId;
-    }
+	public int getExpressId() {
+		return expressId;
+	}
 
-    public void setExpressId(int expressId) {
-        this.expressId = expressId;
-    }
+	public void setExpressId(int expressId) {
+		this.expressId = expressId;
+	}
 
-    private String orderType;
+	private String orderType;
 
-    public String getOrderType() {
-        return orderType;
-    }
+	public String getOrderType() {
+		return orderType;
+	}
 
-    public void setOrderType(String orderType) {
-        this.orderType = orderType;
-    }
+	public void setOrderType(String orderType) {
+		this.orderType = orderType;
+	}
 
-    private int orderId;
+	private int orderId;
 
-    public int getOrderId() {
-        return orderId;
-    }
+	public int getOrderId() {
+		return orderId;
+	}
 
-    public void setOrderId(int orderId) {
-        this.orderId = orderId;
-    }
+	public void setOrderId(int orderId) {
+		this.orderId = orderId;
+	}
 
-    private String code;
+	private String code;
 
-    public String getCode() {
-        return code;
-    }
+	public String getCode() {
+		return code;
+	}
 
-    public void setCode(String code) {
-        this.code = code;
-    }
+	public void setCode(String code) {
+		this.code = code;
+	}
 
-    private String remark;
+	private String remark;
 
-    public String getRemark() {
-        return remark;
-    }
+	public String getRemark() {
+		return remark;
+	}
 
-    public void setRemark(String remark) {
-        this.remark = remark;
-    }
+	public void setRemark(String remark) {
+		this.remark = remark;
+	}
 
-    private Date modified;
+	private Date modified;
 
-    public Date getModified() {
-        return modified;
-    }
+	public Date getModified() {
+		return modified;
+	}
 
-    public void setModified(Date modified) {
-        this.modified = modified;
-    }
+	public void setModified(Date modified) {
+		this.modified = modified;
+	}
 
-    private Date created;
+	private Date created;
 
-    public Date getCreated() {
-        return created;
-    }
+	public Date getCreated() {
+		return created;
+	}
 
-    public void setCreated(Date created) {
-        this.created = created;
-    }
+	public void setCreated(Date created) {
+		this.created = created;
+	}
 
 }

@@ -28,18 +28,18 @@
     <insert id="insertCustomerGrabLibraryLog">
         <!-- ignore 主键冲突，报错 -->
         INSERT ignore INTO CustomerGrabLibraryLog (
-        CustomerId,
-        ShareCustomerId,
-        Count,
-        Created,
-        CustomerActivityId
-        )
+			     CustomerId, 
+	     ShareCustomerId, 
+	     Count, 
+	     Created, 
+	     CustomerActivityId 
+		)
         VALUES (
-        #{customerId},
-        #{shareCustomerId},
-        #{count},
-        #{created},
-        #{customerActivityId}
-        )
+			     #{customerId}, 
+	     #{shareCustomerId}, 
+	     #{count}, 
+	     #{created}, 
+	     #{customerActivityId} 
+		)
     </insert>
 </mapper>

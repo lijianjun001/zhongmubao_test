@@ -13,7 +13,6 @@ public class CustomerAddressResponseModel {
     public List<CustomerAddressViewModel> getList() {
         return list;
     }
-
     public void setList(List<CustomerAddressViewModel> list) {
         this.list = list;
     }

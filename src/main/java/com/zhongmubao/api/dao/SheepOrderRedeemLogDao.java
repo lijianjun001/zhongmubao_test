@@ -8,11 +8,9 @@ import java.util.List;
 import java.math.BigDecimal;
 
 public interface SheepOrderRedeemLogDao {
-
+   
     SheepOrderRedeemLog getSheepOrderRedeemLogrById(@Param("id") int id);
-
     List<SheepOrderRedeemLog> pagerSheepOrderRedeemLogList(@Param("offset") int offset, @Param("limit") int limit);
-
-    int insertSheepOrderRedeemLog(SheepOrderRedeemLog sheepOrderRedeemLog);
+	int insertSheepOrderRedeemLog(SheepOrderRedeemLog sheepOrderRedeemLog);
 
 }

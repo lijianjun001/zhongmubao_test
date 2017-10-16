@@ -2,6 +2,9 @@ package com.zhongmubao.api.dto.Response.Sheep;
 
 import java.util.List;
 
+/**
+ * 获取所有的买羊订单
+ */
 public class PageSheepOrderModel {
     public PageSheepOrderModel() {
     }

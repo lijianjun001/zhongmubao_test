@@ -28,20 +28,20 @@
     <insert id="insertSystemMessageTemplate">
         <!-- ignore 主键冲突，报错 -->
         INSERT ignore INTO SystemMessageTemplate (
-        Category,
-        Code,
-        Template,
-        Deleted,
-        Created,
-        Modified
-        )
+			     Category, 
+	     Code, 
+	     Template, 
+	     Deleted, 
+	     Created, 
+	     Modified 
+		)
         VALUES (
-        #{category},
-        #{code},
-        #{template},
-        #{deleted},
-        #{created},
-        #{modified}
-        )
+			     #{category}, 
+	     #{code}, 
+	     #{template}, 
+	     #{deleted}, 
+	     #{created}, 
+	     #{modified} 
+		)
     </insert>
 </mapper>

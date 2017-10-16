@@ -28,23 +28,23 @@
     <insert id="insertExtNotice">
         <!-- ignore 主键冲突，报错 -->
         INSERT ignore INTO ExtNotice (
-        Title,
-        Content,
-        Pic,
-        Link,
-        Type,
-        Created,
-        Deleted
-        )
+			     Title, 
+	     Content, 
+	     Pic, 
+	     Link, 
+	     Type, 
+	     Created, 
+	     Deleted 
+		)
         VALUES (
-        #{title},
-        #{content},
-        #{pic},
-        #{link},
-        #{type},
-        #{created},
-        #{deleted}
-        )
+			     #{title}, 
+	     #{content}, 
+	     #{pic}, 
+	     #{link}, 
+	     #{type}, 
+	     #{created}, 
+	     #{deleted} 
+		)
     </insert>
 
     <select id="pageEffectiveExtNotice" resultType="ExtNotice">

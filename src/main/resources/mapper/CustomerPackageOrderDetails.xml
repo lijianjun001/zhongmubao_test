@@ -28,24 +28,24 @@
     <insert id="insertCustomerPackageOrderDetails">
         <!-- ignore 主键冲突，报错 -->
         INSERT ignore INTO CustomerPackageOrderDetails (
-        PackageOrderId,
-        CustomerGiftId,
-        Count,
-        Amount,
-        Deleted,
-        Created,
-        Modified,
-        Title
-        )
+			     PackageOrderId, 
+	     CustomerGiftId, 
+	     Count, 
+	     Amount, 
+	     Deleted, 
+	     Created, 
+	     Modified, 
+	     Title 
+		)
         VALUES (
-        #{packageOrderId},
-        #{customerGiftId},
-        #{count},
-        #{amount},
-        #{deleted},
-        #{created},
-        #{modified},
-        #{title}
-        )
+			     #{packageOrderId}, 
+	     #{customerGiftId}, 
+	     #{count}, 
+	     #{amount}, 
+	     #{deleted}, 
+	     #{created}, 
+	     #{modified}, 
+	     #{title} 
+		)
     </insert>
 </mapper>

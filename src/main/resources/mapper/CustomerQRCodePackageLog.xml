@@ -28,12 +28,12 @@
     <insert id="insertCustomerQRCodePackageLog">
         <!-- ignore 主键冲突，报错 -->
         INSERT ignore INTO CustomerQRCodePackageLog (
-        CustomerId,
-        Created
-        )
+			     CustomerId, 
+	     Created 
+		)
         VALUES (
-        #{customerId},
-        #{created}
-        )
+			     #{customerId}, 
+	     #{created} 
+		)
     </insert>
 </mapper>

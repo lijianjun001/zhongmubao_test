@@ -28,28 +28,28 @@
     <insert id="insertStoreQRCode">
         <!-- ignore 主键冲突，报错 -->
         INSERT ignore INTO StoreQRCode (
-        CustomerId,
-        Code,
-        QRCode,
-        StoreId,
-        Expired,
-        Deleted,
-        Created,
-        Modified,
-        GiftId,
-        LibraryCount
-        )
+			     CustomerId, 
+	     Code, 
+	     QRCode, 
+	     StoreId, 
+	     Expired, 
+	     Deleted, 
+	     Created, 
+	     Modified, 
+	     GiftId, 
+	     LibraryCount 
+		)
         VALUES (
-        #{customerId},
-        #{code},
-        #{qRCode},
-        #{storeId},
-        #{expired},
-        #{deleted},
-        #{created},
-        #{modified},
-        #{giftId},
-        #{libraryCount}
-        )
+			     #{customerId}, 
+	     #{code}, 
+	     #{qRCode}, 
+	     #{storeId}, 
+	     #{expired}, 
+	     #{deleted}, 
+	     #{created}, 
+	     #{modified}, 
+	     #{giftId}, 
+	     #{libraryCount} 
+		)
     </insert>
 </mapper>

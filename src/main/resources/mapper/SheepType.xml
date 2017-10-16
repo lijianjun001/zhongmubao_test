@@ -28,20 +28,20 @@
     <insert id="insertSheepType">
         <!-- ignore 主键冲突，报错 -->
         INSERT ignore INTO SheepType (
-        Name,
-        Photo,
-        Remark,
-        Deleted,
-        Created,
-        Modified
-        )
+			     Name, 
+	     Photo, 
+	     Remark, 
+	     Deleted, 
+	     Created, 
+	     Modified 
+		)
         VALUES (
-        #{name},
-        #{photo},
-        #{remark},
-        #{deleted},
-        #{created},
-        #{modified}
-        )
+			     #{name}, 
+	     #{photo}, 
+	     #{remark}, 
+	     #{deleted}, 
+	     #{created}, 
+	     #{modified} 
+		)
     </insert>
 </mapper>

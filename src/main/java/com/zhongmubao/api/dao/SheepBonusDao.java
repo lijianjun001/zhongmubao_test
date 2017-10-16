@@ -8,11 +8,9 @@ import java.util.List;
 import java.math.BigDecimal;
 
 public interface SheepBonusDao {
-
+   
     SheepBonus getSheepBonusrById(@Param("id") int id);
-
     List<SheepBonus> pagerSheepBonusList(@Param("offset") int offset, @Param("limit") int limit);
-
-    int insertSheepBonus(SheepBonus sheepBonus);
+	int insertSheepBonus(SheepBonus sheepBonus);
 
 }

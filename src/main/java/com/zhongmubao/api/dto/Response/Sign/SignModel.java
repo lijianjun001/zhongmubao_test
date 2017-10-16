@@ -4,7 +4,7 @@ public class SignModel {
     public SignModel() {
     }
 
-    public SignModel(int shareDayCount, String redPackagePrice, String info, SignGiftViewModel signGift, boolean todayIsShare, boolean showPop) {
+    public SignModel(int shareDayCount, String redPackagePrice, String info, SignGiftViewModel signGift,boolean todayIsShare,boolean showPop) {
         this.redPackagePrice = redPackagePrice;
         this.info = info;
         this.signGift = signGift;

@@ -8,11 +8,9 @@ import java.util.List;
 import java.math.BigDecimal;
 
 public interface SystemRoleDao {
-
+   
     SystemRole getSystemRolerById(@Param("id") int id);
-
     List<SystemRole> pagerSystemRoleList(@Param("offset") int offset, @Param("limit") int limit);
-
-    int insertSystemRole(SystemRole systemRole);
+	int insertSystemRole(SystemRole systemRole);
 
 }

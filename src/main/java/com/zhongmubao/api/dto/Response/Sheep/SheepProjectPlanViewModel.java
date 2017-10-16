@@ -7,7 +7,7 @@ public class SheepProjectPlanViewModel {
     private String info;
     private String createTime;
 
-    public SheepProjectPlanViewModel() {
+    public SheepProjectPlanViewModel(){
 
     }
 

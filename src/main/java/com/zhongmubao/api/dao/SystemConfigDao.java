@@ -8,11 +8,9 @@ import java.util.List;
 import java.math.BigDecimal;
 
 public interface SystemConfigDao {
-
+   
     SystemConfig getSystemConfigrById(@Param("id") int id);
-
     List<SystemConfig> pagerSystemConfigList(@Param("offset") int offset, @Param("limit") int limit);
-
-    int insertSystemConfig(SystemConfig systemConfig);
+	int insertSystemConfig(SystemConfig systemConfig);
 
 }

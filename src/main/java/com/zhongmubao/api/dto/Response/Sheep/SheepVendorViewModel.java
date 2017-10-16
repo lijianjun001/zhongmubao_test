@@ -4,7 +4,7 @@ package com.zhongmubao.api.dto.Response.Sheep;
  * 牧场详情视图对象
  */
 public class SheepVendorViewModel {
-    public SheepVendorViewModel() {
+    public SheepVendorViewModel(){
 
     }
 
@@ -44,7 +44,7 @@ public class SheepVendorViewModel {
      */
     private String payMethod;
     /**
-     * 入栏时间
+     *  入栏时间
      */
     private String effectiveTime;
     /**
@@ -52,7 +52,7 @@ public class SheepVendorViewModel {
      */
     private String slaughterTime;
     /**
-     * 赎回时间
+     *  赎回时间
      */
     private String redemTime;
     private String name;

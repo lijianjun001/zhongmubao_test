@@ -16,7 +16,6 @@ import org.springframework.web.multipart.support.MissingServletRequestPartExcept
 
 /**
  * 增加方法注入，将含有CurrentUser注解的方法参数注入当前登录用户
- *
  * @see CurrentUser
  */
 @Component
@@ -38,9 +37,9 @@ public class CurrentUserMethodArgumentResolver implements HandlerMethodArgumentR
     @Override
     public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
         //取出鉴权时存入的登录用户Id
-        Object currentUserId = webRequest.getAttribute(Constants.CURRENT_USER_ID, RequestAttributes.SCOPE_REQUEST);
-        if (currentUserId == null) return null;
-        return customerDao.getCustomerById((int) currentUserId);
+        Object currentUserId =  webRequest.getAttribute(Constants.CURRENT_USER_ID, RequestAttributes.SCOPE_REQUEST);
+        if(currentUserId==null)return null;
+        return customerDao.getCustomerById((int)currentUserId);
         //throw new MissingServletRequestPartException(Constants.CURRENT_USER_ID);
     }
 }

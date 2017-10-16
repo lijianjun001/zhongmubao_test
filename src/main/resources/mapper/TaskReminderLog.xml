@@ -28,16 +28,16 @@
     <insert id="insertTaskReminderLog">
         <!-- ignore 主键冲突，报错 -->
         INSERT ignore INTO TaskReminderLog (
-        ReminderId,
-        Matter,
-        Remark,
-        Created
-        )
+			     ReminderId, 
+	     Matter, 
+	     Remark, 
+	     Created 
+		)
         VALUES (
-        #{reminderId},
-        #{matter},
-        #{remark},
-        #{created}
-        )
+			     #{reminderId}, 
+	     #{matter}, 
+	     #{remark}, 
+	     #{created} 
+		)
     </insert>
 </mapper>

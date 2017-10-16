@@ -28,22 +28,22 @@
     <insert id="insertCustomerMessage">
         <!-- ignore 主键冲突，报错 -->
         INSERT ignore INTO CustomerMessage (
-        CustomerId,
-        Title,
-        Content,
-        State,
-        Deleted,
-        Created,
-        Modified
-        )
+			     CustomerId, 
+	     Title, 
+	     Content, 
+	     State, 
+	     Deleted, 
+	     Created, 
+	     Modified 
+		)
         VALUES (
-        #{customerId},
-        #{title},
-        #{content},
-        #{state},
-        #{deleted},
-        #{created},
-        #{modified}
-        )
+			     #{customerId}, 
+	     #{title}, 
+	     #{content}, 
+	     #{state}, 
+	     #{deleted}, 
+	     #{created}, 
+	     #{modified} 
+		)
     </insert>
 </mapper>

@@ -28,18 +28,18 @@
     <insert id="insertSystemUserRole">
         <!-- ignore 主键冲突，报错 -->
         INSERT ignore INTO SystemUserRole (
-        SystemUserId,
-        SystemRoleId,
-        Deleted,
-        Created,
-        Modified
-        )
+			     SystemUserId, 
+	     SystemRoleId, 
+	     Deleted, 
+	     Created, 
+	     Modified 
+		)
         VALUES (
-        #{systemUserId},
-        #{systemRoleId},
-        #{deleted},
-        #{created},
-        #{modified}
-        )
+			     #{systemUserId}, 
+	     #{systemRoleId}, 
+	     #{deleted}, 
+	     #{created}, 
+	     #{modified} 
+		)
     </insert>
 </mapper>

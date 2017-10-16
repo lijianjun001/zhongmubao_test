@@ -8,11 +8,9 @@ import java.util.List;
 import java.math.BigDecimal;
 
 public interface CustomerGiftOrderDao {
-
+   
     CustomerGiftOrder getCustomerGiftOrderrById(@Param("id") int id);
-
     List<CustomerGiftOrder> pagerCustomerGiftOrderList(@Param("offset") int offset, @Param("limit") int limit);
-
-    int insertCustomerGiftOrder(CustomerGiftOrder customerGiftOrder);
+	int insertCustomerGiftOrder(CustomerGiftOrder customerGiftOrder);
 
 }

@@ -5,229 +5,229 @@ import java.util.List;
 import java.math.BigDecimal;
 
 public class Product {
-
-    public Product() {
+    
+	public Product() {
 
     }
 
-    private int id;
+	private int id;
 
-    public int getId() {
-        return id;
-    }
+	public int getId() {
+		return id;
+	}
 
-    public void setId(int id) {
-        this.id = id;
-    }
+	public void setId(int id) {
+		this.id = id;
+	}
 
-    private int projectId;
+	private int projectId;
 
-    public int getProjectId() {
-        return projectId;
-    }
+	public int getProjectId() {
+		return projectId;
+	}
 
-    public void setProjectId(int projectId) {
-        this.projectId = projectId;
-    }
+	public void setProjectId(int projectId) {
+		this.projectId = projectId;
+	}
 
-    private String title;
+	private String title;
 
-    public String getTitle() {
-        return title;
-    }
+	public String getTitle() {
+		return title;
+	}
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
+	public void setTitle(String title) {
+		this.title = title;
+	}
 
-    private String subTitle;
+	private String subTitle;
 
-    public String getSubTitle() {
-        return subTitle;
-    }
+	public String getSubTitle() {
+		return subTitle;
+	}
 
-    public void setSubTitle(String subTitle) {
-        this.subTitle = subTitle;
-    }
+	public void setSubTitle(String subTitle) {
+		this.subTitle = subTitle;
+	}
 
-    private String desc;
+	private String desc;
 
-    public String getDesc() {
-        return desc;
-    }
+	public String getDesc() {
+		return desc;
+	}
 
-    public void setDesc(String desc) {
-        this.desc = desc;
-    }
+	public void setDesc(String desc) {
+		this.desc = desc;
+	}
 
-    private String photo;
+	private String photo;
 
-    public String getPhoto() {
-        return photo;
-    }
+	public String getPhoto() {
+		return photo;
+	}
 
-    public void setPhoto(String photo) {
-        this.photo = photo;
-    }
+	public void setPhoto(String photo) {
+		this.photo = photo;
+	}
 
-    private String icon;
+	private String icon;
 
-    public String getIcon() {
-        return icon;
-    }
+	public String getIcon() {
+		return icon;
+	}
 
-    public void setIcon(String icon) {
-        this.icon = icon;
-    }
+	public void setIcon(String icon) {
+		this.icon = icon;
+	}
 
-    private BigDecimal amount;
+	private BigDecimal amount;
 
-    public BigDecimal getAmount() {
-        return amount;
-    }
+	public BigDecimal getAmount() {
+		return amount;
+	}
 
-    public void setAmount(BigDecimal amount) {
-        this.amount = amount;
-    }
+	public void setAmount(BigDecimal amount) {
+		this.amount = amount;
+	}
 
-    private BigDecimal marketAmount;
+	private BigDecimal marketAmount;
 
-    public BigDecimal getMarketAmount() {
-        return marketAmount;
-    }
+	public BigDecimal getMarketAmount() {
+		return marketAmount;
+	}
 
-    public void setMarketAmount(BigDecimal marketAmount) {
-        this.marketAmount = marketAmount;
-    }
+	public void setMarketAmount(BigDecimal marketAmount) {
+		this.marketAmount = marketAmount;
+	}
 
-    private BigDecimal freightAmount;
+	private BigDecimal freightAmount;
 
-    public BigDecimal getFreightAmount() {
-        return freightAmount;
-    }
+	public BigDecimal getFreightAmount() {
+		return freightAmount;
+	}
 
-    public void setFreightAmount(BigDecimal freightAmount) {
-        this.freightAmount = freightAmount;
-    }
+	public void setFreightAmount(BigDecimal freightAmount) {
+		this.freightAmount = freightAmount;
+	}
 
-    private int freeFreightCount;
+	private int freeFreightCount;
 
-    public int getFreeFreightCount() {
-        return freeFreightCount;
-    }
+	public int getFreeFreightCount() {
+		return freeFreightCount;
+	}
 
-    public void setFreeFreightCount(int freeFreightCount) {
-        this.freeFreightCount = freeFreightCount;
-    }
+	public void setFreeFreightCount(int freeFreightCount) {
+		this.freeFreightCount = freeFreightCount;
+	}
 
-    private String promotionInfo;
+	private String promotionInfo;
 
-    public String getPromotionInfo() {
-        return promotionInfo;
-    }
+	public String getPromotionInfo() {
+		return promotionInfo;
+	}
 
-    public void setPromotionInfo(String promotionInfo) {
-        this.promotionInfo = promotionInfo;
-    }
+	public void setPromotionInfo(String promotionInfo) {
+		this.promotionInfo = promotionInfo;
+	}
 
-    private int maxLibrary;
+	private int maxLibrary;
 
-    public int getMaxLibrary() {
-        return maxLibrary;
-    }
+	public int getMaxLibrary() {
+		return maxLibrary;
+	}
 
-    public void setMaxLibrary(int maxLibrary) {
-        this.maxLibrary = maxLibrary;
-    }
+	public void setMaxLibrary(int maxLibrary) {
+		this.maxLibrary = maxLibrary;
+	}
 
-    private int saleCount;
+	private int saleCount;
 
-    public int getSaleCount() {
-        return saleCount;
-    }
+	public int getSaleCount() {
+		return saleCount;
+	}
 
-    public void setSaleCount(int saleCount) {
-        this.saleCount = saleCount;
-    }
+	public void setSaleCount(int saleCount) {
+		this.saleCount = saleCount;
+	}
 
-    private int stock;
+	private int stock;
 
-    public int getStock() {
-        return stock;
-    }
+	public int getStock() {
+		return stock;
+	}
 
-    public void setStock(int stock) {
-        this.stock = stock;
-    }
+	public void setStock(int stock) {
+		this.stock = stock;
+	}
 
-    private String attrDesc;
+	private String attrDesc;
 
-    public String getAttrDesc() {
-        return attrDesc;
-    }
+	public String getAttrDesc() {
+		return attrDesc;
+	}
 
-    public void setAttrDesc(String attrDesc) {
-        this.attrDesc = attrDesc;
-    }
+	public void setAttrDesc(String attrDesc) {
+		this.attrDesc = attrDesc;
+	}
 
-    private String ppv;
+	private String ppv;
 
-    public String getPpv() {
-        return ppv;
-    }
+	public String getPpv() {
+		return ppv;
+	}
 
-    public void setPpv(String ppv) {
-        this.ppv = ppv;
-    }
+	public void setPpv(String ppv) {
+		this.ppv = ppv;
+	}
 
-    private boolean deleted;
+	private boolean deleted;
 
-    public boolean getDeleted() {
-        return deleted;
-    }
+	public boolean getDeleted() {
+		return deleted;
+	}
 
-    public void setDeleted(boolean deleted) {
-        this.deleted = deleted;
-    }
+	public void setDeleted(boolean deleted) {
+		this.deleted = deleted;
+	}
 
-    private Date created;
+	private Date created;
 
-    public Date getCreated() {
-        return created;
-    }
+	public Date getCreated() {
+		return created;
+	}
 
-    public void setCreated(Date created) {
-        this.created = created;
-    }
+	public void setCreated(Date created) {
+		this.created = created;
+	}
 
-    private Date modified;
+	private Date modified;
 
-    public Date getModified() {
-        return modified;
-    }
+	public Date getModified() {
+		return modified;
+	}
 
-    public void setModified(Date modified) {
-        this.modified = modified;
-    }
+	public void setModified(Date modified) {
+		this.modified = modified;
+	}
 
-    private Date saleTime;
+	private Date saleTime;
 
-    public Date getSaleTime() {
-        return saleTime;
-    }
+	public Date getSaleTime() {
+		return saleTime;
+	}
 
-    public void setSaleTime(Date saleTime) {
-        this.saleTime = saleTime;
-    }
+	public void setSaleTime(Date saleTime) {
+		this.saleTime = saleTime;
+	}
 
-    private int maxBuyCount;
+	private int maxBuyCount;
 
-    public int getMaxBuyCount() {
-        return maxBuyCount;
-    }
+	public int getMaxBuyCount() {
+		return maxBuyCount;
+	}
 
-    public void setMaxBuyCount(int maxBuyCount) {
-        this.maxBuyCount = maxBuyCount;
-    }
+	public void setMaxBuyCount(int maxBuyCount) {
+		this.maxBuyCount = maxBuyCount;
+	}
 
 }

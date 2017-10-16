@@ -8,11 +8,9 @@ import java.util.List;
 import java.math.BigDecimal;
 
 public interface SystemTaskLogDao {
-
+   
     SystemTaskLog getSystemTaskLogrById(@Param("id") int id);
-
     List<SystemTaskLog> pagerSystemTaskLogList(@Param("offset") int offset, @Param("limit") int limit);
-
-    int insertSystemTaskLog(SystemTaskLog systemTaskLog);
+	int insertSystemTaskLog(SystemTaskLog systemTaskLog);
 
 }

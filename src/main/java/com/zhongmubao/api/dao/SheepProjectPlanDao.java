@@ -8,11 +8,9 @@ import java.util.List;
 import java.math.BigDecimal;
 
 public interface SheepProjectPlanDao {
-
-    SheepProjectPlan getSheepProjectPlanrById(@Param("id") int id);
-
+   
+    SheepProjectPlan getSheepProjectPlanById(@Param("id") int id);
     List<SheepProjectPlan> pagerSheepProjectPlanList(@Param("offset") int offset, @Param("limit") int limit);
-
-    int insertSheepProjectPlan(SheepProjectPlan sheepProjectPlan);
+	int insertSheepProjectPlan(SheepProjectPlan sheepProjectPlan);
 
 }

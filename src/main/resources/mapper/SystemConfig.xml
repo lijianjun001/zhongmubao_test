@@ -28,22 +28,22 @@
     <insert id="insertSystemConfig">
         <!-- ignore 主键冲突，报错 -->
         INSERT ignore INTO SystemConfig (
-        Category,
-        Key,
-        Value,
-        Name,
-        Deleted,
-        Created,
-        Modified
-        )
+			     Category, 
+	     Key, 
+	     Value, 
+	     Name, 
+	     Deleted, 
+	     Created, 
+	     Modified 
+		)
         VALUES (
-        #{category},
-        #{key},
-        #{value},
-        #{name},
-        #{deleted},
-        #{created},
-        #{modified}
-        )
+			     #{category}, 
+	     #{key}, 
+	     #{value}, 
+	     #{name}, 
+	     #{deleted}, 
+	     #{created}, 
+	     #{modified} 
+		)
     </insert>
 </mapper>

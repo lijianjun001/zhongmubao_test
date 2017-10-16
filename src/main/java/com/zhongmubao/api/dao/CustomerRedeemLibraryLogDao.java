@@ -8,11 +8,9 @@ import java.util.List;
 import java.math.BigDecimal;
 
 public interface CustomerRedeemLibraryLogDao {
-
+   
     CustomerRedeemLibraryLog getCustomerRedeemLibraryLogrById(@Param("id") int id);
-
     List<CustomerRedeemLibraryLog> pagerCustomerRedeemLibraryLogList(@Param("offset") int offset, @Param("limit") int limit);
-
-    int insertCustomerRedeemLibraryLog(CustomerRedeemLibraryLog customerRedeemLibraryLog);
+	int insertCustomerRedeemLibraryLog(CustomerRedeemLibraryLog customerRedeemLibraryLog);
 
 }

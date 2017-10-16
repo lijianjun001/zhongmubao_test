@@ -28,20 +28,20 @@
     <insert id="insertExtRedPackageHistory">
         <!-- ignore 主键冲突，报错 -->
         INSERT ignore INTO ExtRedPackageHistory (
-        CustomerId,
-        RedPackageId,
-        Price,
-        Modified,
-        Created,
-        Transaction
-        )
+			     CustomerId, 
+	     RedPackageId, 
+	     Price, 
+	     Modified, 
+	     Created, 
+	     Transaction 
+		)
         VALUES (
-        #{customerId},
-        #{redPackageId},
-        #{price},
-        #{modified},
-        #{created},
-        #{transaction}
-        )
+			     #{customerId}, 
+	     #{redPackageId}, 
+	     #{price}, 
+	     #{modified}, 
+	     #{created}, 
+	     #{transaction} 
+		)
     </insert>
 </mapper>

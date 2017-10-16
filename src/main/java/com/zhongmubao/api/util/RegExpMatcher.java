@@ -5,7 +5,6 @@ import java.util.regex.Pattern;
 
 /**
  * 正则表达式匹配
- *
  * @author 米立林
  */
 public class RegExpMatcher {
@@ -15,11 +14,10 @@ public class RegExpMatcher {
 
     /**
      * 正则校验手机号
-     *
      * @param mobile 手机号
-     * @return ture or false
+     * @return true or false
      */
-    public static boolean MatcherMobile(String mobile) {
+    public static boolean MatcherMobile(String mobile){
         Pattern pattern = Pattern.compile(regExp);
         Matcher matcher = pattern.matcher(mobile);
         return matcher.find();

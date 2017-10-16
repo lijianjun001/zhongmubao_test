@@ -2,7 +2,6 @@ package com.zhongmubao.api.config.enmu;
 
 /**
  * 短信验证码类型
- *
  * @author 米立林 2017-09-30
  */
 public enum SmsType {

@@ -28,18 +28,18 @@
     <insert id="insertCustomerRedeemLibraryLog">
         <!-- ignore 主键冲突，报错 -->
         INSERT ignore INTO CustomerRedeemLibraryLog (
-        CustomerId,
-        ProjectId,
-        IsSend,
-        Created,
-        Modified
-        )
+			     CustomerId, 
+	     ProjectId, 
+	     IsSend, 
+	     Created, 
+	     Modified 
+		)
         VALUES (
-        #{customerId},
-        #{projectId},
-        #{isSend},
-        #{created},
-        #{modified}
-        )
+			     #{customerId}, 
+	     #{projectId}, 
+	     #{isSend}, 
+	     #{created}, 
+	     #{modified} 
+		)
     </insert>
 </mapper>

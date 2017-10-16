@@ -13,7 +13,6 @@ public interface BaseDao<T extends BaseModel> {
 
     /**
      * 修改操作
-     *
      * @param entity
      * @throws Exception
      */
@@ -21,7 +20,6 @@ public interface BaseDao<T extends BaseModel> {
 
     /**
      * save函数根据参数条件,调用了insert或update函数:有则改之,无则加之
-     *
      * @param entity
      * @throws Exception
      */
@@ -29,7 +27,6 @@ public interface BaseDao<T extends BaseModel> {
 
     /**
      * insert的对象如果存在则不会修改之前的值，也不会重新增加
-     *
      * @param entity
      * @throws Exception
      */
@@ -37,7 +34,6 @@ public interface BaseDao<T extends BaseModel> {
 
     /**
      * 获取单个
-     *
      * @param query
      * @return
      * @throws Exception
@@ -46,7 +42,6 @@ public interface BaseDao<T extends BaseModel> {
 
     /**
      * 获取单个
-     *
      * @param query
      * @return
      * @throws Exception
@@ -55,7 +50,6 @@ public interface BaseDao<T extends BaseModel> {
 
     /**
      * 删除
-     *
      * @param entity
      * @throws Exception
      */
@@ -63,7 +57,6 @@ public interface BaseDao<T extends BaseModel> {
 
     /**
      * 分页
-     *
      * @param query
      * @throws Exception
      */

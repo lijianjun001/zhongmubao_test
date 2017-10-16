@@ -4,7 +4,7 @@ public class SignPackageViewModel {
     public SignPackageViewModel() {
     }
 
-    public SignPackageViewModel(int id, String price, String expTime, int surplusDay) {
+    public SignPackageViewModel(int id, String price, String expTime,int surplusDay) {
         this.id = id;
         this.price = price;
         this.expTime = expTime;

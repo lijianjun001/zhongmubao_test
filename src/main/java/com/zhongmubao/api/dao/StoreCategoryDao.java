@@ -8,11 +8,9 @@ import java.util.List;
 import java.math.BigDecimal;
 
 public interface StoreCategoryDao {
-
+   
     StoreCategory getStoreCategoryrById(@Param("id") int id);
-
     List<StoreCategory> pagerStoreCategoryList(@Param("offset") int offset, @Param("limit") int limit);
-
-    int insertStoreCategory(StoreCategory storeCategory);
+	int insertStoreCategory(StoreCategory storeCategory);
 
 }

@@ -10,13 +10,10 @@ import java.util.List;
 import java.math.BigDecimal;
 
 public interface ExtNoticeDao {
-
+   
     ExtNotice getExtNoticerById(@Param("id") int id);
-
     List<ExtNotice> pagerExtNoticeList(@Param("offset") int offset, @Param("limit") int limit);
-
-    int insertExtNotice(ExtNotice extNotice);
-
+	int insertExtNotice(ExtNotice extNotice);
     Page<ExtNotice> pageEffectiveExtNotice();
 
 }

@@ -34,9 +34,9 @@ public enum SignGiftType {
         }
     },
     /**
-     * 话费卡
+     * 话费充值卡
      */
-    FARE_CARD {
+    TELEPHONE_CARD {
         public String getName() {
             return "05";
         }

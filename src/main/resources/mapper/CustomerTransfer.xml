@@ -28,24 +28,24 @@
     <insert id="insertCustomerTransfer">
         <!-- ignore 主键冲突，报错 -->
         INSERT ignore INTO CustomerTransfer (
-        OldCustomerId,
-        NewCustomerId,
-        CardName,
-        CardNo,
-        CardNoPath,
-        SystemUserId,
-        Remark,
-        Created
-        )
+			     OldCustomerId, 
+	     NewCustomerId, 
+	     CardName, 
+	     CardNo, 
+	     CardNoPath, 
+	     SystemUserId, 
+	     Remark, 
+	     Created 
+		)
         VALUES (
-        #{oldCustomerId},
-        #{newCustomerId},
-        #{cardName},
-        #{cardNo},
-        #{cardNoPath},
-        #{systemUserId},
-        #{remark},
-        #{created}
-        )
+			     #{oldCustomerId}, 
+	     #{newCustomerId}, 
+	     #{cardName}, 
+	     #{cardNo}, 
+	     #{cardNoPath}, 
+	     #{systemUserId}, 
+	     #{remark}, 
+	     #{created} 
+		)
     </insert>
 </mapper>

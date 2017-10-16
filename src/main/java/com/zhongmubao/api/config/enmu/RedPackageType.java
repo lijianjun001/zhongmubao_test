@@ -12,7 +12,7 @@ public enum RedPackageType {
     /**
      * 合并卡合并的
      */
-    MEGRE_CARD {
+    MERGE_CARD {
         public String getName() {
             return "07";
         }

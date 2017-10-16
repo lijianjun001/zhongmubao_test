@@ -28,24 +28,24 @@
     <insert id="insertSystemMonitor">
         <!-- ignore 主键冲突，报错 -->
         INSERT ignore INTO SystemMonitor (
-        Type,
-        DeviceId,
-        ShareId,
-        UKey,
-        State,
-        Deleted,
-        Created,
-        Modified
-        )
+			     Type, 
+	     DeviceId, 
+	     ShareId, 
+	     UKey, 
+	     State, 
+	     Deleted, 
+	     Created, 
+	     Modified 
+		)
         VALUES (
-        #{type},
-        #{deviceId},
-        #{shareId},
-        #{uKey},
-        #{state},
-        #{deleted},
-        #{created},
-        #{modified}
-        )
+			     #{type}, 
+	     #{deviceId}, 
+	     #{shareId}, 
+	     #{uKey}, 
+	     #{state}, 
+	     #{deleted}, 
+	     #{created}, 
+	     #{modified} 
+		)
     </insert>
 </mapper>

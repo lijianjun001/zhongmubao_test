@@ -7,7 +7,8 @@ public class IndexModel {
 
     }
 
-    public IndexModel(List<BannerViewModel> bannerList, List<ProjectViewModel> projectList, CustomerIndexModel customerIndex, NewPeopleProjectViewModel newPeopleProject, boolean showNewProject) {
+    public IndexModel(List<BannerViewModel> bannerList, List<ProjectViewModel> projectList, CustomerIndexModel customerIndex, NewPeopleProjectViewModel newPeopleProject, boolean showNewProject)
+    {
         this.bannerList = bannerList;
         this.projectList = projectList;
         this.customerIndex = customerIndex;
@@ -15,8 +16,8 @@ public class IndexModel {
         this.showNewProject = showNewProject;
     }
 
-    private List<BannerViewModel> bannerList;
-    private List<ProjectViewModel> projectList;
+    private List<BannerViewModel>  bannerList;
+    private List<ProjectViewModel>  projectList;
 
     public CustomerIndexModel getCustomerIndex() {
         return customerIndex;
@@ -41,7 +42,6 @@ public class IndexModel {
     public boolean isShowNewProject() {
         return showNewProject;
     }
-
     public void setShowNewProject(boolean showNewProject) {
         this.showNewProject = showNewProject;
     }
@@ -49,7 +49,6 @@ public class IndexModel {
     public List<BannerViewModel> getBannerList() {
         return bannerList;
     }
-
     public void setBannerList(List<BannerViewModel> bannerList) {
         this.bannerList = bannerList;
     }
@@ -57,7 +56,6 @@ public class IndexModel {
     public List<ProjectViewModel> getProjectList() {
         return projectList;
     }
-
     public void setProjectList(List<ProjectViewModel> projectList) {
         this.projectList = projectList;
     }

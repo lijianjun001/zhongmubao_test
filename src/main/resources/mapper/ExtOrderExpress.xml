@@ -28,22 +28,22 @@
     <insert id="insertExtOrderExpress">
         <!-- ignore 主键冲突，报错 -->
         INSERT ignore INTO ExtOrderExpress (
-        ExpressId,
-        OrderType,
-        OrderId,
-        Code,
-        Remark,
-        Modified,
-        Created
-        )
+			     ExpressId, 
+	     OrderType, 
+	     OrderId, 
+	     Code, 
+	     Remark, 
+	     Modified, 
+	     Created 
+		)
         VALUES (
-        #{expressId},
-        #{orderType},
-        #{orderId},
-        #{code},
-        #{remark},
-        #{modified},
-        #{created}
-        )
+			     #{expressId}, 
+	     #{orderType}, 
+	     #{orderId}, 
+	     #{code}, 
+	     #{remark}, 
+	     #{modified}, 
+	     #{created} 
+		)
     </insert>
 </mapper>

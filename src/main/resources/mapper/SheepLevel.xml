@@ -28,20 +28,31 @@
     <insert id="insertSheepLevel">
         <!-- ignore 主键冲突，报错 -->
         INSERT ignore INTO SheepLevel (
-        Level,
-        SheepCount,
-        Remark,
-        Deleted,
-        Created,
-        Modified
-        )
+			     Level, 
+	     SheepCount, 
+	     Remark, 
+	     Deleted, 
+	     Created, 
+	     Modified 
+		)
         VALUES (
-        #{level},
-        #{sheepCount},
-        #{remark},
-        #{deleted},
-        #{created},
-        #{modified}
-        )
+			     #{level}, 
+	     #{sheepCount}, 
+	     #{remark}, 
+	     #{deleted}, 
+	     #{created}, 
+	     #{modified} 
+		)
     </insert>
+
+    <select id="getLevelBySheepCount">
+        <!-- 具体的sql 根据羊只数量获取等级-->
+        SELECT
+        `Level`
+        FROM
+        SheepLevel
+        WHERE
+        SheepCount >= #{sheepCount} limit 1
+    </select>
+
 </mapper>

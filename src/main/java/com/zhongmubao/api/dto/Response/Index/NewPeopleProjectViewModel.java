@@ -17,7 +17,7 @@ public class NewPeopleProjectViewModel {
     public NewPeopleProjectViewModel() {
     }
 
-    public NewPeopleProjectViewModel(boolean exped120, boolean exped7, boolean isBuyed120, boolean isBuyed7, boolean canBuy120, boolean canBuy7, boolean canReceiveXiaoEn, int surplusDay7) {
+    public NewPeopleProjectViewModel(boolean exped120, boolean exped7, boolean isBuyed120, boolean isBuyed7, boolean canBuy120, boolean canBuy7 , boolean canReceiveXiaoEn, int surplusDay7) {
         this.exped120 = exped120;
         this.exped7 = exped7;
         this.isBuyed120 = isBuyed120;
@@ -35,7 +35,6 @@ public class NewPeopleProjectViewModel {
     public void setSurplusDay7(int surplusDay7) {
         this.surplusDay7 = surplusDay7;
     }
-
     public boolean isCanBuy120() {
         return canBuy120;
     }

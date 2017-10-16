@@ -8,11 +8,9 @@ import java.util.List;
 import java.math.BigDecimal;
 
 public interface ExtShareCategoryDao {
-
+   
     ExtShareCategory getExtShareCategoryrById(@Param("id") int id);
-
     List<ExtShareCategory> pagerExtShareCategoryList(@Param("offset") int offset, @Param("limit") int limit);
-
-    int insertExtShareCategory(ExtShareCategory extShareCategory);
+	int insertExtShareCategory(ExtShareCategory extShareCategory);
 
 }

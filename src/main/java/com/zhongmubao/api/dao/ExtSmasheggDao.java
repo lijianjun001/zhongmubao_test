@@ -8,11 +8,9 @@ import java.util.List;
 import java.math.BigDecimal;
 
 public interface ExtSmasheggDao {
-
+   
     ExtSmashegg getExtSmasheggrById(@Param("id") int id);
-
     List<ExtSmashegg> pagerExtSmasheggList(@Param("offset") int offset, @Param("limit") int limit);
-
-    int insertExtSmashegg(ExtSmashegg extSmashegg);
+	int insertExtSmashegg(ExtSmashegg extSmashegg);
 
 }

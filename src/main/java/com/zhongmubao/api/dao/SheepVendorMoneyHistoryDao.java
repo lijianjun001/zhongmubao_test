@@ -8,11 +8,9 @@ import java.util.List;
 import java.math.BigDecimal;
 
 public interface SheepVendorMoneyHistoryDao {
-
+   
     SheepVendorMoneyHistory getSheepVendorMoneyHistoryrById(@Param("id") int id);
-
     List<SheepVendorMoneyHistory> pagerSheepVendorMoneyHistoryList(@Param("offset") int offset, @Param("limit") int limit);
-
-    int insertSheepVendorMoneyHistory(SheepVendorMoneyHistory sheepVendorMoneyHistory);
+	int insertSheepVendorMoneyHistory(SheepVendorMoneyHistory sheepVendorMoneyHistory);
 
 }

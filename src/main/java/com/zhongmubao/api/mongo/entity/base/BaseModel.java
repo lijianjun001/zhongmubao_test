@@ -1,7 +1,5 @@
 package com.zhongmubao.api.mongo.entity.base;
-
 import com.fasterxml.jackson.annotation.JsonInclude;
-
 import java.io.Serializable;
 import java.util.Date;
 

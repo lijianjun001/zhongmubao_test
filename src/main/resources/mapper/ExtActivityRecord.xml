@@ -27,35 +27,34 @@
     </select>
 
     <select id="getExtActivityRecordrByCustomerIdAndActivityId" resultType="ExtActivityRecord">
-        select * from ExtActivityRecord WHERE customerid = #{customerId} and ExtActivityid = #{activityId} and deleted
-        =0 limit 1
+         select * from ExtActivityRecord WHERE customerid = #{customerId} and ExtActivityid = #{activityId} and deleted =0 limit 1
     </select>
 
     <insert id="insertExtActivityRecord">
         <!-- ignore 主键冲突，报错 -->
         INSERT ignore INTO ExtActivityRecord (
-        CustomerId,
-        ExtActivityId,
-        Name,
-        Phone,
-        Remark,
-        Created,
-        Deleted,
-        Info,
-        State,
-        AuditReason
-        )
+			     CustomerId, 
+	     ExtActivityId, 
+	     Name, 
+	     Phone, 
+	     Remark, 
+	     Created, 
+	     Deleted, 
+	     Info, 
+	     State, 
+	     AuditReason 
+		)
         VALUES (
-        #{customerId},
-        #{extActivityId},
-        #{name},
-        #{phone},
-        #{remark},
-        #{created},
-        #{deleted},
-        #{info},
-        #{state},
-        #{auditReason}
-        )
+			     #{customerId}, 
+	     #{extActivityId}, 
+	     #{name}, 
+	     #{phone}, 
+	     #{remark}, 
+	     #{created}, 
+	     #{deleted}, 
+	     #{info}, 
+	     #{state}, 
+	     #{auditReason} 
+		)
     </insert>
 </mapper>
