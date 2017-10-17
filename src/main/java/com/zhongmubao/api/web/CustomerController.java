@@ -67,6 +67,8 @@ public class CustomerController {
         try {
             SignModel signModel = customerService.sign(customer);
             return new ResponseEntity<>(ReponseModel.ok(signModel), HttpStatus.OK);
+        } catch (ApiException ex) {
+            return new ResponseEntity<>(ReponseModel.error(ex.getStatus()), HttpStatus.OK);
         } catch (Exception ex) {
             return new ResponseEntity<>(ReponseModel.error(ex, this.getClass()), HttpStatus.OK);
         }
