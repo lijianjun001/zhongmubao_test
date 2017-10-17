@@ -9,15 +9,17 @@ public class PageSignGiftModel {
     public PageSignGiftModel() {
     }
 
-    public PageSignGiftModel(int pageCount, List<PageSignGiftViewModel> list, SignGiftAddressViewModel signGiftAddress) {
+    public PageSignGiftModel(int pageCount, List<PageSignGiftViewModel> list, SignGiftAddressViewModel signGiftAddress, String phone) {
         this.pageCount = pageCount;
         this.list = list;
         this.signGiftAddress = signGiftAddress;
+        this.phone = phone;
     }
 
     private int pageCount;
     private List<PageSignGiftViewModel> list;
     private SignGiftAddressViewModel signGiftAddress;
+    private String phone;
 
     public int getPageCount() {
         return pageCount;
@@ -43,4 +45,11 @@ public class PageSignGiftModel {
         this.signGiftAddress = signGiftAddress;
     }
 
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
 }

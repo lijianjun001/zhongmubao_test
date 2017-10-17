@@ -283,18 +283,18 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
 
     /***
      * 客户中奖记录
-     * @param customerId 客户id
+     * @param customer 当前客户
      * @param model 请求参数对象
      * @return PageSignGiftModel
      */
     @Override
-    public PageSignGiftModel pageGift(int customerId, PageSignGiftRequestModel model) throws Exception {
+    public PageSignGiftModel pageGift(Customer customer, PageSignGiftRequestModel model) throws Exception {
         if (null == model) {
             throw new ApiException(ResultStatus.PARAMETER_MISSING);
         }
         PageModel<ShareCardMongo> pager = new PageModel<>();
         pager.setPageNo(model.getPageIndex());
-        pager = shareCardMongoDao.pager(customerId, true, pager);
+        pager = shareCardMongoDao.pager(customer.getId(), true, pager);
 
         List<PageSignGiftViewModel> list = pager.getDatas().stream()
                 .map(en -> new PageSignGiftViewModel(
@@ -305,7 +305,7 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
                         en.getType(),
                         DateUtil.format(en.getCreated(), "yyyy.MM.dd")))
                 .collect(Collectors.toList());
-        return new PageSignGiftModel(pager.getTotalPages(), list, formartAddress(customerId));
+        return new PageSignGiftModel(pager.getTotalPages(), list, formartAddress(customer.getId()), customer.getPhone());
     }
 
     @Override

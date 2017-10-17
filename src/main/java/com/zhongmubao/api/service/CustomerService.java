@@ -20,7 +20,7 @@ public interface CustomerService {
 
     SignModel sign(Customer customer) throws Exception;
 
-    PageSignGiftModel pageGift(int customerId, PageSignGiftRequestModel model) throws Exception;
+    PageSignGiftModel pageGift(Customer customer, PageSignGiftRequestModel model) throws Exception;
 
     MyGiftCardModel myGiftCard(int customerId) throws Exception;
 

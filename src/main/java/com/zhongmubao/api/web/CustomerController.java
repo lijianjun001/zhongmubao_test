@@ -85,7 +85,7 @@ public class CustomerController {
     @Authorization
     public ResponseEntity<ReponseModel> pageGift(@CurrentUser Customer customer, HttpEntity<PageSignGiftRequestModel> model) {
         try {
-            PageSignGiftModel giftModel = customerService.pageGift(customer.getId(), model.getBody());
+            PageSignGiftModel giftModel = customerService.pageGift(customer, model.getBody());
             return new ResponseEntity<>(ReponseModel.ok(giftModel), HttpStatus.OK);
         } catch (ApiException ex) {
             return new ResponseEntity<>(ReponseModel.error(ex.getStatus()), HttpStatus.OK);
