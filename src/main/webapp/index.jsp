@@ -23,13 +23,13 @@
 //            phone:'17701314001',
 //            isDefault:0
 //        };
-        var data = {id: 60};
+        var data = {giftId: "59e448c515b5dd77e0e930df", phone: "17"};
         console.info(JSON.stringify(data));
 //        var saveData ={"USER_ID":leader,"Users":users};
 
         $.ajax({
             type: "POST",
-            url: "/customer/sign",
+            url: "/customer/sign/receiveRechargeGift",
             data: JSON.stringify(data),
             contentType: 'application/json;charset=UTF-8',
             dataType: "json",                                     //预期服务器返回类型

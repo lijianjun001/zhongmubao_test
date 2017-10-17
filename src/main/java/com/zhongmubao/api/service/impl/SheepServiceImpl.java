@@ -8,6 +8,7 @@ import com.zhongmubao.api.config.ResultStatus;
 import com.zhongmubao.api.config.enmu.ProjectSaleState;
 import com.zhongmubao.api.config.enmu.ProjectType;
 import com.zhongmubao.api.config.enmu.SheepOrderState;
+import com.zhongmubao.api.config.enmu.SheepStageType;
 import com.zhongmubao.api.dao.*;
 import com.zhongmubao.api.dto.Request.OnlyPrimaryIdRequestModel;
 import com.zhongmubao.api.dto.Request.Sheep.SheepOrderRequestModel;
@@ -387,15 +388,23 @@ public class SheepServiceImpl implements SheepService {
         if (null == sheepProject) {
             throw new ApiException(ResultStatus.PARAMETER_ERROR);
         }
+
+        // 判断类型 羊只1 Or 店铺2
+        int type = SheepStageType.SHEEP.getName();
+        if (sheepProject.getType().equals("00") || sheepProject.getType().equals("06")) {
+            type = SheepStageType.SHEEP.getName();
+        } else if (sheepProject.getType().equals("03") || sheepProject.getType().equals("04")) {
+            type = SheepStageType.SHOP.getName();
+        }
         // 根据周期获取养殖流程
-        List<SheepStageMongo> stages = sheepStageMongoDao.getListByPeriod(sheepProject.getPeriod());
+        List<SheepStageMongo> stages = sheepStageMongoDao.getListByPeriod(sheepProject.getPeriod(), type);
 
         // 已养殖天数
         int curStageDay = DateUtil.subDateOfDay(new Date(), sheepProject.getEffectiveTime());
         int pages = stages.size();
 
         boolean isNotFind = true; // 是否没找到当前养殖进度
-        List<SheepStageViewModel> list = new ArrayList<SheepStageViewModel>();
+        List<SheepStageViewModel> list = new ArrayList<>();
         for (int i = 0; i < pages; i++) {
             SheepStageViewModel viewModel = new SheepStageViewModel();
             SheepStageMongo tmp = stages.get(i);
@@ -409,10 +418,10 @@ public class SheepServiceImpl implements SheepService {
                     viewModel.setIsSelect(1);
                 } else {
                     // 计算养殖进度
-                    SheepStageMongo tempStage = stages.get(i + 1);
                     if (curStageDay > tmp.getDay()) {
                         // 大于养殖天数时，选择选中图标
                         viewModel.setIcon(tmp.getSelectIcon());
+                        SheepStageMongo tempStage = stages.get(i + 1);
                         if (curStageDay < tempStage.getDay()) {
                             // 大于并小于下一进度，选中
                             isNotFind = false;

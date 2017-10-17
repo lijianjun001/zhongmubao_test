@@ -58,9 +58,10 @@ public class SheepStageMongoDao implements BaseDao<SheepStageMongo> {
      * @return 通过周期获取养殖流程
      * @throws Exception
      */
-    public List<SheepStageMongo> getListByPeriod(int period) throws Exception {
+    public List<SheepStageMongo> getListByPeriod(int period,int type) throws Exception {
         Query query = new Query();
         query.addCriteria(Criteria.where("Period").is(period));
+        query.addCriteria(Criteria.where("Type").is(type));
         return mongoTemplate.find(query, SheepStageMongo.class);
     }
 }

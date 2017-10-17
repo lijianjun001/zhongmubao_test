@@ -69,7 +69,7 @@ public class Constants {
     public static final String CACHE_CUSTOMER_IS_SHARE_KEY = "CACHE_CUSTOMER_IS_SHARE_KEY";
 
     /**
-     * Cahce每日分享随机数
+     * Cache每日分享随机数
      */
     public static final String CACHE_SHARE_RANDOM_KEY = "ShareRandom";
 

@@ -152,15 +152,16 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
 
                 //region 验证
                 boolean todayIsShare = extRedPackageDao.countExtRedPackageByCustomerIdAndBeginTimeAndEndTimeAndType(customerId, dayBegin, dayEnd, dayShareType) > 0;// redisCache.getCustomerIsShare(customerId);
-                // todo:去掉测试账号代码
-                if (todayIsShare && customer.getId() != 4194) {
+
+                // TODO:删除测试代码
+                if (todayIsShare && !customer.getPhone().equals("15656287151")) {
                     return new com.zhongmubao.api.dto.Response.Sign.SignModel(shareDayCount, "0.00", null, null, todayIsShare, false);
                 }
 
                 //判断这个月分享了多少次
                 int monthMaxShare = Constants.MONTH_MAX_SHARE;
 
-                if (shareDayCount > monthMaxShare) {
+                if (shareDayCount > monthMaxShare && !customer.getPhone().equals("15656287151")) {
                     throw new ApiException("本月分享达到最大分享数,请下月再来");
                 }
                 shareDayCount = shareDayCount + 1;
@@ -185,12 +186,13 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
 
                 //endregion
 
-                //region 礼物 todo:去掉测试账号代码
-                if (giftDayList.contains(shareDayCount) || customer.getId() == 4194) {
+                //region 礼物 TODO:删除测试代码
+                if (giftDayList.contains(shareDayCount) || customer.getPhone().equals("15656287151")) {
                     // 随机获取神秘礼物
-                    int randomIndex = MathUtil.random(0, Constants.SIGN_GIFT_LIST.size());
-                    if (customer.getId() == 4194) {
-                        randomIndex = shareDayCount / 2 == 0 ? 8 : 9;
+                    int randomIndex = MathUtil.random(0, Constants.SIGN_GIFT_LIST.size() - 1);
+
+                    if (customer.getPhone().equals("15656287151")) {
+                        randomIndex = shareDayCount % 2 == 0 ? 8 : 9;
                     }
                     SignGiftRedPackageViewModel signGiftRedPackageViewModel = null;
 
@@ -437,6 +439,9 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
         if (null == shareCard || shareCard.getStatus().equals(ShareCardState.RECEIVED.getName())) {
             throw new ApiException(ResultStatus.TELEPHONE_CARD_NOT_EXIT);
         }
+        if (!RegExpMatcher.MatcherMobile(model.getPhone())) {
+            throw new ApiException(ResultStatus.INVALID_PHONE_ERROR);
+        }
 
         // 1、充值话费（先充值再修改领取状态和添加领取记录，客户至上）
         Recharge.submit(model.getPhone(), shareCard.getCount());
@@ -472,7 +477,7 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
             case MERGE_CARD:
                 return "合并卡" + count + "张";
             case TELEPHONE_CARD:
-                return (int)price + "元话费充值卡";
+                return (int) price + "元话费充值卡";
             default:
                 return "";
         }
@@ -489,7 +494,7 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
             case MERGE_CARD:
                 return "合并卡";
             case TELEPHONE_CARD:
-                return (int)price + "元话费充值卡";
+                return (int) price + "元话费充值卡";
             default:
                 return "";
         }

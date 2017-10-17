@@ -12,7 +12,7 @@ public class SheepStageMongo extends BaseModel {
     public SheepStageMongo() {
     }
 
-    public SheepStageMongo(String name, int day, String icon, String selectIcon, String remark, int delete, int period, Date created, Date modified) {
+    public SheepStageMongo(String name, int day, String icon, String selectIcon, String remark, int delete, int period, int type, Date created, Date modified) {
         this.name = name;
         this.day = day;
         this.icon = icon;
@@ -22,6 +22,7 @@ public class SheepStageMongo extends BaseModel {
         this.period = period;
         this.created = created;
         this.modified = modified;
+        this.type = type;
     }
 
     @Field("Name")
@@ -44,6 +45,9 @@ public class SheepStageMongo extends BaseModel {
 
     @Field("Period")
     public int period;
+
+    @Field("Type")
+    public int type;
 
     @Field("Created")
     public Date created;

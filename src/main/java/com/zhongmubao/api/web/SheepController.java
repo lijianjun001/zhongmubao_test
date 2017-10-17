@@ -135,7 +135,7 @@ public class SheepController {
 
     /**
      * @param customer     当前用户
-     * @return 获取养殖流程
+     * @return 获取养殖流程(包括羊只和商铺)
      * @author 米立林 2017-09-27
      */
     @Authorization
@@ -151,7 +151,7 @@ public class SheepController {
 
     /**
      * @param customer     当前用户
-     * @return 我的羊圈
+     * @return 我的羊圈(包括羊只和商铺)
      * @author 米立林 2017-10-09
      */
     @Authorization
