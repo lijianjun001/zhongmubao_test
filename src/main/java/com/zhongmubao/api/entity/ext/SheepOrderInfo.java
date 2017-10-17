@@ -17,6 +17,9 @@ public class SheepOrderInfo {
     private Date redemTime;
     private String photo;
     private String shorthand;
+    private String type;
+    private String state;
+    private int period;
 
 
     public int getId() {
@@ -119,5 +122,29 @@ public class SheepOrderInfo {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
+
+    public int getPeriod() {
+        return period;
+    }
+
+    public void setPeriod(int period) {
+        this.period = period;
     }
 }

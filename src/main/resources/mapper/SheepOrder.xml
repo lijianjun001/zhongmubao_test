@@ -171,7 +171,7 @@
 
 	<select id="getSheepOrderByCustomerId" resultType="SheepOrderInfo">
 		<!-- 具体的sql -->
-		SELECT sp.Title,sp.EffectiveTime,sp.RedemTime,sv.Shorthand,SUM(so.Count) AS Count
+		SELECT sp.Title,sp.Type,sp.State,sp.Period,sp.EffectiveTime,sp.RedemTime,sv.Shorthand,SUM(so.Count) AS Count
 		FROM SheepOrder so
 		INNER JOIN SheepProject sp ON so.ProjectId=sp.Id
 		INNER JOIN SheepVendor sv ON sp.VendorId=sv.Id

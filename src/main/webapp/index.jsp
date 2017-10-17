@@ -23,13 +23,15 @@
 //            phone:'17701314001',
 //            isDefault:0
 //        };
-        var data = {giftId: "59e448c515b5dd77e0e930df", phone: "17"};
+
+//        var data = {giftId: "59e448c515b5dd77e0e930df", phone: "17"};
+        var data = {};
         console.info(JSON.stringify(data));
 //        var saveData ={"USER_ID":leader,"Users":users};
 
         $.ajax({
             type: "POST",
-            url: "/customer/sign/receiveRechargeGift",
+            url: "/sheep/mySheepfold",
             data: JSON.stringify(data),
             contentType: 'application/json;charset=UTF-8',
             dataType: "json",                                     //预期服务器返回类型
@@ -38,10 +40,10 @@
                 Platform: "04"
             },
             success: function (data) {
-                //alert(JSON.stringify(data))
+                alert(JSON.stringify(data))
                 //alert(data.msg);
             }, error: function (data) {
-                //alert(data.msg);
+                alert("Error:" + data.msg);
             }
         });
     });

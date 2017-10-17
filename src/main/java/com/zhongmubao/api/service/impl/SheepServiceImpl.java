@@ -27,6 +27,7 @@ import com.zhongmubao.api.util.DateUtil;
 import com.zhongmubao.api.util.SerializeUtil;
 import com.zhongmubao.api.util.StringUtil;
 import com.zhongmubao.api.dto.common.SheepVendorAttrs;
+import com.zhongmubao.api.util.common.CurrentSheepProjectState;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -459,13 +460,17 @@ public class SheepServiceImpl implements SheepService {
         for (SheepOrderInfo info : sheepOrderInfos) {
             // 累计羊只数
             count += info.getCount();
+            // 当前养殖状态
+            CurrentSheepProjectState projectState = calcCurrentSheepProjectState(info);
             SheepOrderInfoViewModel orderInfo = new SheepOrderInfoViewModel(
                     info.getTitle(),
                     DateUtil.format(info.getEffectiveTime(), "yyyy-MM-dd HH:mm:ss"),
                     DateUtil.format(DateUtil.addDay(info.getRedemTime(), -1), "yyyy-MM-dd HH:mm:ss"),
                     info.getCount(),
                     DateUtil.subDateOfDay(info.getRedemTime(), new Date()),
-                    info.getShorthand()
+                    info.getShorthand(),
+                    projectState.getDayType(),
+                    projectState.getDayTypeInt()
             );
             list.add(orderInfo);
         }
@@ -598,5 +603,230 @@ public class SheepServiceImpl implements SheepService {
                 projectIndex.getPurchaseCount()
         );
     }
+
+    /**
+     * 计算当前订单状态
+     *
+     * @param project
+     * @return CurrentSheepProjectState
+     * @author 米立林 2017-10-17
+     */
+    private CurrentSheepProjectState calcCurrentSheepProjectState(SheepOrderInfo project) {
+        CurrentSheepProjectState projectState = new CurrentSheepProjectState();
+        Date now = new Date();
+        // 判断是否为商铺订单
+        if (project.getType().equals(ProjectType.SLAUGHTER.getName()) || project.getType().equals(ProjectType.NEW_PEOPLE_7)) {
+            if (project.getState().equals(SheepOrderState.REDEEMABLE.getName())) {
+                projectState.setDayTypeInt(7);
+                projectState.setDayType("可赎回");
+            } else if (project.getState().equals(SheepOrderState.PAYMENTED.getName())) {
+                projectState.setDayTypeInt(0);
+                projectState.setDayType("采购羊只");
+            } else if (project.getState().equals(SheepOrderState.HAS_INTOBAR.getName())) {
+                Date outDate = DateUtil.addDay(project.getRedemTime(), -1);
+                int day = DateUtil.subDateOfDay(outDate, now);
+                switch (project.getPeriod()) {
+                    case 30:
+                        //region 30Day
+                        if (28 >= day && day >= 25 && day > 0) {
+                            projectState.setDayTypeInt(1);
+                            projectState.setDayType("物流");
+                        } else if (24 >= day && day >= 20 && day > 0) {
+                            projectState.setDayTypeInt(2);
+                            projectState.setDayType("运输");
+                        } else if (19 >= day && day >= 15 && day > 0) {
+                            projectState.setDayTypeInt(3);
+                            projectState.setDayType("仓储入库");
+                        } else if (14 >= day && day >= 5 && day > 0) {
+                            projectState.setDayTypeInt(4);
+                            projectState.setDayType("羊肉分销");
+                        } else if (4 >= day && day >= 1 && day > 0) {
+                            projectState.setDayTypeInt(5);
+                            projectState.setDayType("批发");
+                        } else if (day <= 0) {
+                            projectState.setDayTypeInt(6);
+                            projectState.setDayType("结算回款");
+                        }
+                        break;
+                    //endregion
+                    case 40:
+                        //region 40D ay
+                        if (40 >= day && day >= 35 && day > 0) {
+                            projectState.setDayTypeInt(0);
+                            projectState.setDayType("采购羊只");
+                        } else if (34 >= day && day >= 25 && day > 0) {
+                            projectState.setDayTypeInt(1);
+                            projectState.setDayType("物流");
+                        } else if (24 >= day && day >= 20 && day > 0) {
+                            projectState.setDayTypeInt(2);
+                            projectState.setDayType("运输");
+                        } else if (19 >= day && day >= 15 && day > 0) {
+                            projectState.setDayTypeInt(3);
+                            projectState.setDayType("仓储入库");
+                        } else if (14 >= day && day >= 5 && day > 0) {
+                            projectState.setDayTypeInt(4);
+                            projectState.setDayType("羊肉分销");
+                        } else if (4 >= day && day >= 1 && day > 0) {
+                            projectState.setDayTypeInt(5);
+                            projectState.setDayType("批发");
+                        } else if (day <= 0) {
+                            projectState.setDayTypeInt(6);
+                            projectState.setDayType("结算回款");
+                        }
+                        break;
+                    //endregion
+                    case 50:
+                        //region 50D ay
+                        if (50 >= day && day >= 35 && day > 0) {
+                            projectState.setDayTypeInt(0);
+                            projectState.setDayType("采购羊只");
+                        } else if (34 >= day && day >= 25 && day > 0) {
+                            projectState.setDayTypeInt(1);
+                            projectState.setDayType("物流");
+                        } else if (24 >= day && day >= 20 && day > 0) {
+                            projectState.setDayTypeInt(2);
+                            projectState.setDayType("运输");
+                        } else if (19 >= day && day >= 15 && day > 0) {
+                            projectState.setDayTypeInt(3);
+                            projectState.setDayType("仓储入库");
+                        } else if (14 >= day && day >= 5 && day > 0) {
+                            projectState.setDayTypeInt(4);
+                            projectState.setDayType("羊肉分销");
+                        } else if (4 >= day && day >= 1 && day > 0) {
+                            projectState.setDayTypeInt(5);
+                            projectState.setDayType("批发");
+                        } else if (day <= 0) {
+                            projectState.setDayTypeInt(6);
+                            projectState.setDayType("结算回款");
+                        }
+                        break;
+                    //endregion
+                    case 60:
+                        //region 60Day
+                        if (60 >= day && day >= 45 && day > 0) {
+                            projectState.setDayTypeInt(0);
+                            projectState.setDayType("采购羊只");
+                        } else if (44 >= day && day >= 35 && day > 0) {
+                            projectState.setDayTypeInt(1);
+                            projectState.setDayType("物流");
+                        } else if (34 >= day && day >= 25 && day > 0) {
+                            projectState.setDayTypeInt(2);
+                            projectState.setDayType("运输");
+                        } else if (24 >= day && day >= 15 && day > 0) {
+                            projectState.setDayTypeInt(3);
+                            projectState.setDayType("仓储入库");
+                        } else if (14 >= day && day >= 5 && day > 0) {
+                            projectState.setDayTypeInt(4);
+                            projectState.setDayType("羊肉分销");
+                        } else if (4 >= day && day >= 1 && day > 0) {
+                            projectState.setDayTypeInt(5);
+                            projectState.setDayType("批发");
+                        } else if (day <= 0) {
+                            projectState.setDayTypeInt(6);
+                            projectState.setDayType("结算回款");
+                        }
+                        break;
+                    //endregion
+                    case 90:
+                        //region 90Day
+                        if (90 >= day && day >= 70 && day > 0) {
+                            projectState.setDayTypeInt(0);
+                            projectState.setDayType("采购羊只");
+                        } else if (69 >= day && day >= 60 && day > 0) {
+                            projectState.setDayTypeInt(1);
+                            projectState.setDayType("物流");
+                        } else if (59 >= day && day >= 50 && day > 0) {
+                            projectState.setDayTypeInt(2);
+                            projectState.setDayType("运输");
+                        } else if (49 >= day && day >= 30 && day > 0) {
+                            projectState.setDayTypeInt(3);
+                            projectState.setDayType("仓储入库");
+                        } else if (29 >= day && day >= 15 && day > 0) {
+                            projectState.setDayTypeInt(4);
+                            projectState.setDayType("羊肉分销");
+                        } else if (14 >= day && day >= 1 && day > 0) {
+                            projectState.setDayTypeInt(5);
+                            projectState.setDayType("批发");
+                        } else if (day <= 0) {
+                            projectState.setDayTypeInt(6);
+                            projectState.setDayType("结算回款");
+                        }
+                        break;
+                    //endregion
+                    case 120:
+                        //region 120D ay
+                        if (120 >= day && day >= 100 && day > 0) {
+                            projectState.setDayTypeInt(0);
+                            projectState.setDayType("采购羊只");
+                        } else if (99 >= day && day >= 90 && day > 0) {
+                            projectState.setDayTypeInt(1);
+                            projectState.setDayType("物流");
+                        } else if (89 >= day && day >= 80 && day > 0) {
+                            projectState.setDayTypeInt(2);
+                            projectState.setDayType("运输");
+                        } else if (79 >= day && day >= 60 && day > 0) {
+                            projectState.setDayTypeInt(3);
+                            projectState.setDayType("仓储入库");
+                        } else if (59 >= day && day >= 15 && day > 0) {
+                            projectState.setDayTypeInt(4);
+                            projectState.setDayType("羊肉分销");
+                        } else if (14 >= day && day >= 1 && day > 0) {
+                            projectState.setDayTypeInt(5);
+                            projectState.setDayType("批发");
+                        } else if (day <= 0) {
+                            projectState.setDayTypeInt(6);
+                            projectState.setDayType("结算回款");
+                        }
+                        break;
+                    //endregion
+                }
+            } else {
+                projectState.setDayTypeInt(6);
+                projectState.setDayType("结算回款");
+            }
+        } else {
+            // 羊只订单
+            //region 120Day
+            if (project.getState().equals(SheepOrderState.REDEEMABLE.getName())) {
+                projectState.setDayTypeInt(8);
+                projectState.setDayType("可赎回");
+            } else if (project.getState().equals(SheepOrderState.PAYMENTED.getName())) {
+                projectState.setDayTypeInt(0);
+                projectState.setDayType("待入栏");
+            } else if (project.getState().equals(SheepOrderState.HAS_INTOBAR.getName())) {
+                Date outDate = DateUtil.addDay(project.getRedemTime(), -1);
+                int day = DateUtil.subDateOfDay(outDate, now);
+                if (day >= 110 && day > 0) {
+                    projectState.setDayTypeInt(1);
+                    projectState.setDayType("养殖中1");
+                } else if (109 >= day && day >= 90 && day > 0) {
+                    projectState.setDayTypeInt(2);
+                    projectState.setDayType("养殖中2");
+                } else if (89 >= day && day >= 60 && day > 0) {
+                    projectState.setDayTypeInt(3);
+                    projectState.setDayType("养殖中3");
+                } else if (59 >= day && day >= 40 && day > 0) {
+                    projectState.setDayTypeInt(4);
+                    projectState.setDayType("养殖中4");
+                } else if (39 >= day && day >= 10 && day > 0) {
+                    projectState.setDayTypeInt(5);
+                    projectState.setDayType("养殖中5");
+                } else if (9 >= day && day >= 1 && day > 0) {
+                    projectState.setDayTypeInt(6);
+                    projectState.setDayType("养殖中6");
+                } else if (day <= 0) {
+                    projectState.setDayTypeInt(7);
+                    projectState.setDayType("已出栏");
+                }
+            } else {
+                projectState.setDayTypeInt(7);
+                projectState.setDayType("已出栏");
+            }
+            //endregion
+        }
+
+        return projectState;
+    }
+
 
 }

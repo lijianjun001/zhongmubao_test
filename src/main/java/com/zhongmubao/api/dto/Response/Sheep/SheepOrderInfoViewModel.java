@@ -26,13 +26,25 @@ public class SheepOrderInfoViewModel {
      */
     private String shorthand;
 
-    public SheepOrderInfoViewModel(String title, String effectiveTime, String redeemTime, int count, int redeemDays, String shorthand) {
+    /**
+     * 当前状态
+     */
+    private String dayType;
+
+    /**
+     * 当前状态图片
+     */
+    private int dayTypeInt;
+
+    public SheepOrderInfoViewModel(String title, String effectiveTime, String redeemTime, int count, int redeemDays, String shorthand, String dayType, int dayTypeInt) {
         this.title = title;
         this.effectiveTime = effectiveTime;
         this.redeemTime = redeemTime;
         this.count = count;
         this.redeemDays = redeemDays;
         this.shorthand = shorthand;
+        this.dayType = dayType;
+        this.dayTypeInt = dayTypeInt;
     }
 
     public SheepOrderInfoViewModel() {
@@ -84,5 +96,21 @@ public class SheepOrderInfoViewModel {
 
     public void setShorthand(String shorthand) {
         this.shorthand = shorthand;
+    }
+
+    public String getDayType() {
+        return dayType;
+    }
+
+    public void setDayType(String dayType) {
+        this.dayType = dayType;
+    }
+
+    public int getDayTypeInt() {
+        return dayTypeInt;
+    }
+
+    public void setDayTypeInt(int dayTypeInt) {
+        this.dayTypeInt = dayTypeInt;
     }
 }
