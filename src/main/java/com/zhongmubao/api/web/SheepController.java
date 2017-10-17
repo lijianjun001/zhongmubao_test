@@ -4,6 +4,7 @@ import com.zhongmubao.api.authorization.annotation.Authorization;
 import com.zhongmubao.api.authorization.annotation.CurrentUser;
 import com.zhongmubao.api.dto.Request.OnlyPrimaryIdRequestModel;
 import com.zhongmubao.api.dto.Request.Sheep.SheepOrderRequestModel;
+import com.zhongmubao.api.dto.Request.SystemMonitorRequestModel;
 import com.zhongmubao.api.dto.Response.Index.IndexModel;
 import com.zhongmubao.api.dto.Response.LoginResponseModel;
 import com.zhongmubao.api.dto.Response.ReponseModel;
@@ -160,6 +161,22 @@ public class SheepController {
         try {
             MySheepfoldModel mySheepfoldModel = sheepService.mySheepfold(customer.getId());
             return new ResponseEntity<>(ReponseModel.ok(mySheepfoldModel), HttpStatus.OK);
+        } catch (Exception ex) {
+            return new ResponseEntity<>(ReponseModel.error(ex, this.getClass()), HttpStatus.OK);
+        }
+    }
+
+    /**
+     * @param customer     当前用户
+     * @return 我的羊圈--牧场摄像头
+     * @author 米立林 2017-10-09
+     */
+    @Authorization
+    @RequestMapping(value = "/mySheepfold/pastureMonitor", method = RequestMethod.POST, consumes = "application/json")
+    public ResponseEntity<ReponseModel> pastureMonitor(@CurrentUser Customer customer, HttpEntity<SystemMonitorRequestModel> requestModel) {
+        try {
+            PastureMonitorModel monitorModel = sheepService.pastureMonitor(customer.getId(),requestModel.getBody());
+            return new ResponseEntity<>(ReponseModel.ok(monitorModel), HttpStatus.OK);
         } catch (Exception ex) {
             return new ResponseEntity<>(ReponseModel.error(ex, this.getClass()), HttpStatus.OK);
         }

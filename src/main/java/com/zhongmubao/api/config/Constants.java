@@ -83,6 +83,11 @@ public class Constants {
      */
     public static final String CACHE_CUSTOMER_LEVEL_KEY = "CustomerLevel";
 
+    /**
+     * Cache客户等级
+     */
+    public static final String CACHE_MONITOR_KEY = "SystemMonitor";
+
     //endregion
 
     /**

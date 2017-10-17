@@ -5,13 +5,11 @@ import com.github.pagehelper.PageHelper;
 import com.zhongmubao.api.cache.RedisCache;
 import com.zhongmubao.api.config.Constants;
 import com.zhongmubao.api.config.ResultStatus;
-import com.zhongmubao.api.config.enmu.ProjectSaleState;
-import com.zhongmubao.api.config.enmu.ProjectType;
-import com.zhongmubao.api.config.enmu.SheepOrderState;
-import com.zhongmubao.api.config.enmu.SheepStageType;
+import com.zhongmubao.api.config.enmu.*;
 import com.zhongmubao.api.dao.*;
 import com.zhongmubao.api.dto.Request.OnlyPrimaryIdRequestModel;
 import com.zhongmubao.api.dto.Request.Sheep.SheepOrderRequestModel;
+import com.zhongmubao.api.dto.Request.SystemMonitorRequestModel;
 import com.zhongmubao.api.dto.Response.Index.*;
 import com.zhongmubao.api.dto.Response.Sheep.*;
 import com.zhongmubao.api.entity.*;
@@ -22,10 +20,7 @@ import com.zhongmubao.api.mongo.dao.SheepStageMongoDao;
 import com.zhongmubao.api.mongo.entity.SheepStageMongo;
 import com.zhongmubao.api.mongo.entity.base.PageModel;
 import com.zhongmubao.api.service.SheepService;
-import com.zhongmubao.api.util.ApiUtil;
-import com.zhongmubao.api.util.DateUtil;
-import com.zhongmubao.api.util.SerializeUtil;
-import com.zhongmubao.api.util.StringUtil;
+import com.zhongmubao.api.util.*;
 import com.zhongmubao.api.dto.common.SheepVendorAttrs;
 import com.zhongmubao.api.util.common.CurrentSheepProjectState;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -445,6 +440,14 @@ public class SheepServiceImpl implements SheepService {
         return new PageSheepStageModel(pages, list);
     }
 
+    /**
+     * 我的羊圈
+     *
+     * @param customerId
+     * @return
+     * @throws Exception
+     * @author 米立林 2017-10-09
+     */
     @Override
     public MySheepfoldModel mySheepfold(int customerId) throws Exception {
         if (customerId <= 0) {
@@ -490,6 +493,51 @@ public class SheepServiceImpl implements SheepService {
         }
 
         return mySheepfoldModel;
+    }
+
+    /**
+     * 牧场监控
+     *
+     * @param customerId 当前用户id
+     * @param model      请求参数
+     * @return 牧场监控url
+     * @throws Exception
+     * @author 米立林 2017-10-17
+     */
+    @Override
+    public PastureMonitorModel pastureMonitor(int customerId, SystemMonitorRequestModel model) throws Exception {
+        if (customerId <= 0 || model.getId() <= 0) {
+            throw new ApiException(ResultStatus.PARAMETER_MISSING);
+        }
+        SheepProject sheepProject = sheepProjectDao.getSheepProjectById(model.getId());
+        List<SystemMonitor> monitors = redisCache.getSystemMonitor();
+        if (null == sheepProject || null == monitors) {
+            throw new ApiException(ResultStatus.FAIL);
+        }
+        String type = "00";//21
+        switch (sheepProject.getVendorId()) {
+            case 22:
+                type = "02";
+                break;
+            case 24:
+                type = "01";
+                break;
+            case 25:
+                type = "03";
+                break;
+            case 28:
+                type = "04";
+                break;
+        }
+        String finalType = type;
+        List<SystemMonitor> currentMonitors = monitors.stream().filter(en -> en.getType().equals(finalType)).collect(Collectors.toList());
+        if (null == currentMonitors || currentMonitors.size() <= 0) {
+            throw new ApiException(ResultStatus.DEVICE_OFFLINE);    // 设备已离线
+        }
+        SystemMonitor monitor = currentMonitors.get(MathUtil.random(0, currentMonitors.size() - 1));
+        String videoUrl = ((model.getPlatform() == Platform.ANDROID || model.getPlatform() == Platform.IOS) ? "http:" : "") + "//www.iermu.com/svideo/" + monitor.getShareId() + "/" + monitor.getUKey();
+
+        return new PastureMonitorModel(videoUrl);
     }
 
     private NewPeopleProjectViewModel newPeopleProject(Customer customer) {

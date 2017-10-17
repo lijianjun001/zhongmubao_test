@@ -6,9 +6,11 @@ import com.zhongmubao.api.config.Constants;
 import com.zhongmubao.api.dao.SheepLevelDao;
 import com.zhongmubao.api.dao.SheepVendorDao;
 import com.zhongmubao.api.dao.SystemDistrictDao;
+import com.zhongmubao.api.dao.SystemMonitorDao;
 import com.zhongmubao.api.entity.SheepLevel;
 import com.zhongmubao.api.entity.SheepVendor;
 import com.zhongmubao.api.entity.SystemDistrict;
+import com.zhongmubao.api.entity.SystemMonitor;
 import com.zhongmubao.api.util.DateUtil;
 import com.zhongmubao.api.util.StringUtil;
 import com.zhongmubao.api.util.redis.RedisHelper;
@@ -29,6 +31,9 @@ public class RedisCache {
 
     @Autowired
     private SheepLevelDao sheepLevelDao;
+
+    @Autowired
+    private SystemMonitorDao systemMonitorDao;
 
     @Autowired
     private final SystemDistrictDao systemDistrictDao;
@@ -110,7 +115,7 @@ public class RedisCache {
     }
 
     /**
-     * 获取所有省市区列表
+     * 所有省市区列表
      * Redis Key:Constants.CACHE_SYSTEM_DISTRICT_KEY
      * @return 省市区集合
      * @author 米立林
@@ -135,7 +140,7 @@ public class RedisCache {
     }
 
     /**
-     * 缓存省市区列表
+     * 省市区列表
      * Redis Key:Constants.CACHE_SYSTEM_DISTRICT_KEY
      *
      * @param districts 省市区集合
@@ -153,7 +158,7 @@ public class RedisCache {
     }
 
     /**
-     * 获取客户等级
+     * 客户等级
      * Redis Key:CACHE_CUSTOMER_LEVEL_KEY
      * @return 省市区集合
      * @author 米立林 2017-10-09
@@ -170,6 +175,31 @@ public class RedisCache {
                 return sheepLevels;
             } else {
                 return mapper.readValue(str, new TypeReference<List<SheepLevel>>() {
+                });
+            }
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+
+    /**
+     * 牧场监控
+     * Redis Key:CACHE_MONITOR_KEY
+     * @return 省市区集合
+     * @author 米立林 2017-10-09
+     */
+    public List<SystemMonitor> getSystemMonitor() {
+        try {
+            String str = redisHelper.get(Constants.CACHE_MONITOR_KEY);
+            ObjectMapper mapper = new ObjectMapper();
+
+            if (StringUtil.isNullOrEmpty(str)) {
+                List<SystemMonitor> monitors = systemMonitorDao.pagerSystemMonitorList(0, 1000);
+                String json = mapper.writeValueAsString(monitors);
+                redisHelper.save(Constants.CACHE_MONITOR_KEY, json);
+                return monitors;
+            } else {
+                return mapper.readValue(str, new TypeReference<List<SystemMonitor>>() {
                 });
             }
         } catch (Exception ex) {
