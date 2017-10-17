@@ -4,6 +4,7 @@ import com.zhongmubao.api.authorization.annotation.Authorization;
 import com.zhongmubao.api.authorization.annotation.CurrentUser;
 import com.zhongmubao.api.dto.Request.OnlyPrimaryIdRequestModel;
 import com.zhongmubao.api.dto.Request.Sheep.SheepOrderRequestModel;
+import com.zhongmubao.api.dto.Request.ProjectPlanRequestModel;
 import com.zhongmubao.api.dto.Response.Index.IndexModel;
 import com.zhongmubao.api.dto.Response.LoginResponseModel;
 import com.zhongmubao.api.dto.Response.ReponseModel;
@@ -165,4 +166,13 @@ public class SheepController {
         }
     }
 
+    @RequestMapping(value = "/projectPlan", method = RequestMethod.POST, consumes = "application/json")
+    public ResponseEntity<ReponseModel> ProjectPlan(HttpEntity<ProjectPlanRequestModel> requestModel) {
+        try {
+            ProjectPlanModel projectPlanModel = sheepService.projectPlan(requestModel.getBody());
+            return new ResponseEntity<>(ReponseModel.ok(projectPlanModel), HttpStatus.OK);
+        } catch (Exception ex) {
+            return new ResponseEntity<>(ReponseModel.error(ex, this.getClass()), HttpStatus.OK);
+        }
+    }
 }

@@ -24,7 +24,15 @@
         id
         LIMIT #{offset}, #{limit}
     </select>
-
+    <select id="lastSheepProjectPlan" resultType="SheepProjectPlan">
+        SELECT
+        *
+        FROM
+        SheepProjectPlan
+        WHERE id=#{id}
+        ORDER BY id DESC
+        limit 0,1
+    </select>
     <insert id="insertSheepProjectPlan">
         <!-- ignore 主键冲突，报错 -->
         INSERT ignore INTO SheepProjectPlan (

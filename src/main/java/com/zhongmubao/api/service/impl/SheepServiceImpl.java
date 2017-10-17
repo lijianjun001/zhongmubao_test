@@ -11,6 +11,7 @@ import com.zhongmubao.api.config.enmu.SheepOrderState;
 import com.zhongmubao.api.config.enmu.SheepStageType;
 import com.zhongmubao.api.dao.*;
 import com.zhongmubao.api.dto.Request.OnlyPrimaryIdRequestModel;
+import com.zhongmubao.api.dto.Request.ProjectPlanRequestModel;
 import com.zhongmubao.api.dto.Request.Sheep.SheepOrderRequestModel;
 import com.zhongmubao.api.dto.Response.Index.*;
 import com.zhongmubao.api.dto.Response.Sheep.*;
@@ -490,6 +491,26 @@ public class SheepServiceImpl implements SheepService {
         }
 
         return mySheepfoldModel;
+    }
+
+    /**
+     * @param id
+     * @return ProjectPlanModel
+     * @throws Exception
+     * @author xy
+     */
+    @Override
+    public ProjectPlanModel projectPlan(ProjectPlanRequestModel model) throws Exception {
+
+        if(model==null){
+            throw  new ApiException(ResultStatus.PARAMETER_MISSING);
+        }
+
+        SheepProjectPlan sheepProjectPlan = this.sheepProjectPlanDao.lastSheepProjectPlan(model.getId());
+        if(sheepProjectPlan==null){
+            throw new ApiException("未发现数据");
+        }
+        return new ProjectPlanModel(sheepProjectPlan.getTime(),sheepProjectPlan.getInfo());
     }
 
     private NewPeopleProjectViewModel newPeopleProject(Customer customer) {

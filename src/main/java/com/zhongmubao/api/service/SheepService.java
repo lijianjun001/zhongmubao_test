@@ -1,6 +1,7 @@
 package com.zhongmubao.api.service;
 
 import com.zhongmubao.api.dto.Request.OnlyPrimaryIdRequestModel;
+import com.zhongmubao.api.dto.Request.ProjectPlanRequestModel;
 import com.zhongmubao.api.dto.Request.Sheep.SheepOrderRequestModel;
 import com.zhongmubao.api.dto.Response.Index.IndexModel;
 import com.zhongmubao.api.dto.Response.Sheep.*;
@@ -15,4 +16,5 @@ public interface SheepService {
     PageSheepStageModel sheepStage(int customerId, OnlyPrimaryIdRequestModel model) throws Exception;
     PageSheepOrderEarningsModel pageSheepOrderEarnings(int customerId, SheepOrderRequestModel model) throws Exception;
     MySheepfoldModel mySheepfold(int customerId) throws Exception;
+    ProjectPlanModel projectPlan(ProjectPlanRequestModel model) throws Exception;
 }
