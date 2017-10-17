@@ -305,7 +305,7 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
                         en.getType(),
                         DateUtil.format(en.getCreated(), "yyyy.MM.dd")))
                 .collect(Collectors.toList());
-        return new PageSignGiftModel(pager.getTotalPages(), list, formartAddress(customer.getId()), customer.getAccount());
+        return new PageSignGiftModel(pager.getTotalPages(), list, formartAddress(customer.getId()), customer.getPhone());
     }
 
     @Override
