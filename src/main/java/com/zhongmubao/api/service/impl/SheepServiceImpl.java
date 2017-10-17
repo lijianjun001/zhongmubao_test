@@ -8,6 +8,7 @@ import com.zhongmubao.api.config.ResultStatus;
 import com.zhongmubao.api.config.enmu.*;
 import com.zhongmubao.api.dao.*;
 import com.zhongmubao.api.dto.Request.OnlyPrimaryIdRequestModel;
+import com.zhongmubao.api.dto.Request.ProjectPlanRequestModel;
 import com.zhongmubao.api.dto.Request.Sheep.SheepOrderRequestModel;
 import com.zhongmubao.api.dto.Request.SystemMonitorRequestModel;
 import com.zhongmubao.api.dto.Response.Index.*;
@@ -440,14 +441,6 @@ public class SheepServiceImpl implements SheepService {
         return new PageSheepStageModel(pages, list);
     }
 
-    /**
-     * 我的羊圈
-     *
-     * @param customerId
-     * @return
-     * @throws Exception
-     * @author 米立林 2017-10-09
-     */
     @Override
     public MySheepfoldModel mySheepfold(int customerId) throws Exception {
         if (customerId <= 0) {
@@ -538,6 +531,26 @@ public class SheepServiceImpl implements SheepService {
         String videoUrl = ((model.getPlatform() == Platform.ANDROID || model.getPlatform() == Platform.IOS) ? "http:" : "") + "//www.iermu.com/svideo/" + monitor.getShareId() + "/" + monitor.getUKey();
 
         return new PastureMonitorModel(videoUrl);
+    }
+
+    /**
+     * @param id
+     * @return ProjectPlanModel
+     * @throws Exception
+     * @author xy
+     */
+    @Override
+    public ProjectPlanModel projectPlan(ProjectPlanRequestModel model) throws Exception {
+
+        if(model==null){
+            throw  new ApiException(ResultStatus.PARAMETER_MISSING);
+        }
+
+        SheepProjectPlan sheepProjectPlan = this.sheepProjectPlanDao.lastSheepProjectPlan(model.getId());
+        if(sheepProjectPlan==null){
+            throw new ApiException("未发现数据");
+        }
+        return new ProjectPlanModel(sheepProjectPlan.getTime(),sheepProjectPlan.getInfo());
     }
 
     private NewPeopleProjectViewModel newPeopleProject(Customer customer) {
