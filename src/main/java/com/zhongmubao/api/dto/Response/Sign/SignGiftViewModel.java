@@ -4,7 +4,7 @@ public class SignGiftViewModel {
     public SignGiftViewModel() {
     }
 
-    public SignGiftViewModel(String id, String title, String type, int count, String unit, SignGiftRedPackageViewModel signGiftRedPackage, SignGiftAddressViewModel signGiftAddress, int telephoneCharge) {
+    public SignGiftViewModel(String id, String title, String type, int count, String unit, SignGiftRedPackageViewModel signGiftRedPackage, SignGiftAddressViewModel signGiftAddress, SignGiftCharge signGiftCharge) {
         this.id = id;
         this.type = type;
         this.count = count;
@@ -12,7 +12,7 @@ public class SignGiftViewModel {
         this.signGiftAddress = signGiftAddress;
         this.title = title;
         this.unit = unit;
-        this.telephoneCharge = telephoneCharge;
+        this.signGiftCharge = signGiftCharge;
     }
 
     private String id;
@@ -22,7 +22,7 @@ public class SignGiftViewModel {
     private SignGiftRedPackageViewModel signGiftRedPackage;
     private SignGiftAddressViewModel signGiftAddress;
     private String unit;
-    private int telephoneCharge;
+    private SignGiftCharge signGiftCharge;
 
     public String getUnit() {
         return unit;
@@ -81,12 +81,11 @@ public class SignGiftViewModel {
         return signGiftAddress;
     }
 
-
-    public int getTelephoneCharge() {
-        return telephoneCharge;
+    public SignGiftCharge getSignGiftCharge() {
+        return signGiftCharge;
     }
 
-    public void setTelephoneCharge(int telephoneCharge) {
-        this.telephoneCharge = telephoneCharge;
+    public void setSignGiftCharge(SignGiftCharge signGiftCharge) {
+        this.signGiftCharge = signGiftCharge;
     }
 }

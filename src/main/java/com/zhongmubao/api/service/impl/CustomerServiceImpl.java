@@ -265,7 +265,7 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
                     signGiftViewModel.setSignGiftAddress(signGiftAddressViewModel);
                     signGiftViewModel.setTitle(formatGiftShortTitle(signGift.getType(), shareCard.getCount(), giftPrice));
                     signGiftViewModel.setUnit(formatGiftUnit(signGift.getType()));
-                    signGiftViewModel.setTelephoneCharge(telephoneMoney);
+                    signGiftViewModel.setSignGiftCharge(new SignGiftCharge(Integer.toString(telephoneMoney), customer.getPhone()));
                 }
 
                 redisCache.saveCustomerIsShare(customerId);//设置今天已分享
