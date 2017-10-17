@@ -86,7 +86,7 @@ public class SheepController {
      * @param customer     当前用户
      * @param requestModel 请求参数
      * @return 买羊订单详情
-     * @author 米立林
+     * @author 米立林 2017-09-25
      */
     @Authorization
     @RequestMapping(value = "/sheepOrderDetail", method = RequestMethod.POST, consumes = "application/json")
@@ -103,7 +103,7 @@ public class SheepController {
      * @param customer     当前用户
      * @param requestModel 请求参数
      * @return 牧场详情
-     * @author 米立林
+     * @author 米立林 2017-09-26
      */
     @Authorization
     @RequestMapping(value = "/sheepVendorDetail", method = RequestMethod.POST, consumes = "application/json")
@@ -122,7 +122,7 @@ public class SheepController {
      * @param customer     当前用户
      * @param requestModel 请求参数
      * @return 养标计划
-     * @author 米立林
+     * @author 米立林 2017-09-27
      */
     @Authorization
     @RequestMapping(value = "/sheepProjectPlan", method = RequestMethod.POST, consumes = "application/json")
