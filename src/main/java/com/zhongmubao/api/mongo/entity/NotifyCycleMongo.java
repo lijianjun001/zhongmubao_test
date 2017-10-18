@@ -10,7 +10,7 @@ import org.springframework.data.mongodb.core.mapping.Field;
  * @date 2017-10-18
  */
 @Document(collection = "NotifyCycleMongo")
-public class NotifyCycleMongo  extends BaseModel {
+public class NotifyCycleMongo extends BaseModel {
 
     @Field("Cycle")
     private String cycle;

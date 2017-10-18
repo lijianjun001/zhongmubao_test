@@ -8,6 +8,9 @@ import com.zhongmubao.api.dto.Request.customer.AutoRedeemRequestModel;
 import com.zhongmubao.api.dto.Request.customer.ResetPasswordRequestModel;
 import com.zhongmubao.api.dto.Response.Address.CustomerAddressResponseModel;
 import com.zhongmubao.api.dto.Response.Ext.PageExtRedPackageModel;
+import com.zhongmubao.api.dto.Response.Notice.NoticeRemindModel;
+import com.zhongmubao.api.dto.Response.Notice.RemindNoticeCycleModel;
+import com.zhongmubao.api.dto.Response.Notice.RemindNoticeTypeModel;
 import com.zhongmubao.api.dto.Response.Sign.MyGiftCardModel;
 import com.zhongmubao.api.dto.Response.Sign.SignList.PageSignGiftModel;
 import com.zhongmubao.api.dto.Response.Sign.SignModel;
@@ -49,4 +52,12 @@ public interface CustomerService {
     boolean autoRedeemAmount(int customerId, AutoRedeemRequestModel model) throws Exception;
 
     void receiveRechargeGift(Customer customer, ReceiveRechargeGiftRequestModel model) throws Exception;
+
+    NoticeRemindModel notifyIndex(int customerId) throws Exception;
+
+    RemindNoticeTypeModel notifyType(int customerId) throws Exception;
+
+    RemindNoticeCycleModel notifyCycle(int customerId) throws Exception;
+
+
 }
