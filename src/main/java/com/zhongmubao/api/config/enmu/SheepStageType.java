@@ -9,6 +9,7 @@ public enum SheepStageType {
      * 羊只
      */
     SHEEP {
+        @Override
         public int getName() {
             return 1;
         }
@@ -17,6 +18,7 @@ public enum SheepStageType {
      * 商铺
      */
     SHOP {
+        @Override
         public int getName() {
             return 2;
         }

@@ -24,13 +24,13 @@
 //            isDefault:0
 //        };
 
-        var data = {id: 29, platform: "01"};
+        var data = {id: 1706, platform: "00"};
         console.info(JSON.stringify(data));
 //        var saveData ={"USER_ID":leader,"Users":users};
 
         $.ajax({
             type: "POST",
-            url: "/sheep/mySheepfold/pastureMonitor",
+            url: "/sheep/index",
             data: JSON.stringify(data),
             contentType: 'application/json;charset=UTF-8',
             dataType: "json",                                     //预期服务器返回类型

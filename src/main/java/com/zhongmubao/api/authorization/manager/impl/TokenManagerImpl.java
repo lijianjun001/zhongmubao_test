@@ -51,7 +51,9 @@ public class TokenManagerImpl implements TokenManager {
 
         try {
             SystemTokenMongo systemToken = systemTokenMongoDao.getByTokenAndPlatform(authentication,platform);
-            if(systemToken==null)return null;
+            if(systemToken==null) {
+                return null;
+            }
             Date now = new Date();
             if(systemToken.expired.getTime()<now.getTime()){
                 return null;

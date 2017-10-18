@@ -10,6 +10,7 @@ public enum SystemPushType {
      * 短信
      */
     SMS {
+        @Override
         public String getName() {
             return "01";
         }
@@ -18,6 +19,7 @@ public enum SystemPushType {
      * 苹果
      */
     IOS {
+        @Override
         public String getName() {
             return "02";
         }
@@ -26,6 +28,7 @@ public enum SystemPushType {
      * 安卓
      */
     ANDROID {
+        @Override
         public String getName() {
             return "03";
         }
@@ -34,6 +37,7 @@ public enum SystemPushType {
      * 微信
      */
     WEIXIN {
+        @Override
         public String getName() {
             return "04";
         }

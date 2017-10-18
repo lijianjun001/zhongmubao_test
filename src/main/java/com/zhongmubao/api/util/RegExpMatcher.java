@@ -17,7 +17,7 @@ public class RegExpMatcher {
      * @param mobile 手机号
      * @return true or false
      */
-    public static boolean MatcherMobile(String mobile){
+    public static boolean matcherMobile(String mobile){
         Pattern pattern = Pattern.compile(regExp);
         Matcher matcher = pattern.matcher(mobile);
         return matcher.find();

@@ -15,5 +15,5 @@ public interface SheepProjectDao {
     List<SheepProject> pagerSheepProjectList(@Param("offset") int offset, @Param("limit") int limit);
 	int insertSheepProject(SheepProject sheepProject);
     List<SheepProjectIndex> getIndexSheepProject(@Param("paidState") String paidState, @Param("noPayState") String noPayState, @Param("beginTime") Date beginTime);
-    PastureDetailExtModel GetPastureDetailById(@Param("id") int id);
+    PastureDetailExtModel getPastureDetailById(@Param("id") int id);
 }

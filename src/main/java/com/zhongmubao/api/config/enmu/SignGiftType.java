@@ -5,6 +5,7 @@ public enum SignGiftType {
      * 红包
      */
     RED_PACKAGE {
+        @Override
         public String getName() {
             return "01";
         }
@@ -13,6 +14,7 @@ public enum SignGiftType {
      * 神秘礼物
      */
     SECRET_GIFT {
+        @Override
         public String getName() {
             return "02";
         }
@@ -21,6 +23,7 @@ public enum SignGiftType {
      * 延时卡
      */
     DELAYED_CARD {
+        @Override
         public String getName() {
             return "03";
         }
@@ -29,6 +32,7 @@ public enum SignGiftType {
      * 合并卡
      */
     MERGE_CARD {
+        @Override
         public String getName() {
             return "04";
         }
@@ -37,6 +41,7 @@ public enum SignGiftType {
      * 话费充值卡
      */
     TELEPHONE_CARD {
+        @Override
         public String getName() {
             return "05";
         }

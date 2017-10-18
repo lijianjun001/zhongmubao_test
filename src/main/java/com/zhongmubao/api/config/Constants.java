@@ -103,7 +103,7 @@ public class Constants {
     /**
      * 新手活动Id
      */
-    public static final int Activity_ID_XIN_SHOU = 12;
+    public static final int ACTIVITY_ID_XIN_SHOU = 12;
 
     /**
      * 每日分享红包过期时间（天）
