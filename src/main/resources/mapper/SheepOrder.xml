@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper
-        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.zhongmubao.api.dao.SheepOrderDao">
-    <!-- 目的：为dao接口方法提供sql语句配置 -->
+	<!-- 目的：为dao接口方法提供sql语句配置 -->
 
-    <select id="getSheepOrderById" resultType="SheepOrder">
-        <!-- 具体的sql -->
-        SELECT
-        *
-        FROM
-        SheepOrder
-        WHERE
-        id = #{id} limit 1
-    </select>
+	<select id="getSheepOrderById" resultType="SheepOrder">
+		<!-- 具体的sql -->
+		SELECT
+		*
+		FROM
+		SheepOrder
+		WHERE
+		id = #{id} limit 1
+	</select>
 
-    <select id="pagerSheepOrderList" resultType="SheepOrder">
+	<select id="pagerSheepOrderList" resultType="SheepOrder">
         SELECT
         *
         FROM
@@ -25,71 +25,71 @@
         LIMIT #{offset}, #{limit}
     </select>
 
-    <insert id="insertSheepOrder">
-        <!-- ignore 主键冲突，报错 -->
-        INSERT ignore INTO SheepOrder (
-			     ProjectId, 
-	     CustomerId, 
-	     Code, 
-	     Count, 
-	     TotalAmount, 
-	     DeductibleAmount, 
-	     DeductibleCount, 
-	     AdvanceAmount, 
-	     PayableAmount, 
-	     PaymentAmount, 
-	     PaymentTN, 
-	     PaymentType, 
-	     PaymentPlatform, 
-	     OrderPlatform, 
-	     State, 
-	     Expired, 
-	     RedemAmount, 
-	     RedemName, 
-	     RedemBank, 
-	     RedemBankAccount, 
-	     Remark, 
-	     Frozened, 
-	     Deleted, 
-	     Created, 
-	     Modified, 
-	     IsBouns, 
-	     PaymentTime, 
-	     IsSendLibrary, 
-	     Sign 
+	<insert id="insertSheepOrder">
+		<!-- ignore 主键冲突，报错 -->
+		INSERT ignore INTO SheepOrder (
+		ProjectId,
+		CustomerId,
+		Code,
+		Count,
+		TotalAmount,
+		DeductibleAmount,
+		DeductibleCount,
+		AdvanceAmount,
+		PayableAmount,
+		PaymentAmount,
+		PaymentTN,
+		PaymentType,
+		PaymentPlatform,
+		OrderPlatform,
+		State,
+		Expired,
+		RedemAmount,
+		RedemName,
+		RedemBank,
+		RedemBankAccount,
+		Remark,
+		Frozened,
+		Deleted,
+		Created,
+		Modified,
+		IsBouns,
+		PaymentTime,
+		IsSendLibrary,
+		Sign
 		)
-        VALUES (
-		  #{projectId},
-	     #{customerId}, 
-	     #{code}, 
-	     #{count}, 
-	     #{totalAmount}, 
-	     #{deductibleAmount}, 
-	     #{deductibleCount}, 
-	     #{advanceAmount}, 
-	     #{payableAmount}, 
-	     #{paymentAmount}, 
-	     #{paymentTN}, 
-	     #{paymentType}, 
-	     #{paymentPlatform}, 
-	     #{orderPlatform}, 
-	     #{state}, 
-	     #{expired}, 
-	     #{redemAmount}, 
-	     #{redemName}, 
-	     #{redemBank}, 
-	     #{redemBankAccount}, 
-	     #{remark}, 
-	     #{frozened}, 
-	     #{deleted}, 
-	     #{created}, 
-	     #{modified}, 
-	     #{isBouns}, 
-	     #{paymentTime}, 
-	     #{isSendLibrary}, 
-	     #{sign} 
+		VALUES (
+		#{projectId},
+		#{customerId},
+		#{code},
+		#{count},
+		#{totalAmount},
+		#{deductibleAmount},
+		#{deductibleCount},
+		#{advanceAmount},
+		#{payableAmount},
+		#{paymentAmount},
+		#{paymentTN},
+		#{paymentType},
+		#{paymentPlatform},
+		#{orderPlatform},
+		#{state},
+		#{expired},
+		#{redemAmount},
+		#{redemName},
+		#{redemBank},
+		#{redemBankAccount},
+		#{remark},
+		#{frozened},
+		#{deleted},
+		#{created},
+		#{modified},
+		#{isBouns},
+		#{paymentTime},
+		#{isSendLibrary},
+		#{sign}
 		)
-    </insert>
+	</insert>
 
 	<select id="sumSheepOrderCountByCustomerAndStates" resultType="int">
 		<!-- 具体的sql -->
@@ -171,7 +171,7 @@
 
 	<select id="getSheepOrderByCustomerId" resultType="SheepOrderInfo">
 		<!-- 具体的sql -->
-		SELECT sp.Title,sp.Type,sp.State,sp.Period,sp.EffectiveTime,sp.RedemTime,sv.Shorthand,SUM(so.Count) AS Count
+		SELECT sp.Title,sp.Type,sp.State,sp.Period,sp.EffectiveTime,sp.RedemTime,sv.Shorthand,SUM(so.Count) AS Count,sp.VendorId
 		FROM SheepOrder so
 		INNER JOIN SheepProject sp ON so.ProjectId=sp.Id
 		INNER JOIN SheepVendor sv ON sp.VendorId=sv.Id
@@ -185,4 +185,61 @@
 		GROUP BY so.ProjectId
 	</select>
 
+	<select id="mySheepFoldList" resultType="MySheepFoldItem">
+		<!-- 具体的sql -->
+		SELECT
+		SUM(o.Count) OrderSheepCount,MAX(o.State) OrderState,p.Id,p.VendorId,p.Title,p.Type,p.BeginTime,p.EffectiveTime,p.RedemTime,p.Period
+		FROM SheepOrder o
+		INNER JOIN SheepProject p ON (o.ProjectId=p.Id)
+		WHERE
+		o.CustomerId=#{customerId} and o.State in
+		<foreach collection="states" item="item" index="index" open="(" close=")" separator=",">
+			#{item}
+		</foreach>
+		<if test="type=='03'" >
+			<![CDATA[ AND (p.Type='03'OR p.Type='04') ]]>
+		</if>
+		<if test="type=='00'" >
+			<![CDATA[ AND (p.Type<>'03'OR p.Type<>'04') ]]>
+		</if>
+		AND o.Deleted=false AND o.Frozened=false AND p.Deleted=false
+		group by p.Id order by case when p.Type='03' or p.Type='06' then 2 else 1 end,o.Id desc
+		limit #{pagestart},#{pageend}
+	</select>
+	<select id="mySheepFoldListCount" resultType="int">
+		<!-- 具体的sql -->
+		SELECT
+		count(1)
+		where
+		o.CustomerId=#{customerId} and o.State in
+		<foreach collection="states" item="item" index="index" open="(" close=")" separator=",">
+			#{item}
+		</foreach>
+		<if test="type=='03'" >
+			<![CDATA[ AND (p.Type='03'OR p.Type='04') ]]>
+		</if>
+		<if test="type=='00'" >
+			<![CDATA[ AND (p.Type<>'03'OR p.Type<>'04') ]]>
+		</if>
+		and o.Deleted=false and o.Frozened=false and p.Deleted=false
+		group by p.Id order by case when p.Type='03' or p.Type='06' then 2 else 1 end,o.Id desc
+	</select>
+	<select id="mySheepFoldListSumCount" resultType="int">
+		<!-- 具体的sql -->
+		SELECT
+		sum(o.Count)
+		where
+		o.CustomerId=#{customerId} and o.State in
+		<foreach collection="states" item="item" index="index" open="(" close=")" separator=",">
+			#{item}
+		</foreach>
+		<if test="type=='03'" >
+			<![CDATA[ AND (p.Type='03'OR p.Type='04') ]]>
+		</if>
+		<if test="type=='00'" >
+			<![CDATA[ AND (p.Type<>'03'OR p.Type<>'04') ]]>
+		</if>
+		and o.Deleted=false and o.Frozened=false and p.Deleted=false
+		group by p.Id order by case when p.Type='03' or p.Type='06' then 2 else 1 end,o.Id desc
+	</select>
 </mapper>
