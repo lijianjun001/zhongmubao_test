@@ -57,7 +57,7 @@ public class ExtBannerMongoDao implements BaseDao<ExtBannerMongo> {
         return null;
     }
 
-    public PageModel<ExtBannerMongo> Pager(PageModel<ExtBannerMongo> page) {
+    public PageModel<ExtBannerMongo> pager(PageModel<ExtBannerMongo> page) {
         Query query = new Query();
         //查询总数
         int count=(int) mongoTemplate.count(query,ExtBannerMongo.class);

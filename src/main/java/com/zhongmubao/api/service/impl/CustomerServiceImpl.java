@@ -153,15 +153,14 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
                 //region 验证
                 boolean todayIsShare = extRedPackageDao.countExtRedPackageByCustomerIdAndBeginTimeAndEndTimeAndType(customerId, dayBegin, dayEnd, dayShareType) > 0;// redisCache.getCustomerIsShare(customerId);
 
-                // TODO:删除测试代码
-                if (todayIsShare && !customer.getPhone().equals("15656287151")) {
+                if (todayIsShare) {
                     return new com.zhongmubao.api.dto.Response.Sign.SignModel(shareDayCount, "0.00", null, null, todayIsShare, false);
                 }
 
                 //判断这个月分享了多少次
                 int monthMaxShare = Constants.MONTH_MAX_SHARE;
 
-                if (shareDayCount > monthMaxShare && !customer.getPhone().equals("15656287151")) {
+                if (shareDayCount > monthMaxShare) {
                     throw new ApiException("本月分享达到最大分享数,请下月再来");
                 }
                 shareDayCount = shareDayCount + 1;
@@ -186,14 +185,14 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
 
                 //endregion
 
-                //region 礼物 TODO:删除测试代码
-                if (giftDayList.contains(shareDayCount) || customer.getPhone().equals("15656287151")) {
+                //region 礼物
+                if (giftDayList.contains(shareDayCount)) {
                     // 随机获取神秘礼物
                     int randomIndex = MathUtil.random(0, Constants.SIGN_GIFT_LIST.size() - 1);
 
-                    if (customer.getPhone().equals("15656287151")) {
-                        randomIndex = shareDayCount % 2 == 0 ? 8 : 9;
-                    }
+//                    if (customer.getPhone().equals("15656287151")) {
+//                        randomIndex = shareDayCount % 2 == 0 ? 8 : 9;
+//                    }
                     SignGiftRedPackageViewModel signGiftRedPackageViewModel = null;
 
                     double giftPrice = 0;
@@ -439,7 +438,7 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
         if (null == shareCard || shareCard.getStatus().equals(ShareCardState.RECEIVED.getName())) {
             throw new ApiException(ResultStatus.TELEPHONE_CARD_NOT_EXIT);
         }
-        if (!RegExpMatcher.MatcherMobile(model.getPhone())) {
+        if (!RegExpMatcher.matcherMobile(model.getPhone())) {
             throw new ApiException(ResultStatus.INVALID_PHONE_ERROR);
         }
 
@@ -575,7 +574,7 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
         if (null == model) {
             throw new ApiException(ResultStatus.PARAMETER_MISSING);
         }
-        boolean isNoPass = VerifyCustomerAddress(
+        boolean isNoPass = verifyCustomerAddress(
                 model.getProvinceCode(),
                 model.getProvinceName(),
                 model.getCityCode(),
@@ -636,7 +635,7 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
         if (null == model) {
             throw new ApiException(ResultStatus.PARAMETER_MISSING);
         }
-        boolean isNoPass = VerifyCustomerAddress(
+        boolean isNoPass = verifyCustomerAddress(
                 model.getProvinceCode(),
                 model.getProvinceName(),
                 model.getCityCode(),
@@ -706,7 +705,7 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
      * @return true or false
      * @author 米立林
      */
-    private boolean VerifyCustomerAddress(String provinceCode, String provinceName, String cityCode, String cityName,
+    private boolean verifyCustomerAddress(String provinceCode, String provinceName, String cityCode, String cityName,
                                           String countyCode, String countyName, String name, String mobile) {
         boolean isNoPass = false;
         // 非空校验
@@ -728,7 +727,7 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
             return isNoPass;
         }
 
-        if (!(RegExpMatcher.MatcherMobile(mobile))) {
+        if (!(RegExpMatcher.matcherMobile(mobile))) {
             isNoPass = true;
         }
         return isNoPass;
@@ -769,7 +768,7 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
             throw new ApiException(ResultStatus.PARAMETER_CODE_ERROR);
         }
         // 3、修改登录密码
-        customerDao.UpdatePassword(customer.getId(), model.getNewPassword());
+        customerDao.updatePassword(customer.getId(), model.getNewPassword());
         // 4、修改验证码为已过期
         smsAuthMongo.setExpired(DateUtil.formatMongo(new Date()));
         systemSMSLogMongoDao.update(smsAuthMongo);
@@ -806,7 +805,7 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
             throw new ApiException(ResultStatus.PARAMETER_CODE_ERROR);
         }
         // 3、修改赎回密码
-        customerDao.UpdateRedeemPassword(customer.getId(), model.getNewPassword());
+        customerDao.updateRedeemPassword(customer.getId(), model.getNewPassword());
         // 4、修改验证码为已过期
         smsAuthMongo.setExpired(DateUtil.formatMongo(new Date()));
         systemSMSLogMongoDao.update(smsAuthMongo);
@@ -834,7 +833,7 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
         // 2、校验用户赎回密码
         if (model.getRedeemPassword().equals(customer.getRedeemPassword())) {
             // 设置自动赎回
-            customerDao.UpdateIsAutoRedeem(customerId, model.getIsAutoRedeem());
+            customerDao.updateIsAutoRedeem(customerId, model.getIsAutoRedeem());
             isSuccess = true;
         }
         return isSuccess;

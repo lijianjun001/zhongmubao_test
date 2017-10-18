@@ -10,6 +10,7 @@ public enum Platform {
      * 微信
      */
     WEIXIN {
+        @Override
         public String getName() {
             return "00";
         }
@@ -18,6 +19,7 @@ public enum Platform {
      * 安卓
      */
     ANDROID {
+        @Override
         public String getName() {
             return "01";
         }
@@ -26,6 +28,7 @@ public enum Platform {
      * 苹果
      */
     IOS {
+        @Override
         public String getName() {
             return "02";
         }
@@ -34,6 +37,7 @@ public enum Platform {
      * WAP
      */
     WAP {
+        @Override
         public String getName() {
             return "03";
         }

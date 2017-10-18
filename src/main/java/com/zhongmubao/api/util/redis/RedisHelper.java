@@ -31,8 +31,8 @@ public class RedisHelper {
 
     public void remove(String key) {
         ValueOperations<String, String> valueOper = redisTemplate.opsForValue();
-        RedisOperations<String, String> RedisOperations = valueOper.getOperations();
-        RedisOperations.delete(key);
+        RedisOperations<String, String> redisOperations = valueOper.getOperations();
+        redisOperations.delete(key);
     }
 
     public Object getHash(String table, String key) {

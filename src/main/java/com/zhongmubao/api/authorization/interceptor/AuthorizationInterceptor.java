@@ -24,6 +24,7 @@ public class AuthorizationInterceptor extends HandlerInterceptorAdapter {
     @Autowired
     private TokenManager manager;
 
+    @Override
     public boolean preHandle(HttpServletRequest request,
                              HttpServletResponse response, Object handler) throws Exception {
         //如果不是映射到方法直接通过

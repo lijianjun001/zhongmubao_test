@@ -60,7 +60,7 @@ public class SystemTokenMongoDao implements BaseDao<SystemTokenMongo> {
         return null;
     }
 
-    public PageModel<SystemTokenMongo>Pager(PageModel<SystemTokenMongo> page) {
+    public PageModel<SystemTokenMongo> pager(PageModel<SystemTokenMongo> page) {
         Query query = new Query();
         //查询总数
         int count=(int) mongoTemplate.count(query,SystemTokenMongo.class);

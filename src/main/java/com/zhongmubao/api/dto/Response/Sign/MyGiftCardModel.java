@@ -4,27 +4,27 @@ public class MyGiftCardModel {
     public MyGiftCardModel() {
     }
 
-    public MyGiftCardModel(int delayedCardCount, int megreCardCount) {
-        DelayedCardCount = delayedCardCount;
-        MegreCardCount = megreCardCount;
+    public MyGiftCardModel(int delayedCardCount, int mergeCardCount) {
+        this.delayedCardCount = delayedCardCount;
+        this.mergeCardCount = mergeCardCount;
     }
 
-    private int DelayedCardCount;
-    private int MegreCardCount;
+    private int delayedCardCount;
+    private int mergeCardCount;
 
     public int getDelayedCardCount() {
-        return DelayedCardCount;
+        return delayedCardCount;
     }
 
     public void setDelayedCardCount(int delayedCardCount) {
-        DelayedCardCount = delayedCardCount;
+        this.delayedCardCount = delayedCardCount;
     }
 
-    public int getMegreCardCount() {
-        return MegreCardCount;
+    public int getMergeCardCount() {
+        return mergeCardCount;
     }
 
-    public void setMegreCardCount(int megreCardCount) {
-        MegreCardCount = megreCardCount;
+    public void setMergeCardCount(int mergeCardCount) {
+        this.mergeCardCount = mergeCardCount;
     }
 }

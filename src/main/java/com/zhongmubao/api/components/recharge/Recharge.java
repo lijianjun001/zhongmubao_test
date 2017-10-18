@@ -13,7 +13,7 @@ public class Recharge {
 
         map.put("phone_number", phone);
         map.put("card_worth", price + "");
-        map.put("sp_order_id", new Date().getTime() + "");
+        map.put("sp_order_id", System.currentTimeMillis() + "");
         map.put("api_key", Config.API_KEY);
 
         //region 拿到sign
