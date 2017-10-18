@@ -8,6 +8,7 @@ import com.zhongmubao.api.entity.ext.SheepOrderCountAndMinCreated;
 import com.zhongmubao.api.entity.ext.SheepOrderDetailInfo;
 import com.zhongmubao.api.entity.ext.SheepOrderEarnings;
 import com.zhongmubao.api.entity.ext.SheepOrderInfo;
+import com.zhongmubao.api.entity.ext.MySheepFoldItem;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.Date;
@@ -32,4 +33,9 @@ public interface SheepOrderDao {
      * @author 米立林 2017-10-09
      */
     List<SheepOrderInfo> getSheepOrderByCustomerId(@Param("customerId") int customerId, @Param("states") List<String> states);
+
+    List<MySheepFoldItem> mySheepFoldList(@Param("customerId") int customerId, @Param("states") List<String> states,@Param("pagestart") int pagestart,@Param("pageend") int pageend,@Param("type") String type);
+    int mySheepFoldListCount(@Param("customerId") int customerId, @Param("states") List<String> states,@Param("type") String type);
+    int mySheepFoldListSumCount(@Param("customerId") int customerId, @Param("states") List<String> states,@Param("type") String type);
+
 }
