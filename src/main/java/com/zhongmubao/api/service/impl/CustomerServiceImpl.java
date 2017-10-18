@@ -950,7 +950,7 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
 
         NotifyMongo notify = new NotifyMongo();
         notify.setCustomerId(customerId);
-        notify.setSelectDate(model.getSelectDate());
+        notify.setSelectDate(DateUtil.formatMongo(DateUtil.strToDate(model.getSelectDate())));
         notify.setTitle(notifyCycles.stream().filter(t -> t.getCycle().equals(model.getCycle())).findFirst().get().getCycleStr());
         notify.setType(model.getType());
         notify.setCyc(model.getCycle());

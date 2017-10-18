@@ -10,9 +10,9 @@ public class NotifyRemindSaveRequestModel {
     private int time;
     private String cycle;
     private String type;
-    private Date selectDate;
+    private String selectDate;
 
-    public NotifyRemindSaveRequestModel(int time, String cycle, String type, Date selectDate) {
+    public NotifyRemindSaveRequestModel(int time, String cycle, String type, String selectDate) {
         this.time = time;
         this.cycle = cycle;
         this.type = type;
@@ -46,11 +46,11 @@ public class NotifyRemindSaveRequestModel {
         this.type = type;
     }
 
-    public Date getSelectDate() {
+    public String getSelectDate() {
         return selectDate;
     }
 
-    public void setSelectDate(Date selectDate) {
+    public void setSelectDate(String selectDate) {
         this.selectDate = selectDate;
     }
 }
