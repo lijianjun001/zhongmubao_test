@@ -31,13 +31,12 @@ public class SheepController {
     /***
      * 首页
      * @param customer
-     * @param user1
      * @author 孙阿龙
      * @return
      */
     @Authorization(onlyGetCustomer = true)
     @RequestMapping(value = "/index", method = RequestMethod.POST, consumes = "application/json")
-    public ResponseEntity<ReponseModel> index(@CurrentUser Customer customer, HttpEntity<LoginResponseModel> user1) {
+    public ResponseEntity<ReponseModel> index(@CurrentUser Customer customer) {
         try {
             IndexModel indexModel = sheepService.index(customer);
             return new ResponseEntity<>(ReponseModel.ok(indexModel), HttpStatus.OK);

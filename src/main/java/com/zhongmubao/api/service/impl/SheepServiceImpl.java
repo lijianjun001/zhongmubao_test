@@ -97,8 +97,8 @@ public class SheepServiceImpl implements SheepService {
         list.addAll(leakSheepList.stream().map(en -> formartProject(en, ProjectSaleState.LEAK_SHEEP, sheepVendorList)).collect(Collectors.toList()));
         list.addAll(soldSheepList.stream().map(en -> formartProject(en, ProjectSaleState.SOLD_SHEEP, sheepVendorList)).collect(Collectors.toList()));
 
-        projectIndexList = list.stream().filter(en -> !en.getType().equals(ProjectType.NEW_PEOPLE_120) && !en.getType().equals(ProjectType.NEW_PEOPLE_7)).collect(Collectors.toList());
-        newPeopleProjectIndexList = list.stream().filter(en -> en.getType().equals(ProjectType.NEW_PEOPLE_120) || en.getType().equals(ProjectType.NEW_PEOPLE_7)).collect(Collectors.toList());
+        projectIndexList = list.stream().filter(en -> !en.getType().equals(ProjectType.NEW_PEOPLE_120.getName()) && !en.getType().equals(ProjectType.NEW_PEOPLE_7.getName())).collect(Collectors.toList());
+        newPeopleProjectIndexList = list.stream().filter(en -> en.getType().equals(ProjectType.NEW_PEOPLE_120.getName()) || en.getType().equals(ProjectType.NEW_PEOPLE_7.getName())).collect(Collectors.toList());
 
         newPeopleProjectViewModel.setProjectList(newPeopleProjectIndexList);
         //endregion
