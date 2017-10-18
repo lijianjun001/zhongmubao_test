@@ -2,11 +2,11 @@ package com.zhongmubao.api.util.common;
 
 public class SheepVendorAttrs {
 
-    public String Attr1;
-    public String Attr2;
-    public String Attr3;
-    public String Attr4;
-    public String Attr5;
-    public String Attr6;
+    public String attr1;
+    public String attr2;
+    public String attr3;
+    public String attr4;
+    public String attr5;
+    public String attr6;
 
 }

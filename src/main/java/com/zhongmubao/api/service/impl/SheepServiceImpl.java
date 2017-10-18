@@ -74,7 +74,7 @@ public class SheepServiceImpl implements SheepService {
         //endregion
 
         //region 首页轮播
-        List<BannerViewModel> bannerList = extBannerMongoDao.Pager(new PageModel<>()).getDatas().stream()
+        List<BannerViewModel> bannerList = extBannerMongoDao.pager(new PageModel<>()).getDatas().stream()
                 .map(en -> new BannerViewModel("", en.getTitle(), en.getLink(), ApiUtil.formatImg(en.getImgUrl())))
                 .collect(Collectors.toList());
         //endregion
@@ -119,7 +119,7 @@ public class SheepServiceImpl implements SheepService {
             if (customer.getCreated().getTime() > DateUtil.strToDate("2016-10-03 00:00:00").getTime()) {
                 if (redisCache.getNewPeopleProjectIsShow(customerId)) {
                     //如果肖恩没有领取过
-                    if (null == extActivityRecordDao.getExtActivityRecordrByCustomerIdAndActivityId(customerId, Constants.Activity_ID_XIN_SHOU)) {
+                    if (null == extActivityRecordDao.getExtActivityRecordrByCustomerIdAndActivityId(customerId, Constants.ACTIVITY_ID_XIN_SHOU)) {
                         newPeopleProjectViewModel = newPeopleProject(customer);
                         newPeopleProjectViewModel.setProjectList(newPeopleProjectIndexList);
                         isShowNewProject = !(newPeopleProjectViewModel.isExped7() || newPeopleProjectViewModel.isExped120());
@@ -285,7 +285,7 @@ public class SheepServiceImpl implements SheepService {
             throw new ApiException(ResultStatus.PARAMETER_MISSING);
         }
         // 获取牧场详情
-        PastureDetailExtModel detailInfo = sheepProjectDao.GetPastureDetailById(model.getId());
+        PastureDetailExtModel detailInfo = sheepProjectDao.getPastureDetailById(model.getId());
         if (null == detailInfo) {
             return new SheepVendorViewModel();
         }
@@ -293,29 +293,29 @@ public class SheepServiceImpl implements SheepService {
         // 解析Attrs
         // 收益兑换方式 todo
         String incomeConversionMethod = "";
-        // 产品简介 Attr1
+        // 产品简介 attr1
         String productIntroduction = "";
         // 支付方式 todo
         String payMethod = "";
         // 出栏时间（赎回时间-1天）
         Date slaughterTime = DateUtil.addDay(detailInfo.getRedemTime(), -1);
-        // 执照号 Attr3
+        // 执照号 attr3
         String licenseNo = "";
-        // 企业地址 Attr4
+        // 企业地址 attr4
         String enterpriseAddress = "";
-        // 营业范围 Attr5
+        // 营业范围 attr5
         String businessScope = "";
-        // 牧场介绍 Attr6
+        // 牧场介绍 attr6
         String pastureIntroduction = "";
 
         // 获取牧场信息
         SheepVendorAttrs attrs = SerializeUtil.deSerialize(detailInfo.getAttrs(), SheepVendorAttrs.class);
         if (null != attrs) {
-            productIntroduction = attrs.Attr1;
-            licenseNo = attrs.Attr3;
-            enterpriseAddress = attrs.Attr4;
-            businessScope = attrs.Attr5;
-            pastureIntroduction = attrs.Attr6;
+            productIntroduction = attrs.attr1;
+            licenseNo = attrs.attr3;
+            enterpriseAddress = attrs.attr4;
+            businessScope = attrs.attr5;
+            pastureIntroduction = attrs.attr6;
         }
 
         SheepVendorViewModel detailModel = new SheepVendorViewModel(
@@ -388,9 +388,9 @@ public class SheepServiceImpl implements SheepService {
 
         // 判断类型 羊只1 Or 店铺2
         int type = SheepStageType.SHEEP.getName();
-        if ("00".equals(sheepProject.getType()) || sheepProject.getType().equals("06")) {
+        if (sheepProject.getType().equals(ProjectType.NORMAL.getName()) || sheepProject.getType().equals(ProjectType.NEW_PEOPLE_120.getName())) {
             type = SheepStageType.SHEEP.getName();
-        } else if (sheepProject.getType().equals("03") || sheepProject.getType().equals("04")) {
+        } else if (sheepProject.getType().equals(ProjectType.SLAUGHTER.getName()) || sheepProject.getType().equals(ProjectType.NEW_PEOPLE_7.getName())) {
             type = SheepStageType.SHOP.getName();
         }
         // 根据周期获取养殖流程
@@ -521,6 +521,9 @@ public class SheepServiceImpl implements SheepService {
             case 28:
                 type = "04";
                 break;
+            default:
+                type = "00";
+                break;
         }
         String finalType = type;
         List<SystemMonitor> currentMonitors = monitors.stream().filter(en -> en.getType().equals(finalType)).collect(Collectors.toList());
@@ -542,15 +545,15 @@ public class SheepServiceImpl implements SheepService {
     @Override
     public ProjectPlanModel projectPlan(ProjectPlanRequestModel model) throws Exception {
 
-        if(model==null){
-            throw  new ApiException(ResultStatus.PARAMETER_MISSING);
+        if (model == null) {
+            throw new ApiException(ResultStatus.PARAMETER_MISSING);
         }
 
         SheepProjectPlan sheepProjectPlan = this.sheepProjectPlanDao.lastSheepProjectPlan(model.getId());
         if(sheepProjectPlan==null){
             throw new ApiException("未发现数据");
         }
-        return new ProjectPlanModel(sheepProjectPlan.getTime(),sheepProjectPlan.getInfo());
+        return new ProjectPlanModel(sheepProjectPlan.getTime(), sheepProjectPlan.getInfo());
     }
 
     private NewPeopleProjectViewModel newPeopleProject(Customer customer) {
@@ -839,6 +842,11 @@ public class SheepServiceImpl implements SheepService {
                             projectState.setDayType("结算回款");
                         }
                         break;
+                    default:
+                        projectState.setDayTypeInt(6);
+                        projectState.setDayType("结算回款");
+                        break;
+
                     //endregion
                 }
             } else {

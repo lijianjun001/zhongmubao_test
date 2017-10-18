@@ -5,6 +5,7 @@ public enum ActivityState {
      * 已审核
      */
     Audited {
+        @Override
         public String getName() {
             return "11";
         }

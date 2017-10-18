@@ -48,7 +48,7 @@ public class SystemSMSLogMongoDao  implements BaseDao<SystemSMSLogMongo> {
 
     @Override
     public void delete(SystemSMSLogMongo entity) throws Exception {
-
+        mongoTemplate.remove(entity);
     }
 
     @Override

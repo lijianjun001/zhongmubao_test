@@ -1,5 +1,9 @@
 package com.zhongmubao.api.config;
 
+/**
+ * 返回结果状态
+ * @author 米立林
+ */
 public enum ResultStatus {
     SUCCESS(100, "成功"),
     FAIL(-1, "服务器繁忙，请稍候再试"),

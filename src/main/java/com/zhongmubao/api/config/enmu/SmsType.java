@@ -9,6 +9,7 @@ public enum SmsType {
      * 验证
      */
     VERIFICATION {
+        @Override
         public String getName() {
             return "00";
         }
@@ -17,6 +18,7 @@ public enum SmsType {
      * 通知
      */
     NOTICE {
+        @Override
         public String getName() {
             return "01";
         }
@@ -25,6 +27,7 @@ public enum SmsType {
      * 赎回密码
      */
     REDEEM_PWD {
+        @Override
         public String getName() {
             return "02";
         }
@@ -33,6 +36,7 @@ public enum SmsType {
      * 送手把肉提醒
      */
     SEND_SHOUBAROU_NOTICE {
+        @Override
         public String getName() {
             return "03";
         }

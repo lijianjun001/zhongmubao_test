@@ -38,7 +38,9 @@ public class CurrentUserMethodArgumentResolver implements HandlerMethodArgumentR
     public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
         //取出鉴权时存入的登录用户Id
         Object currentUserId =  webRequest.getAttribute(Constants.CURRENT_USER_ID, RequestAttributes.SCOPE_REQUEST);
-        if(currentUserId==null)return null;
+        if(currentUserId==null) {
+            return null;
+        }
         return customerDao.getCustomerById((int)currentUserId);
         //throw new MissingServletRequestPartException(Constants.CURRENT_USER_ID);
     }

@@ -5,6 +5,7 @@ public enum ProjectSaleState {
      * 抢羊
      */
     BUY_SHEEP {
+        @Override
         public String getName() {
             return "00";
         }
@@ -13,6 +14,7 @@ public enum ProjectSaleState {
      * 预售
      */
     PRE_SHEEP {
+        @Override
         public String getName() {
             return "01";
         }
@@ -21,6 +23,7 @@ public enum ProjectSaleState {
      * 捡漏
      */
     LEAK_SHEEP {
+        @Override
         public String getName() {
             return "02";
         }
@@ -29,6 +32,7 @@ public enum ProjectSaleState {
      * 售罄
      */
     SOLD_SHEEP {
+        @Override
         public String getName() {
             return "03";
         }

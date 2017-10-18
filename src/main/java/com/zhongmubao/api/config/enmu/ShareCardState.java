@@ -5,6 +5,7 @@ public enum ShareCardState {
      * 未领取
      */
     UNCLAIMED {
+        @Override
         public String getName() {
             return "00";
         }
@@ -13,6 +14,7 @@ public enum ShareCardState {
      * 已领取
      */
     RECEIVED {
+        @Override
         public String getName() {
             return "01";
         }

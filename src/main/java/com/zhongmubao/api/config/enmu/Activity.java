@@ -5,6 +5,7 @@ public enum Activity {
      * 神秘礼物
      */
     SECRET_GIFT_ID {
+        @Override
         public int getName() {
             return 19;
         }
@@ -13,6 +14,7 @@ public enum Activity {
      * 话费卡
      */
     TELEPHONE_CARD_ID {
+        @Override
         public int getName() {
             return 20;
         }

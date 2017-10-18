@@ -5,6 +5,7 @@ public enum  SheepOrderState {
      * 00 未付款
      */
     NON_PAYMENT {
+        @Override
         public String getName() {
             return "00";
         }
@@ -13,6 +14,7 @@ public enum  SheepOrderState {
      * 01 已付款
      */
     PAYMENTED {
+        @Override
         public String getName() {
             return "01";
         }
@@ -21,6 +23,7 @@ public enum  SheepOrderState {
      * 02已入栏
      */
     HAS_INTOBAR {
+        @Override
         public String getName() {
             return "02";
         }
@@ -29,6 +32,7 @@ public enum  SheepOrderState {
      * 03可赎回
      */
     REDEEMABLE {
+        @Override
         public String getName() {
             return "03";
         }
@@ -37,6 +41,7 @@ public enum  SheepOrderState {
      * 04赎回中
      */
     REDEEMPTION {
+        @Override
         public String getName() {
             return "04";
         }
@@ -45,6 +50,7 @@ public enum  SheepOrderState {
      * 05已赎回
      */
     REDEEMPTED {
+        @Override
         public String getName() {
             return "04";
         }
@@ -53,6 +59,7 @@ public enum  SheepOrderState {
      * 06已取消
      */
     CANCELED {
+        @Override
         public String getName() {
             return "04";
         }
