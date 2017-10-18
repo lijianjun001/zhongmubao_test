@@ -9,6 +9,7 @@ import com.zhongmubao.api.config.enmu.*;
 import com.zhongmubao.api.dao.*;
 import com.zhongmubao.api.dto.Request.OnlyPrimaryIdRequestModel;
 import com.zhongmubao.api.dto.Request.ProjectPlanRequestModel;
+import com.zhongmubao.api.dto.Request.Sheep.MySheepFoldRequestModel;
 import com.zhongmubao.api.dto.Request.Sheep.SheepOrderRequestModel;
 import com.zhongmubao.api.dto.Request.SystemMonitorRequestModel;
 import com.zhongmubao.api.dto.Response.Index.*;
@@ -43,9 +44,10 @@ public class SheepServiceImpl implements SheepService {
     private final ExtActivityRecordDao extActivityRecordDao;
     private final CustomerSinaDao customerSinaDao;
     private final RedisCache redisCache;
+    private final SheepVendorDao sheepVendorDao;
 
     @Autowired
-    public SheepServiceImpl(RedisCache redisCache, CustomerSinaDao customerSinaDao, ExtActivityRecordDao extActivityRecordDao, SheepOrderDao sheepOrderDao, SheepProjectDao sheepProjectDao, ExtBannerMongoDao extBannerMongoDao, SheepProjectPlanDao sheepProjectPlanDao, SheepStageMongoDao sheepStageMongoDao, SheepLevelDao levelDao) {
+    public SheepServiceImpl(RedisCache redisCache, CustomerSinaDao customerSinaDao, ExtActivityRecordDao extActivityRecordDao, SheepOrderDao sheepOrderDao, SheepProjectDao sheepProjectDao, ExtBannerMongoDao extBannerMongoDao, SheepProjectPlanDao sheepProjectPlanDao, SheepStageMongoDao sheepStageMongoDao, SheepLevelDao levelDao,SheepVendorDao sheepVendorDao) {
         this.redisCache = redisCache;
         this.customerSinaDao = customerSinaDao;
         this.extActivityRecordDao = extActivityRecordDao;
@@ -55,6 +57,7 @@ public class SheepServiceImpl implements SheepService {
         this.sheepProjectPlanDao = sheepProjectPlanDao;
         this.sheepStageMongoDao = sheepStageMongoDao;
         this.levelDao = levelDao;
+        this.sheepVendorDao = sheepVendorDao;
     }
 
 
@@ -388,9 +391,9 @@ public class SheepServiceImpl implements SheepService {
 
         // 判断类型 羊只1 Or 店铺2
         int type = SheepStageType.SHEEP.getName();
-        if (sheepProject.getType().equals("00") || sheepProject.getType().equals("06")) {
+        if ("00".equals(sheepProject.getType()) || "06".equals(sheepProject.getType())) {
             type = SheepStageType.SHEEP.getName();
-        } else if (sheepProject.getType().equals("03") || sheepProject.getType().equals("04")) {
+        } else if ("03".equals(sheepProject.getType()) || "04".equals(sheepProject.getType())) {
             type = SheepStageType.SHOP.getName();
         }
         // 根据周期获取养殖流程
@@ -442,10 +445,16 @@ public class SheepServiceImpl implements SheepService {
     }
 
     @Override
-    public MySheepfoldModel mySheepfold(int customerId) throws Exception {
+    public MySheepfoldModel mySheepfold(int customerId,int pageIndex) throws Exception {
         if (customerId <= 0) {
             throw new ApiException(ResultStatus.PARAMETER_MISSING);
         }
+        if(pageIndex<=0){
+            pageIndex=1;
+        }
+
+        int pageSize = 10;
+
         MySheepfoldModel mySheepfoldModel = new MySheepfoldModel();
         List<SheepOrderInfoViewModel> list = new ArrayList<>();
 
@@ -458,6 +467,7 @@ public class SheepServiceImpl implements SheepService {
             count += info.getCount();
             // 当前养殖状态
             CurrentSheepProjectState projectState = calcCurrentSheepProjectState(info);
+
             SheepOrderInfoViewModel orderInfo = new SheepOrderInfoViewModel(
                     info.getTitle(),
                     DateUtil.format(info.getEffectiveTime(), "yyyy-MM-dd HH:mm:ss"),
@@ -468,6 +478,12 @@ public class SheepServiceImpl implements SheepService {
                     projectState.getDayType(),
                     projectState.getDayTypeInt()
             );
+            orderInfo.setType(( "03".equals(info.getType()) || "04".equals(info.getType()) ) ? "03" : "00");
+            orderInfo.setVenderId(info.getVendorId());
+            SheepVendor sheepVendor = sheepVendorDao.getSheepVendorrById(orderInfo.getVenderId());
+            orderInfo.setVender(sheepVendor==null?"力农羊业":sheepVendor.getShorthand());
+
+            orderInfo.setRedeemDays(orderInfo.getRedeemDays()>0?orderInfo.getRedeemDays():0);
             list.add(orderInfo);
         }
 
@@ -521,9 +537,12 @@ public class SheepServiceImpl implements SheepService {
             case 28:
                 type = "04";
                 break;
+            default:
+                type="00";
+                break;
         }
         String finalType = type;
-        List<SystemMonitor> currentMonitors = monitors.stream().filter(en -> en.getType().equals(finalType)).collect(Collectors.toList());
+        List<SystemMonitor> currentMonitors = monitors.stream().filter(en -> finalType.equals(en.getType())).collect(Collectors.toList());
         if (null == currentMonitors || currentMonitors.size() <= 0) {
             throw new ApiException(ResultStatus.DEVICE_OFFLINE);    // 设备已离线
         }
@@ -551,6 +570,35 @@ public class SheepServiceImpl implements SheepService {
             throw new ApiException("未发现数据");
         }
         return new ProjectPlanModel(sheepProjectPlan.getTime(),sheepProjectPlan.getInfo());
+    }
+
+    /**
+     *
+     * @param customerId
+     * @param model pageIndex 页码  projectType 选择类型  默认 03
+     * @return
+     * @throws Exception
+     * @author xy
+     */
+    @Override
+    public MySheepFoldListViewModel mySheepFoldList(int customerId, MySheepFoldRequestModel model) throws Exception {
+        if (customerId <= 0) {
+            throw new ApiException(ResultStatus.PARAMETER_MISSING);
+        }
+        if(model==null) {
+            throw new ApiException(ResultStatus.PARAMETER_MISSING);
+        }
+        if(model.getPageIndex()<=0){
+            model.setPageIndex(0);
+        }
+        if(model.getProjectType().equals("")|| model.getProjectType()==null)
+        {
+            model.setProjectType("");
+        }
+
+
+
+        return null;
     }
 
     private NewPeopleProjectViewModel newPeopleProject(Customer customer) {
