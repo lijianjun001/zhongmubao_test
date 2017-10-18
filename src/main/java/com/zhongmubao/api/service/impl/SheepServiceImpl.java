@@ -446,7 +446,7 @@ public class SheepServiceImpl implements SheepService {
     }
 
     @Override
-    public MySheepfoldModel mySheepfold(int customerId,int pageIndex) throws Exception {
+    public MySheepfoldModel mySheepfold(int customerId) throws Exception {
         if (customerId <= 0) {
             throw new ApiException(ResultStatus.PARAMETER_MISSING);
         }
