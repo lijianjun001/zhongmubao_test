@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/System")
+@RequestMapping("/system")
 public class SystemController {
     private final SystemService systemService;
 

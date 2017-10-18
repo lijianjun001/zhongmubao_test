@@ -19,6 +19,10 @@ import com.zhongmubao.api.dto.Response.Address.CustomerAddressResponseModel;
 import com.zhongmubao.api.dto.Response.Address.CustomerAddressViewModel;
 import com.zhongmubao.api.dto.Response.Ext.PageExtRedPackageModel;
 import com.zhongmubao.api.dto.Response.Ext.PageExtRedPackageViewModel;
+import com.zhongmubao.api.dto.Response.Notice.NoticeRemindModel;
+import com.zhongmubao.api.dto.Response.Notice.NoticeRemindViewModel;
+import com.zhongmubao.api.dto.Response.Notice.RemindNoticeCycleModel;
+import com.zhongmubao.api.dto.Response.Notice.RemindNoticeTypeModel;
 import com.zhongmubao.api.dto.Response.Sign.*;
 import com.zhongmubao.api.dto.Response.Sign.SignList.PageSignGiftModel;
 import com.zhongmubao.api.dto.Response.Sign.SignList.PageSignGiftViewModel;
@@ -27,10 +31,10 @@ import com.zhongmubao.api.dto.Response.Sign.SignPackageList.SignPackageViewModel
 import com.zhongmubao.api.dto.SignGift;
 import com.zhongmubao.api.entity.*;
 import com.zhongmubao.api.exception.ApiException;
+import com.zhongmubao.api.mongo.dao.NotifyMongoDao;
 import com.zhongmubao.api.mongo.dao.ShareCardMongoDao;
 import com.zhongmubao.api.mongo.dao.SystemSMSLogMongoDao;
-import com.zhongmubao.api.mongo.entity.ShareCardMongo;
-import com.zhongmubao.api.mongo.entity.SystemSMSLogMongo;
+import com.zhongmubao.api.mongo.entity.*;
 import com.zhongmubao.api.mongo.entity.base.PageModel;
 import com.zhongmubao.api.service.BaseService;
 import com.zhongmubao.api.service.CustomerService;
@@ -41,6 +45,7 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -61,9 +66,10 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
     private final TokenManager tokenManager;
     private final RedisCache redisCache;
     private final SystemSMSLogMongoDao systemSMSLogMongoDao;
+    private final NotifyMongoDao notifyMongoDao;
 
     @Autowired
-    public CustomerServiceImpl(CustomerDao customerDao, ExtRedPackageDao extRedPackageDao, SheepOrderDao sheepOrderDao, ShareCardMongoDao shareCardMongoDao, CustomerAddressDao customerAddressDao, ExtActivityRecordDao activityRecordDao, TokenManager tokenManager, RedisCache redisCache, SystemSMSLogMongoDao systemSMSLogMongoDao) {
+    public CustomerServiceImpl(CustomerDao customerDao, ExtRedPackageDao extRedPackageDao, SheepOrderDao sheepOrderDao, ShareCardMongoDao shareCardMongoDao, CustomerAddressDao customerAddressDao, ExtActivityRecordDao activityRecordDao, TokenManager tokenManager, RedisCache redisCache, SystemSMSLogMongoDao systemSMSLogMongoDao, NotifyMongoDao notifyMongoDao) {
         this.customerDao = customerDao;
         this.extRedPackageDao = extRedPackageDao;
         this.sheepOrderDao = sheepOrderDao;
@@ -73,6 +79,7 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
         this.tokenManager = tokenManager;
         this.redisCache = redisCache;
         this.systemSMSLogMongoDao = systemSMSLogMongoDao;
+        this.notifyMongoDao = notifyMongoDao;
     }
 
     @Override
@@ -617,7 +624,7 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
         if (null == model) {
             throw new ApiException(ResultStatus.PARAMETER_MISSING);
         }
-//        int sucRows = customerAddressDao.deleteCustomerAddress(model.getId());
+
         // 此处修改为逻辑删除
         int sucRows = customerAddressDao.logicDeleteByIdAndCustomerId(customerId, model.getId());
 
@@ -840,4 +847,89 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
     }
     //endregion
 
+    //region 个人中心--购羊提醒
+
+    /**
+     * 购羊提醒列表
+     *
+     * @param customerId 登录用户
+     * @return 提醒列表
+     * @throws Exception
+     * @author 米立林 2017-10-18
+     */
+    @Override
+    public NoticeRemindModel notifyIndex(int customerId) throws Exception {
+        if (customerId <= 0) {
+            throw new ApiException(ResultStatus.PARAMETER_MISSING);
+        }
+        Query query = new Query();
+        query.addCriteria(Criteria.where("CustomerId").is(customerId));
+        // 购羊提醒通知
+        List<NotifyMongo> notifyReminds = notifyMongoDao.getList(query);
+        // 通知类型
+        List<NotifyTypeMongo> notifyTypes = redisCache.getNotifyType();
+        // 通知周期
+        List<NotifyCycleMongo> notifyCycles = redisCache.getNotifyCycle();
+
+        List<NoticeRemindViewModel> list = new ArrayList<>();
+        for (int i = 0; i < notifyReminds.size(); i++) {
+            NotifyMongo item = notifyReminds.get(i);
+            NotifyTypeMongo notifyTypeMongo = notifyTypes.stream().filter(t -> t.getType().equals(item.getType())).findFirst().get();
+            String typeStr = notifyTypeMongo.getTypeStr();
+            NotifyCycleMongo notifyCycleMongo = notifyCycles.stream().filter(t -> t.getCycle().equals(item.getCyc())).findFirst().get();
+            Date selectDate = item.getSelectDate();
+            String cycleStr = notifyCycleMongo.getCycleStr() +
+                    ((notifyCycleMongo.getCycle().equals(NotifyCycleState.MONTHLY.getName())) ? DateUtil.dateOfDate(selectDate) + "号" :
+                            ((notifyCycleMongo.getCycle().equals(NotifyCycleState.WEEKLY.getName())) ? DateUtil.getWeekOfDate(selectDate) : ""));
+            String notifyStr = "开标前" + item.getTime() + "分钟 购买" + typeStr + "(" + notifyTypeMongo.getTypeDays() + ")";
+            list.add(new NoticeRemindViewModel(
+                    typeStr,
+                    cycleStr,
+                    item.getStatus(),
+                    notifyStr
+            ));
+        }
+        return new NoticeRemindModel(list);
+    }
+
+    /**
+     * 购羊提醒类型
+     *
+     * @param customerId 当前用户
+     * @return 提醒类型
+     * @throws Exception
+     * @author 米立林 2017-10-18
+     */
+    @Override
+    public RemindNoticeTypeModel notifyType(int customerId) throws Exception {
+        if (customerId <= 0) {
+            throw new ApiException(ResultStatus.PARAMETER_MISSING);
+        }
+        List<NotifyTypeMongo> list = redisCache.getNotifyType();
+        if (null == list || list.size() <= 0) {
+            throw new ApiException(ResultStatus.FAIL);
+        }
+        return new RemindNoticeTypeModel(list);
+    }
+
+    /**
+     * 购羊提醒周期
+     *
+     * @param customerId 当前用户
+     * @return 提醒周期
+     * @throws Exception
+     * @author 米立林 2017-10-18
+     */
+    @Override
+    public RemindNoticeCycleModel notifyCycle(int customerId) throws Exception {
+        if (customerId <= 0) {
+            throw new ApiException(ResultStatus.PARAMETER_MISSING);
+        }
+        List<NotifyCycleMongo> list = redisCache.getNotifyCycle();
+        if (null == list || list.size() <= 0) {
+            throw new ApiException(ResultStatus.FAIL);
+        }
+        return new RemindNoticeCycleModel(list);
+    }
+    //endregion
 }

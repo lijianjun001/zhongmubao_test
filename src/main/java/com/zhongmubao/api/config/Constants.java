@@ -84,9 +84,19 @@ public class Constants {
     public static final String CACHE_CUSTOMER_LEVEL_KEY = "CustomerLevel";
 
     /**
-     * Cache客户等级
+     * Cache牧场监控
      */
     public static final String CACHE_MONITOR_KEY = "SystemMonitor";
+
+    /**
+     * Cache购羊提醒类型
+     */
+    public static final String CACHE_REMIND_TYPE_KEY = "remindNotifyType";
+
+    /**
+     * Cache购羊提醒周期
+     */
+    public static final String CACHE_REMIND_CYCLE_KEY = "remindNotifyCycle";
 
     //endregion
 

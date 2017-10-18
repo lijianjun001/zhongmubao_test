@@ -67,7 +67,7 @@ public class DateUtil {
     /**
      * 给一个时间添加小时
      *
-     * @param date 时间
+     * @param date   时间
      * @param minute 分钟
      * @return 新时间
      */
@@ -260,5 +260,22 @@ public class DateUtil {
      */
     public static long subDateOfSecond(Date date1, Date date2) {
         return (date1.getTime() - date2.getTime()) / (1000);
+    }
+
+    /**
+     * 获取当前日期是星期几
+     *
+     * @param dt
+     * @return 当前日期是星期几
+     */
+    public static String getWeekOfDate(Date dt) {
+        String[] weekDays = {"日", "一", "二", "三", "四", "五", "六"};
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(dt);
+        int w = cal.get(Calendar.DAY_OF_WEEK) - 1;
+        if (w < 0) {
+            w = 0;
+        }
+        return weekDays[w];
     }
 }

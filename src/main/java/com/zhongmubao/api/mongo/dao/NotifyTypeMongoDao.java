@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public class NotifyTypeMongoDao  implements BaseDao<NotifyTypeMongo> {
+public class NotifyTypeMongoDao implements BaseDao<NotifyTypeMongo> {
 
     private final MongoTemplate mongoTemplate;
 

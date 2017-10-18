@@ -11,6 +11,9 @@ import com.zhongmubao.api.dto.Request.customer.AutoRedeemRequestModel;
 import com.zhongmubao.api.dto.Request.customer.ResetPasswordRequestModel;
 import com.zhongmubao.api.dto.Response.Address.CustomerAddressResponseModel;
 import com.zhongmubao.api.dto.Response.Ext.PageExtRedPackageModel;
+import com.zhongmubao.api.dto.Response.Notice.NoticeRemindModel;
+import com.zhongmubao.api.dto.Response.Notice.RemindNoticeCycleModel;
+import com.zhongmubao.api.dto.Response.Notice.RemindNoticeTypeModel;
 import com.zhongmubao.api.dto.Response.ReponseModel;
 import com.zhongmubao.api.dto.Response.Sign.MyGiftCardModel;
 import com.zhongmubao.api.dto.Response.Sign.SignList.PageSignGiftModel;
@@ -323,8 +326,7 @@ public class CustomerController {
 
     //endregion
 
-    // region 个人中心 -- 设置
-
+    //region 个人中心 -- 设置
     /***
      * 重置登录密码
      * @param customer
@@ -332,7 +334,7 @@ public class CustomerController {
      * @author 米立林 2017-09-30
      * @return
      */
-    @RequestMapping(value = "/customer/resetPassword", method = RequestMethod.POST, consumes = "application/json")
+    @RequestMapping(value = "/setting/resetPassword", method = RequestMethod.POST, consumes = "application/json")
     @Authorization
     public ResponseEntity<ReponseModel> resetPassword(@CurrentUser Customer customer, HttpEntity<ResetPasswordRequestModel> model) {
         try {
@@ -350,7 +352,7 @@ public class CustomerController {
      * @author 米立林 2017-09-30
      * @return
      */
-    @RequestMapping(value = "/customer/resetRedeemPassword", method = RequestMethod.POST, consumes = "application/json")
+    @RequestMapping(value = "/setting/resetRedeemPassword", method = RequestMethod.POST, consumes = "application/json")
     @Authorization
     public ResponseEntity<ReponseModel> resetRedeemPassword(@CurrentUser Customer customer, HttpEntity<ResetPasswordRequestModel> model) {
         try {
@@ -367,7 +369,7 @@ public class CustomerController {
      * @author 米立林 2017-09-30
      * @return
      */
-    @RequestMapping(value = "/customer/autoRedeemAmount", method = RequestMethod.POST, consumes = "application/json")
+    @RequestMapping(value = "/setting/autoRedeemAmount", method = RequestMethod.POST, consumes = "application/json")
     @Authorization
     public ResponseEntity<ReponseModel> autoRedeemAmount(@CurrentUser Customer customer, HttpEntity<AutoRedeemRequestModel> model) {
         try {
@@ -381,8 +383,67 @@ public class CustomerController {
             return new ResponseEntity<>(ReponseModel.error(ex, this.getClass()), HttpStatus.OK);
         }
     }
+    //endregion
 
-    // endregion
+    //region 个人中心 -- 购羊提醒
+    /***
+     * 购羊提醒列表
+     * @param customer 当前用户
+     * @author 米立林 2017-10-18
+     * @return
+     */
+    @RequestMapping(value = "/remind/notifyIndex", method = RequestMethod.POST, consumes = "application/json")
+    @Authorization
+    public ResponseEntity<ReponseModel> notifyIndex(@CurrentUser Customer customer) {
+        try {
+            NoticeRemindModel noticeRemind = customerService.notifyIndex(customer.getId());
+            return new ResponseEntity<>(ReponseModel.ok(noticeRemind), HttpStatus.OK);
+        } catch (ApiException ex) {
+            return new ResponseEntity<>(ReponseModel.error(ex.getStatus()), HttpStatus.OK);
+        } catch (Exception ex) {
+            return new ResponseEntity<>(ReponseModel.error(ex, this.getClass()), HttpStatus.OK);
+        }
+    }
 
+    /***
+     * 购羊提醒类型
+     * @param customer 当前用户
+     * @author 米立林 2017-10-18
+     * @return
+     */
+    @RequestMapping(value = "/remind/notifyType", method = RequestMethod.POST, consumes = "application/json")
+    @Authorization
+    public ResponseEntity<ReponseModel> notifyType(@CurrentUser Customer customer) {
+        try {
+            RemindNoticeTypeModel notifyType = customerService.notifyType(customer.getId());
+            return new ResponseEntity<>(ReponseModel.ok(notifyType), HttpStatus.OK);
+        } catch (ApiException ex) {
+            return new ResponseEntity<>(ReponseModel.error(ex.getStatus()), HttpStatus.OK);
+        } catch (Exception ex) {
+            return new ResponseEntity<>(ReponseModel.error(ex, this.getClass()), HttpStatus.OK);
+        }
+    }
+
+    /***
+     * 购羊提醒周期
+     * @param customer 当前用户
+     * @author 米立林 2017-10-18
+     * @return
+     */
+    @RequestMapping(value = "/remind/notifyCycle", method = RequestMethod.POST, consumes = "application/json")
+    @Authorization
+    public ResponseEntity<ReponseModel> notifyCycle(@CurrentUser Customer customer) {
+        try {
+            RemindNoticeCycleModel notifyCycle = customerService.notifyCycle(customer.getId());
+            return new ResponseEntity<>(ReponseModel.ok(notifyCycle), HttpStatus.OK);
+        } catch (ApiException ex) {
+            return new ResponseEntity<>(ReponseModel.error(ex.getStatus()), HttpStatus.OK);
+        } catch (Exception ex) {
+            return new ResponseEntity<>(ReponseModel.error(ex, this.getClass()), HttpStatus.OK);
+        }
+    }
+
+
+    //endregion
 
 }

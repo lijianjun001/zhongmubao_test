@@ -11,10 +11,15 @@ import com.zhongmubao.api.entity.SheepLevel;
 import com.zhongmubao.api.entity.SheepVendor;
 import com.zhongmubao.api.entity.SystemDistrict;
 import com.zhongmubao.api.entity.SystemMonitor;
+import com.zhongmubao.api.mongo.dao.NotifyCycleMongoDao;
+import com.zhongmubao.api.mongo.dao.NotifyTypeMongoDao;
+import com.zhongmubao.api.mongo.entity.NotifyCycleMongo;
+import com.zhongmubao.api.mongo.entity.NotifyTypeMongo;
 import com.zhongmubao.api.util.DateUtil;
 import com.zhongmubao.api.util.StringUtil;
 import com.zhongmubao.api.util.redis.RedisHelper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.Date;
@@ -36,11 +41,20 @@ public class RedisCache {
     private SystemMonitorDao systemMonitorDao;
 
     @Autowired
-    private final SystemDistrictDao systemDistrictDao;
+    private SystemDistrictDao systemDistrictDao;
 
-    public RedisCache(SystemDistrictDao systemDistrictDao) {
+    @Autowired
+    private final NotifyTypeMongoDao notifyTypeMongoDao;
+
+    @Autowired
+    private final NotifyCycleMongoDao notifyCycleMongoDao;
+
+    public RedisCache(SystemDistrictDao systemDistrictDao, NotifyTypeMongoDao notifyTypeMongoDao, NotifyCycleMongoDao notifyCycleMongoDao) {
         this.systemDistrictDao = systemDistrictDao;
+        this.notifyTypeMongoDao = notifyTypeMongoDao;
+        this.notifyCycleMongoDao = notifyCycleMongoDao;
     }
+
 
     //CACHE_NEW_PEOPLE_PROJECT_IS_SHOW_KEY
     public List<SheepVendor> vendorList() {
@@ -119,6 +133,7 @@ public class RedisCache {
     /**
      * 所有省市区列表
      * Redis Key:Constants.CACHE_SYSTEM_DISTRICT_KEY
+     *
      * @return 省市区集合
      * @author 米立林
      */
@@ -162,7 +177,8 @@ public class RedisCache {
     /**
      * 客户等级
      * Redis Key:CACHE_CUSTOMER_LEVEL_KEY
-     * @return 省市区集合
+     *
+     * @return 客户等级集合
      * @author 米立林 2017-10-09
      */
     public List<SheepLevel> getCustomerLevel() {
@@ -187,7 +203,8 @@ public class RedisCache {
     /**
      * 牧场监控
      * Redis Key:CACHE_MONITOR_KEY
-     * @return 省市区集合
+     *
+     * @return 牧场监控列表
      * @author 米立林 2017-10-09
      */
     public List<SystemMonitor> getSystemMonitor() {
@@ -202,6 +219,58 @@ public class RedisCache {
                 return monitors;
             } else {
                 return mapper.readValue(str, new TypeReference<List<SystemMonitor>>() {
+                });
+            }
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+
+    /**
+     * 购羊提醒类型
+     * Redis Key:CACHE_REMIND_TYPE_KEY
+     *
+     * @return 提醒类型集合
+     * @author 米立林 2017-10-18
+     */
+    public List<NotifyTypeMongo> getNotifyType() {
+        try {
+            String str = redisHelper.get(Constants.CACHE_REMIND_TYPE_KEY);
+            ObjectMapper mapper = new ObjectMapper();
+
+            if (StringUtil.isNullOrEmpty(str)) {
+                List<NotifyTypeMongo> notifyTypes = notifyTypeMongoDao.getList(new Query());
+                String json = mapper.writeValueAsString(notifyTypes);
+                redisHelper.save(Constants.CACHE_REMIND_TYPE_KEY, json);
+                return notifyTypes;
+            } else {
+                return mapper.readValue(str, new TypeReference<List<NotifyTypeMongo>>() {
+                });
+            }
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+
+    /**
+     * 购羊提醒周期
+     * Redis Key:CACHE_REMIND_CYCLE_KEY
+     *
+     * @return 提醒周期集合
+     * @author 米立林 2017-10-18
+     */
+    public List<NotifyCycleMongo> getNotifyCycle() {
+        try {
+            String str = redisHelper.get(Constants.CACHE_REMIND_CYCLE_KEY);
+            ObjectMapper mapper = new ObjectMapper();
+
+            if (StringUtil.isNullOrEmpty(str)) {
+                List<NotifyCycleMongo> notifyCycles = notifyCycleMongoDao.getList(new Query());
+                String json = mapper.writeValueAsString(notifyCycles);
+                redisHelper.save(Constants.CACHE_REMIND_CYCLE_KEY, json);
+                return notifyCycles;
+            } else {
+                return mapper.readValue(str, new TypeReference<List<NotifyCycleMongo>>() {
                 });
             }
         } catch (Exception ex) {
