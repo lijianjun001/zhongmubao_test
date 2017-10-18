@@ -388,9 +388,9 @@ public class SheepServiceImpl implements SheepService {
 
         // 判断类型 羊只1 Or 店铺2
         int type = SheepStageType.SHEEP.getName();
-        if (sheepProject.getType().equals("00") || sheepProject.getType().equals("06")) {
+        if (sheepProject.getType().equals(ProjectType.NORMAL.getName()) || sheepProject.getType().equals(ProjectType.NEW_PEOPLE_120.getName())) {
             type = SheepStageType.SHEEP.getName();
-        } else if (sheepProject.getType().equals("03") || sheepProject.getType().equals("04")) {
+        } else if (sheepProject.getType().equals(ProjectType.SLAUGHTER.getName()) || sheepProject.getType().equals(ProjectType.NEW_PEOPLE_7.getName())) {
             type = SheepStageType.SHOP.getName();
         }
         // 根据周期获取养殖流程

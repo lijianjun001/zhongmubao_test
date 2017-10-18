@@ -5,6 +5,7 @@ public enum ProjectType {
      * 普通
      */
     NORMAL {
+        @Override
         public String getName() {
             return "00";
         }
@@ -13,6 +14,7 @@ public enum ProjectType {
      * 工厂
      */
     SLAUGHTER {
+        @Override
         public String getName() {
             return "03";
         }
@@ -21,6 +23,7 @@ public enum ProjectType {
      * 新手120天
      */
     NEW_PEOPLE_120 {
+        @Override
         public String getName() {
             return "06";
         }
@@ -29,6 +32,7 @@ public enum ProjectType {
      * 新手7天
      */
     NEW_PEOPLE_7 {
+        @Override
         public String getName() {
             return "04";
         }
