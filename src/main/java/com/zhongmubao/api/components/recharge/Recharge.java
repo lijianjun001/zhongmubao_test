@@ -6,6 +6,10 @@ import org.apache.log4j.Logger;
 
 import java.util.*;
 
+/***
+ * 充值
+ * @author 孙阿龙
+ */
 public class Recharge {
     public static void submit(String phone, int price, String orderId) {
         //字典序排序
