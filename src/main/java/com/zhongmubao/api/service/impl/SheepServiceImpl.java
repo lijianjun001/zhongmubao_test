@@ -18,8 +18,10 @@ import com.zhongmubao.api.dto.Response.Sheep.*;
 import com.zhongmubao.api.entity.*;
 import com.zhongmubao.api.entity.ext.*;
 import com.zhongmubao.api.exception.ApiException;
+import com.zhongmubao.api.mongo.dao.CustomerOrderLogMongoDao;
 import com.zhongmubao.api.mongo.dao.ExtBannerMongoDao;
 import com.zhongmubao.api.mongo.dao.SheepStageMongoDao;
+import com.zhongmubao.api.mongo.entity.CustomerOrderLogMongo;
 import com.zhongmubao.api.mongo.entity.SheepStageMongo;
 import com.zhongmubao.api.mongo.entity.base.PageModel;
 import com.zhongmubao.api.service.BaseService;
@@ -28,6 +30,8 @@ import com.zhongmubao.api.util.*;
 import com.zhongmubao.api.dto.common.SheepVendorAttrs;
 import com.zhongmubao.api.util.common.CurrentSheepProjectState;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -47,10 +51,13 @@ public class SheepServiceImpl extends BaseService implements SheepService {
     private final CustomerSinaDao customerSinaDao;
     private final RedisCache redisCache;
     private final SheepVendorDao sheepVendorDao;
+    private final SheepLevelDao sheepLevelDao;
+    private final CustomerOrderLogMongoDao customerOrderLogMongoDao;
     private List<SheepVendor> sheepVendors;
+    private Query query;
 
     @Autowired
-    public SheepServiceImpl(RedisCache redisCache, CustomerSinaDao customerSinaDao, ExtActivityRecordDao extActivityRecordDao, SheepOrderDao sheepOrderDao, SheepProjectDao sheepProjectDao, ExtBannerMongoDao extBannerMongoDao, SheepProjectPlanDao sheepProjectPlanDao, SheepStageMongoDao sheepStageMongoDao, SheepLevelDao levelDao,SheepVendorDao sheepVendorDao) {
+    public SheepServiceImpl(RedisCache redisCache, CustomerSinaDao customerSinaDao, ExtActivityRecordDao extActivityRecordDao, SheepOrderDao sheepOrderDao, SheepProjectDao sheepProjectDao, ExtBannerMongoDao extBannerMongoDao, SheepProjectPlanDao sheepProjectPlanDao, SheepStageMongoDao sheepStageMongoDao, SheepLevelDao levelDao,SheepVendorDao sheepVendorDao,SheepLevelDao sheepLevelDao,CustomerOrderLogMongoDao customerOrderLogMongoDao) {
         this.redisCache = redisCache;
         this.customerSinaDao = customerSinaDao;
         this.extActivityRecordDao = extActivityRecordDao;
@@ -61,6 +68,8 @@ public class SheepServiceImpl extends BaseService implements SheepService {
         this.sheepStageMongoDao = sheepStageMongoDao;
         this.levelDao = levelDao;
         this.sheepVendorDao = sheepVendorDao;
+        this.sheepLevelDao = sheepLevelDao;
+        this.customerOrderLogMongoDao = customerOrderLogMongoDao;
     }
 
 
@@ -663,6 +672,30 @@ public class SheepServiceImpl extends BaseService implements SheepService {
         returnmodel.setList(mySheepFoldViewModelList);
         returnmodel.setTotalPage(totalPage);
         return returnmodel;
+    }
+
+    /**
+     * 我的羊圈 头部
+     * @param customerId
+     * @return MySheepFoldHeadViewModel
+     * @throws Exception
+     * @author xy
+     */
+    @Override
+    public MySheepFoldHeadViewModel mySheepFoldHead(int customerId) throws Exception {
+        if (customerId <= 0) {
+            throw new ApiException(ResultStatus.PARAMETER_MISSING);
+        }
+        int sheepTotalCount = sheepOrderDao.mySheepFoldSheepTotalCount(customerId, Constants.SHEEP_IN_THE_BAR_STATE);
+        int level = sheepLevelDao.getLevelBySheepCount(sheepTotalCount);
+        boolean isNewOrders = false;
+        CustomerOrderLogMongo customerOrderLogMongo = customerOrderLogMongoDao.get(new Query(Criteria.where("customerId").is(customerId)));
+        if(customerOrderLogMongo!=null){ isNewOrders=true; customerOrderLogMongoDao.delete(customerOrderLogMongo);}
+        MySheepFoldHeadViewModel returnModel = new MySheepFoldHeadViewModel();
+        returnModel.setSheepTotalCount(sheepTotalCount);
+        returnModel.setLevel(sheepTotalCount<=0?0:level);
+        returnModel.setNewOrders(isNewOrders);
+        return returnModel;
     }
 
     private NewPeopleProjectViewModel newPeopleProject(Customer customer) {

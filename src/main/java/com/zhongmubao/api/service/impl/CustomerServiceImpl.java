@@ -456,7 +456,7 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
         }
 
         // 1、充值话费（先充值再修改领取状态和添加领取记录，客户至上）
-        Recharge.submit(model.getPhone(), shareCard.getCount());
+        Recharge.submit(model.getPhone(), shareCard.getCount(), model.getGiftId());
 
         // 2、修改话费卡状态为已领取
         shareCard.setStatus(ShareCardState.RECEIVED.getName());
