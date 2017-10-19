@@ -4,6 +4,7 @@ import com.zhongmubao.api.authorization.annotation.Authorization;
 import com.zhongmubao.api.authorization.annotation.CurrentUser;
 import com.zhongmubao.api.dto.Request.OnlyPrimaryIdRequestModel;
 import com.zhongmubao.api.dto.Request.PageIndexRequestModel;
+import com.zhongmubao.api.dto.Request.Sheep.MySheepFoldRequestModel;
 import com.zhongmubao.api.dto.Request.Sheep.SheepOrderRequestModel;
 import com.zhongmubao.api.dto.Request.ProjectPlanRequestModel;
 import com.zhongmubao.api.dto.Request.SystemMonitorRequestModel;
@@ -166,6 +167,22 @@ public class SheepController {
             return new ResponseEntity<>(ReponseModel.error(ex, this.getClass()), HttpStatus.OK);
         }
     }
+    /**
+     * @param customer     当前用户
+     * @return 我的羊圈
+     * @author xy 2017-10-09
+     */
+    @Authorization
+    @RequestMapping(value = "/mySheepFoldList", method = RequestMethod.POST, consumes = "application/json")
+    public ResponseEntity<ReponseModel> mySheepFoldList(@CurrentUser Customer customer,HttpEntity<MySheepFoldRequestModel> model) {
+        try {
+            MySheepFoldListViewModel mySheepFoldListViewModel = sheepService.mySheepFoldList(customer.getId(),model.getBody());
+            return new ResponseEntity<>(ReponseModel.ok(mySheepFoldListViewModel), HttpStatus.OK);
+        } catch (Exception ex) {
+            return new ResponseEntity<>(ReponseModel.error(ex, this.getClass()), HttpStatus.OK);
+        }
+    }
+
 
     /**
      * @param customer     当前用户

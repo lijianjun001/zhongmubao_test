@@ -200,7 +200,7 @@
 			<![CDATA[ AND (p.Type='03'OR p.Type='04') ]]>
 		</if>
 		<if test="type=='00'" >
-			<![CDATA[ AND (p.Type<>'03'OR p.Type<>'04') ]]>
+			<![CDATA[ AND (p.Type<>'03'AND p.Type<>'04') ]]>
 		</if>
 		AND o.Deleted=false AND o.Frozened=false AND p.Deleted=false
 		group by p.Id order by case when p.Type='03' or p.Type='06' then 2 else 1 end,o.Id desc
@@ -210,36 +210,46 @@
 		<!-- 具体的sql -->
 		SELECT
 		count(1)
+		FROM (
+		SELECT
+		count(1)
+		FROM SheepOrder o
+		INNER JOIN SheepProject p ON (o.ProjectId=p.Id)
 		where
 		o.CustomerId=#{customerId} and o.State in
 		<foreach collection="states" item="item" index="index" open="(" close=")" separator=",">
 			#{item}
 		</foreach>
-		<if test="type=='03'" >
+		<if test="type=='03'">
 			<![CDATA[ AND (p.Type='03'OR p.Type='04') ]]>
 		</if>
-		<if test="type=='00'" >
-			<![CDATA[ AND (p.Type<>'03'OR p.Type<>'04') ]]>
+		<if test="type=='00'">
+			<![CDATA[ AND (p.Type<>'03' AND p.Type<>'04') ]]>
 		</if>
 		and o.Deleted=false and o.Frozened=false and p.Deleted=false
 		group by p.Id order by case when p.Type='03' or p.Type='06' then 2 else 1 end,o.Id desc
+		) temp
 	</select>
 	<select id="mySheepFoldListSumCount" resultType="int">
 		<!-- 具体的sql -->
+		SELECT sum(Count) FROM (
 		SELECT
-		sum(o.Count)
+		sum(o.Count) Count
+		FROM SheepOrder o
+		INNER JOIN SheepProject p ON (o.ProjectId=p.Id)
 		where
 		o.CustomerId=#{customerId} and o.State in
-		<foreach collection="states" item="item" index="index" open="(" close=")" separator=",">
+		<foreach collection="states" item="item" index="index" open="(" separator="," close=")">
 			#{item}
 		</foreach>
-		<if test="type=='03'" >
+		<if test="type=='03'">
 			<![CDATA[ AND (p.Type='03'OR p.Type='04') ]]>
 		</if>
-		<if test="type=='00'" >
-			<![CDATA[ AND (p.Type<>'03'OR p.Type<>'04') ]]>
+		<if test="type=='00'">
+			<![CDATA[ AND (p.Type<>'03' AND p.Type<>'04') ]]>
 		</if>
 		and o.Deleted=false and o.Frozened=false and p.Deleted=false
 		group by p.Id order by case when p.Type='03' or p.Type='06' then 2 else 1 end,o.Id desc
+		) temp
 	</select>
 </mapper>
