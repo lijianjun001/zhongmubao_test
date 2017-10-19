@@ -23,7 +23,7 @@ public class PageOrderEarningsViewModel {
     /**
      * 红包增收
      */
-    private String redPackageAmount;
+    private double redPackageAmount;
     /**
      * 收益金额
      */
@@ -40,7 +40,7 @@ public class PageOrderEarningsViewModel {
     public PageOrderEarningsViewModel() {
     }
 
-    public PageOrderEarningsViewModel(int id, int customerId, String title, int count, String paymentAmount, String deductibleAmount, String redPackageAmount, String earningsAmount, String effectiveTime, String outFenceTime) {
+    public PageOrderEarningsViewModel(int id, int customerId, String title, int count, String paymentAmount, String deductibleAmount, double redPackageAmount, String earningsAmount, String effectiveTime, String outFenceTime) {
         this.id = id;
         this.customerId = customerId;
         this.title = title;
@@ -101,11 +101,11 @@ public class PageOrderEarningsViewModel {
         this.deductibleAmount = deductibleAmount;
     }
 
-    public String getRedPackageAmount() {
+    public double getRedPackageAmount() {
         return redPackageAmount;
     }
 
-    public void setRedPackageAmount(String redPackageAmount) {
+    public void setRedPackageAmount(double redPackageAmount) {
         this.redPackageAmount = redPackageAmount;
     }
 

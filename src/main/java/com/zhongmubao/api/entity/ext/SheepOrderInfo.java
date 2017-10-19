@@ -8,6 +8,8 @@ public class SheepOrderInfo {
     private int customerId;
     private String code;
     private int count;
+    private double price;
+    private double rate;
     private double totalAmount;
     private String paymentAmount;
     private String deductibleAmount;
@@ -20,6 +22,8 @@ public class SheepOrderInfo {
     private String type;
     private String state;
     private int period;
+    private int vendorId;
+    private double redPackageAmount;
 
 
     public int getId() {
@@ -146,5 +150,37 @@ public class SheepOrderInfo {
 
     public void setPeriod(int period) {
         this.period = period;
+    }
+
+    public int getVendorId() {
+        return vendorId;
+    }
+
+    public void setVendorId(int vendorId) {
+        this.vendorId = vendorId;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
+    public double getRate() {
+        return rate;
+    }
+
+    public void setRate(double rate) {
+        this.rate = rate;
+    }
+
+    public double getRedPackageAmount() {
+        return redPackageAmount;
+    }
+
+    public void setRedPackageAmount(double redPackageAmount) {
+        this.redPackageAmount = redPackageAmount;
     }
 }

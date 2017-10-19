@@ -2,6 +2,10 @@ package com.zhongmubao.api.entity.ext;
 
 import java.util.Date;
 
+/**
+ * 羊只收益
+ * @author 米立林
+ */
 public class SheepOrderEarnings {
 
     private int id;
@@ -11,8 +15,11 @@ public class SheepOrderEarnings {
     private String deductibleAmount;
     private String title;
     private Date effectiveTime;
-    private String redPackageAmount;
+    private double redPackageAmount;
     private Date redemTime;
+    private double price;
+    private double rate;
+    private int period;
 
     public int getId() {
         return id;
@@ -70,11 +77,11 @@ public class SheepOrderEarnings {
         this.effectiveTime = effectiveTime;
     }
 
-    public String getRedPackageAmount() {
+    public double getRedPackageAmount() {
         return redPackageAmount;
     }
 
-    public void setRedPackageAmount(String redPackageAmount) {
+    public void setRedPackageAmount(double redPackageAmount) {
         this.redPackageAmount = redPackageAmount;
     }
 
@@ -84,5 +91,29 @@ public class SheepOrderEarnings {
 
     public void setRedemTime(Date redemTime) {
         this.redemTime = redemTime;
+    }
+
+    public int getPeriod() {
+        return period;
+    }
+
+    public void setPeriod(int period) {
+        this.period = period;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
+    public double getRate() {
+        return rate;
+    }
+
+    public void setRate(double rate) {
+        this.rate = rate;
     }
 }

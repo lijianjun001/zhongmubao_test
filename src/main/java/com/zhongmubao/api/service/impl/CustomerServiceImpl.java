@@ -17,6 +17,8 @@ import com.zhongmubao.api.dto.Request.Address.CustomerAddressRequestModel;
 import com.zhongmubao.api.dto.Request.Address.UpdateCustomerAddressRequestModel;
 import com.zhongmubao.api.dto.Request.customer.AutoRedeemRequestModel;
 import com.zhongmubao.api.dto.Request.customer.ResetPasswordRequestModel;
+import com.zhongmubao.api.dto.Request.customer.farmIncome.InBarSheepIncomeModel;
+import com.zhongmubao.api.dto.Request.customer.farmIncome.InBarSheepIncomeViewModel;
 import com.zhongmubao.api.dto.Response.Address.CustomerAddressResponseModel;
 import com.zhongmubao.api.dto.Response.Address.CustomerAddressViewModel;
 import com.zhongmubao.api.dto.Response.Ext.PageExtRedPackageModel;
@@ -32,6 +34,7 @@ import com.zhongmubao.api.dto.Response.Sign.SignPackageList.PageSignPackageModel
 import com.zhongmubao.api.dto.Response.Sign.SignPackageList.SignPackageViewModel;
 import com.zhongmubao.api.dto.SignGift;
 import com.zhongmubao.api.entity.*;
+import com.zhongmubao.api.entity.ext.SheepOrderInfo;
 import com.zhongmubao.api.exception.ApiException;
 import com.zhongmubao.api.mongo.dao.NotifyMongoDao;
 import com.zhongmubao.api.mongo.dao.ShareCardMongoDao;
@@ -382,7 +385,7 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
                 en -> new SignPackageViewModel(
                         en.getId(),
                         DoubleUtil.toFixed(en.getPrice(), "0.00"),
-                        DateUtil.format(en.getExpTime(), "yyyy-MM-dd"),
+                        DateUtil.format(en.getExpTime(), Constants.DATE_FORMAT),
                         DateUtil.subDateOfDay(en.getExpTime(), new Date()) < 0 ? 0 : DateUtil.subDateOfDay(en.getExpTime(), new Date())))
                 .collect(Collectors.toList());
         PageHelper.clearPage();
@@ -562,7 +565,7 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
         List<PageExtRedPackageViewModel> list = page.getResult().stream().map(
                 en -> new PageExtRedPackageViewModel(
                         Double.toString(en.getPrice()),
-                        DateUtil.format(en.getExpTime(), "yyyy-MM-dd")
+                        DateUtil.format(en.getExpTime(), Constants.DATE_FORMAT)
                 ))
                 .collect(Collectors.toList());
         PageHelper.clearPage();
@@ -671,7 +674,7 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
                 model.getAddress(),
                 model.getName(),
                 model.getPhone(),
-                DateUtil.format(new Date(), "yyyy-MM-dd HH:mm:ss")
+                DateUtil.format(new Date(), Constants.DATE_TIME_FORMAT)
         );
 
         return sucRows;
@@ -699,8 +702,8 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
                         en.getCountyCode(), en.getCountyName(),
                         en.getAddress(), en.getName(), en.getPhone(),
                         en.getIsDefault(), en.getDeleted(),
-                        DateUtil.format(en.getCreated(), "yyyy-MM-dd"),
-                        DateUtil.format(en.getModified(), "yyyy-MM-dd")
+                        DateUtil.format(en.getCreated(), Constants.DATE_FORMAT),
+                        DateUtil.format(en.getModified(), Constants.DATE_FORMAT)
                 ))
                 .collect(Collectors.toList());
         return new CustomerAddressResponseModel(list);
@@ -1011,6 +1014,34 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
         }
         // 删除
         notifyMongoDao.delete(notify);
+    }
+
+    //endregion
+
+    //region 个人中心 -- 牧场收益
+    @Override
+    public InBarSheepIncomeModel inBarSheepIncome(int customerId, PageIndexRequestModel model) throws Exception {
+        if (null == model) {
+            throw new ApiException(ResultStatus.PARAMETER_MISSING);
+        }
+        InBarSheepIncomeModel inBarSheepIncome = new InBarSheepIncomeModel();
+        PageHelper.startPage(model.getPageIndex(), Constants.PAGE_SIZE);
+        Page<SheepOrderInfo> page = sheepOrderDao.pageSheepOrderByCustomerIdGroupByProjectId(customerId, Constants.SHEEP_IN_THE_BAR_STATE);
+        int pages = page.getPages();
+        List<InBarSheepIncomeViewModel> list = page.getResult().stream().map(
+                en -> new InBarSheepIncomeViewModel(
+                        en.getTitle(),
+                        en.getCount(),
+                        DateUtil.format(en.getEffectiveTime(), Constants.DATE_FORMAT) + " - " + DateUtil.format(en.getRedemTime(), Constants.DATE_FORMAT),
+                        DoubleUtil.toFixed(en.getTotalAmount(), "0.00"),
+                        DoubleUtil.toFixed(en.getCount() * calcProfitEx(en.getPrice(), en.getRate(), en.getPeriod()) + en.getRedPackageAmount(), "0.00")
+                ))
+                .collect(Collectors.toList());
+        PageHelper.clearPage();
+
+        inBarSheepIncome.setPageCount(pages);
+        inBarSheepIncome.setList(list);
+        return inBarSheepIncome;
     }
 
     //endregion

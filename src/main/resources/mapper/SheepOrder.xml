@@ -145,7 +145,7 @@
 
 	<select id="pageSheepOrderByCustomerIdAndState" resultType="SheepOrderEarnings">
 		<!-- 具体的sql -->
-		SELECT so.Id,so.CustomerId,so.Count,so.PaymentAmount,so.DeductibleAmount,sp.Title,sp.EffectiveTime,sp.RedemTime,
+		SELECT so.Id,so.CustomerId,so.Count,so.PaymentAmount,so.DeductibleAmount,sp.Title,sp.EffectiveTime,sp.RedemTime,sp.Price,sp.Rate,sp.Period,
 		(SELECT SUM(Price) FROM ExtRedPackage erp WHERE erp.SheepOrderId=so.Id) AS redPackageAmount
 		FROM SheepOrder so
 		INNER JOIN SheepProject sp ON so.ProjectId=sp.Id
@@ -171,13 +171,13 @@
 
 	<select id="pageSheepOrderByCustomerIdGroupByProjectId" resultType="SheepOrderInfo">
 		<!-- 具体的sql -->
-		SELECT sp.Title,sp.Type,sp.State,sp.Period,sp.EffectiveTime,sp.RedemTime,sv.Shorthand,SUM(so.Count) AS Count,sp.VendorId
+		SELECT so.Id,so.CustomerId,sp.Title,sp.Type,sp.State,sp.Price,sp.Rate,sp.Period,sp.EffectiveTime,sp.RedemTime,sv.Shorthand,SUM(so.Count) AS Count,sp.VendorId,SUM(so.TotalAmount) AS TotalAmount,
+		SUM((SELECT SUM(Price) FROM ExtRedPackage erp WHERE erp.SheepOrderId=so.Id)) AS RedPackageAmount
 		FROM SheepOrder so
 		INNER JOIN SheepProject sp ON so.ProjectId=sp.Id
 		INNER JOIN SheepVendor sv ON sp.VendorId=sv.Id
 		WHERE so.CustomerId=#{customerId}
-		AND
-		so.state IN
+		AND so.state IN
 		<foreach collection="states" item="item" index="index" open="(" close=")" separator=",">
 			#{item}
 		</foreach>

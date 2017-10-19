@@ -128,7 +128,7 @@ public class Constants {
     /***
      * 延时卡延时的天数
      */
-    public static final  int DELAYED_CARD_DAY= 7;
+    public static final int DELAYED_CARD_DAY = 7;
 
     /**
      * 签到礼物
@@ -160,6 +160,15 @@ public class Constants {
     /**
      * 签到lock锁
      */
-    public static final String LOCK_SIGN_KEY="LOCK_SIGN_";
+    public static final String LOCK_SIGN_KEY = "LOCK_SIGN_";
     //endregion
+
+    /**
+     * 日期格式
+     */
+    public static final String DATE_FORMAT = "yyyy-MM-dd";
+    /**
+     * 日期时分秒格式
+     */
+    public static final String DATE_TIME_FORMAT = "yyyy-MM-dd HH:mm:ss";
 }

@@ -11,6 +11,7 @@ import com.zhongmubao.api.dto.Request.Address.CustomerAddressRequestModel;
 import com.zhongmubao.api.dto.Request.Address.UpdateCustomerAddressRequestModel;
 import com.zhongmubao.api.dto.Request.customer.AutoRedeemRequestModel;
 import com.zhongmubao.api.dto.Request.customer.ResetPasswordRequestModel;
+import com.zhongmubao.api.dto.Request.customer.farmIncome.InBarSheepIncomeModel;
 import com.zhongmubao.api.dto.Response.Address.CustomerAddressResponseModel;
 import com.zhongmubao.api.dto.Response.Ext.PageExtRedPackageModel;
 import com.zhongmubao.api.dto.Response.Notice.NoticeRemindModel;
@@ -220,7 +221,7 @@ public class CustomerController {
 
     //endregion
 
-    // region ExtRedPackage
+    // region 个人中心 -- 红包列表
 
     /**
      * @param customer 主键ID
@@ -242,7 +243,7 @@ public class CustomerController {
     }
     // endregion
 
-    //region 地址管理 SystemDistrict
+    //region 个人中心 -- 地址管理
 
     /**
      * 新增
@@ -504,6 +505,29 @@ public class CustomerController {
         try {
             customerService.notifyRemindDel(customer.getId(), model.getBody());
             return new ResponseEntity<>(ReponseModel.ok(), HttpStatus.OK);
+        } catch (ApiException ex) {
+            return new ResponseEntity<>(ReponseModel.error(ex.getStatus()), HttpStatus.OK);
+        } catch (Exception ex) {
+            return new ResponseEntity<>(ReponseModel.error(ex, this.getClass()), HttpStatus.OK);
+        }
+    }
+
+    //endregion
+
+    //region 个人中心 -- 牧场收益
+
+    /***
+     * 在栏羊只收益
+     * @param customer 当前用户
+     * @author 米立林 2017-10-19
+     * @return
+     */
+    @RequestMapping(value = "/farmIncome/inBarSheepIncome", method = RequestMethod.POST, consumes = "application/json")
+    @Authorization
+    public ResponseEntity<ReponseModel> inBarSheepIncome(@CurrentUser Customer customer, HttpEntity<PageIndexRequestModel> model) {
+        try {
+            InBarSheepIncomeModel inBarIncome = customerService.inBarSheepIncome(customer.getId(),model.getBody());
+            return new ResponseEntity<>(ReponseModel.ok(inBarIncome), HttpStatus.OK);
         } catch (ApiException ex) {
             return new ResponseEntity<>(ReponseModel.error(ex.getStatus()), HttpStatus.OK);
         } catch (Exception ex) {

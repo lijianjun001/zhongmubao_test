@@ -22,6 +22,7 @@ import com.zhongmubao.api.mongo.dao.ExtBannerMongoDao;
 import com.zhongmubao.api.mongo.dao.SheepStageMongoDao;
 import com.zhongmubao.api.mongo.entity.SheepStageMongo;
 import com.zhongmubao.api.mongo.entity.base.PageModel;
+import com.zhongmubao.api.service.BaseService;
 import com.zhongmubao.api.service.SheepService;
 import com.zhongmubao.api.util.*;
 import com.zhongmubao.api.dto.common.SheepVendorAttrs;
@@ -33,7 +34,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
-public class SheepServiceImpl implements SheepService {
+public class SheepServiceImpl extends BaseService implements SheepService {
 
     //region 注入
     private final ExtBannerMongoDao extBannerMongoDao;
@@ -165,7 +166,7 @@ public class SheepServiceImpl implements SheepService {
         }
         PageHelper.startPage(model.getPageIndex(), Constants.PAGE_SIZE);
 
-        List<String> states = new LinkedList<String>();
+        List<String> states = new LinkedList<>();
         // 判断状态是否为已付款
         if (SheepOrderState.PAYMENTED.getName().equals(model.getState())) {
             states = Constants.SHEEP_IN_THE_BAR_STATE_AND_REDEMING_ANDREDEMED;
@@ -207,7 +208,7 @@ public class SheepServiceImpl implements SheepService {
         }
         PageHelper.startPage(model.getPageIndex(), Constants.PAGE_SIZE);
 
-        List<String> states = new LinkedList<String>();
+        List<String> states = new LinkedList<>();
         // 判断状态是否为已付款
         if (SheepOrderState.PAYMENTED.getName().equals(model.getState())) {
             states = Constants.SHEEP_IN_THE_BAR_STATE_AND_REDEMING_ANDREDEMED;
@@ -226,9 +227,9 @@ public class SheepServiceImpl implements SheepService {
                         en.getPayableAmount(),
                         en.getDeductibleAmount(),
                         en.getRedPackageAmount(),
-                        "0",  // todo:收益金额另算
-                        DateUtil.format(en.getEffectiveTime(), "yyyy-MM-dd HH:mm:ss"),
-                        DateUtil.format(DateUtil.addDay(en.getRedemTime(), -1), "yyyy-MM-dd HH:mm:ss")
+                        DoubleUtil.toFixed(en.getCount() * calcProfitEx(en.getPrice(), en.getRate(), en.getPeriod()) + en.getRedPackageAmount(), "0.00"),
+                        DateUtil.format(en.getEffectiveTime(),Constants.DATE_TIME_FORMAT),
+                        DateUtil.format(DateUtil.addDay(en.getRedemTime(), -1), Constants.DATE_TIME_FORMAT)
                 ))
                 .collect(Collectors.toList());
         PageHelper.clearPage();
@@ -266,10 +267,10 @@ public class SheepServiceImpl implements SheepService {
                 detailInfo.getPaymentAmount(),
                 detailInfo.getState(),
                 detailInfo.getRedemAmount(),
-                DateUtil.format(detailInfo.getCreated(), "yyyy-MM-dd HH:mm:ss"),
-                DateUtil.format(detailInfo.getPaymentTime(), "yyyy-MM-dd HH:mm:ss"),
+                DateUtil.format(detailInfo.getCreated(), Constants.DATE_TIME_FORMAT),
+                DateUtil.format(detailInfo.getPaymentTime(), Constants.DATE_TIME_FORMAT),
                 DateUtil.subDateOfDay(detailInfo.getRedeemTime(), new Date()),
-                DateUtil.format(detailInfo.getRedeemTime(), "yyyy-MM-dd HH:mm:ss"),
+                DateUtil.format(detailInfo.getRedeemTime(), Constants.DATE_TIME_FORMAT),
                 detailInfo.getRedPackageAmount(),
                 "0"   // todo:totalIncome 收益总额
         );
@@ -331,9 +332,9 @@ public class SheepServiceImpl implements SheepService {
                 incomeConversionMethod,
                 productIntroduction,
                 payMethod,
-                DateUtil.format(detailInfo.getEffectiveTime(), "yyyy-MM-dd HH:mm:ss"),
-                DateUtil.format(slaughterTime, "yyyy-MM-dd HH:mm:ss"),
-                DateUtil.format(detailInfo.getRedemTime(), "yyyy-MM-dd HH:mm:ss"),
+                DateUtil.format(detailInfo.getEffectiveTime(), Constants.DATE_TIME_FORMAT),
+                DateUtil.format(slaughterTime, Constants.DATE_TIME_FORMAT),
+                DateUtil.format(detailInfo.getRedemTime(), Constants.DATE_TIME_FORMAT),
                 detailInfo.getName(),
                 licenseNo,
                 enterpriseAddress,
@@ -368,7 +369,7 @@ public class SheepServiceImpl implements SheepService {
                 plan.getId(),
                 plan.getTime(),
                 plan.getInfo(),
-                DateUtil.format(plan.getCreateTime(), "yyyy-MM-dd HH:mm:ss")
+                DateUtil.format(plan.getCreateTime(), Constants.DATE_TIME_FORMAT)
         );
 
         return detailModel;
@@ -475,8 +476,8 @@ public class SheepServiceImpl implements SheepService {
             CurrentSheepProjectState projectState = calcCurrentSheepProjectState(info);
             SheepOrderInfoViewModel orderInfo = new SheepOrderInfoViewModel(
                     info.getTitle(),
-                    DateUtil.format(info.getEffectiveTime(), "yyyy-MM-dd HH:mm:ss"),
-                    DateUtil.format(DateUtil.addDay(info.getRedemTime(), -1), "yyyy-MM-dd HH:mm:ss"),
+                    DateUtil.format(info.getEffectiveTime(), Constants.DATE_TIME_FORMAT),
+                    DateUtil.format(DateUtil.addDay(info.getRedemTime(), -1), Constants.DATE_TIME_FORMAT),
                     info.getCount(),
                     DateUtil.subDateOfDay(info.getRedemTime(), new Date()),
                     info.getShorthand(),

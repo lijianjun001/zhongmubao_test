@@ -1,5 +1,7 @@
 package com.zhongmubao.api.util;
 
+import com.zhongmubao.api.config.Constants;
+
 import java.text.ParseException;
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
@@ -17,7 +19,7 @@ public class DateUtil {
      */
     public static Date monthFirstDay() {
         Calendar cale = Calendar.getInstance();
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat format = new SimpleDateFormat(Constants.DATE_TIME_FORMAT);
         cale.add(Calendar.MONTH, 0);
         cale.set(Calendar.DAY_OF_MONTH, 1);
         return weeHours(strToDate(format.format(cale.getTime())), 0);
@@ -31,7 +33,7 @@ public class DateUtil {
      */
     public static Date monthLastDay() {
         Calendar cale = Calendar.getInstance();
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat format = new SimpleDateFormat(Constants.DATE_TIME_FORMAT);
         cale.add(Calendar.MONTH, 1);
         cale.set(Calendar.DAY_OF_MONTH, 0);
         return weeHours(strToDate(format.format(cale.getTime())), 1);
@@ -138,7 +140,7 @@ public class DateUtil {
      */
     public static String formatDefault(Date date) {
         try {
-            SimpleDateFormat formater = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            SimpleDateFormat formater = new SimpleDateFormat(Constants.DATE_TIME_FORMAT);
             return formater.format(date);
         } catch (Exception ex) {
             return "";
@@ -166,7 +168,7 @@ public class DateUtil {
      */
     public static String formatShort(Date date) {
         try {
-            SimpleDateFormat formater = new SimpleDateFormat("yyyy-MM-dd");
+            SimpleDateFormat formater = new SimpleDateFormat(Constants.DATE_FORMAT);
             return formater.format(date);
         } catch (Exception ex) {
             return "";
@@ -180,7 +182,7 @@ public class DateUtil {
      * @return 日期
      */
     public static Date strToDate(String strDate) {
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat formatter = new SimpleDateFormat(Constants.DATE_TIME_FORMAT);
         ParsePosition pos = new ParsePosition(0);
         return formatter.parse(strDate, pos);
     }
