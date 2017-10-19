@@ -7,13 +7,13 @@ import org.apache.log4j.Logger;
 import java.util.*;
 
 public class Recharge {
-    public static void submit(String phone, int price) {
+    public static void submit(String phone, int price, String orderId) {
         //字典序排序
         HashMap<String, String> map = new HashMap<>();
 
         map.put("phone_number", phone);
         map.put("card_worth", price + "");
-        map.put("sp_order_id", System.currentTimeMillis() + "");
+        map.put("sp_order_id", orderId);
         map.put("api_key", Config.API_KEY);
 
         //region 拿到sign
