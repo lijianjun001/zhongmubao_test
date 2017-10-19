@@ -10,12 +10,12 @@ public class InBarSheepIncomeModel {
     /**
      * 本金
      */
-    private double principal;
+    private String principal;
 
     /**
      * 预计收益
      */
-    private double enIncome;
+    private String enIncome;
 
     /**
      * 页数
@@ -27,19 +27,19 @@ public class InBarSheepIncomeModel {
      */
     private List<InBarSheepIncomeViewModel> list;
 
-    public double getPrincipal() {
+    public String getPrincipal() {
         return principal;
     }
 
-    public void setPrincipal(double principal) {
+    public void setPrincipal(String principal) {
         this.principal = principal;
     }
 
-    public double getEnIncome() {
+    public String getEnIncome() {
         return enIncome;
     }
 
-    public void setEnIncome(double enIncome) {
+    public void setEnIncome(String enIncome) {
         this.enIncome = enIncome;
     }
 

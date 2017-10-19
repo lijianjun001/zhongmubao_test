@@ -50,11 +50,9 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import static com.zhongmubao.api.config.enmu.SignGiftType.*;
 
@@ -1039,8 +1037,16 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
                 .collect(Collectors.toList());
         PageHelper.clearPage();
 
+        // 计算本金
+        DoubleSummaryStatistics statsBenjin = list.stream().mapToDouble((x) -> Double.parseDouble(x.getBenJin())).summaryStatistics();
+        inBarSheepIncome.setPrincipal(DoubleUtil.toFixed(statsBenjin.getSum(), "0.00"));
+        // 预期收益
+        DoubleSummaryStatistics statsIncome = list.stream().mapToDouble((x) -> Double.parseDouble(x.getEnIncome())).summaryStatistics();
+        inBarSheepIncome.setEnIncome(DoubleUtil.toFixed(statsIncome.getSum(), "0.00"));
+
         inBarSheepIncome.setPageCount(pages);
         inBarSheepIncome.setList(list);
+
         return inBarSheepIncome;
     }
 
