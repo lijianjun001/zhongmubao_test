@@ -56,6 +56,10 @@ import java.util.stream.Collectors;
 import static com.zhongmubao.api.config.enmu.SignGiftType.*;
 
 
+/***
+ * 客户服务类
+ * @author 孙阿龙
+ */
 @Service
 public class CustomerServiceImpl extends BaseService implements CustomerService {
 
@@ -86,9 +90,6 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
 
     @Override
     public String login(String account, String password, String platform) throws Exception {
-
-        //SystemTokenMongo systemToken = systemTokenMongoDao.getByCustomerIdAndPlatform(4194,"00");
-
         Customer customer = customerDao.getCustomerByAccountAndPassword(account, password);
         if (customer == null) {
             throw new Exception("登录失败");
@@ -142,8 +143,10 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
         Date now = new Date();
         Date dayBegin = DateUtil.dayBegin();
         Date dayEnd = DateUtil.dayEnd();
-        Date expTime = DateUtil.addDay(now, Constants.DAY_SHARE_REDPACKAGE_EXP_DAY); //红包过期时间
-        Date boundaryTime = DateUtil.addHours(dayBegin, 10); //签到时间分界点
+        //红包过期时间
+        Date expTime = DateUtil.addDay(now, Constants.DAY_SHARE_REDPACKAGE_EXP_DAY);
+        //签到时间分界点
+        Date boundaryTime = DateUtil.addHours(dayBegin, 10);
         String dayShareType = RedPackageType.DAY_SHARE.getName();
         List<Integer> giftDayList = Arrays.asList(7, 14, 21, 28);
         ShareCardMongo shareCard = null;
@@ -160,7 +163,7 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
                 int shareDayCount = extRedPackageDao.countExtRedPackageByCustomerIdAndBeginTimeAndEndTimeAndType(customerId, monthBegin, monthEnd, dayShareType);
 
                 //region 验证
-                boolean todayIsShare = extRedPackageDao.countExtRedPackageByCustomerIdAndBeginTimeAndEndTimeAndType(customerId, dayBegin, dayEnd, dayShareType) > 0;// redisCache.getCustomerIsShare(customerId);
+                boolean todayIsShare = extRedPackageDao.countExtRedPackageByCustomerIdAndBeginTimeAndEndTimeAndType(customerId, dayBegin, dayEnd, dayShareType) > 0;
 
                 if (todayIsShare) {
                     return new com.zhongmubao.api.dto.Response.Sign.SignModel(shareDayCount, "0.00", null, null, todayIsShare, false);
@@ -199,9 +202,6 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
                     // 随机获取神秘礼物
                     int randomIndex = MathUtil.random(0, Constants.SIGN_GIFT_LIST.size() - 1);
 
-//                    if (customer.getPhone().equals("15656287151")) {
-//                        randomIndex = shareDayCount % 2 == 0 ? 8 : 9;
-//                    }
                     SignGiftRedPackageViewModel signGiftRedPackageViewModel = null;
 
                     double giftPrice = 0;
@@ -275,8 +275,8 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
                     signGiftViewModel.setUnit(formatGiftUnit(signGift.getType()));
                     signGiftViewModel.setSignGiftCharge(new SignGiftCharge(Integer.toString(telephoneMoney), customer.getAccount()));
                 }
-
-                redisCache.saveCustomerIsShare(customerId);//设置今天已分享
+                //设置今天已分享
+                redisCache.saveCustomerIsShare(customerId);
 
                 //endregion
                 return new SignModel(shareDayCount, DoubleUtil.toFixed(price, "0.00"), signInfo, signGiftViewModel, todayIsShare, true);
@@ -326,11 +326,12 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
     @Override
     public void megreCard(Customer customer, MegreCardRequestModel model) throws Exception {
         int customerId = customer.getId();
+        int packageCount = 2;
         if (null == model) {
             throw new ApiException(ResultStatus.RED_PACKAGE_NOT_EXIT);
         }
         List<Integer> ids = model.getPackageIds();
-        if (null == ids || ids.size() != 2) {
+        if (null == ids || ids.size() != packageCount) {
             throw new ApiException(ResultStatus.RED_PACKAGE_NOT_EXIT);
         }
         ShareCardMongo shareCardMongo = shareCardMongoDao.getByCustomerIdAndType(customerId, SignGiftType.MERGE_CARD.getName());
@@ -338,7 +339,7 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
             throw new ApiException(ResultStatus.MERGE_CARD_NOT_EXIT);
         }
         List<ExtRedPackage> packageList = extRedPackageDao.getEffectiveExtRedPackageByCustomerIdAndIds(customerId, ids);
-        if (packageList.size() != 2) {
+        if (packageList.size() != packageCount) {
             throw new ApiException(ResultStatus.RED_PACKAGE_NOT_EXIT);
         }
         double totalPrice = packageList.stream().mapToDouble(en -> en.getPrice()).sum();
