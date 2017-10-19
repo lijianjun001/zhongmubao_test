@@ -181,7 +181,21 @@ public class SheepController {
             return new ResponseEntity<>(ReponseModel.error(ex, this.getClass()), HttpStatus.OK);
         }
     }
-
+    /**
+     * @param customer     当前用户
+     * @return 我的羊圈 头
+     * @author xy 2017-10-09
+     */
+    @Authorization
+    @RequestMapping(value = "/mySheepFoldHead", method = RequestMethod.POST, consumes = "application/json")
+    public ResponseEntity<ReponseModel> mySheepFoldHead(@CurrentUser Customer customer) {
+        try {
+            MySheepFoldHeadViewModel mySheepFoldHeadViewModel = sheepService.mySheepFoldHead(customer.getId());
+            return new ResponseEntity<>(ReponseModel.ok(mySheepFoldHeadViewModel), HttpStatus.OK);
+        } catch (Exception ex) {
+            return new ResponseEntity<>(ReponseModel.error(ex, this.getClass()), HttpStatus.OK);
+        }
+    }
 
     /**
      * @param customer     当前用户

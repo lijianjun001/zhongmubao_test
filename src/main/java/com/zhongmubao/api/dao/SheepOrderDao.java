@@ -37,5 +37,6 @@ public interface SheepOrderDao {
     List<MySheepFoldItem> mySheepFoldList(@Param("customerId") int customerId, @Param("states") List<String> states,@Param("pagestart") int pagestart,@Param("pageend") int pageend,@Param("type") String type);
     int mySheepFoldListCount(@Param("customerId") int customerId, @Param("states") List<String> states,@Param("type") String type);
     int mySheepFoldListSumCount(@Param("customerId") int customerId, @Param("states") List<String> states,@Param("type") String type);
+    int mySheepFoldSheepTotalCount(@Param("customerId") int customerId, @Param("states") List<String> states);
 
 }

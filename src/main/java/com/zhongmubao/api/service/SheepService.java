@@ -23,5 +23,6 @@ public interface SheepService {
 
 
     MySheepFoldListViewModel mySheepFoldList(int customerId, MySheepFoldRequestModel model) throws Exception;
+    MySheepFoldHeadViewModel mySheepFoldHead(int customerId)throws Exception;
 
 }

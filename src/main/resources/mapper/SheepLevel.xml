@@ -45,7 +45,7 @@
 		)
     </insert>
 
-    <select id="getLevelBySheepCount">
+    <select id="getLevelBySheepCount" resultType="int">
         <!-- 具体的sql 根据羊只数量获取等级-->
         SELECT
         `Level`
