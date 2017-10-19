@@ -9,7 +9,9 @@ import java.util.regex.Pattern;
  */
 public class RegExpMatcher {
 
-    // 判断手机正则
+    /**
+     * 手机正则
+     */
     private static String regExp = "^[1][0-9]{10}$";
 
     /**

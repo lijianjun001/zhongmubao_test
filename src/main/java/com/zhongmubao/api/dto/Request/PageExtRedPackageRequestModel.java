@@ -2,6 +2,9 @@ package com.zhongmubao.api.dto.Request;
 
 import com.zhongmubao.api.config.enmu.RedPackageSortType;
 
+/**
+ * @author 米立林
+ */
 public class PageExtRedPackageRequestModel {
 
     /**

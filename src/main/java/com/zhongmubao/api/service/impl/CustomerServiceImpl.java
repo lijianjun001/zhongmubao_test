@@ -35,7 +35,7 @@ import com.zhongmubao.api.entity.*;
 import com.zhongmubao.api.exception.ApiException;
 import com.zhongmubao.api.mongo.dao.NotifyMongoDao;
 import com.zhongmubao.api.mongo.dao.ShareCardMongoDao;
-import com.zhongmubao.api.mongo.dao.SystemSMSLogMongoDao;
+import com.zhongmubao.api.mongo.dao.SystemSmsLogMongoDao;
 import com.zhongmubao.api.mongo.entity.*;
 import com.zhongmubao.api.mongo.entity.base.PageModel;
 import com.zhongmubao.api.service.BaseService;
@@ -67,11 +67,11 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
     private final ExtActivityRecordDao activityRecordDao;
     private final TokenManager tokenManager;
     private final RedisCache redisCache;
-    private final SystemSMSLogMongoDao systemSMSLogMongoDao;
+    private final SystemSmsLogMongoDao systemSmsLogMongoDao;
     private final NotifyMongoDao notifyMongoDao;
 
     @Autowired
-    public CustomerServiceImpl(CustomerDao customerDao, ExtRedPackageDao extRedPackageDao, SheepOrderDao sheepOrderDao, ShareCardMongoDao shareCardMongoDao, CustomerAddressDao customerAddressDao, ExtActivityRecordDao activityRecordDao, TokenManager tokenManager, RedisCache redisCache, SystemSMSLogMongoDao systemSMSLogMongoDao, NotifyMongoDao notifyMongoDao) {
+    public CustomerServiceImpl(CustomerDao customerDao, ExtRedPackageDao extRedPackageDao, SheepOrderDao sheepOrderDao, ShareCardMongoDao shareCardMongoDao, CustomerAddressDao customerAddressDao, ExtActivityRecordDao activityRecordDao, TokenManager tokenManager, RedisCache redisCache, SystemSmsLogMongoDao systemSmsLogMongoDao, NotifyMongoDao notifyMongoDao) {
         this.customerDao = customerDao;
         this.extRedPackageDao = extRedPackageDao;
         this.sheepOrderDao = sheepOrderDao;
@@ -80,7 +80,7 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
         this.activityRecordDao = activityRecordDao;
         this.tokenManager = tokenManager;
         this.redisCache = redisCache;
-        this.systemSMSLogMongoDao = systemSMSLogMongoDao;
+        this.systemSmsLogMongoDao = systemSmsLogMongoDao;
         this.notifyMongoDao = notifyMongoDao;
     }
 
@@ -772,7 +772,7 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
         query.addCriteria(Criteria.where("Type").is(model.getType()));
         query.addCriteria(Criteria.where("Phone").is(model.getPhone()));
         query.addCriteria(Criteria.where("Expired").gt(DateUtil.formatMongo(new Date())));
-        SystemSMSLogMongo smsAuthMongo = systemSMSLogMongoDao.getListByPeriod(query);
+        SystemSmsLogMongo smsAuthMongo = systemSmsLogMongoDao.getListByPeriod(query);
         if (smsAuthMongo.getCode() != model.getVerificationCode()) {
             throw new ApiException(ResultStatus.PARAMETER_CODE_ERROR);
         }
@@ -780,7 +780,7 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
         customerDao.updatePassword(customer.getId(), model.getNewPassword());
         // 4、修改验证码为已过期
         smsAuthMongo.setExpired(DateUtil.formatMongo(new Date()));
-        systemSMSLogMongoDao.update(smsAuthMongo);
+        systemSmsLogMongoDao.update(smsAuthMongo);
     }
 
     /**
@@ -809,7 +809,7 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
         query.addCriteria(Criteria.where("Type").is(model.getType()));
         query.addCriteria(Criteria.where("Phone").is(model.getPhone()));
         query.addCriteria(Criteria.where("Expired").gt(DateUtil.formatMongo(new Date())));
-        SystemSMSLogMongo smsAuthMongo = systemSMSLogMongoDao.getListByPeriod(query);
+        SystemSmsLogMongo smsAuthMongo = systemSmsLogMongoDao.getListByPeriod(query);
         if (smsAuthMongo.getCode() != model.getVerificationCode()) {
             throw new ApiException(ResultStatus.PARAMETER_CODE_ERROR);
         }
@@ -817,7 +817,7 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
         customerDao.updateRedeemPassword(customer.getId(), model.getNewPassword());
         // 4、修改验证码为已过期
         smsAuthMongo.setExpired(DateUtil.formatMongo(new Date()));
-        systemSMSLogMongoDao.update(smsAuthMongo);
+        systemSmsLogMongoDao.update(smsAuthMongo);
 
     }
 
@@ -956,7 +956,7 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
         notify.setType(model.getType());
         notify.setCyc(model.getCycle());
         notify.setTime(model.getTime());
-        notify.setStatus("00");
+        notify.setStatus(NotifyRemindState.ON.getName());
         notify.setDelete(false);
         notify.setCreated(DateUtil.formatMongo(new Date()));
         // 保存
@@ -1008,7 +1008,7 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
         if (null == notify) {
             throw new ApiException(ResultStatus.PARAMETER_MISSING);
         }
-        // 更新
+        // 删除
         notifyMongoDao.delete(notify);
     }
 

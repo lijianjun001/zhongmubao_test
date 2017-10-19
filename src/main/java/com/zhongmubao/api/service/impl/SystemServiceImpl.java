@@ -22,8 +22,8 @@ import com.zhongmubao.api.entity.Customer;
 import com.zhongmubao.api.entity.ExtNotice;
 import com.zhongmubao.api.entity.SystemDistrict;
 import com.zhongmubao.api.exception.ApiException;
-import com.zhongmubao.api.mongo.dao.SystemSMSLogMongoDao;
-import com.zhongmubao.api.mongo.entity.SystemSMSLogMongo;
+import com.zhongmubao.api.mongo.dao.SystemSmsLogMongoDao;
+import com.zhongmubao.api.mongo.entity.SystemSmsLogMongo;
 import com.zhongmubao.api.service.BaseService;
 import com.zhongmubao.api.service.SystemService;
 import com.zhongmubao.api.util.DateUtil;
@@ -45,15 +45,15 @@ public class SystemServiceImpl extends BaseService implements SystemService {
     private final SystemDistrictDao systemDistrictDao;
     private final CustomerDao customerDao;
     private final RedisCache redisCache;
-    private final SystemSMSLogMongoDao systemSMSLogMongoDao;
+    private final SystemSmsLogMongoDao systemSmsLogMongoDao;
 
-    public SystemServiceImpl(ExtNoticeDao extNoticeDao, SystemDistrictDao systemDistrictDao, CustomerDao customerDao, RedisCache redisCache, SystemSMSLogMongoDao systemSMSLogMongoDao) {
+    public SystemServiceImpl(ExtNoticeDao extNoticeDao, SystemDistrictDao systemDistrictDao, CustomerDao customerDao, RedisCache redisCache, SystemSmsLogMongoDao systemSmsLogMongoDao) {
 //        this.extNoticeMongoDao = extNoticeMongoDao;
         this.extNoticeDao = extNoticeDao;
         this.systemDistrictDao = systemDistrictDao;
         this.customerDao = customerDao;
         this.redisCache = redisCache;
-        this.systemSMSLogMongoDao = systemSMSLogMongoDao;
+        this.systemSmsLogMongoDao = systemSmsLogMongoDao;
     }
 
     //region 系统通知
@@ -102,10 +102,11 @@ public class SystemServiceImpl extends BaseService implements SystemService {
         }
 
         // 筛选过滤
-        Predicate<SystemDistrict> parentCodeFilter = null;
+        Predicate<SystemDistrict> parentCodeFilter;
         String parentCode = requestModel.getParentCode();
         if (StringUtil.isNullOrEmpty(parentCode)) {
-            parentCodeFilter = (code) -> (code.getParentCode() == null);    // 取所有省
+            // 取所有省
+            parentCodeFilter = (code) -> (code.getParentCode() == null);
         } else {
             parentCodeFilter = (code) -> (code.getParentCode() != null && code.getParentCode().equals(parentCode));
         }
@@ -141,7 +142,7 @@ public class SystemServiceImpl extends BaseService implements SystemService {
             throw new ApiException(ResultStatus.PARAMETER_ERROR);
         }
         // 2、根据类型获取短信验证码范文
-        SystemSMSLogMongo smsLog=new SystemSMSLogMongo();
+        SystemSmsLogMongo smsLog=new SystemSmsLogMongo();
         String title = "";
         String content = "";
         String code = Integer.toString(MathUtil.random(100000, 999999));
@@ -165,6 +166,6 @@ public class SystemServiceImpl extends BaseService implements SystemService {
         smsLog.setExpired(DateUtil.addMinute(mongoNow,30));
         smsLog.setCreated(mongoNow);
         smsLog.setAsyncType(0);
-        systemSMSLogMongoDao.add(smsLog);
+        systemSmsLogMongoDao.add(smsLog);
     }
 }

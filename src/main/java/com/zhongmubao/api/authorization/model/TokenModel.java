@@ -5,10 +5,15 @@ package com.zhongmubao.api.authorization.model;
  */
 public class TokenModel {
 
-    //用户id
+
+    /**
+     * 用户id
+     */
     private int userId;
 
-    //随机生成的uuid
+    /**
+     * 随机生成的uuid
+     */
     private String token;
 
     public TokenModel(int userId, String token) {

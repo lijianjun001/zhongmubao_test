@@ -2,6 +2,9 @@ package com.zhongmubao.api.dto.Request.Notify;
 
 import com.zhongmubao.api.config.enmu.NotifyRemindState;
 
+/**
+ * @author 米立林
+ */
 public class NotifyRemindRequestModel {
 
     private String id;
