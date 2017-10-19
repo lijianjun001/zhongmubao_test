@@ -252,4 +252,17 @@
 		group by p.Id order by case when p.Type='03' or p.Type='06' then 2 else 1 end,o.Id desc
 		) temp
 	</select>
+	<select id="mySheepFoldSheepTotalCount" resultType="int">
+		<!-- 具体的sql -->
+		SELECT
+		sum(o.Count)
+		FROM SheepOrder o
+		where
+		o.CustomerId=#{customerId} and o.State in
+		<foreach collection="states" item="item" index="index" open="(" close=")" separator=",">
+			#{item}
+		</foreach>
+		and o.Deleted=false and o.Frozened=false
+	</select>
+
 </mapper>

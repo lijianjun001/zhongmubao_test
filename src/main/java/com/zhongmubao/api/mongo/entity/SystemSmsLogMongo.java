@@ -7,8 +7,11 @@ import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.util.Date;
 
-@Document(collection = "SystemSMSLogMongo")
-public class SystemSMSLogMongo extends BaseModel {
+/**
+ * @author 米立林
+ */
+@Document(collection = "SystemSmsLogMongo")
+public class SystemSmsLogMongo extends BaseModel {
 
     @Field("SqlId")
     private int sqlId;

@@ -2,6 +2,7 @@ package com.zhongmubao.api.config.enmu;
 
 /**
  * 购羊周期状态
+ * @author 米立林
  */
 public enum NotifyCycleState {
     /**

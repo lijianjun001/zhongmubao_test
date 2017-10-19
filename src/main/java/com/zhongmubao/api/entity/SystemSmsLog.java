@@ -4,9 +4,9 @@ import java.util.Date;
 import java.util.List;
 import java.math.BigDecimal;
 
-public class SystemSMSLog {
+public class SystemSmsLog {
     
-	public SystemSMSLog() {
+	public SystemSmsLog() {
 
     }
 
