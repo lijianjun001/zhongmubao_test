@@ -3,6 +3,7 @@ package com.zhongmubao.api.web;
 import com.zhongmubao.api.authorization.annotation.Authorization;
 import com.zhongmubao.api.authorization.annotation.CurrentUser;
 import com.zhongmubao.api.config.ResultStatus;
+import com.zhongmubao.api.dto.Request.Notify.NotifyRemindRequestModel;
 import com.zhongmubao.api.dto.Request.Notify.NotifyRemindSaveRequestModel;
 import com.zhongmubao.api.dto.Request.OnlyPrimaryIdRequestModel;
 import com.zhongmubao.api.dto.Request.*;
@@ -462,6 +463,46 @@ public class CustomerController {
     public ResponseEntity<ReponseModel> notifyRemindSave(@CurrentUser Customer customer, HttpEntity<NotifyRemindSaveRequestModel> model) {
         try {
             customerService.notifyRemindSave(customer.getId(), model.getBody());
+            return new ResponseEntity<>(ReponseModel.ok(), HttpStatus.OK);
+        } catch (ApiException ex) {
+            return new ResponseEntity<>(ReponseModel.error(ex.getStatus()), HttpStatus.OK);
+        } catch (Exception ex) {
+            return new ResponseEntity<>(ReponseModel.error(ex, this.getClass()), HttpStatus.OK);
+        }
+    }
+
+    /***
+     * 打开/关闭购羊提醒
+     * @param customer 当前用户
+     * @param model 购羊提醒参数
+     * @author 米立林 2017-10-19
+     * @return
+     */
+    @RequestMapping(value = "/remind/notifyRemindOnOrOff", method = RequestMethod.POST, consumes = "application/json")
+    @Authorization
+    public ResponseEntity<ReponseModel> notifyRemindOnOrOff(@CurrentUser Customer customer, HttpEntity<NotifyRemindRequestModel> model) {
+        try {
+            customerService.notifyRemindOnOrOff(customer.getId(), model.getBody());
+            return new ResponseEntity<>(ReponseModel.ok(), HttpStatus.OK);
+        } catch (ApiException ex) {
+            return new ResponseEntity<>(ReponseModel.error(ex.getStatus()), HttpStatus.OK);
+        } catch (Exception ex) {
+            return new ResponseEntity<>(ReponseModel.error(ex, this.getClass()), HttpStatus.OK);
+        }
+    }
+
+    /***
+     * 删除购羊提醒
+     * @param customer 当前用户
+     * @param model 购羊提醒参数
+     * @author 米立林 2017-10-19
+     * @return
+     */
+    @RequestMapping(value = "/remind/notifyRemindDel", method = RequestMethod.POST, consumes = "application/json")
+    @Authorization
+    public ResponseEntity<ReponseModel> notifyRemindDel(@CurrentUser Customer customer, HttpEntity<NotifyRemindRequestModel> model) {
+        try {
+            customerService.notifyRemindDel(customer.getId(), model.getBody());
             return new ResponseEntity<>(ReponseModel.ok(), HttpStatus.OK);
         } catch (ApiException ex) {
             return new ResponseEntity<>(ReponseModel.error(ex.getStatus()), HttpStatus.OK);

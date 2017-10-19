@@ -9,6 +9,7 @@ import com.zhongmubao.api.config.Constants;
 import com.zhongmubao.api.config.ResultStatus;
 import com.zhongmubao.api.config.enmu.*;
 import com.zhongmubao.api.dao.*;
+import com.zhongmubao.api.dto.Request.Notify.NotifyRemindRequestModel;
 import com.zhongmubao.api.dto.Request.Notify.NotifyRemindSaveRequestModel;
 import com.zhongmubao.api.dto.Request.OnlyPrimaryIdRequestModel;
 import com.zhongmubao.api.dto.Request.*;
@@ -883,6 +884,7 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
                             ((notifyCycleMongo.getCycle().equals(NotifyCycleState.WEEKLY.getName())) ? DateUtil.getWeekOfDate(selectDate) : ""));
             String notifyStr = "开标前" + item.getTime() + "分钟 购买" + typeStr + "(" + notifyTypeMongo.getTypeDays() + ")";
             list.add(new NoticeRemindViewModel(
+                    item.id,
                     typeStr,
                     cycleStr,
                     item.getStatus(),
@@ -932,7 +934,6 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
         return new RemindNoticeCycleModel(list);
     }
 
-
     /***
      * 保存购羊提醒
      * @param customerId 用户id
@@ -960,6 +961,55 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
         notify.setCreated(DateUtil.formatMongo(new Date()));
         // 保存
         notifyMongoDao.save(notify);
+    }
+
+    /***
+     * 打开/关闭购羊提醒
+     * @param customerId 当前用户id
+     * @param model 购羊提醒参数
+     * @author 米立林 2017-10-19
+     * @return
+     */
+    @Override
+    public void notifyRemindOnOrOff(int customerId, NotifyRemindRequestModel model) throws Exception {
+        if (null == model || StringUtil.isNullOrEmpty(model.getId())) {
+            throw new ApiException(ResultStatus.PARAMETER_MISSING);
+        }
+        Query query = new Query();
+        query.addCriteria(Criteria.where("_id").is(model.getId()));
+        query.addCriteria(Criteria.where("CustomerId").is(customerId));
+        NotifyMongo notify = notifyMongoDao.get(query);
+        if (null == notify) {
+            throw new ApiException(ResultStatus.PARAMETER_MISSING);
+        }
+        // 设置开启/关闭
+        notify.setStatus(model.getStatus().getName());
+
+        // 更新
+        notifyMongoDao.update(notify);
+    }
+
+    /***
+     * 删除购羊提醒
+     * @param customerId 当前用户id
+     * @param model 购羊提醒参数
+     * @author 米立林 2017-10-19
+     * @return
+     */
+    @Override
+    public void notifyRemindDel(int customerId, NotifyRemindRequestModel model) throws Exception {
+        if (null == model || StringUtil.isNullOrEmpty(model.getId())) {
+            throw new ApiException(ResultStatus.PARAMETER_MISSING);
+        }
+        Query query = new Query();
+        query.addCriteria(Criteria.where("_id").is(model.getId()));
+        query.addCriteria(Criteria.where("CustomerId").is(customerId));
+        NotifyMongo notify = notifyMongoDao.get(query);
+        if (null == notify) {
+            throw new ApiException(ResultStatus.PARAMETER_MISSING);
+        }
+        // 更新
+        notifyMongoDao.delete(notify);
     }
 
     //endregion
