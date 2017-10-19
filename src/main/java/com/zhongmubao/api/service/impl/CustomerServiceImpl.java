@@ -9,6 +9,7 @@ import com.zhongmubao.api.config.Constants;
 import com.zhongmubao.api.config.ResultStatus;
 import com.zhongmubao.api.config.enmu.*;
 import com.zhongmubao.api.dao.*;
+import com.zhongmubao.api.dto.Request.Notify.NotifyRemindSaveRequestModel;
 import com.zhongmubao.api.dto.Request.OnlyPrimaryIdRequestModel;
 import com.zhongmubao.api.dto.Request.*;
 import com.zhongmubao.api.dto.Request.Address.CustomerAddressRequestModel;
@@ -822,25 +823,24 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
     /**
      * 开启/关闭自动赎回
      *
-     * @param customerId 当前用户
-     * @param model      赎回密码
+     * @param customer 当前用户
+     * @param model    赎回密码
      * @throws Exception
      */
     @Override
-    public boolean autoRedeemAmount(int customerId, AutoRedeemRequestModel model) throws Exception {
+    public boolean autoRedeemAmount(Customer customer, AutoRedeemRequestModel model) throws Exception {
         if (null == model) {
             throw new ApiException(ResultStatus.PARAMETER_MISSING);
         }
         boolean isSuccess = false;
         // 1、验证参数
-        Customer customer = customerDao.getCustomerById(customerId);
-        if (null == customer || StringUtil.isNullOrEmpty(model.getRedeemPassword())) {
+        if (StringUtil.isNullOrEmpty(model.getRedeemPassword())) {
             throw new ApiException(ResultStatus.PARAMETER_ERROR);
         }
         // 2、校验用户赎回密码
         if (model.getRedeemPassword().equals(customer.getRedeemPassword())) {
             // 设置自动赎回
-            customerDao.updateIsAutoRedeem(customerId, model.getIsAutoRedeem());
+            customerDao.updateIsAutoRedeem(customer.getId(), model.getIsAutoRedeem());
             isSuccess = true;
         }
         return isSuccess;
@@ -931,5 +931,36 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
         }
         return new RemindNoticeCycleModel(list);
     }
+
+
+    /***
+     * 保存购羊提醒
+     * @param customerId 用户id
+     * @param model 购羊提醒参数
+     * @author 米立林 2017-10-18
+     * @return
+     */
+    @Override
+    public void notifyRemindSave(int customerId, NotifyRemindSaveRequestModel model) throws Exception {
+        if (null == model) {
+            throw new ApiException(ResultStatus.PARAMETER_MISSING);
+        }
+        // 通知周期
+        List<NotifyCycleMongo> notifyCycles = redisCache.getNotifyCycle();
+
+        NotifyMongo notify = new NotifyMongo();
+        notify.setCustomerId(customerId);
+        notify.setSelectDate(DateUtil.formatMongo(DateUtil.strToDate(model.getSelectDate())));
+        notify.setTitle(notifyCycles.stream().filter(t -> t.getCycle().equals(model.getCycle())).findFirst().get().getCycleStr());
+        notify.setType(model.getType());
+        notify.setCyc(model.getCycle());
+        notify.setTime(model.getTime());
+        notify.setStatus("00");
+        notify.setDelete(false);
+        notify.setCreated(DateUtil.formatMongo(new Date()));
+        // 保存
+        notifyMongoDao.save(notify);
+    }
+
     //endregion
 }

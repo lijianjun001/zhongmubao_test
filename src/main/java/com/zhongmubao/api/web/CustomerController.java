@@ -3,6 +3,7 @@ package com.zhongmubao.api.web;
 import com.zhongmubao.api.authorization.annotation.Authorization;
 import com.zhongmubao.api.authorization.annotation.CurrentUser;
 import com.zhongmubao.api.config.ResultStatus;
+import com.zhongmubao.api.dto.Request.Notify.NotifyRemindSaveRequestModel;
 import com.zhongmubao.api.dto.Request.OnlyPrimaryIdRequestModel;
 import com.zhongmubao.api.dto.Request.*;
 import com.zhongmubao.api.dto.Request.Address.CustomerAddressRequestModel;
@@ -244,6 +245,7 @@ public class CustomerController {
 
     /**
      * 新增
+     *
      * @param customer 所属用户
      * @param model    地址请求实体
      * @return
@@ -264,6 +266,7 @@ public class CustomerController {
 
     /**
      * 删除
+     *
      * @param customer 所属用户
      * @param model    地址请求实体
      * @return
@@ -285,6 +288,7 @@ public class CustomerController {
 
     /**
      * 修改
+     *
      * @param customer 所属用户
      * @param model    地址请求实体
      * @return
@@ -306,6 +310,7 @@ public class CustomerController {
 
     /**
      * 获取用户地址
+     *
      * @param customer 当前用户
      * @param model    地址信息
      * @return 用户地址集合
@@ -327,6 +332,7 @@ public class CustomerController {
     //endregion
 
     //region 个人中心 -- 设置
+
     /***
      * 重置登录密码
      * @param customer
@@ -373,7 +379,7 @@ public class CustomerController {
     @Authorization
     public ResponseEntity<ReponseModel> autoRedeemAmount(@CurrentUser Customer customer, HttpEntity<AutoRedeemRequestModel> model) {
         try {
-            boolean isSuccess = customerService.autoRedeemAmount(customer.getId(), model.getBody());
+            boolean isSuccess = customerService.autoRedeemAmount(customer, model.getBody());
             if (isSuccess) {
                 return new ResponseEntity<>(ReponseModel.ok(), HttpStatus.OK);
             } else {
@@ -386,6 +392,7 @@ public class CustomerController {
     //endregion
 
     //region 个人中心 -- 购羊提醒
+
     /***
      * 购羊提醒列表
      * @param customer 当前用户
@@ -436,6 +443,26 @@ public class CustomerController {
         try {
             RemindNoticeCycleModel notifyCycle = customerService.notifyCycle(customer.getId());
             return new ResponseEntity<>(ReponseModel.ok(notifyCycle), HttpStatus.OK);
+        } catch (ApiException ex) {
+            return new ResponseEntity<>(ReponseModel.error(ex.getStatus()), HttpStatus.OK);
+        } catch (Exception ex) {
+            return new ResponseEntity<>(ReponseModel.error(ex, this.getClass()), HttpStatus.OK);
+        }
+    }
+
+    /***
+     * 保存购羊提醒
+     * @param customer 当前用户
+     * @param model 购羊提醒参数
+     * @author 米立林 2017-10-18
+     * @return
+     */
+    @RequestMapping(value = "/remind/notifyRemindSave", method = RequestMethod.POST, consumes = "application/json")
+    @Authorization
+    public ResponseEntity<ReponseModel> notifyRemindSave(@CurrentUser Customer customer, HttpEntity<NotifyRemindSaveRequestModel> model) {
+        try {
+            customerService.notifyRemindSave(customer.getId(), model.getBody());
+            return new ResponseEntity<>(ReponseModel.ok(), HttpStatus.OK);
         } catch (ApiException ex) {
             return new ResponseEntity<>(ReponseModel.error(ex.getStatus()), HttpStatus.OK);
         } catch (Exception ex) {

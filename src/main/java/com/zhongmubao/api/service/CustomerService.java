@@ -1,5 +1,6 @@
 package com.zhongmubao.api.service;
 
+import com.zhongmubao.api.dto.Request.Notify.NotifyRemindSaveRequestModel;
 import com.zhongmubao.api.dto.Request.OnlyPrimaryIdRequestModel;
 import com.zhongmubao.api.dto.Request.*;
 import com.zhongmubao.api.dto.Request.Address.CustomerAddressRequestModel;
@@ -49,7 +50,7 @@ public interface CustomerService {
 
     void resetRedeemPassword(int customerId, ResetPasswordRequestModel model) throws Exception;
 
-    boolean autoRedeemAmount(int customerId, AutoRedeemRequestModel model) throws Exception;
+    boolean autoRedeemAmount(Customer customer, AutoRedeemRequestModel model) throws Exception;
 
     void receiveRechargeGift(Customer customer, ReceiveRechargeGiftRequestModel model) throws Exception;
 
@@ -58,6 +59,8 @@ public interface CustomerService {
     RemindNoticeTypeModel notifyType(int customerId) throws Exception;
 
     RemindNoticeCycleModel notifyCycle(int customerId) throws Exception;
+
+    void notifyRemindSave(int customerId, NotifyRemindSaveRequestModel model) throws Exception;
 
 
 }
