@@ -111,4 +111,5 @@ public class NotifyMongo extends BaseModel {
     public void setCreated(Date created) {
         this.created = created;
     }
+
 }

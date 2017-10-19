@@ -1,5 +1,7 @@
 package com.zhongmubao.api.mongo.entity.base;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.springframework.data.mongodb.core.mapping.Field;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -15,5 +17,4 @@ public class BaseModel implements Serializable {
      * 主键
      */
     public String id;
-
 }

@@ -2,9 +2,11 @@ package com.zhongmubao.api.dto.Response.Notice;
 
 /**
  * 购羊提醒列表视图model
+ *
  * @author 米立林 2017-10-18
  */
 public class NoticeRemindViewModel {
+    private String id;
     /**
      * 通知类型 (养羊标/商铺标)
      */
@@ -22,7 +24,8 @@ public class NoticeRemindViewModel {
      */
     private String notifyStr;
 
-    public NoticeRemindViewModel(String notifyTypeStr, String notifyCycStr, String notifyStatus, String notifyStr) {
+    public NoticeRemindViewModel(String id, String notifyTypeStr, String notifyCycStr, String notifyStatus, String notifyStr) {
+        this.id = id;
         this.notifyTypeStr = notifyTypeStr;
         this.notifyCycStr = notifyCycStr;
         this.notifyStatus = notifyStatus;
@@ -62,5 +65,13 @@ public class NoticeRemindViewModel {
 
     public void setNotifyStr(String notifyStr) {
         this.notifyStr = notifyStr;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 }

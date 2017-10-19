@@ -1,6 +1,6 @@
 package com.zhongmubao.api.dto.Request.customer;
 
-public class getVerificationCodeRequestModel {
+public class GetVerificationCodeRequestModel {
     private String type;
     private String phone;
 

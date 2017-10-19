@@ -9,6 +9,9 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+/**
+ * @author 米立林
+ */
 @Repository
 public class NotifyMongoDao implements BaseDao<NotifyMongo> {
 

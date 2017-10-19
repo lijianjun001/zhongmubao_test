@@ -169,7 +169,7 @@
 		AND so.deleted = 0
 	</select>
 
-	<select id="getSheepOrderByCustomerId" resultType="SheepOrderInfo">
+	<select id="pageSheepOrderByCustomerIdGroupByProjectId" resultType="SheepOrderInfo">
 		<!-- 具体的sql -->
 		SELECT sp.Title,sp.Type,sp.State,sp.Period,sp.EffectiveTime,sp.RedemTime,sv.Shorthand,SUM(so.Count) AS Count,sp.VendorId
 		FROM SheepOrder so

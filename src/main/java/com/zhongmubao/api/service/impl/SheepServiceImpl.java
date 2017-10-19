@@ -8,6 +8,7 @@ import com.zhongmubao.api.config.ResultStatus;
 import com.zhongmubao.api.config.enmu.*;
 import com.zhongmubao.api.dao.*;
 import com.zhongmubao.api.dto.Request.OnlyPrimaryIdRequestModel;
+import com.zhongmubao.api.dto.Request.PageIndexRequestModel;
 import com.zhongmubao.api.dto.Request.ProjectPlanRequestModel;
 import com.zhongmubao.api.dto.Request.Sheep.MySheepFoldRequestModel;
 import com.zhongmubao.api.dto.Request.Sheep.SheepOrderRequestModel;
@@ -413,7 +414,8 @@ public class SheepServiceImpl implements SheepService {
         int curStageDay = DateUtil.subDateOfDay(new Date(), sheepProject.getEffectiveTime());
         int pages = stages.size();
 
-        boolean isNotFind = true; // 是否没找到当前养殖进度
+        // 是否没找到当前养殖进度
+        boolean isNotFind = true;
         List<SheepStageViewModel> list = new ArrayList<>();
         for (int i = 0; i < pages; i++) {
             SheepStageViewModel viewModel = new SheepStageViewModel();
@@ -454,8 +456,15 @@ public class SheepServiceImpl implements SheepService {
         return new PageSheepStageModel(pages, list);
     }
 
+    /**
+     * 我的羊圈（订单带分页）
+     * * @param customerId 当前用户id
+     * @return
+     * @throws Exception
+     * @author 米立林
+     */
     @Override
-    public MySheepfoldModel mySheepfold(int customerId) throws Exception {
+    public MySheepfoldModel mySheepfold(int customerId, PageIndexRequestModel requestModel) throws Exception {
         if (customerId <= 0) {
             throw new ApiException(ResultStatus.PARAMETER_MISSING);
         }
@@ -464,7 +473,8 @@ public class SheepServiceImpl implements SheepService {
         List<SheepOrderInfoViewModel> list = new ArrayList<>();
 
         // 1、获取在栏中羊只订单
-        List<SheepOrderInfo> sheepOrderInfos = sheepOrderDao.getSheepOrderByCustomerId(customerId, Constants.SHEEP_IN_THE_BAR_STATE);
+        PageHelper.startPage(requestModel.getPageIndex(), Constants.PAGE_SIZE);
+        Page<SheepOrderInfo> sheepOrderInfos = sheepOrderDao.pageSheepOrderByCustomerIdGroupByProjectId(customerId, Constants.SHEEP_IN_THE_BAR_STATE);
 
         int count = 0;
         for (SheepOrderInfo info : sheepOrderInfos) {
@@ -484,6 +494,7 @@ public class SheepServiceImpl implements SheepService {
             );
             list.add(orderInfo);
         }
+        PageHelper.clearPage();
 
         mySheepfoldModel.setSheepOrderInfoList(list);
         mySheepfoldModel.setSheepCount(count);
@@ -521,8 +532,11 @@ public class SheepServiceImpl implements SheepService {
         if (null == sheepProject || null == monitors) {
             throw new ApiException(ResultStatus.FAIL);
         }
-        String type = "00";//21
+        String type;
         switch (sheepProject.getVendorId()) {
+            case 21:
+                type = "00";
+                break;
             case 22:
                 type = "02";
                 break;
@@ -542,7 +556,8 @@ public class SheepServiceImpl implements SheepService {
         String finalType = type;
         List<SystemMonitor> currentMonitors = monitors.stream().filter(en -> en.getType().equals(finalType)).collect(Collectors.toList());
         if (null == currentMonitors || currentMonitors.size() <= 0) {
-            throw new ApiException(ResultStatus.DEVICE_OFFLINE);    // 设备已离线
+            // 设备已离线
+            throw new ApiException(ResultStatus.DEVICE_OFFLINE);
         }
         SystemMonitor monitor = currentMonitors.get(MathUtil.random(0, currentMonitors.size() - 1));
         String videoUrl = ((model.getPlatform() == Platform.ANDROID || model.getPlatform() == Platform.IOS) ? "http:" : "") + "//www.iermu.com/svideo/" + monitor.getShareId() + "/" + monitor.getUKey();
@@ -840,7 +855,7 @@ public class SheepServiceImpl implements SheepService {
                         break;
                     //endregion
                     case 40:
-                        //region 40D ay
+                        //region 40Day
                         if (40 >= day && day >= 35 && day > 0) {
                             projectState.setDayTypeInt(0);
                             projectState.setDayType("采购羊只");
@@ -866,7 +881,7 @@ public class SheepServiceImpl implements SheepService {
                         break;
                     //endregion
                     case 50:
-                        //region 50D ay
+                        //region 50Day
                         if (50 >= day && day >= 35 && day > 0) {
                             projectState.setDayTypeInt(0);
                             projectState.setDayType("采购羊只");
@@ -944,7 +959,7 @@ public class SheepServiceImpl implements SheepService {
                         break;
                     //endregion
                     case 120:
-                        //region 120D ay
+                        //region 120Day
                         if (120 >= day && day >= 100 && day > 0) {
                             projectState.setDayTypeInt(0);
                             projectState.setDayType("采购羊只");
@@ -1062,7 +1077,7 @@ public class SheepServiceImpl implements SheepService {
                         break;
                     //endregion
                     case 40:
-                        //region 40D ay
+                        //region 40Day
                         if (40 >= day && day >= 35 && day > 0) {
                             projectState.setDayTypeInt(0);
                             projectState.setDayType("采购羊只");
@@ -1088,7 +1103,7 @@ public class SheepServiceImpl implements SheepService {
                         break;
                     //endregion
                     case 50:
-                        //region 50D ay
+                        //region 50Day
                         if (50 >= day && day >= 35 && day > 0) {
                             projectState.setDayTypeInt(0);
                             projectState.setDayType("采购羊只");
@@ -1166,7 +1181,7 @@ public class SheepServiceImpl implements SheepService {
                         break;
                     //endregion
                     case 120:
-                        //region 120D ay
+                        //region 120Day
                         if (120 >= day && day >= 100 && day > 0) {
                             projectState.setDayTypeInt(0);
                             projectState.setDayType("采购羊只");

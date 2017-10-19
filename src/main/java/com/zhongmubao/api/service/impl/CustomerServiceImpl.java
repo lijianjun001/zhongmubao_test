@@ -9,6 +9,7 @@ import com.zhongmubao.api.config.Constants;
 import com.zhongmubao.api.config.ResultStatus;
 import com.zhongmubao.api.config.enmu.*;
 import com.zhongmubao.api.dao.*;
+import com.zhongmubao.api.dto.Request.Notify.NotifyRemindRequestModel;
 import com.zhongmubao.api.dto.Request.Notify.NotifyRemindSaveRequestModel;
 import com.zhongmubao.api.dto.Request.OnlyPrimaryIdRequestModel;
 import com.zhongmubao.api.dto.Request.*;
@@ -34,7 +35,7 @@ import com.zhongmubao.api.entity.*;
 import com.zhongmubao.api.exception.ApiException;
 import com.zhongmubao.api.mongo.dao.NotifyMongoDao;
 import com.zhongmubao.api.mongo.dao.ShareCardMongoDao;
-import com.zhongmubao.api.mongo.dao.SystemSMSLogMongoDao;
+import com.zhongmubao.api.mongo.dao.SystemSmsLogMongoDao;
 import com.zhongmubao.api.mongo.entity.*;
 import com.zhongmubao.api.mongo.entity.base.PageModel;
 import com.zhongmubao.api.service.BaseService;
@@ -55,6 +56,10 @@ import java.util.stream.Collectors;
 import static com.zhongmubao.api.config.enmu.SignGiftType.*;
 
 
+/***
+ * 客户服务类
+ * @author 孙阿龙
+ */
 @Service
 public class CustomerServiceImpl extends BaseService implements CustomerService {
 
@@ -66,11 +71,11 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
     private final ExtActivityRecordDao activityRecordDao;
     private final TokenManager tokenManager;
     private final RedisCache redisCache;
-    private final SystemSMSLogMongoDao systemSMSLogMongoDao;
+    private final SystemSmsLogMongoDao systemSmsLogMongoDao;
     private final NotifyMongoDao notifyMongoDao;
 
     @Autowired
-    public CustomerServiceImpl(CustomerDao customerDao, ExtRedPackageDao extRedPackageDao, SheepOrderDao sheepOrderDao, ShareCardMongoDao shareCardMongoDao, CustomerAddressDao customerAddressDao, ExtActivityRecordDao activityRecordDao, TokenManager tokenManager, RedisCache redisCache, SystemSMSLogMongoDao systemSMSLogMongoDao, NotifyMongoDao notifyMongoDao) {
+    public CustomerServiceImpl(CustomerDao customerDao, ExtRedPackageDao extRedPackageDao, SheepOrderDao sheepOrderDao, ShareCardMongoDao shareCardMongoDao, CustomerAddressDao customerAddressDao, ExtActivityRecordDao activityRecordDao, TokenManager tokenManager, RedisCache redisCache, SystemSmsLogMongoDao systemSmsLogMongoDao, NotifyMongoDao notifyMongoDao) {
         this.customerDao = customerDao;
         this.extRedPackageDao = extRedPackageDao;
         this.sheepOrderDao = sheepOrderDao;
@@ -79,15 +84,12 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
         this.activityRecordDao = activityRecordDao;
         this.tokenManager = tokenManager;
         this.redisCache = redisCache;
-        this.systemSMSLogMongoDao = systemSMSLogMongoDao;
+        this.systemSmsLogMongoDao = systemSmsLogMongoDao;
         this.notifyMongoDao = notifyMongoDao;
     }
 
     @Override
     public String login(String account, String password, String platform) throws Exception {
-
-        //SystemTokenMongo systemToken = systemTokenMongoDao.getByCustomerIdAndPlatform(4194,"00");
-
         Customer customer = customerDao.getCustomerByAccountAndPassword(account, password);
         if (customer == null) {
             throw new Exception("登录失败");
@@ -141,8 +143,10 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
         Date now = new Date();
         Date dayBegin = DateUtil.dayBegin();
         Date dayEnd = DateUtil.dayEnd();
-        Date expTime = DateUtil.addDay(now, Constants.DAY_SHARE_REDPACKAGE_EXP_DAY); //红包过期时间
-        Date boundaryTime = DateUtil.addHours(dayBegin, 10); //签到时间分界点
+        //红包过期时间
+        Date expTime = DateUtil.addDay(now, Constants.DAY_SHARE_REDPACKAGE_EXP_DAY);
+        //签到时间分界点
+        Date boundaryTime = DateUtil.addHours(dayBegin, 10);
         String dayShareType = RedPackageType.DAY_SHARE.getName();
         List<Integer> giftDayList = Arrays.asList(7, 14, 21, 28);
         ShareCardMongo shareCard = null;
@@ -159,7 +163,7 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
                 int shareDayCount = extRedPackageDao.countExtRedPackageByCustomerIdAndBeginTimeAndEndTimeAndType(customerId, monthBegin, monthEnd, dayShareType);
 
                 //region 验证
-                boolean todayIsShare = extRedPackageDao.countExtRedPackageByCustomerIdAndBeginTimeAndEndTimeAndType(customerId, dayBegin, dayEnd, dayShareType) > 0;// redisCache.getCustomerIsShare(customerId);
+                boolean todayIsShare = extRedPackageDao.countExtRedPackageByCustomerIdAndBeginTimeAndEndTimeAndType(customerId, dayBegin, dayEnd, dayShareType) > 0;
 
                 if (todayIsShare) {
                     return new com.zhongmubao.api.dto.Response.Sign.SignModel(shareDayCount, "0.00", null, null, todayIsShare, false);
@@ -198,9 +202,6 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
                     // 随机获取神秘礼物
                     int randomIndex = MathUtil.random(0, Constants.SIGN_GIFT_LIST.size() - 1);
 
-//                    if (customer.getPhone().equals("15656287151")) {
-//                        randomIndex = shareDayCount % 2 == 0 ? 8 : 9;
-//                    }
                     SignGiftRedPackageViewModel signGiftRedPackageViewModel = null;
 
                     double giftPrice = 0;
@@ -274,8 +275,8 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
                     signGiftViewModel.setUnit(formatGiftUnit(signGift.getType()));
                     signGiftViewModel.setSignGiftCharge(new SignGiftCharge(Integer.toString(telephoneMoney), customer.getAccount()));
                 }
-
-                redisCache.saveCustomerIsShare(customerId);//设置今天已分享
+                //设置今天已分享
+                redisCache.saveCustomerIsShare(customerId);
 
                 //endregion
                 return new SignModel(shareDayCount, DoubleUtil.toFixed(price, "0.00"), signInfo, signGiftViewModel, todayIsShare, true);
@@ -325,11 +326,12 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
     @Override
     public void megreCard(Customer customer, MegreCardRequestModel model) throws Exception {
         int customerId = customer.getId();
+        int packageCount = 2;
         if (null == model) {
             throw new ApiException(ResultStatus.RED_PACKAGE_NOT_EXIT);
         }
         List<Integer> ids = model.getPackageIds();
-        if (null == ids || ids.size() != 2) {
+        if (null == ids || ids.size() != packageCount) {
             throw new ApiException(ResultStatus.RED_PACKAGE_NOT_EXIT);
         }
         ShareCardMongo shareCardMongo = shareCardMongoDao.getByCustomerIdAndType(customerId, SignGiftType.MERGE_CARD.getName());
@@ -337,7 +339,7 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
             throw new ApiException(ResultStatus.MERGE_CARD_NOT_EXIT);
         }
         List<ExtRedPackage> packageList = extRedPackageDao.getEffectiveExtRedPackageByCustomerIdAndIds(customerId, ids);
-        if (packageList.size() != 2) {
+        if (packageList.size() != packageCount) {
             throw new ApiException(ResultStatus.RED_PACKAGE_NOT_EXIT);
         }
         double totalPrice = packageList.stream().mapToDouble(en -> en.getPrice()).sum();
@@ -771,7 +773,7 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
         query.addCriteria(Criteria.where("Type").is(model.getType()));
         query.addCriteria(Criteria.where("Phone").is(model.getPhone()));
         query.addCriteria(Criteria.where("Expired").gt(DateUtil.formatMongo(new Date())));
-        SystemSMSLogMongo smsAuthMongo = systemSMSLogMongoDao.getListByPeriod(query);
+        SystemSmsLogMongo smsAuthMongo = systemSmsLogMongoDao.getListByPeriod(query);
         if (smsAuthMongo.getCode() != model.getVerificationCode()) {
             throw new ApiException(ResultStatus.PARAMETER_CODE_ERROR);
         }
@@ -779,7 +781,7 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
         customerDao.updatePassword(customer.getId(), model.getNewPassword());
         // 4、修改验证码为已过期
         smsAuthMongo.setExpired(DateUtil.formatMongo(new Date()));
-        systemSMSLogMongoDao.update(smsAuthMongo);
+        systemSmsLogMongoDao.update(smsAuthMongo);
     }
 
     /**
@@ -808,7 +810,7 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
         query.addCriteria(Criteria.where("Type").is(model.getType()));
         query.addCriteria(Criteria.where("Phone").is(model.getPhone()));
         query.addCriteria(Criteria.where("Expired").gt(DateUtil.formatMongo(new Date())));
-        SystemSMSLogMongo smsAuthMongo = systemSMSLogMongoDao.getListByPeriod(query);
+        SystemSmsLogMongo smsAuthMongo = systemSmsLogMongoDao.getListByPeriod(query);
         if (smsAuthMongo.getCode() != model.getVerificationCode()) {
             throw new ApiException(ResultStatus.PARAMETER_CODE_ERROR);
         }
@@ -816,7 +818,7 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
         customerDao.updateRedeemPassword(customer.getId(), model.getNewPassword());
         // 4、修改验证码为已过期
         smsAuthMongo.setExpired(DateUtil.formatMongo(new Date()));
-        systemSMSLogMongoDao.update(smsAuthMongo);
+        systemSmsLogMongoDao.update(smsAuthMongo);
 
     }
 
@@ -883,6 +885,7 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
                             ((notifyCycleMongo.getCycle().equals(NotifyCycleState.WEEKLY.getName())) ? DateUtil.getWeekOfDate(selectDate) : ""));
             String notifyStr = "开标前" + item.getTime() + "分钟 购买" + typeStr + "(" + notifyTypeMongo.getTypeDays() + ")";
             list.add(new NoticeRemindViewModel(
+                    item.id,
                     typeStr,
                     cycleStr,
                     item.getStatus(),
@@ -932,7 +935,6 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
         return new RemindNoticeCycleModel(list);
     }
 
-
     /***
      * 保存购羊提醒
      * @param customerId 用户id
@@ -955,11 +957,60 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
         notify.setType(model.getType());
         notify.setCyc(model.getCycle());
         notify.setTime(model.getTime());
-        notify.setStatus("00");
+        notify.setStatus(NotifyRemindState.ON.getName());
         notify.setDelete(false);
         notify.setCreated(DateUtil.formatMongo(new Date()));
         // 保存
         notifyMongoDao.save(notify);
+    }
+
+    /***
+     * 打开/关闭购羊提醒
+     * @param customerId 当前用户id
+     * @param model 购羊提醒参数
+     * @author 米立林 2017-10-19
+     * @return
+     */
+    @Override
+    public void notifyRemindOnOrOff(int customerId, NotifyRemindRequestModel model) throws Exception {
+        if (null == model || StringUtil.isNullOrEmpty(model.getId())) {
+            throw new ApiException(ResultStatus.PARAMETER_MISSING);
+        }
+        Query query = new Query();
+        query.addCriteria(Criteria.where("_id").is(model.getId()));
+        query.addCriteria(Criteria.where("CustomerId").is(customerId));
+        NotifyMongo notify = notifyMongoDao.get(query);
+        if (null == notify) {
+            throw new ApiException(ResultStatus.PARAMETER_MISSING);
+        }
+        // 设置开启/关闭
+        notify.setStatus(model.getStatus().getName());
+
+        // 更新
+        notifyMongoDao.update(notify);
+    }
+
+    /***
+     * 删除购羊提醒
+     * @param customerId 当前用户id
+     * @param model 购羊提醒参数
+     * @author 米立林 2017-10-19
+     * @return
+     */
+    @Override
+    public void notifyRemindDel(int customerId, NotifyRemindRequestModel model) throws Exception {
+        if (null == model || StringUtil.isNullOrEmpty(model.getId())) {
+            throw new ApiException(ResultStatus.PARAMETER_MISSING);
+        }
+        Query query = new Query();
+        query.addCriteria(Criteria.where("_id").is(model.getId()));
+        query.addCriteria(Criteria.where("CustomerId").is(customerId));
+        NotifyMongo notify = notifyMongoDao.get(query);
+        if (null == notify) {
+            throw new ApiException(ResultStatus.PARAMETER_MISSING);
+        }
+        // 删除
+        notifyMongoDao.delete(notify);
     }
 
     //endregion

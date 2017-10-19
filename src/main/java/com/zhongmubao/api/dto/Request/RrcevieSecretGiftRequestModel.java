@@ -1,5 +1,8 @@
 package com.zhongmubao.api.dto.Request;
 
+/**
+ * @author 米立林
+ */
 public class RrcevieSecretGiftRequestModel {
     private String giftId;
     private String phone;
