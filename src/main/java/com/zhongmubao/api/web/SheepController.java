@@ -3,6 +3,7 @@ package com.zhongmubao.api.web;
 import com.zhongmubao.api.authorization.annotation.Authorization;
 import com.zhongmubao.api.authorization.annotation.CurrentUser;
 import com.zhongmubao.api.dto.Request.OnlyPrimaryIdRequestModel;
+import com.zhongmubao.api.dto.Request.PageIndexRequestModel;
 import com.zhongmubao.api.dto.Request.Sheep.SheepOrderRequestModel;
 import com.zhongmubao.api.dto.Request.ProjectPlanRequestModel;
 import com.zhongmubao.api.dto.Request.SystemMonitorRequestModel;
@@ -157,9 +158,9 @@ public class SheepController {
      */
     @Authorization
     @RequestMapping(value = "/mySheepfold", method = RequestMethod.POST, consumes = "application/json")
-    public ResponseEntity<ReponseModel> mySheepfold(@CurrentUser Customer customer) {
+    public ResponseEntity<ReponseModel> mySheepfold(@CurrentUser Customer customer,HttpEntity<PageIndexRequestModel> model) {
         try {
-            MySheepfoldModel mySheepfoldModel = sheepService.mySheepfold(customer.getId());
+            MySheepfoldModel mySheepfoldModel = sheepService.mySheepfold(customer.getId(),model.getBody());
             return new ResponseEntity<>(ReponseModel.ok(mySheepfoldModel), HttpStatus.OK);
         } catch (Exception ex) {
             return new ResponseEntity<>(ReponseModel.error(ex, this.getClass()), HttpStatus.OK);
