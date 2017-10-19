@@ -12,7 +12,7 @@ import com.zhongmubao.api.dao.CustomerDao;
 import com.zhongmubao.api.dao.ExtNoticeDao;
 import com.zhongmubao.api.dao.SystemDistrictDao;
 import com.zhongmubao.api.dto.Request.Address.SystemDistrictRequestModel;
-import com.zhongmubao.api.dto.Request.PageNoticeRequestModel;
+import com.zhongmubao.api.dto.Request.PageIndexRequestModel;
 import com.zhongmubao.api.dto.Request.SendSmsCodeRequestModel;
 import com.zhongmubao.api.dto.Response.Address.ListSystemDistrictModel;
 import com.zhongmubao.api.dto.Response.Address.SystemDistrictViewModel;
@@ -58,7 +58,7 @@ public class SystemServiceImpl extends BaseService implements SystemService {
 
     //region 系统通知
     @Override
-    public PageNoticeModel pageNotice(PageNoticeRequestModel requestModel) throws Exception {
+    public PageNoticeModel pageNotice(PageIndexRequestModel requestModel) throws Exception {
         if (null == requestModel) {
             throw new ApiException(ResultStatus.PARAMETER_MISSING);
         }

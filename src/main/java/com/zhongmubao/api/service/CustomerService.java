@@ -1,5 +1,6 @@
 package com.zhongmubao.api.service;
 
+import com.zhongmubao.api.dto.Request.Notify.NotifyRemindRequestModel;
 import com.zhongmubao.api.dto.Request.Notify.NotifyRemindSaveRequestModel;
 import com.zhongmubao.api.dto.Request.OnlyPrimaryIdRequestModel;
 import com.zhongmubao.api.dto.Request.*;
@@ -62,5 +63,8 @@ public interface CustomerService {
 
     void notifyRemindSave(int customerId, NotifyRemindSaveRequestModel model) throws Exception;
 
+    void notifyRemindOnOrOff(int customerId, NotifyRemindRequestModel model) throws Exception;
+
+    void notifyRemindDel(int customerId, NotifyRemindRequestModel model) throws Exception;
 
 }

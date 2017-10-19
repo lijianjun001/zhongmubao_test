@@ -3,7 +3,7 @@ package com.zhongmubao.api.web;
 import com.zhongmubao.api.authorization.annotation.Authorization;
 import com.zhongmubao.api.authorization.annotation.CurrentUser;
 import com.zhongmubao.api.dto.Request.SendSmsCodeRequestModel;
-import com.zhongmubao.api.dto.Request.PageNoticeRequestModel;
+import com.zhongmubao.api.dto.Request.PageIndexRequestModel;
 import com.zhongmubao.api.dto.Request.Address.SystemDistrictRequestModel;
 import com.zhongmubao.api.dto.Response.Address.ListSystemDistrictModel;
 import com.zhongmubao.api.dto.Response.ReponseModel;
@@ -36,7 +36,7 @@ public class SystemController {
      * @return
      */
     @RequestMapping(value = "/pageNotice", method = RequestMethod.POST, consumes = "application/json")
-    public ResponseEntity<ReponseModel> pageNotice(HttpEntity<PageNoticeRequestModel> model) {
+    public ResponseEntity<ReponseModel> pageNotice(HttpEntity<PageIndexRequestModel> model) {
         try {
             PageNoticeModel pageNoticeModel = systemService.pageNotice(model.getBody());
             return new ResponseEntity<>(ReponseModel.ok(pageNoticeModel), HttpStatus.OK);
