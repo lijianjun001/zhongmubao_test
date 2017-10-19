@@ -563,9 +563,9 @@ public class SheepServiceImpl implements SheepService {
 
 
     /**
-     *
+     * 我的羊圈
      * @param customerId
-     * @param model pageIndex 页码  projectType 选择类型  默认 03
+     * @param model pageIndex 页码  projectType 选择类型  默认 ""
      * @return MySheepFoldListViewModel
      * @throws Exception
      * @author xy
@@ -581,7 +581,7 @@ public class SheepServiceImpl implements SheepService {
         if(model.getPageIndex()<=0){
             model.setPageIndex(1);
         }
-        if(model.getProjectType().equals("")|| model.getProjectType()==null)
+        if(model.getProjectType()==null || model.getProjectType().equals(""))
         {
             model.setProjectType("");
         }
