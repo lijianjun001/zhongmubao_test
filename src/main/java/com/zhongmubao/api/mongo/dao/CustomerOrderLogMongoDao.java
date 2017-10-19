@@ -49,7 +49,7 @@ public class CustomerOrderLogMongoDao implements BaseDao<CustomerOrderLogMongo> 
 
     @Override
     public void delete(CustomerOrderLogMongo entity) throws Exception {
-        mongoTemplate.remove(entity);
+        mongoTemplate.remove(entity,"CustomerOrderLogMongo");
     }
 
     @Override
