@@ -401,11 +401,11 @@ public class CustomerController {
      * @author 米立林 2017-10-18
      * @return
      */
-    @RequestMapping(value = "/remind/notifyIndex", method = RequestMethod.POST, consumes = "application/json")
+    @RequestMapping(value = "/buySheepRemind/index", method = RequestMethod.POST, consumes = "application/json")
     @Authorization
-    public ResponseEntity<ReponseModel> notifyIndex(@CurrentUser Customer customer) {
+    public ResponseEntity<ReponseModel> buySheepRemindIndex(@CurrentUser Customer customer) {
         try {
-            NoticeRemindModel noticeRemind = customerService.notifyIndex(customer.getId());
+            NoticeRemindModel noticeRemind = customerService.buySheepRemindIndex(customer.getId());
             return new ResponseEntity<>(ReponseModel.ok(noticeRemind), HttpStatus.OK);
         } catch (ApiException ex) {
             return new ResponseEntity<>(ReponseModel.error(ex.getStatus()), HttpStatus.OK);
@@ -420,11 +420,11 @@ public class CustomerController {
      * @author 米立林 2017-10-18
      * @return
      */
-    @RequestMapping(value = "/remind/notifyType", method = RequestMethod.POST, consumes = "application/json")
+    @RequestMapping(value = "/buySheepRemind/notifyType", method = RequestMethod.POST, consumes = "application/json")
     @Authorization
-    public ResponseEntity<ReponseModel> notifyType(@CurrentUser Customer customer) {
+    public ResponseEntity<ReponseModel> buySheepRemindNotifyType(@CurrentUser Customer customer) {
         try {
-            RemindNoticeTypeModel notifyType = customerService.notifyType(customer.getId());
+            RemindNoticeTypeModel notifyType = customerService.buySheepRemindNotifyType(customer.getId());
             return new ResponseEntity<>(ReponseModel.ok(notifyType), HttpStatus.OK);
         } catch (ApiException ex) {
             return new ResponseEntity<>(ReponseModel.error(ex.getStatus()), HttpStatus.OK);
@@ -439,11 +439,11 @@ public class CustomerController {
      * @author 米立林 2017-10-18
      * @return
      */
-    @RequestMapping(value = "/remind/notifyCycle", method = RequestMethod.POST, consumes = "application/json")
+    @RequestMapping(value = "/buySheepRemind/notifyCycle", method = RequestMethod.POST, consumes = "application/json")
     @Authorization
-    public ResponseEntity<ReponseModel> notifyCycle(@CurrentUser Customer customer) {
+    public ResponseEntity<ReponseModel> buySheepRemindNotifyCycle(@CurrentUser Customer customer) {
         try {
-            RemindNoticeCycleModel notifyCycle = customerService.notifyCycle(customer.getId());
+            RemindNoticeCycleModel notifyCycle = customerService.buySheepRemindNotifyCycle(customer.getId());
             return new ResponseEntity<>(ReponseModel.ok(notifyCycle), HttpStatus.OK);
         } catch (ApiException ex) {
             return new ResponseEntity<>(ReponseModel.error(ex.getStatus()), HttpStatus.OK);
@@ -459,11 +459,11 @@ public class CustomerController {
      * @author 米立林 2017-10-18
      * @return
      */
-    @RequestMapping(value = "/remind/notifyRemindSave", method = RequestMethod.POST, consumes = "application/json")
+    @RequestMapping(value = "/buySheepRemind/notifySave", method = RequestMethod.POST, consumes = "application/json")
     @Authorization
-    public ResponseEntity<ReponseModel> notifyRemindSave(@CurrentUser Customer customer, HttpEntity<NotifyRemindSaveRequestModel> model) {
+    public ResponseEntity<ReponseModel> buySheepRemindNotifySave(@CurrentUser Customer customer, HttpEntity<NotifyRemindSaveRequestModel> model) {
         try {
-            customerService.notifyRemindSave(customer.getId(), model.getBody());
+            customerService.buySheepRemindNotifySave(customer.getId(), model.getBody());
             return new ResponseEntity<>(ReponseModel.ok(), HttpStatus.OK);
         } catch (ApiException ex) {
             return new ResponseEntity<>(ReponseModel.error(ex.getStatus()), HttpStatus.OK);
@@ -479,11 +479,11 @@ public class CustomerController {
      * @author 米立林 2017-10-19
      * @return
      */
-    @RequestMapping(value = "/remind/notifyRemindOnOrOff", method = RequestMethod.POST, consumes = "application/json")
+    @RequestMapping(value = "/buySheepRemind/notifyOnOrOff", method = RequestMethod.POST, consumes = "application/json")
     @Authorization
-    public ResponseEntity<ReponseModel> notifyRemindOnOrOff(@CurrentUser Customer customer, HttpEntity<NotifyRemindRequestModel> model) {
+    public ResponseEntity<ReponseModel> buySheepRemindNotifyOnOrOff(@CurrentUser Customer customer, HttpEntity<NotifyRemindRequestModel> model) {
         try {
-            customerService.notifyRemindOnOrOff(customer.getId(), model.getBody());
+            customerService.buySheepRemindNotifyOnOrOff(customer.getId(), model.getBody());
             return new ResponseEntity<>(ReponseModel.ok(), HttpStatus.OK);
         } catch (ApiException ex) {
             return new ResponseEntity<>(ReponseModel.error(ex.getStatus()), HttpStatus.OK);
@@ -499,11 +499,11 @@ public class CustomerController {
      * @author 米立林 2017-10-19
      * @return
      */
-    @RequestMapping(value = "/remind/notifyRemindDel", method = RequestMethod.POST, consumes = "application/json")
+    @RequestMapping(value = "/buySheepRemind/notifyDel", method = RequestMethod.POST, consumes = "application/json")
     @Authorization
-    public ResponseEntity<ReponseModel> notifyRemindDel(@CurrentUser Customer customer, HttpEntity<NotifyRemindRequestModel> model) {
+    public ResponseEntity<ReponseModel> buySheepRemindNotifyDel(@CurrentUser Customer customer, HttpEntity<NotifyRemindRequestModel> model) {
         try {
-            customerService.notifyRemindDel(customer.getId(), model.getBody());
+            customerService.buySheepRemindNotifyDel(customer.getId(), model.getBody());
             return new ResponseEntity<>(ReponseModel.ok(), HttpStatus.OK);
         } catch (ApiException ex) {
             return new ResponseEntity<>(ReponseModel.error(ex.getStatus()), HttpStatus.OK);

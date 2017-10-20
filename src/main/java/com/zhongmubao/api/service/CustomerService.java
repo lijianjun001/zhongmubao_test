@@ -8,7 +8,7 @@ import com.zhongmubao.api.dto.Request.Address.CustomerAddressRequestModel;
 import com.zhongmubao.api.dto.Request.Address.UpdateCustomerAddressRequestModel;
 import com.zhongmubao.api.dto.Request.customer.AutoRedeemRequestModel;
 import com.zhongmubao.api.dto.Request.customer.ResetPasswordRequestModel;
-import com.zhongmubao.api.dto.Request.customer.farmIncome.InBarSheepIncomeModel;
+import com.zhongmubao.api.dto.Response.customer.InBarSheepIncomeModel;
 import com.zhongmubao.api.dto.Response.Address.CustomerAddressResponseModel;
 import com.zhongmubao.api.dto.Response.Ext.PageExtRedPackageModel;
 import com.zhongmubao.api.dto.Response.Notice.NoticeRemindModel;
@@ -18,6 +18,7 @@ import com.zhongmubao.api.dto.Response.Sign.MyGiftCardModel;
 import com.zhongmubao.api.dto.Response.Sign.SignList.PageSignGiftModel;
 import com.zhongmubao.api.dto.Response.Sign.SignModel;
 import com.zhongmubao.api.dto.Response.Sign.SignPackageList.PageSignPackageModel;
+import com.zhongmubao.api.dto.Response.customer.WalletBalanceIncomeModel;
 import com.zhongmubao.api.entity.Customer;
 
 public interface CustomerService {
@@ -56,18 +57,20 @@ public interface CustomerService {
 
     void receiveRechargeGift(Customer customer, ReceiveRechargeGiftRequestModel model) throws Exception;
 
-    NoticeRemindModel notifyIndex(int customerId) throws Exception;
+    NoticeRemindModel buySheepRemindIndex(int customerId) throws Exception;
 
-    RemindNoticeTypeModel notifyType(int customerId) throws Exception;
+    RemindNoticeTypeModel buySheepRemindNotifyType(int customerId) throws Exception;
 
-    RemindNoticeCycleModel notifyCycle(int customerId) throws Exception;
+    RemindNoticeCycleModel buySheepRemindNotifyCycle(int customerId) throws Exception;
 
-    void notifyRemindSave(int customerId, NotifyRemindSaveRequestModel model) throws Exception;
+    void buySheepRemindNotifySave(int customerId, NotifyRemindSaveRequestModel model) throws Exception;
 
-    void notifyRemindOnOrOff(int customerId, NotifyRemindRequestModel model) throws Exception;
+    void buySheepRemindNotifyOnOrOff(int customerId, NotifyRemindRequestModel model) throws Exception;
 
-    void notifyRemindDel(int customerId, NotifyRemindRequestModel model) throws Exception;
+    void buySheepRemindNotifyDel(int customerId, NotifyRemindRequestModel model) throws Exception;
 
     InBarSheepIncomeModel inBarSheepIncome(int customerId,PageIndexRequestModel model) throws Exception;
+
+    WalletBalanceIncomeModel walletBalanceIncome(int customerId) throws Exception;
 
 }

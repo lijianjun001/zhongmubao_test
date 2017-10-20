@@ -17,8 +17,8 @@ import com.zhongmubao.api.dto.Request.Address.CustomerAddressRequestModel;
 import com.zhongmubao.api.dto.Request.Address.UpdateCustomerAddressRequestModel;
 import com.zhongmubao.api.dto.Request.customer.AutoRedeemRequestModel;
 import com.zhongmubao.api.dto.Request.customer.ResetPasswordRequestModel;
-import com.zhongmubao.api.dto.Request.customer.farmIncome.InBarSheepIncomeModel;
-import com.zhongmubao.api.dto.Request.customer.farmIncome.InBarSheepIncomeViewModel;
+import com.zhongmubao.api.dto.Response.customer.InBarSheepIncomeModel;
+import com.zhongmubao.api.dto.Response.customer.InBarSheepIncomeViewModel;
 import com.zhongmubao.api.dto.Response.Address.CustomerAddressResponseModel;
 import com.zhongmubao.api.dto.Response.Address.CustomerAddressViewModel;
 import com.zhongmubao.api.dto.Response.Ext.PageExtRedPackageModel;
@@ -52,7 +52,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.*;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 import static com.zhongmubao.api.config.enmu.SignGiftType.*;
 
@@ -861,7 +860,7 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
      * @author 米立林 2017-10-18
      */
     @Override
-    public NoticeRemindModel notifyIndex(int customerId) throws Exception {
+    public NoticeRemindModel buySheepRemindIndex(int customerId) throws Exception {
         if (customerId <= 0) {
             throw new ApiException(ResultStatus.PARAMETER_MISSING);
         }
@@ -905,7 +904,7 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
      * @author 米立林 2017-10-18
      */
     @Override
-    public RemindNoticeTypeModel notifyType(int customerId) throws Exception {
+    public RemindNoticeTypeModel buySheepRemindNotifyType(int customerId) throws Exception {
         if (customerId <= 0) {
             throw new ApiException(ResultStatus.PARAMETER_MISSING);
         }
@@ -925,7 +924,7 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
      * @author 米立林 2017-10-18
      */
     @Override
-    public RemindNoticeCycleModel notifyCycle(int customerId) throws Exception {
+    public RemindNoticeCycleModel buySheepRemindNotifyCycle(int customerId) throws Exception {
         if (customerId <= 0) {
             throw new ApiException(ResultStatus.PARAMETER_MISSING);
         }
@@ -944,7 +943,7 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
      * @return
      */
     @Override
-    public void notifyRemindSave(int customerId, NotifyRemindSaveRequestModel model) throws Exception {
+    public void buySheepRemindNotifySave(int customerId, NotifyRemindSaveRequestModel model) throws Exception {
         if (null == model) {
             throw new ApiException(ResultStatus.PARAMETER_MISSING);
         }
@@ -973,7 +972,7 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
      * @return
      */
     @Override
-    public void notifyRemindOnOrOff(int customerId, NotifyRemindRequestModel model) throws Exception {
+    public void buySheepRemindNotifyOnOrOff(int customerId, NotifyRemindRequestModel model) throws Exception {
         if (null == model || StringUtil.isNullOrEmpty(model.getId())) {
             throw new ApiException(ResultStatus.PARAMETER_MISSING);
         }
@@ -999,7 +998,7 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
      * @return
      */
     @Override
-    public void notifyRemindDel(int customerId, NotifyRemindRequestModel model) throws Exception {
+    public void buySheepRemindNotifyDel(int customerId, NotifyRemindRequestModel model) throws Exception {
         if (null == model || StringUtil.isNullOrEmpty(model.getId())) {
             throw new ApiException(ResultStatus.PARAMETER_MISSING);
         }

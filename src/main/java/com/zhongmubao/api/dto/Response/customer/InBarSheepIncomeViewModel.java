@@ -1,4 +1,4 @@
-package com.zhongmubao.api.dto.Request.customer.farmIncome;
+package com.zhongmubao.api.dto.Response.customer;
 
 /**
  * 在栏羊只收益
