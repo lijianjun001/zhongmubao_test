@@ -21,6 +21,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+/**
+ * Sheep控制器
+ *
+ * @author 孙阿龙
+ */
 @RestController
 @RequestMapping("/sheep")
 public class SheepController {
@@ -217,6 +222,7 @@ public class SheepController {
             return new ResponseEntity<>(ReponseModel.error(ex, this.getClass()), HttpStatus.OK);
         }
     }
+
     /**
      * @param customer     当前用户
      * @return 我的羊圈 头
@@ -232,6 +238,7 @@ public class SheepController {
             return new ResponseEntity<>(ReponseModel.error(ex, this.getClass()), HttpStatus.OK);
         }
     }
+
     /**
      * @param customer     当前用户
      * @return 我的羊圈 已售出列表
@@ -247,6 +254,7 @@ public class SheepController {
             return new ResponseEntity<>(ReponseModel.error(ex, this.getClass()), HttpStatus.OK);
         }
     }
+
     /**
      * @param customer     当前用户
      * @return 我的羊圈 已售出 头部
