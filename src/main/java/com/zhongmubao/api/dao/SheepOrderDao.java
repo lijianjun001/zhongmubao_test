@@ -21,14 +21,9 @@ public interface SheepOrderDao {
     Page<SheepOrderInfo> pageSheepOrderByCustomerId(@Param("customerId") int customerId, @Param("states") List<String> states);
     SheepOrderDetailInfo getDetailByIdAndCustomerId(@Param("customerId") int customerId, @Param("id") int id);
     Page<SheepOrderEarnings> pageSheepOrderByCustomerIdAndState(@Param("customerId") int customerId, @Param("states") List<String> states);
-    /**
-     * 根据标期分组 GROUP BY ProjectId
-     * @param customerId 当前用户
-     * @param states 订单状态
-     * @return 标期订单列表
-     * @author 米立林 2017-10-09
-     */
+
     Page<SheepOrderInfo> pageSheepOrderByCustomerIdGroupByProjectId(@Param("customerId") int customerId, @Param("states") List<String> states);
+    List<SheepOrderInfo> getOrderByCustomerIdAndProjectIdAndState(@Param("customerId") int customerId,@Param("projectId") int projectId, @Param("states") List<String> states);
 
     List<MySheepFoldItem> mySheepFoldList(@Param("customerId") int customerId, @Param("states") List<String> states,@Param("pagestart") int pagestart,@Param("pageend") int pageend,@Param("type") String type);
     int mySheepFoldListCount(@Param("customerId") int customerId, @Param("states") List<String> states,@Param("type") String type);

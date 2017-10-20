@@ -57,6 +57,12 @@ public class SystemServiceImpl extends BaseService implements SystemService {
     }
 
     //region 系统通知
+    /**
+     * @param requestModel
+     * @return 通知公告
+     * @throws Exception
+     * @author 米立林
+     */
     @Override
     public PageNoticeModel pageNotice(PageIndexRequestModel requestModel) throws Exception {
         if (null == requestModel) {
@@ -75,7 +81,7 @@ public class SystemServiceImpl extends BaseService implements SystemService {
                 ))
                 .collect(Collectors.toList());
         PageHelper.clearPage();
-//        int totalCount = model.getPageIndex() <= 1 ? extNoticeMongoDao.countByCustomerIdAndType() : 0;
+
         return new PageNoticeModel(pages, list);
     }
     //endregion

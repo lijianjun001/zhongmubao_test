@@ -8,6 +8,7 @@ import com.zhongmubao.api.dto.Request.Sheep.SheepOrderRequestModel;
 import com.zhongmubao.api.dto.Request.SystemMonitorRequestModel;
 import com.zhongmubao.api.dto.Response.Index.IndexModel;
 import com.zhongmubao.api.dto.Response.Sheep.*;
+import com.zhongmubao.api.dto.Response.sheepfold.SheepProjectOrdersModel;
 import com.zhongmubao.api.entity.Customer;
 
 public interface SheepService {
@@ -28,6 +29,7 @@ public interface SheepService {
     MySheepFoldHeadViewModel mySheepFoldRedeemedHead(int customerId)throws Exception;
     MySheepFoldRedeemedListViewModel mySheepFoldRedeemedList(int customerId,MySheepFoldRequestModel model)throws Exception;
 
+    SheepProjectOrdersModel mySheepfoldSheepProjectOrders(int customerId,OnlyPrimaryIdRequestModel model) throws Exception;
 
 
 }

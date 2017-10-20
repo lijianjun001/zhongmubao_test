@@ -323,4 +323,20 @@
 		group by p.Id order by case when p.Type='03' or p.Type='04' then 2 else 1 end,o.Id DESC
 		) temp
 	</select>
+
+	<select id="getOrderByCustomerIdAndProjectIdAndState" resultType="SheepOrderEarnings">
+		<!-- 具体的sql -->
+		SELECT so.Id,so.CustomerId,so.`Code`,so.Count,sp.Title
+		FROM SheepOrder so
+		INNER JOIN SheepProject sp ON so.ProjectId=sp.Id
+		WHERE so.CustomerId=#{customerId}
+		AND so.ProjectId=#{projectId}
+		AND
+		so.state IN
+		<foreach collection="states" item="item" index="index" open="(" close=")" separator=",">
+			#{item}
+		</foreach>
+		AND so.deleted = 0
+	</select>
+
 </mapper>

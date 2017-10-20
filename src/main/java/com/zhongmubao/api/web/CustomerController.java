@@ -11,7 +11,6 @@ import com.zhongmubao.api.dto.Request.Address.CustomerAddressRequestModel;
 import com.zhongmubao.api.dto.Request.Address.UpdateCustomerAddressRequestModel;
 import com.zhongmubao.api.dto.Request.customer.AutoRedeemRequestModel;
 import com.zhongmubao.api.dto.Request.customer.ResetPasswordRequestModel;
-import com.zhongmubao.api.dto.Request.customer.farmIncome.InBarSheepIncomeModel;
 import com.zhongmubao.api.dto.Response.Address.CustomerAddressResponseModel;
 import com.zhongmubao.api.dto.Response.Ext.PageExtRedPackageModel;
 import com.zhongmubao.api.dto.Response.Notice.NoticeRemindModel;

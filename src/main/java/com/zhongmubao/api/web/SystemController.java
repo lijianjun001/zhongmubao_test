@@ -30,7 +30,7 @@ public class SystemController {
     }
 
     /**
-     * 获取消息通知列表
+     * 通知公告列表
      * @param model 参数对象
      * @author 米立林
      * @return

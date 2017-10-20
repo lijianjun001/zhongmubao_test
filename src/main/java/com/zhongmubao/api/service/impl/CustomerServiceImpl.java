@@ -32,6 +32,7 @@ import com.zhongmubao.api.dto.Response.Sign.SignList.PageSignGiftModel;
 import com.zhongmubao.api.dto.Response.Sign.SignList.PageSignGiftViewModel;
 import com.zhongmubao.api.dto.Response.Sign.SignPackageList.PageSignPackageModel;
 import com.zhongmubao.api.dto.Response.Sign.SignPackageList.SignPackageViewModel;
+import com.zhongmubao.api.dto.Response.customer.WalletBalanceIncomeModel;
 import com.zhongmubao.api.dto.SignGift;
 import com.zhongmubao.api.entity.*;
 import com.zhongmubao.api.entity.ext.SheepOrderInfo;
@@ -1015,6 +1016,13 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
 
     //endregion
 
+    /**
+     * @param customerId 当前用户id
+     * @param model
+     * @return 在栏羊只收益
+     * @throws Exception
+     * @author 米立林
+     */
     //region 个人中心 -- 牧场收益
     @Override
     public InBarSheepIncomeModel inBarSheepIncome(int customerId, PageIndexRequestModel model) throws Exception {
@@ -1048,6 +1056,20 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
 
         return inBarSheepIncome;
     }
+
+    /**
+     * @param customerId 用户id
+     * @return 钱包余额收益
+     * @throws Exception
+     * @author 米立林
+     */
+    @Override
+    public WalletBalanceIncomeModel walletBalanceIncome(int customerId) throws Exception {
+        WalletBalanceIncomeModel walletBalanceIncomeModel = new WalletBalanceIncomeModel();
+
+        return walletBalanceIncomeModel;
+    }
+
 
     //endregion
 }
