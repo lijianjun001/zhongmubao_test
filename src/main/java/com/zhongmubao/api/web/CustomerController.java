@@ -22,6 +22,7 @@ import com.zhongmubao.api.dto.Response.Sign.MyGiftCardModel;
 import com.zhongmubao.api.dto.Response.Sign.SignList.PageSignGiftModel;
 import com.zhongmubao.api.dto.Response.Sign.SignModel;
 import com.zhongmubao.api.dto.Response.Sign.SignPackageList.PageSignPackageModel;
+import com.zhongmubao.api.dto.Response.customer.InBarSheepIncomeModel;
 import com.zhongmubao.api.entity.Customer;
 import com.zhongmubao.api.exception.ApiException;
 import com.zhongmubao.api.service.CustomerService;
