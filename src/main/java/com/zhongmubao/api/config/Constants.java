@@ -104,6 +104,10 @@ public class Constants {
      * 在栏羊只
      */
     public static final List<String> SHEEP_IN_THE_BAR_STATE = Arrays.asList("01", "02", "03", "04");
+    /**
+     * 赎回羊只
+     */
+    public static final List<String> REDEMING = Arrays.asList("05");
 
     /**
      * 在栏羊只赎回中羊只和已赎回羊只

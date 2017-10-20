@@ -4,11 +4,7 @@ import com.github.pagehelper.Page;
 import com.zhongmubao.api.dto.Request.OnlyPrimaryIdRequestModel;
 import com.zhongmubao.api.dto.Response.Sheep.SheepVendorViewModel;
 import com.zhongmubao.api.entity.SheepOrder;
-import com.zhongmubao.api.entity.ext.SheepOrderCountAndMinCreated;
-import com.zhongmubao.api.entity.ext.SheepOrderDetailInfo;
-import com.zhongmubao.api.entity.ext.SheepOrderEarnings;
-import com.zhongmubao.api.entity.ext.SheepOrderInfo;
-import com.zhongmubao.api.entity.ext.MySheepFoldItem;
+import com.zhongmubao.api.entity.ext.*;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.Date;
@@ -38,5 +34,7 @@ public interface SheepOrderDao {
     int mySheepFoldListCount(@Param("customerId") int customerId, @Param("states") List<String> states,@Param("type") String type);
     int mySheepFoldListSumCount(@Param("customerId") int customerId, @Param("states") List<String> states,@Param("type") String type);
     int mySheepFoldSheepTotalCount(@Param("customerId") int customerId, @Param("states") List<String> states);
+    List<MySheepFoldRedeemedItem> mySheepFoldSheepRedeemedList(@Param("customerId") int customerId, @Param("pagestart") int pagestart, @Param("pageend") int pageend, @Param("type") String type);
+    int mySheepFoldSheepRedeemedListCount(@Param("customerId") int customerId, @Param("type") String type);
 
 }
