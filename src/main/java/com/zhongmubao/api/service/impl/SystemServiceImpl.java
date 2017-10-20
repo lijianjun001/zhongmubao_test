@@ -71,7 +71,7 @@ public class SystemServiceImpl extends BaseService implements SystemService {
                         en.getPic(),
                         en.getTitle(),
                         en.getContent(),
-                        DateUtil.format(en.getCreated(), "yyyy-MM-dd")
+                        DateUtil.format(en.getCreated(), Constants.DATE_FORMAT)
                 ))
                 .collect(Collectors.toList());
         PageHelper.clearPage();

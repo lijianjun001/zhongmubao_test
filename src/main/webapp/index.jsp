@@ -24,13 +24,13 @@
 //            isDefault:0
 //        };
 
-        var data = {id:"59cb0776ced3b1b3b019ef7c"};
+        var data = {pageIndex: 0};
         console.info(JSON.stringify(data));
 //        var saveData ={"USER_ID":leader,"Users":users};
 
         $.ajax({
             type: "POST",
-            url: "/customer/remind/notifyRemindDel",
+            url: "/customer/farmIncome/inBarSheepIncome",
             data: JSON.stringify(data),
             contentType: 'application/json;charset=UTF-8',
             dataType: "json",                                     //预期服务器返回类型
