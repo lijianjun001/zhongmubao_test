@@ -197,6 +197,37 @@ public class SheepController {
             return new ResponseEntity<>(ReponseModel.error(ex, this.getClass()), HttpStatus.OK);
         }
     }
+    /**
+     * @param customer     当前用户
+     * @return 我的羊圈 已售出列表
+     * @author xy 2017-10-09
+     */
+    @Authorization
+    @RequestMapping(value = "/mySheepFoldRedeemedList", method = RequestMethod.POST, consumes = "application/json")
+    public ResponseEntity<ReponseModel> mySheepFoldRedeemedList(@CurrentUser Customer customer,HttpEntity<MySheepFoldRequestModel> model) {
+        try {
+            MySheepFoldRedeemedListViewModel mySheepFoldRedeemedListViewModel = sheepService.mySheepFoldRedeemedList(customer.getId(),model.getBody());
+            return new ResponseEntity<>(ReponseModel.ok(mySheepFoldRedeemedListViewModel), HttpStatus.OK);
+        } catch (Exception ex) {
+            return new ResponseEntity<>(ReponseModel.error(ex, this.getClass()), HttpStatus.OK);
+        }
+    }
+    /**
+     * @param customer     当前用户
+     * @return 我的羊圈 已售出 头部
+     * @author xy 2017-10-09
+     */
+    @Authorization
+    @RequestMapping(value = "/mySheepFoldRedeemedHead", method = RequestMethod.POST, consumes = "application/json")
+    public ResponseEntity<ReponseModel> mySheepFoldRedeemedHead(@CurrentUser Customer customer) {
+        try {
+            MySheepFoldHeadViewModel mySheepFoldHeadViewModel = sheepService.mySheepFoldRedeemedHead(customer.getId());
+            return new ResponseEntity<>(ReponseModel.ok(mySheepFoldHeadViewModel), HttpStatus.OK);
+        } catch (Exception ex) {
+            return new ResponseEntity<>(ReponseModel.error(ex, this.getClass()), HttpStatus.OK);
+        }
+    }
+
 
     /**
      * @param customer     当前用户

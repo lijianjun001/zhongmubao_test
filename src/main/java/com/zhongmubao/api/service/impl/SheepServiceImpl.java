@@ -531,7 +531,7 @@ public class SheepServiceImpl extends BaseService implements SheepService {
         SheepProject sheepProject = sheepProjectDao.getSheepProjectById(model.getId());
         List<SystemMonitor> monitors = redisCache.getSystemMonitor();
         if (null == sheepProject || null == monitors) {
-            throw new ApiException(ResultStatus.FAIL);
+            throw new ApiException("未查到该记录");
         }
         String type;
         switch (sheepProject.getVendorId()) {
@@ -697,6 +697,81 @@ public class SheepServiceImpl extends BaseService implements SheepService {
         returnModel.setNewOrders(isNewOrders);
         return returnModel;
     }
+
+    /**
+     * 我的羊圈 已出售羊只头部
+     * @param customerId
+     * @return MySheepFoldHeadViewModel
+     * @throws Exception
+     * @author xy
+     */
+    @Override
+    public MySheepFoldHeadViewModel mySheepFoldRedeemedHead(int customerId) throws Exception {
+        if (customerId <= 0) {
+            throw new ApiException(ResultStatus.PARAMETER_MISSING);
+        }
+        int sheepTotalCount = sheepOrderDao.mySheepFoldSheepTotalCount(customerId, Constants.SHEEP_IN_THE_BAR_STATE);
+        int sheepRedeemedTotalCount = sheepOrderDao.mySheepFoldSheepTotalCount(customerId, Constants.REDEMING);
+        int level = sheepLevelDao.getLevelBySheepCount(sheepTotalCount);
+        MySheepFoldHeadViewModel returnModel = new MySheepFoldHeadViewModel();
+        returnModel.setSheepTotalCount(sheepRedeemedTotalCount);
+        returnModel.setLevel(sheepTotalCount<=0?0:level);
+        return returnModel;
+    }
+    /**
+     * 我的羊圈 已出售羊只 列表
+     * @param customerId
+     * @return MySheepFoldHeadViewModel
+     * @throws Exception
+     * @author xy
+     */
+    @Override
+    public MySheepFoldRedeemedListViewModel mySheepFoldRedeemedList(int customerId, MySheepFoldRequestModel model) throws Exception {
+        if (customerId <= 0) {
+            throw new ApiException(ResultStatus.PARAMETER_MISSING);
+        }
+        if(model==null) {
+            throw new ApiException(ResultStatus.PARAMETER_MISSING);
+        }
+        if(model.getPageIndex()<=0){
+            model.setPageIndex(1);
+        }
+        if(model.getProjectType()==null || model.getProjectType().equals(""))
+        {
+            model.setProjectType("");
+        }
+        MySheepFoldRedeemedListViewModel returnModel = new MySheepFoldRedeemedListViewModel();
+        int pageSize=10;
+        int totalCount = sheepOrderDao.mySheepFoldSheepRedeemedListCount(customerId,model.getProjectType());
+        int totalPage = totalCount%pageSize==0 ? totalCount/pageSize : (totalCount/pageSize + 1);
+        List<MySheepFoldRedeemedViewModel> list = new ArrayList<MySheepFoldRedeemedViewModel>();
+        List<MySheepFoldRedeemedItem> mySheepFoldRedeemedItems = sheepOrderDao.mySheepFoldSheepRedeemedList(customerId,((model.getPageIndex()-1)*pageSize),(model.getPageIndex()*pageSize),model.getProjectType());
+
+
+        for (MySheepFoldRedeemedItem item:mySheepFoldRedeemedItems) {
+            MySheepFoldRedeemedViewModel mySheepFoldRedeemedViewModel = new MySheepFoldRedeemedViewModel();
+            mySheepFoldRedeemedViewModel.setId(item.getId());
+            mySheepFoldRedeemedViewModel.setType(( "03".equals(item.getType()) || "04".equals(item.getType()) ) ? "03" : "00");
+            mySheepFoldRedeemedViewModel.setCount(item.getOrderSheepCount());
+            mySheepFoldRedeemedViewModel.setRedemTime(DateUtil.format(item.getRedemTime(), "yyyy.MM.dd"));
+            mySheepFoldRedeemedViewModel.setEffectiveTime(DateUtil.format(item.getEffectiveTime(), "yyyy.MM.dd"));
+            mySheepFoldRedeemedViewModel.setBeginTime(DateUtil.format(item.getBeginTime(),"yyyy.MM.dd"));
+            mySheepFoldRedeemedViewModel.setVenderId(item.getVendorId());
+            mySheepFoldRedeemedViewModel.setOrderCode(item.getOrderCode());
+            mySheepFoldRedeemedViewModel.setTitle(item.getTitle());
+            mySheepFoldRedeemedViewModel.setDeductibleAmount(String.format("%.2f",item.getDeductibleAmount()));
+            mySheepFoldRedeemedViewModel.setPaymentAmount(String.format("%.2f",item.getPaymentAmount()));
+            mySheepFoldRedeemedViewModel.setRedemAmount(String.format("%.2f",item.getRedemAmount()));
+            mySheepFoldRedeemedViewModel.setRedPrice(String.format("%.2f",item.getRedPrice()));
+
+            list.add(mySheepFoldRedeemedViewModel);
+        }
+
+        returnModel.setTotalPage(totalPage);
+        returnModel.setList(list);
+        return returnModel;
+    }
+
 
     private NewPeopleProjectViewModel newPeopleProject(Customer customer) {
         Date now = new Date();

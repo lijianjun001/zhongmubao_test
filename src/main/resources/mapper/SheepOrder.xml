@@ -264,5 +264,63 @@
 		</foreach>
 		and o.Deleted=false and o.Frozened=false
 	</select>
-
+	<select id="mySheepFoldSheepRedeemedList" resultType="MySheepFoldRedeemedItem">
+		<!-- 具体的sql -->
+		select
+		max(o.Id) OrderId,
+		max(o.Code) OrderCode,
+		max(o.State) OrderState,
+		sum(o.Count) OrderSheepCount,
+		sum(o.DeductibleAmount) DeductibleAmount,
+		sum(o.RedemAmount) RedemAmount,
+		sum(o.RedPrice) RedPrice,
+		sum(o.PaymentAmount) PaymentAmount,
+		p.Id,
+		p.VendorId,
+		p.Type,
+		p.Title,
+		p.Price,
+		p.Rate,
+		p.Period,
+		p.BeginTime,
+		p.EndTime,
+		p.EffectiveTime,
+		p.RedemTime
+		from (select o.*,sum(ifnull(r.Price,0)) RedPrice from SheepOrder o left join ExtRedPackage r on(o.Id=r.SheepOrderId and o.CustomerId=r.CustomerId and r.Type is not null)
+		where
+		o.CustomerId=#{customerId} and o.State = '05'
+		and o.Deleted=false and o.Frozened=false
+		group by o.id) o
+		inner join SheepProject p on(o.ProjectId=p.Id)
+		where
+		o.CustomerId=#{customerId} and o.State = '05'
+		<if test="type=='03'">
+			<![CDATA[ AND (p.Type='03' OR p.Type='04') ]]>
+		</if>
+		<if test="type=='00'">
+			<![CDATA[ AND (p.Type<>'03' AND p.Type<>'04') ]]>
+		</if>
+		and o.Deleted=false and o.Frozened=false and p.Deleted=false
+		group by p.Id order by case when p.Type='03' or p.Type='04' then 2 else 1 end,o.Id DESC
+		limit #{pagestart},#{pageend}
+	</select>
+	<select id="mySheepFoldSheepRedeemedListCount" resultType="int">
+		<!-- 具体的sql -->
+		select COUNT(1) FROM (
+		select
+		p.Id
+		from SheepOrder o
+		inner join SheepProject p on(o.ProjectId=p.Id)
+		where
+		o.CustomerId=#{customerId} and o.State = '05'
+		<if test="type=='03'">
+			<![CDATA[ AND (p.Type='03' OR p.Type='04') ]]>
+		</if>
+		<if test="type=='00'">
+			<![CDATA[ AND (p.Type<>'03' AND p.Type<>'04') ]]>
+		</if>
+		and o.Deleted=false and o.Frozened=false and p.Deleted=false
+		group by p.Id order by case when p.Type='03' or p.Type='04' then 2 else 1 end,o.Id DESC
+		) temp
+	</select>
 </mapper>
