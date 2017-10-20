@@ -28,24 +28,32 @@
     <insert id="insertSheepPhoto">
         <!-- ignore 主键冲突，报错 -->
         INSERT ignore INTO SheepPhoto (
-			     ProjectId, 
-	     OrderId, 
-	     OrderNo, 
-	     CustomerId, 
-	     Photo, 
-	     Deleted, 
-	     Created, 
-	     Modified 
-		)
+        ProjectId,
+        OrderId,
+        OrderNo,
+        CustomerId,
+        Photo,
+        Deleted,
+        Created,
+        Modified
+        )
         VALUES (
-			     #{projectId}, 
-	     #{orderId}, 
-	     #{orderNo}, 
-	     #{customerId}, 
-	     #{photo}, 
-	     #{deleted}, 
-	     #{created}, 
-	     #{modified} 
-		)
+        #{projectId},
+        #{orderId},
+        #{orderNo},
+        #{customerId},
+        #{photo},
+        #{deleted},
+        #{created},
+        #{modified}
+        )
     </insert>
+
+    <select id="getPhotoByOrderId" resultType="SheepPhoto">
+        SELECT
+        *
+        FROM
+        SheepPhoto
+        WHERE OrderId=#{orderId}
+    </select>
 </mapper>

@@ -23,13 +23,13 @@ public interface SheepService {
     PastureMonitorModel pastureMonitor(int customerId, SystemMonitorRequestModel model) throws Exception;
     ProjectPlanModel projectPlan(ProjectPlanRequestModel model) throws Exception;
 
-
     MySheepFoldListViewModel mySheepFoldList(int customerId, MySheepFoldRequestModel model) throws Exception;
     MySheepFoldHeadViewModel mySheepFoldHead(int customerId)throws Exception;
     MySheepFoldHeadViewModel mySheepFoldRedeemedHead(int customerId)throws Exception;
     MySheepFoldRedeemedListViewModel mySheepFoldRedeemedList(int customerId,MySheepFoldRequestModel model)throws Exception;
 
     SheepProjectOrdersModel mySheepfoldSheepProjectOrders(int customerId,OnlyPrimaryIdRequestModel model) throws Exception;
+    SheepProjectInsurance mySheepfoldProjectInsurance(int customerId,OnlyPrimaryIdRequestModel model) throws Exception;
 
 
 }

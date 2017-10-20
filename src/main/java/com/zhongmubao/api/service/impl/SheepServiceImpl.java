@@ -55,11 +55,10 @@ public class SheepServiceImpl extends BaseService implements SheepService {
     private final SheepVendorDao sheepVendorDao;
     private final SheepLevelDao sheepLevelDao;
     private final CustomerOrderLogMongoDao customerOrderLogMongoDao;
-    private List<SheepVendor> sheepVendors;
-    private Query query;
+    private final SheepPhotoDao sheepPhotoDao;
 
     @Autowired
-    public SheepServiceImpl(RedisCache redisCache, CustomerSinaDao customerSinaDao, ExtActivityRecordDao extActivityRecordDao, SheepOrderDao sheepOrderDao, SheepProjectDao sheepProjectDao, ExtBannerMongoDao extBannerMongoDao, SheepProjectPlanDao sheepProjectPlanDao, SheepStageMongoDao sheepStageMongoDao, SheepLevelDao levelDao, SheepVendorDao sheepVendorDao, SheepLevelDao sheepLevelDao, CustomerOrderLogMongoDao customerOrderLogMongoDao) {
+    public SheepServiceImpl(RedisCache redisCache, CustomerSinaDao customerSinaDao, ExtActivityRecordDao extActivityRecordDao, SheepOrderDao sheepOrderDao, SheepProjectDao sheepProjectDao, ExtBannerMongoDao extBannerMongoDao, SheepProjectPlanDao sheepProjectPlanDao, SheepStageMongoDao sheepStageMongoDao, SheepLevelDao levelDao, SheepVendorDao sheepVendorDao, SheepLevelDao sheepLevelDao, CustomerOrderLogMongoDao customerOrderLogMongoDao, SheepPhotoDao sheepPhotoDao) {
         this.redisCache = redisCache;
         this.customerSinaDao = customerSinaDao;
         this.extActivityRecordDao = extActivityRecordDao;
@@ -72,6 +71,7 @@ public class SheepServiceImpl extends BaseService implements SheepService {
         this.sheepVendorDao = sheepVendorDao;
         this.sheepLevelDao = sheepLevelDao;
         this.customerOrderLogMongoDao = customerOrderLogMongoDao;
+        this.sheepPhotoDao = sheepPhotoDao;
     }
 
 
@@ -267,10 +267,12 @@ public class SheepServiceImpl extends BaseService implements SheepService {
             return new SheepOrderDetailModel();
         }
 
+        String sheepIncome = DoubleUtil.toFixed(detailInfo.getCount() * calcProfitEx(detailInfo.getPrice(), detailInfo.getRate(), detailInfo.getPeriod()), "0.00");
         SheepOrderDetailModel detailModel = new SheepOrderDetailModel(
                 detailInfo.getId(),
                 detailInfo.getProjectId(),
                 detailInfo.getCustomerId(),
+                detailInfo.getTitle(),
                 detailInfo.getCode(),
                 detailInfo.getCount(),
                 detailInfo.getTotalAmount(),
@@ -282,8 +284,9 @@ public class SheepServiceImpl extends BaseService implements SheepService {
                 DateUtil.format(detailInfo.getPaymentTime(), Constants.DATE_TIME_FORMAT),
                 DateUtil.subDateOfDay(detailInfo.getRedeemTime(), new Date()),
                 DateUtil.format(detailInfo.getRedeemTime(), Constants.DATE_TIME_FORMAT),
+                sheepIncome,
                 detailInfo.getRedPackageAmount(),
-                "0"   // todo:totalIncome 收益总额
+                DoubleUtil.toFixed(Double.valueOf(sheepIncome) + Double.valueOf(detailInfo.getRedPackageAmount()), "0.00")
         );
 
         return detailModel;
@@ -536,6 +539,18 @@ public class SheepServiceImpl extends BaseService implements SheepService {
         if (null == sheepProject || null == monitors) {
             throw new ApiException("未查到该记录");
         }
+        List<PastureSheepErBiaoModel> sheepErBiaoModels = new LinkedList<>();
+        // 羊耳标
+        List<SheepOrderInfo> sheepOrderInfos = sheepOrderDao.getOrderByCustomerIdAndProjectIdAndState(customerId, model.getId(), Constants.SHEEP_IN_THE_BAR_STATE_AND_REDEMING_ANDREDEMED);
+        for (int i = 0; i < sheepOrderInfos.size(); i++) {
+            SheepOrderInfo order = sheepOrderInfos.get(i);
+            // 通过sheepOrderId获取photos
+            List<SheepPhoto> sheepPhotos = sheepPhotoDao.getPhotoByOrderId(order.getId());
+            // TODO 羊耳标数据构造
+
+        }
+
+        // 视频监控
         String type;
         switch (sheepProject.getVendorId()) {
             case 21:
@@ -566,15 +581,17 @@ public class SheepServiceImpl extends BaseService implements SheepService {
         SystemMonitor monitor = currentMonitors.get(MathUtil.random(0, currentMonitors.size() - 1));
         String videoUrl = ((model.getPlatform() == Platform.ANDROID || model.getPlatform() == Platform.IOS) ? "http:" : "") + "//www.iermu.com/svideo/" + monitor.getShareId() + "/" + monitor.getUKey();
 
-        return new PastureMonitorModel(videoUrl);
+        return new PastureMonitorModel(videoUrl, sheepErBiaoModels);
     }
 
     /**
      * 我的羊圈 -- 羊标订单列表
+     *
      * @param customerId 当前用户id
      * @param model      SheepProject主键
      * @return
      * @throws Exception
+     * @author 米立林 2017-10-20
      */
     @Override
     public SheepProjectOrdersModel mySheepfoldSheepProjectOrders(int customerId, OnlyPrimaryIdRequestModel model) throws Exception {
@@ -588,6 +605,7 @@ public class SheepServiceImpl extends BaseService implements SheepService {
         if (null == sheepOrderList) {
             return sheepProjectOrdersModel;
         }
+
         List<SheepProjectOrdersViewModel> list = sheepOrderList.stream().map(
                 en -> new SheepProjectOrdersViewModel(
                         en.getId(),
@@ -605,7 +623,37 @@ public class SheepServiceImpl extends BaseService implements SheepService {
     }
 
     /**
-     * @param id
+     * @param customerId 当前用户id
+     * @param model      SheepProject主键
+     * @return 我的羊圈 -- 羊只有保险
+     * @throws Exception
+     * @author 米立林 2017-10-20
+     */
+    @Override
+    public SheepProjectInsurance mySheepfoldProjectInsurance(int customerId, OnlyPrimaryIdRequestModel model) throws Exception {
+        if (null == model) {
+            throw new ApiException(ResultStatus.PARAMETER_MISSING);
+        }
+        SheepProject sheepProject = sheepProjectDao.getSheepProjectById(model.getId());
+        if (null == sheepProject) {
+            throw new ApiException(ResultStatus.PARAMETER_MISSING);
+        }
+        SheepProjectInsurance sheepProjectInsurance = new SheepProjectInsurance();
+        List<SheepVendor> sheepVendorList = redisCache.vendorList();
+        SheepVendor sheepVendor = sheepVendorList.stream().filter(en -> en.getId() == sheepProject.getVendorId()).findFirst().get();
+        if (null == sheepVendor) {
+            throw new ApiException(ResultStatus.FAIL);
+        }
+        sheepProjectInsurance.setVendorId(sheepVendor.getId());
+        sheepProjectInsurance.setInsuranceCompanyUrl(sheepVendor.getInsuranceCompanyUrl());
+        sheepProjectInsurance.setVendorName(sheepVendor.getName());
+        sheepProjectInsurance.setInsuranceCompany(sheepVendor.getInsuranceCompany());
+
+        return sheepProjectInsurance;
+    }
+
+    /**
+     * @param model
      * @return ProjectPlanModel
      * @throws Exception
      * @author xy
