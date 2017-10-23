@@ -24,13 +24,13 @@
 //            isDefault:0
 //        };
 
-        var data = {id: 51};
+        var data = {"imei":"865982025113575","mac":"A0:86:C6:FB:QB:17","os":"0"};
         console.info(JSON.stringify(data));
 //        var saveData ={"USER_ID":leader,"Users":users};
 
         $.ajax({
             type: "POST",
-            url: "/sheep/sheepRedeemableProperty",
+            url: "/system/touTiaoAdv",
             data: JSON.stringify(data),
             contentType: 'application/json;charset=UTF-8',
             dataType: "json",                                     //预期服务器返回类型
