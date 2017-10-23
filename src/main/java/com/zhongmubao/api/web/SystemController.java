@@ -2,13 +2,12 @@ package com.zhongmubao.api.web;
 
 import com.zhongmubao.api.authorization.annotation.Authorization;
 import com.zhongmubao.api.authorization.annotation.CurrentUser;
-import com.zhongmubao.api.dto.Request.SendSmsCodeRequestModel;
-import com.zhongmubao.api.dto.Request.PageIndexRequestModel;
-import com.zhongmubao.api.dto.Request.Address.SystemDistrictRequestModel;
-import com.zhongmubao.api.dto.Request.TouTiaoAdvRequestModel;
-import com.zhongmubao.api.dto.Response.Address.ListSystemDistrictModel;
-import com.zhongmubao.api.dto.Response.ReponseModel;
-import com.zhongmubao.api.dto.Response.Notice.PageNoticeModel;
+import com.zhongmubao.api.dto.request.SendSmsCodeRequestModel;
+import com.zhongmubao.api.dto.request.PageIndexRequestModel;
+import com.zhongmubao.api.dto.request.address.SystemDistrictRequestModel;
+import com.zhongmubao.api.dto.response.address.ListSystemDistrictModel;
+import com.zhongmubao.api.dto.response.ReponseModel;
+import com.zhongmubao.api.dto.response.Notice.PageNoticeModel;
 import com.zhongmubao.api.entity.Customer;
 import com.zhongmubao.api.exception.ApiException;
 import com.zhongmubao.api.service.SystemService;
@@ -91,26 +90,5 @@ public class SystemController {
             return new ResponseEntity<>(ReponseModel.error(ex, this.getClass()), HttpStatus.OK);
         }
     }
-
-    /**
-     *
-     * @param model 手机号码
-     * @author 米立林 2017-10-09
-     * @return 成功or失败
-     */
-    @RequestMapping(value = "/touTiaoAdv", method = RequestMethod.POST, consumes = "application/json")
-    public ResponseEntity<ReponseModel> touTiaoAdv(HttpEntity<TouTiaoAdvRequestModel> model) {
-        try {
-            systemService.touTiaoAdv(model.getBody());
-            return new ResponseEntity<>(ReponseModel.ok(), HttpStatus.OK);
-        } catch (ApiException ex) {
-            return new ResponseEntity<>(ReponseModel.error(ex.getStatus()), HttpStatus.OK);
-        } catch (Exception ex) {
-            return new ResponseEntity<>(ReponseModel.error(ex, this.getClass()), HttpStatus.OK);
-        }
-    }
-
-
-
 
 }

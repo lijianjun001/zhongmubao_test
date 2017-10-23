@@ -9,30 +9,30 @@ import com.zhongmubao.api.config.Constants;
 import com.zhongmubao.api.config.ResultStatus;
 import com.zhongmubao.api.config.enmu.*;
 import com.zhongmubao.api.dao.*;
-import com.zhongmubao.api.dto.Request.Notify.NotifyRemindRequestModel;
-import com.zhongmubao.api.dto.Request.Notify.NotifyRemindSaveRequestModel;
-import com.zhongmubao.api.dto.Request.OnlyPrimaryIdRequestModel;
-import com.zhongmubao.api.dto.Request.*;
-import com.zhongmubao.api.dto.Request.Address.CustomerAddressRequestModel;
-import com.zhongmubao.api.dto.Request.Address.UpdateCustomerAddressRequestModel;
-import com.zhongmubao.api.dto.Request.customer.AutoRedeemRequestModel;
-import com.zhongmubao.api.dto.Request.customer.ResetPasswordRequestModel;
-import com.zhongmubao.api.dto.Response.customer.InBarSheepIncomeModel;
-import com.zhongmubao.api.dto.Response.customer.InBarSheepIncomeViewModel;
-import com.zhongmubao.api.dto.Response.Address.CustomerAddressResponseModel;
-import com.zhongmubao.api.dto.Response.Address.CustomerAddressViewModel;
-import com.zhongmubao.api.dto.Response.Ext.PageExtRedPackageModel;
-import com.zhongmubao.api.dto.Response.Ext.PageExtRedPackageViewModel;
-import com.zhongmubao.api.dto.Response.Notice.NoticeRemindModel;
-import com.zhongmubao.api.dto.Response.Notice.NoticeRemindViewModel;
-import com.zhongmubao.api.dto.Response.Notice.RemindNoticeCycleModel;
-import com.zhongmubao.api.dto.Response.Notice.RemindNoticeTypeModel;
-import com.zhongmubao.api.dto.Response.Sign.*;
-import com.zhongmubao.api.dto.Response.Sign.SignList.PageSignGiftModel;
-import com.zhongmubao.api.dto.Response.Sign.SignList.PageSignGiftViewModel;
-import com.zhongmubao.api.dto.Response.Sign.SignPackageList.PageSignPackageModel;
-import com.zhongmubao.api.dto.Response.Sign.SignPackageList.SignPackageViewModel;
-import com.zhongmubao.api.dto.Response.customer.WalletBalanceIncomeModel;
+import com.zhongmubao.api.dto.request.notify.NotifyRemindRequestModel;
+import com.zhongmubao.api.dto.request.notify.NotifyRemindSaveRequestModel;
+import com.zhongmubao.api.dto.request.OnlyPrimaryIdRequestModel;
+import com.zhongmubao.api.dto.request.*;
+import com.zhongmubao.api.dto.request.address.CustomerAddressRequestModel;
+import com.zhongmubao.api.dto.request.address.UpdateCustomerAddressRequestModel;
+import com.zhongmubao.api.dto.request.customer.AutoRedeemRequestModel;
+import com.zhongmubao.api.dto.request.customer.ResetPasswordRequestModel;
+import com.zhongmubao.api.dto.response.customer.InBarSheepIncomeModel;
+import com.zhongmubao.api.dto.response.customer.InBarSheepIncomeViewModel;
+import com.zhongmubao.api.dto.response.address.CustomerAddressResponseModel;
+import com.zhongmubao.api.dto.response.address.CustomerAddressViewModel;
+import com.zhongmubao.api.dto.response.Ext.PageExtRedPackageModel;
+import com.zhongmubao.api.dto.response.Ext.PageExtRedPackageViewModel;
+import com.zhongmubao.api.dto.response.Notice.NoticeRemindModel;
+import com.zhongmubao.api.dto.response.Notice.NoticeRemindViewModel;
+import com.zhongmubao.api.dto.response.Notice.RemindNoticeCycleModel;
+import com.zhongmubao.api.dto.response.Notice.RemindNoticeTypeModel;
+import com.zhongmubao.api.dto.response.Sign.*;
+import com.zhongmubao.api.dto.response.Sign.SignList.PageSignGiftModel;
+import com.zhongmubao.api.dto.response.Sign.SignList.PageSignGiftViewModel;
+import com.zhongmubao.api.dto.response.Sign.SignPackageList.PageSignPackageModel;
+import com.zhongmubao.api.dto.response.Sign.SignPackageList.SignPackageViewModel;
+import com.zhongmubao.api.dto.response.customer.WalletBalanceIncomeModel;
 import com.zhongmubao.api.dto.SignGift;
 import com.zhongmubao.api.entity.*;
 import com.zhongmubao.api.entity.ext.SheepOrderInfo;
@@ -167,7 +167,7 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
                 boolean todayIsShare = extRedPackageDao.countExtRedPackageByCustomerIdAndBeginTimeAndEndTimeAndType(customerId, dayBegin, dayEnd, dayShareType) > 0;
 
                 if (todayIsShare) {
-                    return new com.zhongmubao.api.dto.Response.Sign.SignModel(shareDayCount, "0.00", null, null, todayIsShare, false);
+                    return new com.zhongmubao.api.dto.response.Sign.SignModel(shareDayCount, "0.00", null, null, todayIsShare, false);
                 }
 
                 //判断这个月分享了多少次
@@ -571,7 +571,7 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
     }
     // endregion
 
-    //region Customer Address
+    //region Customer address
 
     /***
      * 新增收货地址

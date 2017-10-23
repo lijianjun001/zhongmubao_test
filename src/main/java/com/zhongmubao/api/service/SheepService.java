@@ -1,14 +1,14 @@
 package com.zhongmubao.api.service;
 
-import com.zhongmubao.api.dto.Request.OnlyPrimaryIdRequestModel;
-import com.zhongmubao.api.dto.Request.PageIndexRequestModel;
-import com.zhongmubao.api.dto.Request.ProjectPlanRequestModel;
-import com.zhongmubao.api.dto.Request.Sheep.MySheepFoldRequestModel;
-import com.zhongmubao.api.dto.Request.Sheep.SheepOrderRequestModel;
-import com.zhongmubao.api.dto.Request.SystemMonitorRequestModel;
-import com.zhongmubao.api.dto.Response.Index.IndexModel;
-import com.zhongmubao.api.dto.Response.Sheep.*;
-import com.zhongmubao.api.dto.Response.sheepfold.SheepProjectOrdersModel;
+import com.zhongmubao.api.dto.request.OnlyPrimaryIdRequestModel;
+import com.zhongmubao.api.dto.request.PageIndexRequestModel;
+import com.zhongmubao.api.dto.request.ProjectPlanRequestModel;
+import com.zhongmubao.api.dto.request.sheep.MySheepFoldRequestModel;
+import com.zhongmubao.api.dto.request.sheep.SheepOrderRequestModel;
+import com.zhongmubao.api.dto.request.SystemMonitorRequestModel;
+import com.zhongmubao.api.dto.response.Index.IndexModel;
+import com.zhongmubao.api.dto.response.Sheep.*;
+import com.zhongmubao.api.dto.response.sheepfold.SheepProjectOrdersModel;
 import com.zhongmubao.api.entity.Customer;
 
 public interface SheepService {

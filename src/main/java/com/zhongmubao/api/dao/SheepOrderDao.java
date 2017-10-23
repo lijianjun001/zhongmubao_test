@@ -1,8 +1,6 @@
 package com.zhongmubao.api.dao;
 
 import com.github.pagehelper.Page;
-import com.zhongmubao.api.dto.Request.OnlyPrimaryIdRequestModel;
-import com.zhongmubao.api.dto.Response.Sheep.SheepVendorViewModel;
 import com.zhongmubao.api.entity.SheepOrder;
 import com.zhongmubao.api.entity.ext.*;
 import org.apache.ibatis.annotations.Param;
