@@ -207,6 +207,7 @@ public class SystemServiceImpl extends BaseService implements SystemService {
         if(touTiaoAdvMongo==null){
             throw new ApiException(ResultStatus.DATA_QUERY_FAILED);
         }
+
         String conv_time = String.valueOf(System.currentTimeMillis());
         //回传
         String url = "http://ad.toutiao.com/track/activate/?callback="+ URLEncoder.encode(touTiaoAdvMongo.getCallback(),"UTF-8")+"&muid="+touTiaoAdvMongo.getImei()+touTiaoAdvMongo.getMac()+"&os="+touTiaoAdvMongo.getOs()+"&source=TD&conv_time=" + conv_time +"&event_type=0";
