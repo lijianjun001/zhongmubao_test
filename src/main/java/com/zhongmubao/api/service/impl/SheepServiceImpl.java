@@ -722,7 +722,7 @@ public class SheepServiceImpl extends BaseService implements SheepService {
 
         SheepProjectPlan sheepProjectPlan = this.sheepProjectPlanDao.lastSheepProjectPlan(model.getId());
         if (sheepProjectPlan == null) {
-            throw new ApiException("未发现数据");
+            throw new ApiException(ResultStatus.DATA_QUERY_FAILED);
         }
         return new ProjectPlanModel(sheepProjectPlan.getTime(), sheepProjectPlan.getInfo());
     }
