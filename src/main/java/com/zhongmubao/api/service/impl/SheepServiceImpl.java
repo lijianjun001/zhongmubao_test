@@ -31,7 +31,7 @@ import com.zhongmubao.api.service.BaseService;
 import com.zhongmubao.api.service.SheepService;
 import com.zhongmubao.api.util.*;
 import com.zhongmubao.api.dto.common.SheepVendorAttrs;
-import com.zhongmubao.api.util.common.CurrentSheepProjectState;
+import com.zhongmubao.api.dto.CurrentSheepProjectState;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;

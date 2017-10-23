@@ -1,4 +1,4 @@
-package com.zhongmubao.api.util.common;
+package com.zhongmubao.api.dto;
 
 /**
  * 当前羊项目状态
