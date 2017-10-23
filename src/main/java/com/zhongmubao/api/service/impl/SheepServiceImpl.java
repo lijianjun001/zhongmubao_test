@@ -2,6 +2,7 @@ package com.zhongmubao.api.service.impl;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.zhongmubao.api.cache.RedisCache;
 import com.zhongmubao.api.config.Constants;
 import com.zhongmubao.api.config.ResultStatus;
@@ -701,10 +702,18 @@ public class SheepServiceImpl extends BaseService implements SheepService {
 
 
         // 1、获取在栏中羊只订单
-        int pageSize = 10;
-        int totalCount = sheepOrderDao.mySheepFoldListCount(customerId, Constants.SHEEP_IN_THE_BAR_STATE, model.getProjectType());
-        int totalPage = totalCount % pageSize == 0 ? totalCount / pageSize : (totalCount / pageSize + 1);
-        List<MySheepFoldItem> mySheepFoldItems = sheepOrderDao.mySheepFoldList(customerId, Constants.SHEEP_IN_THE_BAR_STATE, ((model.getPageIndex() - 1) * pageSize), (model.getPageIndex() * pageSize), model.getProjectType());
+        //int pageSize = 10;
+        //int totalCount = sheepOrderDao.mySheepFoldListCount(customerId, Constants.SHEEP_IN_THE_BAR_STATE, model.getProjectType());
+        //int totalPage = totalCount % pageSize == 0 ? totalCount / pageSize : (totalCount / pageSize + 1);
+
+        PageHelper.startPage(model.getPageIndex(), Constants.PAGE_SIZE);
+
+        List<MySheepFoldItem> mySheepFoldItems = sheepOrderDao.mySheepFoldList(customerId, Constants.SHEEP_IN_THE_BAR_STATE, model.getProjectType());
+
+        PageInfo<MySheepFoldItem> info = new PageInfo<>(mySheepFoldItems);
+        int totalPage =new Long(info.getTotal()).intValue();
+        PageHelper.clearPage();
+
         //改入Redis
         List<SheepVendor> sheepVendors = sheepVendorDao.getSheepVendorList();
         Map<Integer, String> sheepVendorMap = new HashMap<Integer, String>();
@@ -832,12 +841,16 @@ public class SheepServiceImpl extends BaseService implements SheepService {
             model.setProjectType("");
         }
         MySheepFoldRedeemedListViewModel returnModel = new MySheepFoldRedeemedListViewModel();
-        int pageSize = 10;
-        int totalCount = sheepOrderDao.mySheepFoldSheepRedeemedListCount(customerId, model.getProjectType());
-        int totalPage = totalCount % pageSize == 0 ? totalCount / pageSize : (totalCount / pageSize + 1);
+        //int pageSize = 10;
+        //int totalCount = sheepOrderDao.mySheepFoldSheepRedeemedListCount(customerId, model.getProjectType());
+        //int totalPage = totalCount % pageSize == 0 ? totalCount / pageSize : (totalCount / pageSize + 1);
         List<MySheepFoldRedeemedViewModel> list = new ArrayList<MySheepFoldRedeemedViewModel>();
-        List<MySheepFoldRedeemedItem> mySheepFoldRedeemedItems = sheepOrderDao.mySheepFoldSheepRedeemedList(customerId, ((model.getPageIndex() - 1) * pageSize), (model.getPageIndex() * pageSize), model.getProjectType());
 
+        PageHelper.startPage(model.getPageIndex(), Constants.PAGE_SIZE);
+        List<MySheepFoldRedeemedItem> mySheepFoldRedeemedItems = sheepOrderDao.mySheepFoldSheepRedeemedList(customerId, model.getProjectType());
+        PageInfo<MySheepFoldRedeemedItem> info = new PageInfo<>(mySheepFoldRedeemedItems);
+        int totalPage =new Long(info.getTotal()).intValue();
+        PageHelper.clearPage();
 
         for (MySheepFoldRedeemedItem item : mySheepFoldRedeemedItems) {
             MySheepFoldRedeemedViewModel mySheepFoldRedeemedViewModel = new MySheepFoldRedeemedViewModel();
