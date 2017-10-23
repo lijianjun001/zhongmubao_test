@@ -177,4 +177,9 @@ public class Constants {
      * 日期时分秒格式
      */
     public static final String DATE_TIME_FORMAT = "yyyy-MM-dd HH:mm:ss";
+
+    /**
+     * 上传路径
+     */
+    public static final String UPLOAD_ADDRESS = "http://s.emubao.com/upload/";
 }

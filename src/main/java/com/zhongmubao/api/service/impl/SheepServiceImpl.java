@@ -556,7 +556,7 @@ public class SheepServiceImpl extends BaseService implements SheepService {
                     stats.getMin(),
                     stats.getMax(),
                     stats.getMin() + "-" + stats.getMax(),
-                    sheepPhotos.get(sheepPhotos.size() - 1).getPhoto()
+                    formatPhoto(sheepPhotos.get(sheepPhotos.size() - 1).getPhoto())
             ));
 
         }
