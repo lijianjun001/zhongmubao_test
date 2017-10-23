@@ -124,4 +124,19 @@
         AND sp.deleted = 0
     </select>
 
+    <select id="getSheepProjectByIdAndCustomerId" resultType="SheepOrderInfo">
+        <!-- 具体的sql -->
+        SELECT sp.Id,so.CustomerId,sp.Title,sp.Type,sp.State,sp.Price,sp.Rate,sp.Period,sp.EffectiveTime,sp.RedemTime,SUM(so.Count) AS Count,sp.VendorId,SUM(so.TotalAmount) AS TotalAmount,
+        SUM((SELECT SUM(Price) FROM ExtRedPackage erp WHERE erp.SheepOrderId=so.Id)) AS RedPackageAmount
+        FROM SheepProject sp
+        INNER JOIN SheepOrder so ON so.ProjectId=sp.Id
+        WHERE sp.Id=#{projectId}
+        AND so.CustomerId=#{customerId}
+        AND so.state IN
+        <foreach collection="states" item="item" index="index" open="(" close=")" separator=",">
+            #{item}
+        </foreach>
+        AND so.deleted = 0
+    </select>
+
 </mapper>

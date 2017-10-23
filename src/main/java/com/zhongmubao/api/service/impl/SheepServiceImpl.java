@@ -14,6 +14,7 @@ import com.zhongmubao.api.dto.request.ProjectPlanRequestModel;
 import com.zhongmubao.api.dto.request.sheep.MySheepFoldRequestModel;
 import com.zhongmubao.api.dto.request.sheep.SheepOrderRequestModel;
 import com.zhongmubao.api.dto.request.SystemMonitorRequestModel;
+import com.zhongmubao.api.dto.response.customer.AutoRedeemModel;
 import com.zhongmubao.api.dto.response.index.*;
 import com.zhongmubao.api.dto.response.sheep.*;
 import com.zhongmubao.api.dto.response.sheepfold.SheepProjectOrdersModel;
@@ -57,9 +58,10 @@ public class SheepServiceImpl extends BaseService implements SheepService {
     private final SheepLevelDao sheepLevelDao;
     private final CustomerOrderLogMongoDao customerOrderLogMongoDao;
     private final SheepPhotoDao sheepPhotoDao;
+    private final CustomerDao customerDao;
 
     @Autowired
-    public SheepServiceImpl(RedisCache redisCache, CustomerSinaDao customerSinaDao, ExtActivityRecordDao extActivityRecordDao, SheepOrderDao sheepOrderDao, SheepProjectDao sheepProjectDao, ExtBannerMongoDao extBannerMongoDao, SheepProjectPlanDao sheepProjectPlanDao, SheepStageMongoDao sheepStageMongoDao, SheepLevelDao levelDao, SheepVendorDao sheepVendorDao, SheepLevelDao sheepLevelDao, CustomerOrderLogMongoDao customerOrderLogMongoDao, SheepPhotoDao sheepPhotoDao) {
+    public SheepServiceImpl(RedisCache redisCache, CustomerSinaDao customerSinaDao, ExtActivityRecordDao extActivityRecordDao, SheepOrderDao sheepOrderDao, SheepProjectDao sheepProjectDao, ExtBannerMongoDao extBannerMongoDao, SheepProjectPlanDao sheepProjectPlanDao, SheepStageMongoDao sheepStageMongoDao, SheepLevelDao levelDao, SheepVendorDao sheepVendorDao, SheepLevelDao sheepLevelDao, CustomerOrderLogMongoDao customerOrderLogMongoDao, SheepPhotoDao sheepPhotoDao, CustomerDao customerDao) {
         this.redisCache = redisCache;
         this.customerSinaDao = customerSinaDao;
         this.extActivityRecordDao = extActivityRecordDao;
@@ -73,6 +75,7 @@ public class SheepServiceImpl extends BaseService implements SheepService {
         this.sheepLevelDao = sheepLevelDao;
         this.customerOrderLogMongoDao = customerOrderLogMongoDao;
         this.sheepPhotoDao = sheepPhotoDao;
+        this.customerDao = customerDao;
     }
 
 
@@ -547,7 +550,14 @@ public class SheepServiceImpl extends BaseService implements SheepService {
             SheepOrderInfo order = sheepOrderInfos.get(i);
             // 通过sheepOrderId获取photos
             List<SheepPhoto> sheepPhotos = sheepPhotoDao.getPhotoByOrderId(order.getId());
-            // TODO 羊耳标数据构造
+            IntSummaryStatistics stats = sheepPhotos.stream().mapToInt((x) -> x.getId()).summaryStatistics();
+            sheepErBiaoModels.add(new PastureSheepErBiaoModel(
+                    order.getCode(),
+                    stats.getMin(),
+                    stats.getMax(),
+                    stats.getMin() + "-" + stats.getMax(),
+                    sheepPhotos.get(sheepPhotos.size() - 1).getPhoto()
+            ));
 
         }
 
@@ -583,6 +593,50 @@ public class SheepServiceImpl extends BaseService implements SheepService {
         String videoUrl = ((model.getPlatform() == Platform.ANDROID || model.getPlatform() == Platform.IOS) ? "http:" : "") + "//www.iermu.com/svideo/" + monitor.getShareId() + "/" + monitor.getUKey();
 
         return new PastureMonitorModel(videoUrl, sheepErBiaoModels);
+    }
+
+    /**
+     * 我的羊圈 -- 可赎回
+     *
+     * @param customerId 当前用户id
+     * @param model      SheepProject主键
+     * @return 可赎回订单信息
+     * @author 米立林 2017-10-23
+     */
+    @Override
+    public SheepRedeemableViewModel sheepRedeemableProperty(int customerId, OnlyPrimaryIdRequestModel model) throws Exception {
+        if (null == model || model.getId() <= 0) {
+            throw new ApiException(ResultStatus.PARAMETER_MISSING);
+        }
+        Customer customer = customerDao.getCustomerById(customerId);
+        // 可赎回订单详情
+        SheepOrderInfo detailInfo = sheepProjectDao.getSheepProjectByIdAndCustomerId( model.getId(),customerId, Constants.SHEEP_IN_THE_BAR_STATE_AND_REDEMING_ANDREDEMED);
+        if (null == customer || null == detailInfo) {
+            return new SheepRedeemableViewModel();
+        }
+        boolean hasRedeemPassword = true;
+        if (StringUtil.isNullOrEmpty(customer.getRedeemPassword())) {
+            hasRedeemPassword = false;
+        }
+        AutoRedeemModel autoRedeemModel = new AutoRedeemModel(
+                hasRedeemPassword,
+                customer.getIsAutoRedeem()
+        );
+        String projectType = detailInfo.getType() == ProjectType.SLAUGHTER.getName() || detailInfo.getType() == ProjectType.NEW_PEOPLE_7.getName() ? ProjectType.SLAUGHTER.getName() : ProjectType.NORMAL.getName();
+
+        String sheepIncome = DoubleUtil.toFixed(detailInfo.getCount() * calcProfitEx(detailInfo.getPrice(), detailInfo.getRate(), detailInfo.getPeriod()), "0.00");
+        SheepRedeemableViewModel detailModel = new SheepRedeemableViewModel(
+                detailInfo.getId(),
+                detailInfo.getCount(),
+                sheepIncome,
+                DoubleUtil.toFixed(detailInfo.getRedPackageAmount(), "0.00"),
+                DateUtil.format(detailInfo.getRedemTime(), Constants.DATE_FORMAT),
+                detailInfo.getTitle(),
+                projectType,
+                autoRedeemModel
+        );
+
+        return detailModel;
     }
 
     /**
@@ -711,7 +765,7 @@ public class SheepServiceImpl extends BaseService implements SheepService {
         List<MySheepFoldItem> mySheepFoldItems = sheepOrderDao.mySheepFoldList(customerId, Constants.SHEEP_IN_THE_BAR_STATE, model.getProjectType());
 
         PageInfo<MySheepFoldItem> info = new PageInfo<>(mySheepFoldItems);
-        int totalPage =new Long(info.getTotal()).intValue();
+        int totalPage = new Long(info.getTotal()).intValue();
         PageHelper.clearPage();
 
         //改入Redis
@@ -849,7 +903,7 @@ public class SheepServiceImpl extends BaseService implements SheepService {
         PageHelper.startPage(model.getPageIndex(), Constants.PAGE_SIZE);
         List<MySheepFoldRedeemedItem> mySheepFoldRedeemedItems = sheepOrderDao.mySheepFoldSheepRedeemedList(customerId, model.getProjectType());
         PageInfo<MySheepFoldRedeemedItem> info = new PageInfo<>(mySheepFoldRedeemedItems);
-        int totalPage =new Long(info.getTotal()).intValue();
+        int totalPage = new Long(info.getTotal()).intValue();
         PageHelper.clearPage();
 
         for (MySheepFoldRedeemedItem item : mySheepFoldRedeemedItems) {
