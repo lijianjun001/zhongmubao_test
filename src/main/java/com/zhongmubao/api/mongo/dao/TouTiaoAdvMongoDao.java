@@ -27,8 +27,8 @@ public class TouTiaoAdvMongoDao implements BaseDao<TouTiaoAdvMongo> {
     public void update(TouTiaoAdvMongo entity) throws Exception {
 
     }
-    public void updateFirst(Query query, Update update) throws Exception {
-        this.mongoTemplate.updateFirst(query,update,"TouTiaoAdvMongo");
+    public void updateMulti(Query query, Update update) throws Exception {
+        this.mongoTemplate.updateMulti(query,update,"TouTiaoAdvMongo");
     }
     @Override
     public void save(TouTiaoAdvMongo entity) throws Exception {

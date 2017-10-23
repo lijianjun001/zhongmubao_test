@@ -194,7 +194,7 @@ public class SystemServiceImpl extends BaseService implements SystemService {
         if(model==null){
             throw new ApiException(ResultStatus.PARAMETER_MISSING);
         }
-        TouTiaoAdvMongo touTiaoAdvMongo = touTiaoAdvMongoDao.getOrderBy(Criteria.where("imei").is(model.getImei()).and("mac").is(model.getMac()).and("os").is(model.getOs()));
+        TouTiaoAdvMongo touTiaoAdvMongo = touTiaoAdvMongoDao.getOrderBy(Criteria.where("imei").is(model.getImei()).and("mac").is(model.getMac()).and("os").is(model.getOs()).and("status").is("00"));
 
         if(touTiaoAdvMongo==null){
             throw new ApiException(ResultStatus.DATA_QUERY_FAILED);
@@ -212,8 +212,7 @@ public class SystemServiceImpl extends BaseService implements SystemService {
         }catch (Exception ex) {
             throw new ApiException(ResultStatus.TOUTIAO_CALL_FAILED);
         }
-
-
+        touTiaoAdvMongoDao.updateMulti(new Query(Criteria.where("imei").is(touTiaoAdvMongo.getImei()).and("mac").is(touTiaoAdvMongo.getMac()).and("os").is(touTiaoAdvMongo.getOs())),new Update().set("status","01"));
     }
 
 }
