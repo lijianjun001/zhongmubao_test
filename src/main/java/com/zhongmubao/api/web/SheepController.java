@@ -208,6 +208,24 @@ public class SheepController {
     }
 
     /**
+     * 我的羊圈 -- 可赎回
+     * @param customer  当前用户
+     * @param requestModel SheepProject主键
+     * @return 可赎回订单信息
+     * @author 米立林 2017-10-23
+     */
+    @Authorization
+    @RequestMapping(value = "/sheepRedeemableProperty", method = RequestMethod.POST, consumes = "application/json")
+    public ResponseEntity<ReponseModel> sheepRedeemableProperty(@CurrentUser Customer customer, HttpEntity<OnlyPrimaryIdRequestModel> requestModel) {
+        try {
+            SheepRedeemableViewModel sheepRedeemableModel = sheepService.sheepRedeemableProperty(customer.getId(),requestModel.getBody());
+            return new ResponseEntity<>(ReponseModel.ok(sheepRedeemableModel), HttpStatus.OK);
+        } catch (Exception ex) {
+            return new ResponseEntity<>(ReponseModel.error(ex, this.getClass()), HttpStatus.OK);
+        }
+    }
+
+    /**
      * @param customer     当前用户
      * @return 我的羊圈--牧场摄像头
      * @author 米立林 2017-10-09

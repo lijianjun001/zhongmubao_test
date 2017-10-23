@@ -9,6 +9,7 @@ import org.springframework.data.mongodb.core.aggregation.Aggregation;
 import org.springframework.data.mongodb.core.aggregation.TypedAggregation;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -26,7 +27,9 @@ public class TouTiaoAdvMongoDao implements BaseDao<TouTiaoAdvMongo> {
     public void update(TouTiaoAdvMongo entity) throws Exception {
 
     }
-
+    public void updateMulti(Query query, Update update) throws Exception {
+        this.mongoTemplate.updateMulti(query,update,"TouTiaoAdvMongo");
+    }
     @Override
     public void save(TouTiaoAdvMongo entity) throws Exception {
 

@@ -1,5 +1,6 @@
 package com.zhongmubao.api.service;
 
+import com.zhongmubao.api.config.Constants;
 import com.zhongmubao.api.config.WxTemplate;
 import com.zhongmubao.api.config.enmu.SheepProjectPeriod;
 import com.zhongmubao.api.config.enmu.SystemPushType;
@@ -87,5 +88,20 @@ public class BaseService {
         } else {
             return (price * rate / 100 * period / 365);
         }
+    }
+
+    /**
+     * 羊耳标Photo
+     * @param photo SheepPhoto url
+     * @return 校验后的完整地址
+     */
+    protected String formatPhoto(String photo)
+    {
+        if (photo.toUpperCase().startsWith("HTTP"))
+        {
+            return photo;
+        }
+
+        return String.format("{0}{1}", Constants.UPLOAD_ADDRESS, photo);
     }
 }
