@@ -194,7 +194,16 @@ public class SystemServiceImpl extends BaseService implements SystemService {
         if(model==null){
             throw new ApiException(ResultStatus.PARAMETER_MISSING);
         }
-        TouTiaoAdvMongo touTiaoAdvMongo = touTiaoAdvMongoDao.getOrderBy(Criteria.where("imei").is(model.getImei()).and("mac").is(model.getMac()).and("os").is(model.getOs()).and("status").is("00"));
+        if(model.getMac().equals(null)){
+            throw new ApiException(ResultStatus.PARAMETER_MISSING);
+        }
+        if(model.getImei().equals(null)){
+            throw new ApiException(ResultStatus.PARAMETER_MISSING);
+        }
+        if(model.getOs().equals(null)){
+            throw new ApiException(ResultStatus.PARAMETER_MISSING);
+        }
+        TouTiaoAdvMongo touTiaoAdvMongo = touTiaoAdvMongoDao.getOrderBy(Criteria.where("imei").is(SecurityUtil.md5(model.getImei()).toLowerCase()).and("mac").is(SecurityUtil.md5(model.getMac().replace(":","")).toLowerCase()).and("os").is(model.getOs()).and("status").is("00"));
         if(touTiaoAdvMongo==null){
             throw new ApiException(ResultStatus.DATA_QUERY_FAILED);
         }
