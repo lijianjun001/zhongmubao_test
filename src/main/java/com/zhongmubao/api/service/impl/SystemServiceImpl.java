@@ -63,6 +63,7 @@ public class SystemServiceImpl extends BaseService implements SystemService {
     }
 
     //region 系统通知
+
     /**
      * @param requestModel
      * @return 通知公告
@@ -154,7 +155,7 @@ public class SystemServiceImpl extends BaseService implements SystemService {
             throw new ApiException(ResultStatus.PARAMETER_ERROR);
         }
         // 2、根据类型获取短信验证码范文
-        SystemSmsLogMongo smsLog=new SystemSmsLogMongo();
+        SystemSmsLogMongo smsLog = new SystemSmsLogMongo();
         String title = "";
         String content = "";
         String code = Integer.toString(MathUtil.random(100000, 999999));
@@ -175,7 +176,7 @@ public class SystemServiceImpl extends BaseService implements SystemService {
         smsLog.setPhone(customer.getPhone());
         smsLog.setCode(code);
         smsLog.setMessage(content);
-        smsLog.setExpired(DateUtil.addMinute(mongoNow,30));
+        smsLog.setExpired(DateUtil.addMinute(mongoNow, 30));
         smsLog.setCreated(mongoNow);
         smsLog.setAsyncType(0);
         systemSmsLogMongoDao.add(smsLog);
@@ -183,31 +184,32 @@ public class SystemServiceImpl extends BaseService implements SystemService {
 
     /**
      * 头条广告
-     * @author xy
+     *
      * @param model
      * @throws Exception
+     * @author xy
      */
     @Override
     public void touTiaoAdv(TouTiaoAdvRequestModel model) throws Exception {
-        if(model==null){
+        if (model == null) {
             throw new ApiException(ResultStatus.PARAMETER_MISSING);
         }
         TouTiaoAdvMongo touTiaoAdvMongo = touTiaoAdvMongoDao.getOrderBy(Criteria.where("imei").is(model.getImei()).and("mac").is(model.getMac()).and("os").is(model.getOs()));
 
-        if(touTiaoAdvMongo==null){
+        if (touTiaoAdvMongo == null) {
             throw new ApiException(ResultStatus.DATA_QUERY_FAILED);
         }
 
         String conv_time = String.valueOf(System.currentTimeMillis());
         //回传
-        String url = "http://ad.toutiao.com/track/activate/?callback="+ URLEncoder.encode(touTiaoAdvMongo.getCallback(),"UTF-8")+"&muid="+touTiaoAdvMongo.getImei()+touTiaoAdvMongo.getMac()+"&os="+touTiaoAdvMongo.getOs()+"&source=TD&conv_time=" + conv_time +"&event_type=0";
+        String url = "http://ad.toutiao.com/track/activate/?callback=" + URLEncoder.encode(touTiaoAdvMongo.getCallback(), "UTF-8") + "&muid=" + touTiaoAdvMongo.getImei() + touTiaoAdvMongo.getMac() + "&os=" + touTiaoAdvMongo.getOs() + "&source=TD&conv_time=" + conv_time + "&event_type=0";
         String returnStr = HttpUtil.get(url);
         try {
-            TouTiaoReturnJson touTiaoReturnJson = SerializeUtil.deSerialize(returnStr,TouTiaoReturnJson.class);
-            if(touTiaoReturnJson.getCode()!=0){
+            TouTiaoReturnJson touTiaoReturnJson = SerializeUtil.deSerialize(returnStr, TouTiaoReturnJson.class);
+            if (touTiaoReturnJson.getCode() != 0) {
                 throw new ApiException(ResultStatus.TOUTIAO_CALL_FAILED);
             }
-        }catch (Exception ex) {
+        } catch (Exception ex) {
             throw new ApiException(ResultStatus.TOUTIAO_CALL_FAILED);
         }
     }
