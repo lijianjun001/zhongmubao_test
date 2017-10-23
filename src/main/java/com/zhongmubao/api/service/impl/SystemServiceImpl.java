@@ -205,8 +205,6 @@ public class SystemServiceImpl extends BaseService implements SystemService {
         if (null == model.getOs()) {
             throw new ApiException(ResultStatus.PARAMETER_MISSING);
         }
-        //.and("mac").is(SecurityUtil.md5(model.getMac().replace(":","")).toLowerCase())
-        //.orOperator(Criteria.where("mac").is(mac))
         String imei = SecurityUtil.md5(model.getImei()).toLowerCase();
         String mac = SecurityUtil.md5(model.getMac().replace(":", "")).toLowerCase();
         TouTiaoAdvMongo touTiaoAdvMongo = touTiaoAdvMongoDao.getOrderBy(Criteria.where("imei").is(imei).and("os").is(model.getOs()).and("status").is("00"));
