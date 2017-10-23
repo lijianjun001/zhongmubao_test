@@ -210,8 +210,5 @@ public class SystemServiceImpl extends BaseService implements SystemService {
         }catch (Exception ex) {
             throw new ApiException(ResultStatus.TOUTIAO_CALL_FAILED);
         }
-
-
     }
-
 }
