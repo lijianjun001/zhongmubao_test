@@ -4,7 +4,13 @@ package com.zhongmubao.api.util.common;
  * 当前羊项目状态
  */
 public class CurrentSheepProjectState {
+    /**
+     * 养殖图片索引
+     */
     private int dayTypeInt;
+    /**
+     * 养殖状态
+     */
     private String dayType;
 
     public int getDayTypeInt() {
