@@ -142,10 +142,12 @@ public class Constants {
             new SignGift(1, "神秘礼品", 1, SignGiftType.SECRET_GIFT),
             new SignGift(2, "延时卡", 1, SignGiftType.DELAYED_CARD),
             new SignGift(3, "延时卡", 2, SignGiftType.DELAYED_CARD),
-            new SignGift(4, "延时卡", 3, SignGiftType.DELAYED_CARD),
             new SignGift(5, "合并卡", 1, SignGiftType.MERGE_CARD),
             new SignGift(6, "合并卡", 2, SignGiftType.MERGE_CARD),
-            new SignGift(7, "合并卡", 3, SignGiftType.MERGE_CARD),
+            new SignGift(8, "话费卡", 1, SignGiftType.TELEPHONE_CARD),
+            new SignGift(9, "话费卡", 2, SignGiftType.TELEPHONE_CARD),
+            new SignGift(8, "话费卡", 1, SignGiftType.TELEPHONE_CARD),
+            new SignGift(9, "话费卡", 2, SignGiftType.TELEPHONE_CARD),
             new SignGift(8, "话费卡", 1, SignGiftType.TELEPHONE_CARD),
             new SignGift(9, "话费卡", 2, SignGiftType.TELEPHONE_CARD)
     );

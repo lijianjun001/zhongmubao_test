@@ -11,6 +11,10 @@ public class SheepOrderDetailInfo {
     private int id;
     private int projectId;
     private int customerId;
+    private double price;
+    private double rate;
+    private int period;
+    private String title;
     /**
      * 订单编号
      */
@@ -166,5 +170,37 @@ public class SheepOrderDetailInfo {
 
     public void setRedeemTime(Date redeemTime) {
         this.redeemTime = redeemTime;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
+    public double getRate() {
+        return rate;
+    }
+
+    public void setRate(double rate) {
+        this.rate = rate;
+    }
+
+    public int getPeriod() {
+        return period;
+    }
+
+    public void setPeriod(int period) {
+        this.period = period;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 }

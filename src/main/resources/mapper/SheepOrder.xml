@@ -160,10 +160,11 @@
 
 	<select id="getDetailByIdAndCustomerId" resultType="SheepOrderDetailInfo">
 		<!-- 具体的sql -->
-		SELECT Id,ProjectId,CustomerId,`Code`,`Count`,TotalAmount,DeductibleAmount,`State`,PaymentAmount,RedemAmount,
-		(SELECT SUM(Price) FROM ExtRedPackage WHERE SheepOrderId=so.Id AND IsUsed=1) AS RedPackageAmount,Created,PaymentTime,
-		(SELECT RedemTime FROM SheepProject WHERE Id=so.ProjectId) AS RedeemTime
+		SELECT sp.Id,ProjectId,CustomerId,so.`Code`,so.`Count`,TotalAmount,DeductibleAmount,so.`State`,PaymentAmount,RedemAmount,
+		(SELECT SUM(Price) FROM ExtRedPackage WHERE SheepOrderId=so.Id AND IsUsed=1) AS RedPackageAmount,so.Created,PaymentTime,
+		sp.RedemTime AS RedeemTime,sp.Price,sp.Rate,sp.Period,sp.Title
 		FROM SheepOrder AS so
+		INNER JOIN SheepProject sp ON so.ProjectId=sp.Id
 		WHERE Id=#{id}
 		AND so.CustomerId=#{customerId}
 		AND so.deleted = 0
@@ -324,7 +325,7 @@
 		) temp
 	</select>
 
-	<select id="getOrderByCustomerIdAndProjectIdAndState" resultType="SheepOrderEarnings">
+	<select id="getOrderByCustomerIdAndProjectIdAndState" resultType="SheepOrderInfo">
 		<!-- 具体的sql -->
 		SELECT so.Id,so.CustomerId,so.`Code`,so.Count,sp.Title
 		FROM SheepOrder so

@@ -170,4 +170,23 @@ public class SheepVendor {
 		this.pics = pics;
 	}
 
+	private String insuranceCompany;
+
+	public String getInsuranceCompany() {
+		return insuranceCompany;
+	}
+
+	public void setInsuranceCompany(String insuranceCompany) {
+		this.insuranceCompany = insuranceCompany;
+	}
+
+	private String insuranceCompanyUrl;
+
+	public String getInsuranceCompanyUrl() {
+		return insuranceCompanyUrl;
+	}
+
+	public void setInsuranceCompanyUrl(String insuranceCompanyUrl) {
+		this.insuranceCompanyUrl = insuranceCompanyUrl;
+	}
 }

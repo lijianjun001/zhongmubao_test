@@ -13,4 +13,5 @@ public interface SheepPhotoDao {
     List<SheepPhoto> pagerSheepPhotoList(@Param("offset") int offset, @Param("limit") int limit);
 	int insertSheepPhoto(SheepPhoto sheepPhoto);
 
+    List<SheepPhoto> getPhotoByOrderId(@Param("orderId") int orderId);
 }

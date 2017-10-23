@@ -33,6 +33,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+/**
+ * 客户控制器
+ *
+ * @author 孙阿龙
+ */
 @RestController
 @RequestMapping("/customer")
 public class CustomerController {

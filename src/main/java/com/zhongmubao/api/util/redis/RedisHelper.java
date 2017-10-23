@@ -17,9 +17,6 @@ public class RedisHelper {
     }
 
     public void save(String key, String value) {
-        /*redisTemplate.opsForList();
-        redisTemplate.opsForSet();
-        redisTemplate.opsForHash()*/
         ValueOperations<String, String> valueOper = redisTemplate.opsForValue();
         valueOper.set(key, value);
     }

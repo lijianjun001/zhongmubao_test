@@ -20,6 +20,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * 系统控制器
+ *
+ * @author 孙阿龙
+ */
 @RestController
 @RequestMapping("/system")
 public class SystemController {
