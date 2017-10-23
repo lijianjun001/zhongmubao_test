@@ -2,6 +2,7 @@ package com.zhongmubao.api.web;
 
 import com.zhongmubao.api.authorization.annotation.Authorization;
 import com.zhongmubao.api.authorization.annotation.CurrentUser;
+import com.zhongmubao.api.dto.Request.TouTiaoAdvRequestModel;
 import com.zhongmubao.api.dto.request.SendSmsCodeRequestModel;
 import com.zhongmubao.api.dto.request.PageIndexRequestModel;
 import com.zhongmubao.api.dto.request.address.SystemDistrictRequestModel;
@@ -83,6 +84,24 @@ public class SystemController {
     public ResponseEntity<ReponseModel> sendSmsCode(@CurrentUser Customer customer, HttpEntity<SendSmsCodeRequestModel> model) {
         try {
             systemService.sendSmsCode(customer,model.getBody());
+            return new ResponseEntity<>(ReponseModel.ok(), HttpStatus.OK);
+        } catch (ApiException ex) {
+            return new ResponseEntity<>(ReponseModel.error(ex.getStatus()), HttpStatus.OK);
+        } catch (Exception ex) {
+            return new ResponseEntity<>(ReponseModel.error(ex, this.getClass()), HttpStatus.OK);
+        }
+    }
+
+    /**
+     *
+     * @param model 手机号码
+     * @author 米立林 2017-10-09
+     * @return 成功or失败
+     */
+    @RequestMapping(value = "/touTiaoAdv", method = RequestMethod.POST, consumes = "application/json")
+    public ResponseEntity<ReponseModel> touTiaoAdv(HttpEntity<TouTiaoAdvRequestModel> model) {
+        try {
+            systemService.touTiaoAdv(model.getBody());
             return new ResponseEntity<>(ReponseModel.ok(), HttpStatus.OK);
         } catch (ApiException ex) {
             return new ResponseEntity<>(ReponseModel.error(ex.getStatus()), HttpStatus.OK);

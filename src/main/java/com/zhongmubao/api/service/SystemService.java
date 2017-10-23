@@ -1,5 +1,6 @@
 package com.zhongmubao.api.service;
 
+import com.zhongmubao.api.dto.Request.TouTiaoAdvRequestModel;
 import com.zhongmubao.api.dto.request.PageIndexRequestModel;
 import com.zhongmubao.api.dto.request.address.SystemDistrictRequestModel;
 import com.zhongmubao.api.dto.request.SendSmsCodeRequestModel;
@@ -12,4 +13,5 @@ public interface SystemService {
     PageNoticeModel pageNotice(PageIndexRequestModel requestModel) throws Exception;
     ListSystemDistrictModel getSystemDistrictList(SystemDistrictRequestModel requestModel) throws Exception;
     void sendSmsCode(Customer customer,SendSmsCodeRequestModel model) throws Exception;
+    void touTiaoAdv(TouTiaoAdvRequestModel model) throws Exception;
 }

@@ -24,13 +24,13 @@
 //            isDefault:0
 //        };
 
-        var data = {id: 1665};
+        var data = {"pageIndex":1,"projectType":""};
         console.info(JSON.stringify(data));
 //        var saveData ={"USER_ID":leader,"Users":users};
 
         $.ajax({
             type: "POST",
-            url: "/customer/sign",
+            url: "/sheep/mySheepFoldList",
             data: JSON.stringify(data),
             contentType: 'application/json;charset=UTF-8',
             dataType: "json",                                     //预期服务器返回类型

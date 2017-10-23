@@ -11,6 +11,7 @@ import com.zhongmubao.api.config.enmu.SystemPushType;
 import com.zhongmubao.api.dao.CustomerDao;
 import com.zhongmubao.api.dao.ExtNoticeDao;
 import com.zhongmubao.api.dao.SystemDistrictDao;
+import com.zhongmubao.api.dto.Request.TouTiaoAdvRequestModel;
 import com.zhongmubao.api.dto.request.address.SystemDistrictRequestModel;
 import com.zhongmubao.api.dto.request.PageIndexRequestModel;
 import com.zhongmubao.api.dto.request.SendSmsCodeRequestModel;
@@ -23,14 +24,17 @@ import com.zhongmubao.api.entity.ExtNotice;
 import com.zhongmubao.api.entity.SystemDistrict;
 import com.zhongmubao.api.exception.ApiException;
 import com.zhongmubao.api.mongo.dao.SystemSmsLogMongoDao;
+import com.zhongmubao.api.mongo.dao.TouTiaoAdvMongoDao;
 import com.zhongmubao.api.mongo.entity.SystemSmsLogMongo;
+import com.zhongmubao.api.mongo.entity.TouTiaoAdvMongo;
 import com.zhongmubao.api.service.BaseService;
 import com.zhongmubao.api.service.SystemService;
-import com.zhongmubao.api.util.DateUtil;
-import com.zhongmubao.api.util.MathUtil;
-import com.zhongmubao.api.util.StringUtil;
+import com.zhongmubao.api.util.*;
+import com.zhongmubao.api.util.common.TouTiaoReturnJson;
+import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.stereotype.Service;
 
+import java.net.URLEncoder;
 import java.util.Date;
 import java.util.List;
 import java.util.function.Predicate;
@@ -46,14 +50,16 @@ public class SystemServiceImpl extends BaseService implements SystemService {
     private final CustomerDao customerDao;
     private final RedisCache redisCache;
     private final SystemSmsLogMongoDao systemSmsLogMongoDao;
+    private final TouTiaoAdvMongoDao touTiaoAdvMongoDao;
 
-    public SystemServiceImpl(ExtNoticeDao extNoticeDao, SystemDistrictDao systemDistrictDao, CustomerDao customerDao, RedisCache redisCache, SystemSmsLogMongoDao systemSmsLogMongoDao) {
+    public SystemServiceImpl(ExtNoticeDao extNoticeDao, SystemDistrictDao systemDistrictDao, CustomerDao customerDao, RedisCache redisCache, SystemSmsLogMongoDao systemSmsLogMongoDao, TouTiaoAdvMongoDao touTiaoAdvMongoDao) {
 //        this.extNoticeMongoDao = extNoticeMongoDao;
         this.extNoticeDao = extNoticeDao;
         this.systemDistrictDao = systemDistrictDao;
         this.customerDao = customerDao;
         this.redisCache = redisCache;
         this.systemSmsLogMongoDao = systemSmsLogMongoDao;
+        this.touTiaoAdvMongoDao = touTiaoAdvMongoDao;
     }
 
     //region 系统通知
@@ -174,4 +180,33 @@ public class SystemServiceImpl extends BaseService implements SystemService {
         smsLog.setAsyncType(0);
         systemSmsLogMongoDao.add(smsLog);
     }
+
+
+    @Override
+    public void touTiaoAdv(TouTiaoAdvRequestModel model) throws Exception {
+        if(model==null){
+            throw new ApiException(ResultStatus.PARAMETER_MISSING);
+        }
+        TouTiaoAdvMongo touTiaoAdvMongo = touTiaoAdvMongoDao.getOrderBy(Criteria.where("imei").is(model.getImei()).and("mac").is(model.getMac()).and("os").is(model.getOs()));
+
+        if(touTiaoAdvMongo==null){
+            throw new ApiException("未找到该记录");
+        }
+
+        String conv_time = String.valueOf(System.currentTimeMillis());
+        //回传
+        String url = "http://ad.toutiao.com/track/activate/?callback="+ URLEncoder.encode(touTiaoAdvMongo.getCallback(),"UTF-8")+"&muid="+touTiaoAdvMongo.getImei()+touTiaoAdvMongo.getMac()+"&os="+touTiaoAdvMongo.getOs()+"&source=TD&conv_time=" + conv_time +"&event_type=0";
+        String returnStr = HttpUtil.get(url);
+        try {
+            TouTiaoReturnJson touTiaoReturnJson = SerializeUtil.deSerialize(returnStr,TouTiaoReturnJson.class);
+            if(touTiaoReturnJson.getCode()!=0){
+                throw new ApiException("回传失败:"+touTiaoReturnJson.getMsg());
+            }
+        }catch (Exception ex) {
+            throw new ApiException("回传失败");
+        }
+
+
+    }
+
 }
