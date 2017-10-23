@@ -1,4 +1,4 @@
-package com.zhongmubao.api.dto.response.sign.SignList;
+package com.zhongmubao.api.dto.response.sign.signList;
 
 public class PageSignGiftViewModel {
     public PageSignGiftViewModel() {

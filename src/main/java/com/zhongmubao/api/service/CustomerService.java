@@ -15,9 +15,9 @@ import com.zhongmubao.api.dto.response.notice.NoticeRemindModel;
 import com.zhongmubao.api.dto.response.notice.RemindNoticeCycleModel;
 import com.zhongmubao.api.dto.response.notice.RemindNoticeTypeModel;
 import com.zhongmubao.api.dto.response.sign.MyGiftCardModel;
-import com.zhongmubao.api.dto.response.sign.SignList.PageSignGiftModel;
+import com.zhongmubao.api.dto.response.sign.signList.PageSignGiftModel;
 import com.zhongmubao.api.dto.response.sign.SignModel;
-import com.zhongmubao.api.dto.response.sign.SignPackageList.PageSignPackageModel;
+import com.zhongmubao.api.dto.response.sign.signPackageList.PageSignPackageModel;
 import com.zhongmubao.api.dto.response.customer.WalletBalanceIncomeModel;
 import com.zhongmubao.api.entity.Customer;
 

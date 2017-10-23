@@ -1,4 +1,4 @@
-package com.zhongmubao.api.dto.response.sign.SignList;
+package com.zhongmubao.api.dto.response.sign.signList;
 
 import com.zhongmubao.api.dto.response.sign.SignGiftAddressViewModel;
 

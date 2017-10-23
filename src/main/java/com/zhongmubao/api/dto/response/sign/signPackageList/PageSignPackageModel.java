@@ -1,4 +1,4 @@
-package com.zhongmubao.api.dto.response.sign.SignPackageList;
+package com.zhongmubao.api.dto.response.sign.signPackageList;
 
 import java.util.List;
 
