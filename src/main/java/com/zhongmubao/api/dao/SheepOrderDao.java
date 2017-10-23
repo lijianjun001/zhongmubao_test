@@ -23,11 +23,11 @@ public interface SheepOrderDao {
     Page<SheepOrderInfo> pageSheepOrderByCustomerIdGroupByProjectId(@Param("customerId") int customerId, @Param("states") List<String> states);
     List<SheepOrderInfo> getOrderByCustomerIdAndProjectIdAndState(@Param("customerId") int customerId,@Param("projectId") int projectId, @Param("states") List<String> states);
 
-    List<MySheepFoldItem> mySheepFoldList(@Param("customerId") int customerId, @Param("states") List<String> states,@Param("pagestart") int pagestart,@Param("pageend") int pageend,@Param("type") String type);
+    List<MySheepFoldItem> mySheepFoldList(@Param("customerId") int customerId, @Param("states") List<String> states,@Param("type") String type);
     int mySheepFoldListCount(@Param("customerId") int customerId, @Param("states") List<String> states,@Param("type") String type);
     int mySheepFoldListSumCount(@Param("customerId") int customerId, @Param("states") List<String> states,@Param("type") String type);
     int mySheepFoldSheepTotalCount(@Param("customerId") int customerId, @Param("states") List<String> states);
-    List<MySheepFoldRedeemedItem> mySheepFoldSheepRedeemedList(@Param("customerId") int customerId, @Param("pagestart") int pagestart, @Param("pageend") int pageend, @Param("type") String type);
+    List<MySheepFoldRedeemedItem> mySheepFoldSheepRedeemedList(@Param("customerId") int customerId, @Param("type") String type);
     int mySheepFoldSheepRedeemedListCount(@Param("customerId") int customerId, @Param("type") String type);
 
 }

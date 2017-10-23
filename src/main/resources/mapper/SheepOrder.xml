@@ -205,7 +205,6 @@
 		</if>
 		AND o.Deleted=false AND o.Frozened=false AND p.Deleted=false
 		group by p.Id order by case when p.Type='03' or p.Type='06' then 2 else 1 end,o.Id desc
-		limit #{pagestart},#{pageend}
 	</select>
 	<select id="mySheepFoldListCount" resultType="int">
 		<!-- 具体的sql -->
@@ -303,7 +302,6 @@
 		</if>
 		and o.Deleted=false and o.Frozened=false and p.Deleted=false
 		group by p.Id order by case when p.Type='03' or p.Type='04' then 2 else 1 end,o.Id DESC
-		limit #{pagestart},#{pageend}
 	</select>
 	<select id="mySheepFoldSheepRedeemedListCount" resultType="int">
 		<!-- 具体的sql -->
