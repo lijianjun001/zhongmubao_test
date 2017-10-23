@@ -21,17 +21,17 @@ import com.zhongmubao.api.dto.response.customer.InBarSheepIncomeModel;
 import com.zhongmubao.api.dto.response.customer.InBarSheepIncomeViewModel;
 import com.zhongmubao.api.dto.response.address.CustomerAddressResponseModel;
 import com.zhongmubao.api.dto.response.address.CustomerAddressViewModel;
-import com.zhongmubao.api.dto.response.Ext.PageExtRedPackageModel;
-import com.zhongmubao.api.dto.response.Ext.PageExtRedPackageViewModel;
-import com.zhongmubao.api.dto.response.Notice.NoticeRemindModel;
-import com.zhongmubao.api.dto.response.Notice.NoticeRemindViewModel;
-import com.zhongmubao.api.dto.response.Notice.RemindNoticeCycleModel;
-import com.zhongmubao.api.dto.response.Notice.RemindNoticeTypeModel;
-import com.zhongmubao.api.dto.response.Sign.*;
-import com.zhongmubao.api.dto.response.Sign.SignList.PageSignGiftModel;
-import com.zhongmubao.api.dto.response.Sign.SignList.PageSignGiftViewModel;
-import com.zhongmubao.api.dto.response.Sign.SignPackageList.PageSignPackageModel;
-import com.zhongmubao.api.dto.response.Sign.SignPackageList.SignPackageViewModel;
+import com.zhongmubao.api.dto.response.ext.PageExtRedPackageModel;
+import com.zhongmubao.api.dto.response.ext.PageExtRedPackageViewModel;
+import com.zhongmubao.api.dto.response.notice.NoticeRemindModel;
+import com.zhongmubao.api.dto.response.notice.NoticeRemindViewModel;
+import com.zhongmubao.api.dto.response.notice.RemindNoticeCycleModel;
+import com.zhongmubao.api.dto.response.notice.RemindNoticeTypeModel;
+import com.zhongmubao.api.dto.response.sign.*;
+import com.zhongmubao.api.dto.response.sign.SignList.PageSignGiftModel;
+import com.zhongmubao.api.dto.response.sign.SignList.PageSignGiftViewModel;
+import com.zhongmubao.api.dto.response.sign.SignPackageList.PageSignPackageModel;
+import com.zhongmubao.api.dto.response.sign.SignPackageList.SignPackageViewModel;
 import com.zhongmubao.api.dto.response.customer.WalletBalanceIncomeModel;
 import com.zhongmubao.api.dto.SignGift;
 import com.zhongmubao.api.entity.*;
@@ -167,7 +167,7 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
                 boolean todayIsShare = extRedPackageDao.countExtRedPackageByCustomerIdAndBeginTimeAndEndTimeAndType(customerId, dayBegin, dayEnd, dayShareType) > 0;
 
                 if (todayIsShare) {
-                    return new com.zhongmubao.api.dto.response.Sign.SignModel(shareDayCount, "0.00", null, null, todayIsShare, false);
+                    return new com.zhongmubao.api.dto.response.sign.SignModel(shareDayCount, "0.00", null, null, todayIsShare, false);
                 }
 
                 //判断这个月分享了多少次

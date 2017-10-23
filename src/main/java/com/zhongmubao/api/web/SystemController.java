@@ -7,7 +7,7 @@ import com.zhongmubao.api.dto.request.PageIndexRequestModel;
 import com.zhongmubao.api.dto.request.address.SystemDistrictRequestModel;
 import com.zhongmubao.api.dto.response.address.ListSystemDistrictModel;
 import com.zhongmubao.api.dto.response.ReponseModel;
-import com.zhongmubao.api.dto.response.Notice.PageNoticeModel;
+import com.zhongmubao.api.dto.response.notice.PageNoticeModel;
 import com.zhongmubao.api.entity.Customer;
 import com.zhongmubao.api.exception.ApiException;
 import com.zhongmubao.api.service.SystemService;
