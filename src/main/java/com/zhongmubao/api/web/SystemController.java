@@ -93,10 +93,10 @@ public class SystemController {
     }
 
     /**
-     *
-     * @param model 手机号码
-     * @author 米立林 2017-10-09
-     * @return 成功or失败
+     * 头条广告
+     * @author xy
+     * @param model
+     * @return
      */
     @RequestMapping(value = "/touTiaoAdv", method = RequestMethod.POST, consumes = "application/json")
     public ResponseEntity<ReponseModel> touTiaoAdv(HttpEntity<TouTiaoAdvRequestModel> model) {

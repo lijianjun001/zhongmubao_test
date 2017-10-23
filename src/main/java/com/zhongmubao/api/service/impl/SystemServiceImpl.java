@@ -12,6 +12,7 @@ import com.zhongmubao.api.dao.CustomerDao;
 import com.zhongmubao.api.dao.ExtNoticeDao;
 import com.zhongmubao.api.dao.SystemDistrictDao;
 import com.zhongmubao.api.dto.Request.TouTiaoAdvRequestModel;
+import com.zhongmubao.api.dto.common.TouTiaoReturnJson;
 import com.zhongmubao.api.dto.request.address.SystemDistrictRequestModel;
 import com.zhongmubao.api.dto.request.PageIndexRequestModel;
 import com.zhongmubao.api.dto.request.SendSmsCodeRequestModel;
@@ -30,7 +31,6 @@ import com.zhongmubao.api.mongo.entity.TouTiaoAdvMongo;
 import com.zhongmubao.api.service.BaseService;
 import com.zhongmubao.api.service.SystemService;
 import com.zhongmubao.api.util.*;
-import com.zhongmubao.api.util.common.TouTiaoReturnJson;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.stereotype.Service;
 
@@ -181,7 +181,12 @@ public class SystemServiceImpl extends BaseService implements SystemService {
         systemSmsLogMongoDao.add(smsLog);
     }
 
-
+    /**
+     * 头条广告
+     * @author xy
+     * @param model
+     * @throws Exception
+     */
     @Override
     public void touTiaoAdv(TouTiaoAdvRequestModel model) throws Exception {
         if(model==null){
@@ -190,7 +195,7 @@ public class SystemServiceImpl extends BaseService implements SystemService {
         TouTiaoAdvMongo touTiaoAdvMongo = touTiaoAdvMongoDao.getOrderBy(Criteria.where("imei").is(model.getImei()).and("mac").is(model.getMac()).and("os").is(model.getOs()));
 
         if(touTiaoAdvMongo==null){
-            throw new ApiException("未找到该记录");
+            throw new ApiException(ResultStatus.DATA_QUERY_FAILED);
         }
 
         String conv_time = String.valueOf(System.currentTimeMillis());
@@ -200,10 +205,10 @@ public class SystemServiceImpl extends BaseService implements SystemService {
         try {
             TouTiaoReturnJson touTiaoReturnJson = SerializeUtil.deSerialize(returnStr,TouTiaoReturnJson.class);
             if(touTiaoReturnJson.getCode()!=0){
-                throw new ApiException("回传失败:"+touTiaoReturnJson.getMsg());
+                throw new ApiException(ResultStatus.TOUTIAO_CALL_FAILED);
             }
         }catch (Exception ex) {
-            throw new ApiException("回传失败");
+            throw new ApiException(ResultStatus.TOUTIAO_CALL_FAILED);
         }
 
 

@@ -1,4 +1,4 @@
-package com.zhongmubao.api.util.common;
+package com.zhongmubao.api.dto.common;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 

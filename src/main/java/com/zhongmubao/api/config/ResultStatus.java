@@ -21,7 +21,9 @@ public enum ResultStatus {
     SECRET_GIFT_NOT_EXIT(-1007, "神秘礼物不存在"),
     TELEPHONE_CARD_NOT_EXIT(-1008, "充值卡不存在或已使用"),
     MAX_MONTH_SHAY(-1009, "本月分享达到最大分享数,请下月再来"),
-    DEVICE_OFFLINE(-1010, "设备已离线");
+    DEVICE_OFFLINE(-1010, "设备已离线"),
+    DATA_QUERY_FAILED (-2000, "未查到该数据"),
+    TOUTIAO_CALL_FAILED(-3001, "回传失败");
 
     /**
      * 返回码
