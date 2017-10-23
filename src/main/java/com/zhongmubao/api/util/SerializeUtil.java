@@ -27,7 +27,9 @@ public class SerializeUtil {
         try {
             ObjectMapper mapper = new ObjectMapper();
             return mapper.readValue(jsonStr,_class);
-        }catch (Exception ex){}
+        }catch (Exception ex){
+            String str = ex.getMessage();
+        }
         return null;
     }
 }

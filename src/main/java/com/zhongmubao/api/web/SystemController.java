@@ -5,6 +5,7 @@ import com.zhongmubao.api.authorization.annotation.CurrentUser;
 import com.zhongmubao.api.dto.Request.SendSmsCodeRequestModel;
 import com.zhongmubao.api.dto.Request.PageIndexRequestModel;
 import com.zhongmubao.api.dto.Request.Address.SystemDistrictRequestModel;
+import com.zhongmubao.api.dto.Request.TouTiaoAdvRequestModel;
 import com.zhongmubao.api.dto.Response.Address.ListSystemDistrictModel;
 import com.zhongmubao.api.dto.Response.ReponseModel;
 import com.zhongmubao.api.dto.Response.Notice.PageNoticeModel;
@@ -85,5 +86,26 @@ public class SystemController {
             return new ResponseEntity<>(ReponseModel.error(ex, this.getClass()), HttpStatus.OK);
         }
     }
+
+    /**
+     *
+     * @param model 手机号码
+     * @author 米立林 2017-10-09
+     * @return 成功or失败
+     */
+    @RequestMapping(value = "/touTiaoAdv", method = RequestMethod.POST, consumes = "application/json")
+    public ResponseEntity<ReponseModel> touTiaoAdv(HttpEntity<TouTiaoAdvRequestModel> model) {
+        try {
+            systemService.touTiaoAdv(model.getBody());
+            return new ResponseEntity<>(ReponseModel.ok(), HttpStatus.OK);
+        } catch (ApiException ex) {
+            return new ResponseEntity<>(ReponseModel.error(ex.getStatus()), HttpStatus.OK);
+        } catch (Exception ex) {
+            return new ResponseEntity<>(ReponseModel.error(ex, this.getClass()), HttpStatus.OK);
+        }
+    }
+
+
+
 
 }
