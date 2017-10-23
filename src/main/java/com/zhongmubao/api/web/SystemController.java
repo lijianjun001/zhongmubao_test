@@ -2,7 +2,7 @@ package com.zhongmubao.api.web;
 
 import com.zhongmubao.api.authorization.annotation.Authorization;
 import com.zhongmubao.api.authorization.annotation.CurrentUser;
-import com.zhongmubao.api.dto.Request.TouTiaoAdvRequestModel;
+import com.zhongmubao.api.dto.request.TouTiaoAdvRequestModel;
 import com.zhongmubao.api.dto.request.SendSmsCodeRequestModel;
 import com.zhongmubao.api.dto.request.PageIndexRequestModel;
 import com.zhongmubao.api.dto.request.address.SystemDistrictRequestModel;

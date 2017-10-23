@@ -11,7 +11,7 @@ import com.zhongmubao.api.config.enmu.SystemPushType;
 import com.zhongmubao.api.dao.CustomerDao;
 import com.zhongmubao.api.dao.ExtNoticeDao;
 import com.zhongmubao.api.dao.SystemDistrictDao;
-import com.zhongmubao.api.dto.Request.TouTiaoAdvRequestModel;
+import com.zhongmubao.api.dto.request.TouTiaoAdvRequestModel;
 import com.zhongmubao.api.dto.common.TouTiaoReturnJson;
 import com.zhongmubao.api.dto.request.address.SystemDistrictRequestModel;
 import com.zhongmubao.api.dto.request.PageIndexRequestModel;

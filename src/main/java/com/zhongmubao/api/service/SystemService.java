@@ -1,6 +1,6 @@
 package com.zhongmubao.api.service;
 
-import com.zhongmubao.api.dto.Request.TouTiaoAdvRequestModel;
+import com.zhongmubao.api.dto.request.TouTiaoAdvRequestModel;
 import com.zhongmubao.api.dto.request.PageIndexRequestModel;
 import com.zhongmubao.api.dto.request.address.SystemDistrictRequestModel;
 import com.zhongmubao.api.dto.request.SendSmsCodeRequestModel;
