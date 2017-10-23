@@ -70,6 +70,14 @@ public class TouTiaoAdvMongo extends BaseModel {
         this.callback = callback;
     }
 
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
     public Date getCreated() {
         return created;
     }
@@ -86,6 +94,7 @@ public class TouTiaoAdvMongo extends BaseModel {
     public String os ;
     public String timestamp ;
     public String callback ;
+    public String status ;
     public Date created ;
 
 }

@@ -32,6 +32,8 @@ import com.zhongmubao.api.service.BaseService;
 import com.zhongmubao.api.service.SystemService;
 import com.zhongmubao.api.util.*;
 import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
 
 import java.net.URLEncoder;
@@ -192,12 +194,10 @@ public class SystemServiceImpl extends BaseService implements SystemService {
         if(model==null){
             throw new ApiException(ResultStatus.PARAMETER_MISSING);
         }
-        TouTiaoAdvMongo touTiaoAdvMongo = touTiaoAdvMongoDao.getOrderBy(Criteria.where("imei").is(model.getImei()).and("mac").is(model.getMac()).and("os").is(model.getOs()));
-
+        TouTiaoAdvMongo touTiaoAdvMongo = touTiaoAdvMongoDao.getOrderBy(Criteria.where("imei").is(model.getImei()).and("mac").is(model.getMac()).and("os").is(model.getOs()).and("status").is("00"));
         if(touTiaoAdvMongo==null){
             throw new ApiException(ResultStatus.DATA_QUERY_FAILED);
         }
-
         String conv_time = String.valueOf(System.currentTimeMillis());
         //回传
         String url = "http://ad.toutiao.com/track/activate/?callback="+ URLEncoder.encode(touTiaoAdvMongo.getCallback(),"UTF-8")+"&muid="+touTiaoAdvMongo.getImei()+touTiaoAdvMongo.getMac()+"&os="+touTiaoAdvMongo.getOs()+"&source=TD&conv_time=" + conv_time +"&event_type=0";
@@ -210,8 +210,7 @@ public class SystemServiceImpl extends BaseService implements SystemService {
         }catch (Exception ex) {
             throw new ApiException(ResultStatus.TOUTIAO_CALL_FAILED);
         }
-
-
+        touTiaoAdvMongoDao.updateFirst(new Query(Criteria.where("_id").is(touTiaoAdvMongo.id)),new Update().set("status","01"));
     }
 
 }
