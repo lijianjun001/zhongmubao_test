@@ -1,24 +1,24 @@
 package com.zhongmubao.api.service;
 
-import com.zhongmubao.api.dto.Request.Notify.NotifyRemindRequestModel;
-import com.zhongmubao.api.dto.Request.Notify.NotifyRemindSaveRequestModel;
-import com.zhongmubao.api.dto.Request.OnlyPrimaryIdRequestModel;
-import com.zhongmubao.api.dto.Request.*;
-import com.zhongmubao.api.dto.Request.Address.CustomerAddressRequestModel;
-import com.zhongmubao.api.dto.Request.Address.UpdateCustomerAddressRequestModel;
-import com.zhongmubao.api.dto.Request.customer.AutoRedeemRequestModel;
-import com.zhongmubao.api.dto.Request.customer.ResetPasswordRequestModel;
-import com.zhongmubao.api.dto.Response.customer.InBarSheepIncomeModel;
-import com.zhongmubao.api.dto.Response.Address.CustomerAddressResponseModel;
-import com.zhongmubao.api.dto.Response.Ext.PageExtRedPackageModel;
-import com.zhongmubao.api.dto.Response.Notice.NoticeRemindModel;
-import com.zhongmubao.api.dto.Response.Notice.RemindNoticeCycleModel;
-import com.zhongmubao.api.dto.Response.Notice.RemindNoticeTypeModel;
-import com.zhongmubao.api.dto.Response.Sign.MyGiftCardModel;
-import com.zhongmubao.api.dto.Response.Sign.SignList.PageSignGiftModel;
-import com.zhongmubao.api.dto.Response.Sign.SignModel;
-import com.zhongmubao.api.dto.Response.Sign.SignPackageList.PageSignPackageModel;
-import com.zhongmubao.api.dto.Response.customer.WalletBalanceIncomeModel;
+import com.zhongmubao.api.dto.request.notify.NotifyRemindRequestModel;
+import com.zhongmubao.api.dto.request.notify.NotifyRemindSaveRequestModel;
+import com.zhongmubao.api.dto.request.OnlyPrimaryIdRequestModel;
+import com.zhongmubao.api.dto.request.*;
+import com.zhongmubao.api.dto.request.address.CustomerAddressRequestModel;
+import com.zhongmubao.api.dto.request.address.UpdateCustomerAddressRequestModel;
+import com.zhongmubao.api.dto.request.customer.AutoRedeemRequestModel;
+import com.zhongmubao.api.dto.request.customer.ResetPasswordRequestModel;
+import com.zhongmubao.api.dto.response.customer.InBarSheepIncomeModel;
+import com.zhongmubao.api.dto.response.address.CustomerAddressResponseModel;
+import com.zhongmubao.api.dto.response.Ext.PageExtRedPackageModel;
+import com.zhongmubao.api.dto.response.Notice.NoticeRemindModel;
+import com.zhongmubao.api.dto.response.Notice.RemindNoticeCycleModel;
+import com.zhongmubao.api.dto.response.Notice.RemindNoticeTypeModel;
+import com.zhongmubao.api.dto.response.Sign.MyGiftCardModel;
+import com.zhongmubao.api.dto.response.Sign.SignList.PageSignGiftModel;
+import com.zhongmubao.api.dto.response.Sign.SignModel;
+import com.zhongmubao.api.dto.response.Sign.SignPackageList.PageSignPackageModel;
+import com.zhongmubao.api.dto.response.customer.WalletBalanceIncomeModel;
 import com.zhongmubao.api.entity.Customer;
 
 public interface CustomerService {
