@@ -65,6 +65,7 @@ public class SystemServiceImpl extends BaseService implements SystemService {
     }
 
     //region 系统通知
+
     /**
      * @param requestModel
      * @return 通知公告
@@ -156,7 +157,7 @@ public class SystemServiceImpl extends BaseService implements SystemService {
             throw new ApiException(ResultStatus.PARAMETER_ERROR);
         }
         // 2、根据类型获取短信验证码范文
-        SystemSmsLogMongo smsLog=new SystemSmsLogMongo();
+        SystemSmsLogMongo smsLog = new SystemSmsLogMongo();
         String title = "";
         String content = "";
         String code = Integer.toString(MathUtil.random(100000, 999999));
@@ -177,7 +178,7 @@ public class SystemServiceImpl extends BaseService implements SystemService {
         smsLog.setPhone(customer.getPhone());
         smsLog.setCode(code);
         smsLog.setMessage(content);
-        smsLog.setExpired(DateUtil.addMinute(mongoNow,30));
+        smsLog.setExpired(DateUtil.addMinute(mongoNow, 30));
         smsLog.setCreated(mongoNow);
         smsLog.setAsyncType(0);
         systemSmsLogMongoDao.add(smsLog);
@@ -185,46 +186,47 @@ public class SystemServiceImpl extends BaseService implements SystemService {
 
     /**
      * 头条广告
-     * @author xy
+     *
      * @param model
      * @throws Exception
+     * @author xy
      */
     @Override
     public void touTiaoAdv(TouTiaoAdvRequestModel model) throws Exception {
-        if(model==null){
+        if (null == model) {
             throw new ApiException(ResultStatus.PARAMETER_MISSING);
         }
-        if(null==model.getMac()){
+        if (null == model.getMac()) {
             throw new ApiException(ResultStatus.PARAMETER_MISSING);
         }
-        if(null==model.getImei()){
+        if (null == model.getImei()) {
             throw new ApiException(ResultStatus.PARAMETER_MISSING);
         }
-        if(null==model.getOs()){
+        if (null == model.getOs()) {
             throw new ApiException(ResultStatus.PARAMETER_MISSING);
         }
         //.and("mac").is(SecurityUtil.md5(model.getMac().replace(":","")).toLowerCase())
         //.orOperator(Criteria.where("mac").is(mac))
         String imei = SecurityUtil.md5(model.getImei()).toLowerCase();
-        String mac = SecurityUtil.md5(model.getMac().replace(":","")).toLowerCase();
+        String mac = SecurityUtil.md5(model.getMac().replace(":", "")).toLowerCase();
         TouTiaoAdvMongo touTiaoAdvMongo = touTiaoAdvMongoDao.getOrderBy(Criteria.where("imei").is(imei).and("os").is(model.getOs()).and("status").is("00"));
-        if(touTiaoAdvMongo==null){
+        if (touTiaoAdvMongo == null) {
             throw new ApiException(ResultStatus.DATA_QUERY_FAILED);
         }
 
         String conv_time = String.valueOf(System.currentTimeMillis());
         //回传
-        String url = "http://ad.toutiao.com/track/activate/?callback="+ URLEncoder.encode(touTiaoAdvMongo.getCallback(),"UTF-8")+"&muid="+touTiaoAdvMongo.getImei()+touTiaoAdvMongo.getMac()+"&os="+touTiaoAdvMongo.getOs()+"&source=TD&conv_time=" + conv_time +"&event_type=0";
+        String url = "http://ad.toutiao.com/track/activate/?callback=" + URLEncoder.encode(touTiaoAdvMongo.getCallback(), "UTF-8") + "&muid=" + touTiaoAdvMongo.getImei() + touTiaoAdvMongo.getMac() + "&os=" + touTiaoAdvMongo.getOs() + "&source=TD&conv_time=" + conv_time + "&event_type=0";
         String returnStr = HttpUtil.get(url);
         try {
-            TouTiaoReturnJson touTiaoReturnJson = SerializeUtil.deSerialize(returnStr,TouTiaoReturnJson.class);
-            if(touTiaoReturnJson.getCode()!=0){
+            TouTiaoReturnJson touTiaoReturnJson = SerializeUtil.deSerialize(returnStr, TouTiaoReturnJson.class);
+            if (touTiaoReturnJson.getCode() != 0) {
                 throw new ApiException(ResultStatus.TOUTIAO_CALL_FAILED);
             }
-        }catch (Exception ex) {
+        } catch (Exception ex) {
             throw new ApiException(ResultStatus.TOUTIAO_CALL_FAILED);
         }
-        touTiaoAdvMongoDao.updateMulti(new Query(Criteria.where("imei").is(touTiaoAdvMongo.getImei()).and("mac").is(touTiaoAdvMongo.getMac()).and("os").is(touTiaoAdvMongo.getOs())),new Update().set("status","01"));
+        touTiaoAdvMongoDao.updateMulti(new Query(Criteria.where("imei").is(touTiaoAdvMongo.getImei()).and("mac").is(touTiaoAdvMongo.getMac()).and("os").is(touTiaoAdvMongo.getOs())), new Update().set("status", "01"));
     }
 
 }
