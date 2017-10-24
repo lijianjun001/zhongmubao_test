@@ -309,14 +309,6 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
         return new PageSignPackageModel(pages, cardCount, list);
     }
 
-    /**
-     * 领取神秘卡
-     *
-     * @param customerId 用户id
-     * @param model      请求参数
-     * @throws Exception 异常
-     * @author 孙阿龙
-     */
     @Override
     public void recevieSecretGift(int customerId, RrcevieSecretGiftRequestModel model) throws Exception {
         if (null == model) {
@@ -346,14 +338,6 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
         activityRecordDao.insertExtActivityRecord(activityRecord);
     }
 
-    /**
-     * 领取话费充值卡
-     *
-     * @param customer 当前用户
-     * @param model    请求参数
-     * @throws Exception 异常
-     * @author 米立林 2017-10-10
-     */
     @Override
     public void receiveRechargeGift(Customer customer, ReceiveRechargeGiftRequestModel model) throws Exception {
         if (null == model) {
