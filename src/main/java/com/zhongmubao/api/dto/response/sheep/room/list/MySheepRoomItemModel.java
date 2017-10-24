@@ -34,20 +34,12 @@ public class MySheepRoomItemModel {
         this.title = title;
     }
 
-    public String getType() {
-        return type;
+    public String getSheepPhoto() {
+        return sheepPhoto;
     }
 
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public String getTypeImg() {
-        return typeImg;
-    }
-
-    public void setTypeImg(String typeImg) {
-        this.typeImg = typeImg;
+    public void setSheepPhoto(String sheepPhoto) {
+        this.sheepPhoto = sheepPhoto;
     }
 
     public int getCount() {
@@ -74,14 +66,6 @@ public class MySheepRoomItemModel {
         this.endTime = endTime;
     }
 
-    public String getState() {
-        return state;
-    }
-
-    public void setState(String state) {
-        this.state = state;
-    }
-
     public String getBreedProgress() {
         return breedProgress;
     }
@@ -98,14 +82,6 @@ public class MySheepRoomItemModel {
         this.breedProgressImg = breedProgressImg;
     }
 
-    public int getBreedProgressInt() {
-        return breedProgressInt;
-    }
-
-    public void setBreedProgressInt(int breedProgressInt) {
-        this.breedProgressInt = breedProgressInt;
-    }
-
     public String getVendor() {
         return vendor;
     }
@@ -114,35 +90,23 @@ public class MySheepRoomItemModel {
         this.vendor = vendor;
     }
 
-    public int getLeftDays() {
-        return leftDays;
+    public int getSurplusDay() {
+        return surplusDay;
     }
 
-    public void setLeftDays(int leftDays) {
-        this.leftDays = leftDays;
-    }
-
-    public int getPeriod() {
-        return period;
-    }
-
-    public void setPeriod(int period) {
-        this.period = period;
+    public void setSurplusDay(int surplusDay) {
+        this.surplusDay = surplusDay;
     }
 
     private int projectId;
     private int venderId;
     private String title;
-    private String type;
-    private String typeImg;
+    private String sheepPhoto;
     private int count;
     private String beginTime;
     private String endTime;
-    private String state;
     private String breedProgress;
     private String breedProgressImg;
-    private int breedProgressInt;
     private String vendor;
-    private int leftDays;
-    private int period;
+    private int surplusDay;
 }

@@ -4,7 +4,7 @@ package com.zhongmubao.api.dto.response.sheep.room.list;
 import java.util.List;
 
 /**
- * 我的羊圈
+ * 我的羊圈 列表
  * @author xy
  * @date 2017/10/24
  */
