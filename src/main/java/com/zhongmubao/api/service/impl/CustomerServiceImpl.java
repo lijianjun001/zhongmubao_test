@@ -96,7 +96,7 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
                 int monthMaxShare = Constants.MONTH_MAX_SHARE;
 
                 if (shareDayCount > monthMaxShare) {
-                    throw new ApiException("本月分享达到最大分享数,请下月再来");
+                    throw new ApiException(ResultStatus.MAX_MONTH_SHAY);
                 }
                 shareDayCount = shareDayCount + 1;
                 //endregion
