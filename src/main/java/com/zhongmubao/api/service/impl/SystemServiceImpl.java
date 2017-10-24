@@ -1,7 +1,7 @@
 package com.zhongmubao.api.service.impl;
 
 import com.zhongmubao.api.config.ResultStatus;
-import com.zhongmubao.api.dto.request.TouTiaoAdvRequestModel;
+import com.zhongmubao.api.dto.request.toutiaoadv.TouTiaoAdvRequestModel;
 import com.zhongmubao.api.exception.ApiException;
 import com.zhongmubao.api.mongo.dao.TouTiaoAdvMongoDao;
 import com.zhongmubao.api.mongo.entity.TouTiaoAdvMongo;
