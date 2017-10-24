@@ -27,7 +27,7 @@ public class TouTiaoAdvMongoDao implements BaseDao<TouTiaoAdvMongo> {
 
     @Override
     public void update(TouTiaoAdvMongo entity) throws Exception {
-
+        this.mongoTemplate.save(entity);
     }
 
     @Override
