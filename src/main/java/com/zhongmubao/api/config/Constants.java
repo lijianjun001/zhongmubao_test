@@ -3,8 +3,8 @@ package com.zhongmubao.api.config;
 import com.zhongmubao.api.config.enmu.SignGiftType;
 import com.zhongmubao.api.dto.SignGift;
 
-import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -107,7 +107,7 @@ public class Constants {
     /**
      * 赎回羊只
      */
-    public static final List<String> REDEMING = Arrays.asList("05");
+    public static final List<String> REDEMING = Collections.singletonList("05");
 
     /**
      * 在栏羊只赎回中羊只和已赎回羊只
