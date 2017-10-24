@@ -1,5 +1,10 @@
 package com.zhongmubao.api.config.enmu;
 
+/**
+ * 标的销售状态
+ *
+ * @author 孙阿龙
+ */
 public enum ProjectSaleState {
     /**
      * 抢羊

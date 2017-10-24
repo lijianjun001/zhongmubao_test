@@ -1,16 +1,17 @@
 package com.zhongmubao.api.dao;
 
 import com.zhongmubao.api.entity.ExtActivityRecord;
-import org.apache.ibatis.annotations.Param;
 
-import java.util.Date;
-import java.util.List;
-import java.math.BigDecimal;
-
+/**
+ * 礼物领取数据层
+ *
+ * @author 孙阿龙
+ */
 public interface ExtActivityRecordDao {
-   
-    ExtActivityRecord getExtActivityRecordrById(@Param("id") int id);
-    ExtActivityRecord getExtActivityRecordrByCustomerIdAndActivityId(@Param("customerId") int customerId,@Param("activityId") int activityId);
-    List<ExtActivityRecord> pagerExtActivityRecordList(@Param("offset") int offset, @Param("limit") int limit);
+	/**
+	 * 添加领取礼物
+	 * @param extActivityRecord 实体
+	 * @return 0 1
+	 */
 	int insertExtActivityRecord(ExtActivityRecord extActivityRecord);
 }

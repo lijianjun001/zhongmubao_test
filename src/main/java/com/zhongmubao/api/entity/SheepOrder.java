@@ -1,14 +1,18 @@
 package com.zhongmubao.api.entity;
 
 import java.util.Date;
-import java.util.List;
 import java.math.BigDecimal;
 
+/**
+ * 订单实体
+ *
+ * @author 孙阿龙
+ */
 public class SheepOrder {
-    
+
 	public SheepOrder() {
 
-    }
+	}
 
 	private int id;
 

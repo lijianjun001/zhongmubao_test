@@ -6,7 +6,8 @@ import org.springframework.data.mongodb.core.query.Query;
 import java.util.List;
 
 /**
- * Created by yadong.zhang on 2015/12/23.
+ * 基础操作mongod数据层
+ * @author 孙阿龙
  */
 public interface BaseDao<T extends BaseModel> {
 

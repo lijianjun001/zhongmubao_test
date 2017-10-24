@@ -1,5 +1,10 @@
 package com.zhongmubao.api.util;
 
+/**
+ * 浮点工具类
+ *
+ * @author 孙阿龙
+ */
 public class DoubleUtil {
     /**
      * 浮点精确小数点后N位

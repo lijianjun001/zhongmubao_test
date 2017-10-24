@@ -8,18 +8,22 @@ import java.io.OutputStream;
 import java.net.URL;
 import java.net.URLConnection;
 
+/**
+ * HTTP请求类
+ *
+ * @author 孙阿龙
+ */
 public class HttpUtil {
     /**
      * GET请求
-     *
-     * @param url     URL
+     * @param url URL
      * @param charset 响应Body编码
      * @return 响应内容
      * @throws IOException io异常
      * @author XXG
      */
     public static String get(String url, String charset) throws IOException {
-        OutputStream output = null;
+        //OutputStream output = null;
         InputStream input = null;
         URLConnection connection = new URL(url).openConnection();
         connection.setConnectTimeout(30000);
@@ -29,7 +33,7 @@ public class HttpUtil {
             return IOUtils.toString(input, charset);
         } finally {
             IOUtils.closeQuietly(input);
-            IOUtils.closeQuietly(output);
+            //IOUtils.closeQuietly(output);
         }
     }
 
@@ -53,14 +57,13 @@ public class HttpUtil {
      * @throws IOException io异常
      * @author XXG
      */
-    public static <T> T get(String url,Class<T> c) throws IOException {
+    public static <T> T get(String url, Class<T> c) throws IOException {
         String response = get(url, "UTF-8");
         return SerializeUtil.deSerialize(response, c);
     }
 
     /**
      * post方式提交字节数组
-     *
      * @param url       URL
      * @param byteArray 请求Body字节数组
      * @param charset   响应Body编码
@@ -68,7 +71,7 @@ public class HttpUtil {
      * @throws IOException io异常
      * @author XXG
      */
-    public static String post(String url, byte[] byteArray, String charset) throws IOException {
+    private static String post(String url, byte[] byteArray, String charset) throws IOException {
         OutputStream output = null;
         InputStream input = null;
         URLConnection connection = new URL(url).openConnection();
@@ -99,7 +102,7 @@ public class HttpUtil {
      * @throws IOException io异常
      * @author XXG
      */
-    public static String post(String url, String postString, String requestCharset, String responseCharset) throws IOException {
+    private static String post(String url, String postString, String requestCharset, String responseCharset) throws IOException {
         return post(url, postString.getBytes(requestCharset), responseCharset);
     }
 

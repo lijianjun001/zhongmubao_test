@@ -6,6 +6,11 @@ import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.util.Date;
 
+/**
+ * 分享卡
+ *
+ * @author 孙阿龙
+ */
 @Document(collection = "ShareCardMongo")
 public class ShareCardMongo extends BaseModel {
 

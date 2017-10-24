@@ -1,19 +1,21 @@
 package com.zhongmubao.api.mongo.dao;
 
-import com.mongodb.DBObject;
 import com.zhongmubao.api.mongo.dao.base.BaseDao;
 import com.zhongmubao.api.mongo.entity.SystemTokenMongo;
 import com.zhongmubao.api.mongo.entity.base.PageModel;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.query.BasicQuery;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+/**
+ * 系统Token数据层
+ *
+ * @author 孙阿龙
+ */
 @Repository
 public class SystemTokenMongoDao implements BaseDao<SystemTokenMongo> {
 
@@ -52,7 +54,7 @@ public class SystemTokenMongoDao implements BaseDao<SystemTokenMongo> {
 
     @Override
     public void delete(SystemTokenMongo entity) throws Exception {
-         mongoTemplate.remove(entity);
+        mongoTemplate.remove(entity);
     }
 
     @Override

@@ -2,21 +2,25 @@ package com.zhongmubao.api.util;
 
 import java.security.MessageDigest;
 
+/**
+ * 安全类
+ *
+ * @author 孙阿龙
+ */
 public class SecurityUtil {
     /**
      * 生成md5
-     *
-     * @param message
-     * @return
+     * @param str 要加密的字符串
+     * @return 被MD5的字符串
      */
-    public static String md5(String message) {
+    public static String md5(String str) {
         String md5str = "";
         try {
             // 1 创建一个提供信息摘要算法的对象，初始化为md5算法对象
             MessageDigest md = MessageDigest.getInstance("MD5");
 
             // 2 将消息变成byte数组
-            byte[] input = message.getBytes();
+            byte[] input = str.getBytes();
 
             // 3 计算后获得字节数组,这就是那128位了
             byte[] buff = md.digest(input);
@@ -32,12 +36,11 @@ public class SecurityUtil {
 
     /**
      * 二进制转十六进制
-     *
-     * @param bytes
-     * @return
+     * @param bytes 字节
+     * @return 字符串
      */
-    public static String bytesToHex(byte[] bytes) {
-        StringBuffer md5str = new StringBuffer();
+    private static String bytesToHex(byte[] bytes) {
+        StringBuilder md5str = new StringBuilder();
         // 把数组每一字节换成16进制连成md5字符串
         int digital;
         for (int i = 0; i < bytes.length; i++) {

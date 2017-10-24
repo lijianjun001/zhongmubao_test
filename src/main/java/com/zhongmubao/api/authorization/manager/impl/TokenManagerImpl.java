@@ -13,6 +13,7 @@ import java.util.UUID;
 
 /**
  * 通过Redis存储和验证token的实现类
+ * @author 孙阿龙
  * @see com.zhongmubao.api.authorization.manager.TokenManager
  */
 @Component
@@ -29,12 +30,12 @@ public class TokenManagerImpl implements TokenManager {
 
         if(systemToken==null){
             systemToken=new SystemTokenMongo();
-            systemToken.created = now;
-            systemToken.customerId = customerId;
-            systemToken.platform = platform;
+            systemToken.setCreated(now);
+            systemToken.setCustomerId(customerId);
+            systemToken.setPlatform(platform);
         }
-        systemToken.token = token;
-        systemToken.expired = DateUtil.addDay(now,7);
+        systemToken.setToken(token);
+        systemToken.setExpired(DateUtil.addDay(now, 7));
         systemTokenMongoDao.save(systemToken);
 
         return new TokenModel(customerId,token);
@@ -55,10 +56,10 @@ public class TokenManagerImpl implements TokenManager {
                 return null;
             }
             Date now = new Date();
-            if(systemToken.expired.getTime()<now.getTime()){
+            if (systemToken.getExpired().getTime() < now.getTime()) {
                 return null;
             }
-            return new TokenModel(systemToken.customerId,systemToken.token);
+            return new TokenModel(systemToken.getCustomerId(), systemToken.getToken());
         }catch (Exception ex){
             return null;
         }

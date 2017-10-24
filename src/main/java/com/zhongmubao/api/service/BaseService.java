@@ -1,8 +1,6 @@
 package com.zhongmubao.api.service;
 
-import com.zhongmubao.api.config.Constants;
 import com.zhongmubao.api.config.WxTemplate;
-import com.zhongmubao.api.config.enmu.SheepProjectPeriod;
 import com.zhongmubao.api.config.enmu.SystemPushType;
 import com.zhongmubao.api.dao.ExtRedPackageDao;
 import com.zhongmubao.api.entity.Customer;
@@ -11,12 +9,16 @@ import com.zhongmubao.api.mongo.dao.SystemPushMongoDao;
 import com.zhongmubao.api.mongo.entity.SystemPushMongo;
 import com.zhongmubao.api.util.DateUtil;
 import com.zhongmubao.api.util.DoubleUtil;
-import com.zhongmubao.api.util.MathUtil;
 import com.zhongmubao.api.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Date;
 
+/**
+ * 基础服务
+ *
+ * @author 孙阿龙
+ */
 public class BaseService {
     @Autowired
     private ExtRedPackageDao extRedPackageDao;
@@ -54,7 +56,7 @@ public class BaseService {
 
     /**
      * 推送内容统一调用
-     *
+     * @author 孙阿龙
      * @param customer 客户
      * @param title    标题
      * @param content  内容
@@ -66,42 +68,12 @@ public class BaseService {
             pushMongo.setCustomerId(customer.getId());
             pushMongo.setTitle(title);
             pushMongo.setContent(content);
-            pushMongo.setStatus("01"); //未推送
+            /* 未推送 */
+            pushMongo.setStatus("01");
             pushMongo.setType(type.getName());
             pushMongo.setCreateTime(DateUtil.formatMongo(new Date()));
             systemPushMongoDao.add(pushMongo);
-        } catch (Exception ex) {
+        } catch (Exception ignore) {
         }
-    }
-
-    /**
-     * 计算羊只利率
-     * @param price 羊只单价
-     * @param rate 比率
-     * @param period 周期
-     * @return
-     * @author 米立林
-     */
-    public double calcProfitEx(double price, double rate, int period) {
-        if (period == SheepProjectPeriod.PERIOD_120.getName() && rate == 13.50) {
-            return Math.ceil(price * rate / 100 * period / 365);
-        } else {
-            return (price * rate / 100 * period / 365);
-        }
-    }
-
-    /**
-     * 羊耳标Photo
-     * @param photo SheepPhoto url
-     * @return 校验后的完整地址
-     */
-    protected String formatPhoto(String photo)
-    {
-        if (photo.toUpperCase().startsWith("HTTP"))
-        {
-            return photo;
-        }
-
-        return String.format("{0}{1}", Constants.UPLOAD_ADDRESS, photo);
     }
 }

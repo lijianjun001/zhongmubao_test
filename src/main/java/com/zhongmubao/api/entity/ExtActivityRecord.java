@@ -4,11 +4,16 @@ import java.util.Date;
 import java.util.List;
 import java.math.BigDecimal;
 
+/**
+ * 礼物领取实体
+ *
+ * @author 孙阿龙
+ */
 public class ExtActivityRecord {
-    
+
 	public ExtActivityRecord() {
 
-    }
+	}
 
 	private int id;
 

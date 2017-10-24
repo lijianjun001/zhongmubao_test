@@ -4,11 +4,16 @@ import java.util.Date;
 import java.util.List;
 import java.math.BigDecimal;
 
+/**
+ * 客户地址实体
+ *
+ * @author 孙阿龙
+ */
 public class CustomerAddress {
-    
+
 	public CustomerAddress() {
 
-    }
+	}
 
 	public CustomerAddress(int customerId, String provinceCode, String provinceName, String cityCode, String cityName, String countyCode, String countyName, String address, String name, String phone, boolean isDefault, boolean deleted, Date created) {
 		this.customerId = customerId;

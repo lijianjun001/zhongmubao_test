@@ -1,5 +1,10 @@
 package com.zhongmubao.api.config.enmu;
 
+/**
+ * 标类型
+ *
+ * @author 孙阿龙
+ */
 public enum ProjectType {
     /**
      * 普通

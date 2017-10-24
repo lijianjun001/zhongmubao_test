@@ -4,22 +4,22 @@ import com.zhongmubao.api.config.Constants;
 
 import java.util.List;
 
+/**
+ * 分页模型
+ *
+ * @param <T> 对象
+ * @author 孙阿龙
+ */
 public class PageModel<T> {
-    //结果集
     private List<T> datas;
-    //查询记录数
     private int rowCount;
-    //每页多少条数据
     private int pageSize = Constants.PAGE_SIZE;
-    //第几页
     private int pageNo = 1;
-    //跳过几条数
     private int skip = 0;
 
     /**
      * 总页数
-     *
-     * @return
+     * @return 总页码
      */
     public int getTotalPages() {
         return (rowCount + pageSize - 1) / pageSize;

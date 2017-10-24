@@ -1,5 +1,10 @@
 package com.zhongmubao.api.dto.request;
 
+/**
+ * TouTiaoAdvRequestModel
+ *
+ * @author xy
+ */
 public class TouTiaoAdvRequestModel {
 
     public String getMac() {

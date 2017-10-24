@@ -1,17 +1,19 @@
 package com.zhongmubao.api.service;
 
 import com.zhongmubao.api.dto.request.TouTiaoAdvRequestModel;
-import com.zhongmubao.api.dto.request.PageIndexRequestModel;
-import com.zhongmubao.api.dto.request.address.SystemDistrictRequestModel;
-import com.zhongmubao.api.dto.request.SendSmsCodeRequestModel;
-import com.zhongmubao.api.dto.response.address.ListSystemDistrictModel;
-import com.zhongmubao.api.dto.response.notice.PageNoticeModel;
-import com.zhongmubao.api.entity.Customer;
 
+/**
+ * 系统服务
+ *
+ * @author 孙阿龙
+ */
 public interface SystemService {
 
-    PageNoticeModel pageNotice(PageIndexRequestModel requestModel) throws Exception;
-    ListSystemDistrictModel getSystemDistrictList(SystemDistrictRequestModel requestModel) throws Exception;
-    void sendSmsCode(Customer customer,SendSmsCodeRequestModel model) throws Exception;
+    /**
+     * 头条广告
+     * @author xy
+     * @param model 请求model
+     * @throws Exception 错误信息
+     */
     void touTiaoAdv(TouTiaoAdvRequestModel model) throws Exception;
 }

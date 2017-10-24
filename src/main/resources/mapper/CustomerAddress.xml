@@ -3,20 +3,7 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.zhongmubao.api.dao.CustomerAddressDao">
-    <!-- 目的：为dao接口方法提供sql语句配置 -->
-
-    <select id="getCustomerAddressById" resultType="CustomerAddress">
-        <!-- 具体的sql -->
-        SELECT
-        *
-        FROM
-        CustomerAddress
-        WHERE
-        id = #{id} limit 1
-    </select>
-
     <select id="getCustomerAddressByCustomerId" resultType="CustomerAddress">
-        <!-- 具体的sql -->
         SELECT
         *
         FROM
@@ -24,105 +11,4 @@
         WHERE
         customerId = #{customerId} and deleted = 0 order by id desc limit 1
     </select>
-
-    <select id="pagerCustomerAddressList" resultType="CustomerAddress">
-        SELECT
-        *
-        FROM
-        CustomerAddress
-        ORDER BY
-        id
-        LIMIT #{offset}, #{limit}
-    </select>
-
-    <insert id="insertCustomerAddress">
-        <!-- ignore 主键冲突，报错 -->
-        INSERT ignore INTO CustomerAddress (
-        CustomerId,
-        ProvinceCode,
-        ProvinceName,
-        CityCode,
-        CityName,
-        CountyCode,
-        CountyName,
-        Address,
-        Name,
-        Phone,
-        IsDefault,
-        Deleted,
-        Created,
-        Modified
-        )
-        VALUES (
-        #{customerId},
-        #{provinceCode},
-        #{provinceName},
-        #{cityCode},
-        #{cityName},
-        #{countyCode},
-        #{countyName},
-        #{address},
-        #{name},
-        #{phone},
-        #{isDefault},
-        #{deleted},
-        #{created},
-        #{modified}
-        )
-    </insert>
-
-    <delete id="deleteCustomerAddress">
-        <!-- 具体的sql——真实删除 -->
-        DELETE
-        FROM
-        CustomerAddress
-        WHERE
-        id = #{id}
-        AND
-        CustomerId= #{customerId}
-    </delete>
-
-    <update id="logicDeleteByIdAndCustomerId">
-        <!-- 具体的sql——逻辑删除 -->
-        UPDATE
-        CustomerAddress
-        SET
-        Deleted=1
-        WHERE
-        id = #{id}
-        AND
-        CustomerId= #{customerId}
-    </update>
-
-    <update id="updateInfoByIdAndCustomerId">
-        <!-- 具体的sql——更新收货地址 -->
-        UPDATE
-        CustomerAddress
-        SET
-        ProvinceCode=#{provinceCode},
-        ProvinceName= #{provinceName},
-        CityCode=#{cityCode},
-        CityName=#{cityName},
-        CountyCode=#{countyCode},
-        CountyName= #{countyName},
-        Address=#{address},
-        `Name`=#{name},
-        Phone=#{phone},
-        Modified=#{modified}
-        WHERE
-        id = #{id}
-        AND
-        CustomerId= #{customerId}
-    </update>
-
-    <select id="getCustomerAddressListByCustomerId" resultType="CustomerAddress">
-        <!-- 具体的sql -->
-        SELECT
-        *
-        FROM
-        CustomerAddress
-        WHERE
-        customerId = #{customerId} and deleted = 0
-    </select>
-
 </mapper>

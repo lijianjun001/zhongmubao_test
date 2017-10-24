@@ -2,6 +2,11 @@ package com.zhongmubao.api.dto;
 
 import com.zhongmubao.api.config.enmu.SignGiftType;
 
+/**
+ * 签到礼物
+ *
+ * @author 孙阿龙
+ */
 public class SignGift {
     public SignGift(int id, String title, int count, SignGiftType type) {
         this.id = id;

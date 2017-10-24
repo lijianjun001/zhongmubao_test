@@ -3,22 +3,17 @@ package com.zhongmubao.api.dao;
 import com.zhongmubao.api.entity.CustomerAddress;
 import org.apache.ibatis.annotations.Param;
 
-import java.util.Date;
-import java.util.List;
-import java.math.BigDecimal;
-
+/**
+ * 客户地址数据层
+ *
+ * @author 孙阿龙
+ */
 public interface CustomerAddressDao {
 
-    CustomerAddress getCustomerAddressrById(@Param("id") int id);
-    List<CustomerAddress> pagerCustomerAddressList(@Param("offset") int offset, @Param("limit") int limit);
-	int insertCustomerAddress(CustomerAddress customerAddress);
+    /**
+     * 根据用户id获取客户地址
+     * @param customerId 用户id
+     * @return 客户地址
+     */
     CustomerAddress getCustomerAddressByCustomerId(@Param("customerId") int customerId);
-    int deleteCustomerAddress(@Param("customerId") int customerId,@Param("id") int id);
-    int logicDeleteByIdAndCustomerId(@Param("customerId") int customerId, @Param("id") int id);
-    int updateCustomerAddressInfo(@Param("customerId") int customerId, @Param("id") int id, @Param("provinceCode") String provinceCode, @Param("provinceName") String provinceName,
-                                  @Param("cityCode") String cityCode, @Param("cityName") String cityName, @Param("countyCode") String countyCode,
-                                  @Param("countyName") String countyName, @Param("address") String address, @Param("name") String name,
-                                  @Param("phone") String phone, @Param("modified") String modified);
-    List<CustomerAddress> getCustomerAddressListByCustomerId(@Param("customerId") int customerId);
-
 }

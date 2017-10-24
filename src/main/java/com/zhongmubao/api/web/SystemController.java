@@ -1,15 +1,7 @@
 package com.zhongmubao.api.web;
 
-import com.zhongmubao.api.authorization.annotation.Authorization;
-import com.zhongmubao.api.authorization.annotation.CurrentUser;
 import com.zhongmubao.api.dto.request.TouTiaoAdvRequestModel;
-import com.zhongmubao.api.dto.request.SendSmsCodeRequestModel;
-import com.zhongmubao.api.dto.request.PageIndexRequestModel;
-import com.zhongmubao.api.dto.request.address.SystemDistrictRequestModel;
-import com.zhongmubao.api.dto.response.address.ListSystemDistrictModel;
 import com.zhongmubao.api.dto.response.ReponseModel;
-import com.zhongmubao.api.dto.response.notice.PageNoticeModel;
-import com.zhongmubao.api.entity.Customer;
 import com.zhongmubao.api.exception.ApiException;
 import com.zhongmubao.api.service.SystemService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 /**
  * 系统控制器
- *
  * @author 孙阿龙
  */
 @RestController
@@ -36,67 +27,10 @@ public class SystemController {
     }
 
     /**
-     * 通知公告列表
-     * @param model 参数对象
-     * @author 米立林
-     * @return
-     */
-    @RequestMapping(value = "/pageNotice", method = RequestMethod.POST, consumes = "application/json")
-    public ResponseEntity<ReponseModel> pageNotice(HttpEntity<PageIndexRequestModel> model) {
-        try {
-            PageNoticeModel pageNoticeModel = systemService.pageNotice(model.getBody());
-            return new ResponseEntity<>(ReponseModel.ok(pageNoticeModel), HttpStatus.OK);
-        } catch (ApiException ex) {
-            return new ResponseEntity<>(ReponseModel.error(ex.getStatus()), HttpStatus.OK);
-        } catch (Exception ex) {
-            return new ResponseEntity<>(ReponseModel.error(ex, this.getClass()), HttpStatus.OK);
-        }
-    }
-
-    /**
-     * 获取省市区列表ByParentCode
-     * 省份列表 parentCode不传或传空值
-     * @param model 给参数parentCode赋值
-     * @author 米立林
-     * @return 省/市/区集合
-     */
-    @RequestMapping(value = "/getSystemDistrict", method = RequestMethod.POST, consumes = "application/json")
-    public ResponseEntity<ReponseModel> getSystemDistrict(HttpEntity<SystemDistrictRequestModel> model) {
-        try {
-
-            ListSystemDistrictModel listSystemDistrictModel = systemService.getSystemDistrictList(model.getBody());
-            return new ResponseEntity<>(ReponseModel.ok(listSystemDistrictModel), HttpStatus.OK);
-        } catch (ApiException ex) {
-            return new ResponseEntity<>(ReponseModel.error(ex.getStatus()), HttpStatus.OK);
-        } catch (Exception ex) {
-            return new ResponseEntity<>(ReponseModel.error(ex, this.getClass()), HttpStatus.OK);
-        }
-    }
-
-    /**
-     * 发送验证码
-     * @param model 手机号码
-     * @author 米立林 2017-10-09
-     * @return 成功or失败
-     */
-    @RequestMapping(value = "/sendSmsCode", method = RequestMethod.POST, consumes = "application/json")
-    @Authorization
-    public ResponseEntity<ReponseModel> sendSmsCode(@CurrentUser Customer customer, HttpEntity<SendSmsCodeRequestModel> model) {
-        try {
-            systemService.sendSmsCode(customer,model.getBody());
-            return new ResponseEntity<>(ReponseModel.ok(), HttpStatus.OK);
-        } catch (ApiException ex) {
-            return new ResponseEntity<>(ReponseModel.error(ex.getStatus()), HttpStatus.OK);
-        } catch (Exception ex) {
-            return new ResponseEntity<>(ReponseModel.error(ex, this.getClass()), HttpStatus.OK);
-        }
-    }
-
-    /**
      * 头条广告
      * @author xy
-     * @param model
-     * @return
+     * @param model 请求实体
+     * @return TouTiaoAdvRequestModel
      */
     @RequestMapping(value = "/touTiaoAdv", method = RequestMethod.POST, consumes = "application/json")
     public ResponseEntity<ReponseModel> touTiaoAdv(HttpEntity<TouTiaoAdvRequestModel> model) {
@@ -109,5 +43,4 @@ public class SystemController {
             return new ResponseEntity<>(ReponseModel.error(ex, this.getClass()), HttpStatus.OK);
         }
     }
-
 }

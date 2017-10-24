@@ -1,5 +1,10 @@
 package com.zhongmubao.api.config.enmu;
 
+/**
+ * 活动
+ *
+ * @author 孙阿龙
+ */
 public enum Activity {
     /**
      * 神秘礼物

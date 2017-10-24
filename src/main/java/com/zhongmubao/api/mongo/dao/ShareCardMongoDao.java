@@ -12,6 +12,11 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+/**
+ * 分享卡数据层
+ *
+ * @author 孙阿龙
+ */
 @Repository
 public class ShareCardMongoDao implements BaseDao<ShareCardMongo> {
 

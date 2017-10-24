@@ -1,5 +1,10 @@
 package com.zhongmubao.api.config.enmu;
 
+/**
+ * 卡状态
+ *
+ * @author 孙阿龙
+ */
 public enum ShareCardState {
     /**
      * 未领取

@@ -4,11 +4,16 @@ import java.util.Date;
 import java.util.List;
 import java.math.BigDecimal;
 
+/**
+ * 红包实体
+ *
+ * @author 孙阿龙
+ */
 public class ExtRedPackage {
-    
+
 	public ExtRedPackage() {
 
-    }
+	}
 
 	private int id;
 

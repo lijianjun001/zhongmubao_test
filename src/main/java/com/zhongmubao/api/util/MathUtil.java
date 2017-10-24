@@ -2,6 +2,11 @@ package com.zhongmubao.api.util;
 
 import java.util.Random;
 
+/**
+ * 随机数
+ *
+ * @author 孙阿龙
+ */
 public class MathUtil {
     /**
      * 生成一定范围的随机数

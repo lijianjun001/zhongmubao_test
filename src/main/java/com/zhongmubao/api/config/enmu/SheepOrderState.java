@@ -1,5 +1,10 @@
 package com.zhongmubao.api.config.enmu;
 
+/**
+ * 订单状态
+ *
+ * @author 孙阿龙
+ */
 public enum  SheepOrderState {
     /**
      * 00 未付款

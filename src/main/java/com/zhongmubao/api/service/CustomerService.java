@@ -1,76 +1,89 @@
 package com.zhongmubao.api.service;
 
-import com.zhongmubao.api.dto.request.notify.NotifyRemindRequestModel;
-import com.zhongmubao.api.dto.request.notify.NotifyRemindSaveRequestModel;
-import com.zhongmubao.api.dto.request.OnlyPrimaryIdRequestModel;
-import com.zhongmubao.api.dto.request.*;
-import com.zhongmubao.api.dto.request.address.CustomerAddressRequestModel;
-import com.zhongmubao.api.dto.request.address.UpdateCustomerAddressRequestModel;
-import com.zhongmubao.api.dto.request.customer.AutoRedeemRequestModel;
-import com.zhongmubao.api.dto.request.customer.ResetPasswordRequestModel;
-import com.zhongmubao.api.dto.response.customer.InBarSheepIncomeModel;
-import com.zhongmubao.api.dto.response.address.CustomerAddressResponseModel;
-import com.zhongmubao.api.dto.response.ext.PageExtRedPackageModel;
-import com.zhongmubao.api.dto.response.notice.NoticeRemindModel;
-import com.zhongmubao.api.dto.response.notice.RemindNoticeCycleModel;
-import com.zhongmubao.api.dto.response.notice.RemindNoticeTypeModel;
+import com.zhongmubao.api.dto.request.sign.*;
 import com.zhongmubao.api.dto.response.sign.MyGiftCardModel;
 import com.zhongmubao.api.dto.response.sign.signList.PageSignGiftModel;
 import com.zhongmubao.api.dto.response.sign.SignModel;
 import com.zhongmubao.api.dto.response.sign.signPackageList.PageSignPackageModel;
-import com.zhongmubao.api.dto.response.customer.WalletBalanceIncomeModel;
 import com.zhongmubao.api.entity.Customer;
 
+/**
+ * 客户服务
+ *
+ * @author 孙阿龙
+ */
 public interface CustomerService {
 
-    String login(String account, String password, String platform) throws Exception;
-
+    /**
+     * 签到
+     * @author 孙阿龙
+     * @param customer 客户
+     * @return SignModel
+     * @throws Exception 异常
+     */
     SignModel sign(Customer customer) throws Exception;
 
+    /**
+     * 礼物分页
+     * @author 孙阿龙
+     * @param customer 客户
+     * @param model 请求model
+     * @return PageSignGiftModel
+     * @throws Exception 异常
+     */
     PageSignGiftModel pageGift(Customer customer, PageSignGiftRequestModel model) throws Exception;
 
+    /**
+     * 我的卡
+     * @author 孙阿龙
+     * @param customerId 客户id
+     * @return MyGiftCardModel
+     * @throws Exception 异常
+     */
     MyGiftCardModel myGiftCard(int customerId) throws Exception;
 
+    /**
+     * 使用合并卡
+     * @author 孙阿龙
+     * @param customer 客户
+     * @param model 请求model
+     * @throws Exception 异常
+     */
     void megreCard(Customer customer, MegreCardRequestModel model) throws Exception;
 
+    /**
+     * 使用延期卡
+     * @author 孙阿龙
+     * @param customerId 客户id
+     * @param model 请求model
+     * @throws Exception 异常
+     */
     void delayedCard(int customerId, DelayedCardRequestModel model) throws Exception;
 
+    /**
+     * 签到红包分页
+     * @author 孙阿龙
+     * @param customerId 客户id
+     * @param model 请求model
+     * @return PageSignPackageModel
+     */
     PageSignPackageModel pageSignPackage(int customerId, PageSignPackageRequestModel model);
 
+    /**
+     * 领取神秘礼物
+     * @author 孙阿龙
+     * @param customerId 客户
+     * @param request 请求model
+     * @throws Exception 异常
+     */
     void recevieSecretGift(int customerId, RrcevieSecretGiftRequestModel request)throws Exception;
 
-    PageExtRedPackageModel pageExtRedPackage(int customerId, PageExtRedPackageRequestModel model) throws Exception;
-
-    int addCustomerAddress(int customerId, CustomerAddressRequestModel model) throws Exception;
-
-    int deleteCustomerAddress(int customerId, OnlyPrimaryIdRequestModel model) throws Exception;
-
-    int updateCustomerAddress(int customerId, UpdateCustomerAddressRequestModel model) throws Exception;
-
-    CustomerAddressResponseModel getCustomerAddress(int customerId, OnlyCustomerIdRequestModel model) throws Exception;
-
-    void resetPassword(int customerId, ResetPasswordRequestModel model) throws Exception;
-
-    void resetRedeemPassword(int customerId, ResetPasswordRequestModel model) throws Exception;
-
-    boolean autoRedeemAmount(Customer customer, AutoRedeemRequestModel model) throws Exception;
-
+    /**
+     * 领取话费礼物
+     * @author 孙阿龙
+     * @param customer 客户
+     * @param model 请求model
+     * @throws Exception 异常
+     */
     void receiveRechargeGift(Customer customer, ReceiveRechargeGiftRequestModel model) throws Exception;
-
-    NoticeRemindModel buySheepRemindIndex(int customerId) throws Exception;
-
-    RemindNoticeTypeModel buySheepRemindNotifyType(int customerId) throws Exception;
-
-    RemindNoticeCycleModel buySheepRemindNotifyCycle(int customerId) throws Exception;
-
-    void buySheepRemindNotifySave(int customerId, NotifyRemindSaveRequestModel model) throws Exception;
-
-    void buySheepRemindNotifyOnOrOff(int customerId, NotifyRemindRequestModel model) throws Exception;
-
-    void buySheepRemindNotifyDel(int customerId, NotifyRemindRequestModel model) throws Exception;
-
-    InBarSheepIncomeModel inBarSheepIncome(int customerId,PageIndexRequestModel model) throws Exception;
-
-    WalletBalanceIncomeModel walletBalanceIncome(int customerId) throws Exception;
-
 }

@@ -1,5 +1,10 @@
 package com.zhongmubao.api.config.enmu;
 
+/**
+ * 红包类型
+ *
+ * @author 孙阿龙
+ */
 public enum RedPackageType {
     /**
      * 每日分享

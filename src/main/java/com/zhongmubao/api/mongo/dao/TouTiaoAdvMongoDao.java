@@ -1,6 +1,7 @@
 package com.zhongmubao.api.mongo.dao;
 
 import com.zhongmubao.api.mongo.dao.base.BaseDao;
+import com.zhongmubao.api.mongo.entity.SystemTokenMongo;
 import com.zhongmubao.api.mongo.entity.TouTiaoAdvMongo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -23,13 +24,12 @@ public class TouTiaoAdvMongoDao implements BaseDao<TouTiaoAdvMongo> {
     public TouTiaoAdvMongoDao(MongoTemplate mongoTemplate) {
         this.mongoTemplate = mongoTemplate;
     }
+
     @Override
     public void update(TouTiaoAdvMongo entity) throws Exception {
 
     }
-    public void updateMulti(Query query, Update update) throws Exception {
-        this.mongoTemplate.updateMulti(query,update,"TouTiaoAdvMongo");
-    }
+
     @Override
     public void save(TouTiaoAdvMongo entity) throws Exception {
 
@@ -40,15 +40,6 @@ public class TouTiaoAdvMongoDao implements BaseDao<TouTiaoAdvMongo> {
 
     }
 
-    public TouTiaoAdvMongo getOrderBy(Criteria criteria) throws Exception {
-        Aggregation aggregation = Aggregation.newAggregation(
-                Aggregation.match(criteria),
-                Aggregation.sort(new Sort(Sort.Direction.DESC,"_id")),
-                Aggregation.limit(1)
-        );
-
-        return mongoTemplate.aggregate(aggregation,"TouTiaoAdvMongo",TouTiaoAdvMongo.class).getUniqueMappedResult();
-    }
     @Override
     public TouTiaoAdvMongo get(Query query) throws Exception {
         return null;
@@ -67,5 +58,22 @@ public class TouTiaoAdvMongoDao implements BaseDao<TouTiaoAdvMongo> {
     @Override
     public List<TouTiaoAdvMongo> getPage(Query query, int pageIndex, int size) throws Exception {
         return null;
+    }
+
+    /**
+     * 获取头条广告
+     *
+     * @param imei   imei
+     * @param os     os
+     * @param status 状态
+     * @return TouTiaoAdvMongo
+     * @throws Exception 异常
+     */
+    public TouTiaoAdvMongo getByImeiAndOsAndStatus(String imei, String os, String status) throws Exception {
+        Query query = new Query();
+        query.addCriteria(Criteria.where("imei").is(imei));
+        query.addCriteria(Criteria.where("os").is(os));
+        query.addCriteria(Criteria.where("status").is(status));
+        return this.get(query);
     }
 }

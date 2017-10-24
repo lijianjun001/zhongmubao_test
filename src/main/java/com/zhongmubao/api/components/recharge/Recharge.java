@@ -2,7 +2,6 @@ package com.zhongmubao.api.components.recharge;
 
 import com.zhongmubao.api.util.HttpUtil;
 import com.zhongmubao.api.util.SecurityUtil;
-import org.apache.log4j.Logger;
 
 import java.util.*;
 

@@ -6,27 +6,89 @@ import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.util.Date;
 
+/**
+ * 系统Token
+ *
+ * @author 孙阿龙
+ */
 @Document(collection = "SystemTokenMongo")
 public class SystemTokenMongo extends BaseModel {
 
     @Field("SqlId")
-    public int sqlId;
+    private int sqlId;
 
     @Field("Platform")
-    public String platform;
+    private String platform;
 
     @Field("CustomerId")
-    public int customerId;
+    private int customerId;
 
     @Field("Token")
-    public String token;
+    private String token;
 
     @Field("Expired")
-    public Date expired;
+    private Date expired;
 
     @Field("Created")
-    public Date created;
+    private Date created;
 
     @Field("Modified")
-    public Date modified;
+    private Date modified;
+
+    public int getSqlId() {
+        return sqlId;
+    }
+
+    public void setSqlId(int sqlId) {
+        this.sqlId = sqlId;
+    }
+
+    public String getPlatform() {
+        return platform;
+    }
+
+    public void setPlatform(String platform) {
+        this.platform = platform;
+    }
+
+    public int getCustomerId() {
+        return customerId;
+    }
+
+    public void setCustomerId(int customerId) {
+        this.customerId = customerId;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+    public Date getExpired() {
+        return expired;
+    }
+
+    public void setExpired(Date expired) {
+        this.expired = expired;
+    }
+
+    public Date getCreated() {
+        return created;
+    }
+
+    public void setCreated(Date created) {
+        this.created = created;
+    }
+
+    public Date getModified() {
+        return modified;
+    }
+
+    public void setModified(Date modified) {
+        this.modified = modified;
+    }
+
 }

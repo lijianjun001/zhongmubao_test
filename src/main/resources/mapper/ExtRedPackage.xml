@@ -3,17 +3,8 @@
 		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.zhongmubao.api.dao.ExtRedPackageDao">
-	<!-- 目的：为dao接口方法提供sql语句配置 -->
-
-	<update id="updateExtRedPackageExpTimeByCustomerIdAndId">
-		<!-- 具体的sql -->
-		update ExtRedPackage set exptime = #{expTime} where
-		id =#{id}
-		and customerid = #{customerId}
-	</update>
 
 	<select id="getEffectiveExtRedPackageByCustomerIdAndId" resultType="ExtRedPackage">
-		<!-- 具体的sql -->
 		select * from ExtRedPackage where
 		customerid = #{customerId}
 		and id =#{id}
@@ -21,90 +12,7 @@
 		and isused = 0 limit 1
 	</select>
 
-	<select id="pageEffectiveExtRedPackageByCustomerIdOrderByType" resultType="ExtRedPackage">
-		<!-- 具体的sql -->
-		select * from ExtRedPackage where
-		customerid = #{customerId}
-		and expTime>now()
-		and isused = 0
-		<choose>
-			<when test="type == '03'">
-				order by expTime asc
-			</when>
-			<otherwise>
-				order by price desc
-			</otherwise>
-		</choose>
-	</select>
-
-	<select id="getEffectiveExtRedPackageByCustomerIdAndIds" resultType="ExtRedPackage">
-		<!-- 具体的sql -->
-		select * from ExtRedPackage where customerid = #{customerId}
-		and expTime>now()
-		and isused = 0
-		and id in
-		<foreach collection="ids" item="item" index="index" open="(" close=")" separator=",">
-			#{item}
-		</foreach>
-		order by expTime desc
-	</select>
-
-	<select id="pageEffectiveExtRedPackageByCustomerId" resultType="ExtRedPackage">
-		<!-- 具体的sql sortType（Prince or ExpTime）-->
-		select * from ExtRedPackage where
-		customerid = #{customerId}
-		and expTime>now()
-		and isused = 0
-		order by #{sortType} desc
-	</select>
-
-	<update id="updateExtRedPackageIsUsedByCustomerIdAndIds" >
-		<!-- 具体的sql -->
-		UPDATE ExtRedPackage set IsUsed =1 ,SheepOrderId = -1 where customerid = #{customerId}
-		and isused = 0
-		and id in
-		<foreach collection="ids" item="item" index="index" open="(" close=")" separator=",">
-			#{item}
-		</foreach>
-	</update>
-
-	<select id="countExtRedPackageByCustomerIdAndBeginTimeAndEndTimeAndType" resultType="int">
-		<!-- 具体的sql -->
-		select count(1) from ExtRedPackage where
-		type = #{type}
-		and created &gt;=#{beginTime}
-		and created &lt;=#{endTime} and customerid =#{customerId}
-	</select>
-
-	<select id="countExtRedPackageByBeginTimeAndEndTimeAndType" resultType="int">
-		<!-- 具体的sql -->
-		select count(1) from ExtRedPackage where
-		type = #{type}
-		and created >=#{beginTime}
-		and created &lt;=#{endTime}
-	</select>
-
-	<select id="countLtPriceExtRedPackageByBeginTimeAndEndTimeAndType" resultType="int">
-		<!-- 具体的sql -->
-		select count(1) from ExtRedPackage where
-		type = #{type}
-		and created &gt;=#{beginTime}
-		and price &lt;=#{price}
-		and created &lt;=#{endTime}
-	</select>
-
-	<select id="pagerExtRedPackageList" resultType="ExtRedPackage">
-        SELECT
-        *
-        FROM
-        ExtRedPackage
-        ORDER BY
-        id
-        LIMIT #{offset}, #{limit}
-    </select>
-
 	<insert id="insertExtRedPackage">
-		<!-- ignore 主键冲突，报错 -->
 		INSERT ignore INTO ExtRedPackage (
 		CustomerId,
 		Type,
@@ -134,4 +42,67 @@
 		#{minSheepCount}
 		)
 	</insert>
+
+	<select id="countExtRedPackageByCustomerIdAndBeginTimeAndEndTimeAndType" resultType="int">
+		select count(1) from ExtRedPackage where
+		type = #{type}
+		and created &gt;=#{beginTime}
+		and created &lt;=#{endTime} and customerid =#{customerId}
+	</select>
+
+	<select id="countExtRedPackageByBeginTimeAndEndTimeAndType" resultType="int">
+		select count(1) from ExtRedPackage where
+		type = #{type}
+		and created >=#{beginTime}
+		and created &lt;=#{endTime}
+	</select>
+
+	<select id="countLtPriceExtRedPackageByBeginTimeAndEndTimeAndType" resultType="int">
+		select count(1) from ExtRedPackage where
+		type = #{type}
+		and created &gt;=#{beginTime}
+		and price &lt;=#{price}
+		and created &lt;=#{endTime}
+	</select>
+
+	<update id="updateExtRedPackageExpTimeByCustomerIdAndId">
+		update ExtRedPackage set exptime = #{expTime} where
+		id =#{id}
+		and customerid = #{customerId}
+	</update>
+
+	<select id="getEffectiveExtRedPackageByCustomerIdAndIds" resultType="ExtRedPackage">
+		select * from ExtRedPackage where customerid = #{customerId}
+		and expTime>now()
+		and isused = 0
+		and id in
+		<foreach collection="ids" item="item" index="index" open="(" close=")" separator=",">
+			#{item}
+		</foreach>
+		order by expTime desc
+	</select>
+
+	<update id="updateExtRedPackageIsUsedByCustomerIdAndIds">
+		UPDATE ExtRedPackage set IsUsed =1 ,SheepOrderId = -1 where customerid = #{customerId}
+		and isused = 0
+		and id in
+		<foreach collection="ids" item="item" index="index" open="(" close=")" separator=",">
+			#{item}
+		</foreach>
+	</update>
+
+	<select id="pageEffectiveExtRedPackageByCustomerIdOrderByType" resultType="ExtRedPackage">
+		select * from ExtRedPackage where
+		customerid = #{customerId}
+		and expTime>now()
+		and isused = 0
+		<choose>
+			<when test="type == '03'">
+				order by expTime asc
+			</when>
+			<otherwise>
+				order by price desc
+			</otherwise>
+		</choose>
+	</select>
 </mapper>

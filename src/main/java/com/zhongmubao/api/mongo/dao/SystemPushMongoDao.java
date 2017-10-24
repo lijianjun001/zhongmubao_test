@@ -8,6 +8,11 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+/**
+ * 系统推送数据层
+ *
+ * @author 孙阿龙
+ */
 @Repository
 public class SystemPushMongoDao implements BaseDao<SystemPushMongo> {
 

@@ -4,11 +4,16 @@ import java.util.Date;
 import java.util.List;
 import java.math.BigDecimal;
 
+/**
+ * 客户实体
+ *
+ * @author 孙阿龙
+ */
 public class Customer {
-    
+
 	public Customer() {
 
-    }
+	}
 
 	private int id;
 

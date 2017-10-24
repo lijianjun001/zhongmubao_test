@@ -1,10 +1,47 @@
 package com.zhongmubao.api.mongo.entity;
 
 import com.zhongmubao.api.mongo.entity.base.BaseModel;
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.util.Date;
 
+@Document(collection = "TouTiaoAdvMongo")
+/**
+ * 头条广告
+ * @author xy
+ */
 public class TouTiaoAdvMongo extends BaseModel {
+
+    @Field("adid")
+    private String adid;
+
+    @Field("cid")
+    private String cid;
+
+    @Field("imei")
+    private String imei;
+
+    @Field("mac")
+    private String mac;
+
+    @Field("androidid")
+    private String androidid;
+
+    @Field("os")
+    private String os;
+
+    @Field("timestamp")
+    private String timestamp;
+
+    @Field("callback")
+    private String callback;
+
+    @Field("status")
+    private String status;
+
+    @Field("created")
+    private Date created;
 
     public String getAdid() {
         return adid;
@@ -85,16 +122,4 @@ public class TouTiaoAdvMongo extends BaseModel {
     public void setCreated(Date created) {
         this.created = created;
     }
-
-    public String adid ;
-    public String cid ;
-    public String imei ;
-    public String mac ;
-    public String androidid ;
-    public String os ;
-    public String timestamp ;
-    public String callback ;
-    public String status ;
-    public Date created ;
-
 }

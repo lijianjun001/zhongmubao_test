@@ -6,6 +6,11 @@ import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.util.Date;
 
+/**
+ * 系统推送
+ *
+ * @author 孙阿龙
+ */
 @Document(collection = "SystemPushMongo")
 public class SystemPushMongo extends BaseModel {
 
