@@ -1,6 +1,6 @@
 package com.zhongmubao.api.service;
 
-import com.zhongmubao.api.dto.request.touTiaoAdv.TouTiaoAdvRequestModel;
+import com.zhongmubao.api.dto.request.toutiaoadv.TouTiaoAdvRequestModel;
 
 /**
  * 系统服务

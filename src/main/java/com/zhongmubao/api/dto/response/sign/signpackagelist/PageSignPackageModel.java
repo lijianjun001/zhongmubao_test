@@ -1,7 +1,10 @@
-package com.zhongmubao.api.dto.response.sign.signPackageList;
+package com.zhongmubao.api.dto.response.sign.signpackagelist;
 
 import java.util.List;
 
+/**
+ * @author 孙阿龙
+ */
 public class PageSignPackageModel {
     public PageSignPackageModel() {
     }
