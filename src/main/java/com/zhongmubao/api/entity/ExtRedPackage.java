@@ -1,9 +1,6 @@
 package com.zhongmubao.api.entity;
 
 import java.util.Date;
-import java.util.List;
-import java.math.BigDecimal;
-
 /**
  * 红包实体
  *
