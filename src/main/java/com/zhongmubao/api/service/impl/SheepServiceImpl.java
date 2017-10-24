@@ -738,7 +738,7 @@ public class SheepServiceImpl extends BaseService implements SheepService {
      * @author xy
      */
     @Override
-    public MySheepRoomListViewModel mySheepRoom(int customerId, MySheepRoomRequestModel model) throws Exception {
+    public MySheepFoldListViewModel mySheepFoldList(int customerId, MySheepFoldRequestModel model) throws Exception {
         if (customerId <= 0) {
             throw new ApiException(ResultStatus.PARAMETER_MISSING);
         }
@@ -751,7 +751,7 @@ public class SheepServiceImpl extends BaseService implements SheepService {
         if (model.getProjectType() == null || model.getProjectType().equals("")) {
             model.setProjectType("");
         }
-        MySheepRoomListViewModel returnmodel = new MySheepRoomListViewModel();
+        MySheepFoldListViewModel returnmodel = new MySheepFoldListViewModel();
         List<MySheepFoldViewModel> mySheepFoldViewModelList = new ArrayList<MySheepFoldViewModel>();
 
 
@@ -794,16 +794,16 @@ public class SheepServiceImpl extends BaseService implements SheepService {
             mySheepFoldViewModel.setBeginTime(DateUtil.format(item.getBeginTime(), "yyyy.MM.dd"));
             mySheepFoldViewModel.setPeriod(item.getPeriod());
 
-            mySheepFoldViewModel.setType((ProjectType.SLAUGHTER.equals(item.getType()) || ProjectType.NEW_PEOPLE_7.equals(item.getType())) ? ProjectType.SLAUGHTER.getName() : ProjectType.NORMAL.getName());
+            mySheepFoldViewModel.setType(("03".equals(item.getType()) || "04".equals(item.getType())) ? "03" : "00");
             //改入Redis
             String sheepVendor = sheepVendorMap.get(mySheepFoldViewModel.getVenderId());
             mySheepFoldViewModel.setVendor(sheepVendor == null ? "力农羊业" : sheepVendor);
 
-            if (ProjectType.SLAUGHTER.equals(mySheepFoldViewModel.getType())) {
+            if (mySheepFoldViewModel.getType() == "03") {
                 int index = mySheepFoldViewModelList.size() - 1;
                 MySheepFoldViewModel last = mySheepFoldViewModelList.get(index);
                 if (last != null) {
-                    if (!ProjectType.SLAUGHTER.equals(last.getType())) {
+                    if (last.getType() != "03") {
                         last.setShowBottom(true);
                         mySheepFoldViewModelList.set(index, last);
                     }
@@ -812,33 +812,65 @@ public class SheepServiceImpl extends BaseService implements SheepService {
             mySheepFoldViewModelList.add(mySheepFoldViewModel);
         }
         if (model.getPageIndex() == 1) {
-            int sheepCount = sheepOrderDao.mySheepFoldListSumCount(customerId, Constants.SHEEP_IN_THE_BAR_STATE, ProjectType.NORMAL.getName());
-            int shopCount = sheepOrderDao.mySheepFoldListSumCount(customerId, Constants.SHEEP_IN_THE_BAR_STATE, ProjectType.SLAUGHTER.getName());
+            int sheepCount = sheepOrderDao.mySheepFoldListSumCount(customerId, Constants.SHEEP_IN_THE_BAR_STATE, "00");
+            int shopCount = sheepOrderDao.mySheepFoldListSumCount(customerId, Constants.SHEEP_IN_THE_BAR_STATE, "03");
             returnmodel.setSheepCount(sheepCount);
             returnmodel.setShopCount(shopCount);
-
-            int sheepTotalCount = sheepOrderDao.mySheepFoldSheepTotalCount(customerId, Constants.SHEEP_IN_THE_BAR_STATE);
-            int level = sheepLevelDao.getLevelBySheepCount(sheepTotalCount);
-            boolean isNewOrders = false;
-            CustomerOrderLogMongo customerOrderLogMongo = customerOrderLogMongoDao.get(new Query(Criteria.where("customerId").is(customerId)));
-            if (customerOrderLogMongo != null) {
-                isNewOrders = true;
-                customerOrderLogMongoDao.delete(customerOrderLogMongo);
-            }
-            MySheepRoomHeadViewModel headModel = new MySheepRoomHeadViewModel();
-            headModel.setSheepTotalCount(sheepTotalCount);
-            headModel.setLevel(sheepTotalCount <= 0 ? 0 : level);
-            headModel.setNewOrders(isNewOrders);
-
-            returnmodel.setHead(headModel);
-
-
         }
         returnmodel.setList(mySheepFoldViewModelList);
         returnmodel.setTotalPage(totalPage);
         return returnmodel;
     }
 
+    /**
+     * 我的羊圈 头部
+     *
+     * @param customerId
+     * @return MySheepFoldHeadViewModel
+     * @throws Exception
+     * @author xy
+     */
+    @Override
+    public MySheepFoldHeadViewModel mySheepFoldHead(int customerId) throws Exception {
+        if (customerId <= 0) {
+            throw new ApiException(ResultStatus.PARAMETER_MISSING);
+        }
+        int sheepTotalCount = sheepOrderDao.mySheepFoldSheepTotalCount(customerId, Constants.SHEEP_IN_THE_BAR_STATE);
+        int level = sheepLevelDao.getLevelBySheepCount(sheepTotalCount);
+        boolean isNewOrders = false;
+        CustomerOrderLogMongo customerOrderLogMongo = customerOrderLogMongoDao.get(new Query(Criteria.where("customerId").is(customerId)));
+        if (customerOrderLogMongo != null) {
+            isNewOrders = true;
+            customerOrderLogMongoDao.delete(customerOrderLogMongo);
+        }
+        MySheepFoldHeadViewModel returnModel = new MySheepFoldHeadViewModel();
+        returnModel.setSheepTotalCount(sheepTotalCount);
+        returnModel.setLevel(sheepTotalCount <= 0 ? 0 : level);
+        returnModel.setNewOrders(isNewOrders);
+        return returnModel;
+    }
+
+    /**
+     * 我的羊圈 已出售羊只头部
+     *
+     * @param customerId
+     * @return MySheepFoldHeadViewModel
+     * @throws Exception
+     * @author xy
+     */
+    @Override
+    public MySheepFoldHeadViewModel mySheepFoldRedeemedHead(int customerId) throws Exception {
+        if (customerId <= 0) {
+            throw new ApiException(ResultStatus.PARAMETER_MISSING);
+        }
+        int sheepTotalCount = sheepOrderDao.mySheepFoldSheepTotalCount(customerId, Constants.SHEEP_IN_THE_BAR_STATE);
+        int sheepRedeemedTotalCount = sheepOrderDao.mySheepFoldSheepTotalCount(customerId, Constants.REDEMING);
+        int level = sheepLevelDao.getLevelBySheepCount(sheepTotalCount);
+        MySheepFoldHeadViewModel returnModel = new MySheepFoldHeadViewModel();
+        returnModel.setSheepTotalCount(sheepRedeemedTotalCount);
+        returnModel.setLevel(sheepTotalCount <= 0 ? 0 : level);
+        return returnModel;
+    }
 
     /**
      * 我的羊圈 已出售羊只 列表
@@ -849,7 +881,7 @@ public class SheepServiceImpl extends BaseService implements SheepService {
      * @author xy
      */
     @Override
-    public MySheepRoomRedeemedListViewModel mySheepRoomRedeemed(int customerId, MySheepRoomRequestModel model) throws Exception {
+    public MySheepFoldRedeemedListViewModel mySheepFoldRedeemedList(int customerId, MySheepFoldRequestModel model) throws Exception {
         if (customerId <= 0) {
             throw new ApiException(ResultStatus.PARAMETER_MISSING);
         }
@@ -862,11 +894,11 @@ public class SheepServiceImpl extends BaseService implements SheepService {
         if (model.getProjectType() == null || model.getProjectType().equals("")) {
             model.setProjectType("");
         }
-        MySheepRoomRedeemedListViewModel returnModel = new MySheepRoomRedeemedListViewModel();
+        MySheepFoldRedeemedListViewModel returnModel = new MySheepFoldRedeemedListViewModel();
         //int pageSize = 10;
         //int totalCount = sheepOrderDao.mySheepFoldSheepRedeemedListCount(customerId, model.getProjectType());
         //int totalPage = totalCount % pageSize == 0 ? totalCount / pageSize : (totalCount / pageSize + 1);
-        List<MySheepRoomRedeemedViewModel> list = new ArrayList<MySheepRoomRedeemedViewModel>();
+        List<MySheepFoldRedeemedViewModel> list = new ArrayList<MySheepFoldRedeemedViewModel>();
 
         PageHelper.startPage(model.getPageIndex(), Constants.PAGE_SIZE);
         List<MySheepFoldRedeemedItem> mySheepFoldRedeemedItems = sheepOrderDao.mySheepFoldSheepRedeemedList(customerId, model.getProjectType());
@@ -875,31 +907,22 @@ public class SheepServiceImpl extends BaseService implements SheepService {
         PageHelper.clearPage();
 
         for (MySheepFoldRedeemedItem item : mySheepFoldRedeemedItems) {
-            MySheepRoomRedeemedViewModel mySheepRoomRedeemedViewModel = new MySheepRoomRedeemedViewModel();
-            mySheepRoomRedeemedViewModel.setId(item.getId());
-            mySheepRoomRedeemedViewModel.setType((ProjectType.SLAUGHTER.equals(item.getType()) || ProjectType.NEW_PEOPLE_7.equals(item.getType())) ? ProjectType.SLAUGHTER.getName() : ProjectType.NORMAL.getName());
-            mySheepRoomRedeemedViewModel.setCount(item.getOrderSheepCount());
-            mySheepRoomRedeemedViewModel.setRedemTime(DateUtil.format(item.getRedemTime(), "yyyy.MM.dd"));
-            mySheepRoomRedeemedViewModel.setEffectiveTime(DateUtil.format(item.getEffectiveTime(), "yyyy.MM.dd"));
-            mySheepRoomRedeemedViewModel.setBeginTime(DateUtil.format(item.getBeginTime(), "yyyy.MM.dd"));
-            mySheepRoomRedeemedViewModel.setVenderId(item.getVendorId());
-            mySheepRoomRedeemedViewModel.setOrderCode(item.getOrderCode());
-            mySheepRoomRedeemedViewModel.setTitle(item.getTitle());
-            mySheepRoomRedeemedViewModel.setDeductibleAmount(String.format("%.2f", item.getDeductibleAmount()));
-            mySheepRoomRedeemedViewModel.setPaymentAmount(String.format("%.2f", item.getPaymentAmount()));
-            mySheepRoomRedeemedViewModel.setRedemAmount(String.format("%.2f", item.getRedemAmount()));
-            mySheepRoomRedeemedViewModel.setRedPrice(String.format("%.2f", item.getRedPrice()));
+            MySheepFoldRedeemedViewModel mySheepFoldRedeemedViewModel = new MySheepFoldRedeemedViewModel();
+            mySheepFoldRedeemedViewModel.setId(item.getId());
+            mySheepFoldRedeemedViewModel.setType(("03".equals(item.getType()) || "04".equals(item.getType())) ? "03" : "00");
+            mySheepFoldRedeemedViewModel.setCount(item.getOrderSheepCount());
+            mySheepFoldRedeemedViewModel.setRedemTime(DateUtil.format(item.getRedemTime(), "yyyy.MM.dd"));
+            mySheepFoldRedeemedViewModel.setEffectiveTime(DateUtil.format(item.getEffectiveTime(), "yyyy.MM.dd"));
+            mySheepFoldRedeemedViewModel.setBeginTime(DateUtil.format(item.getBeginTime(), "yyyy.MM.dd"));
+            mySheepFoldRedeemedViewModel.setVenderId(item.getVendorId());
+            mySheepFoldRedeemedViewModel.setOrderCode(item.getOrderCode());
+            mySheepFoldRedeemedViewModel.setTitle(item.getTitle());
+            mySheepFoldRedeemedViewModel.setDeductibleAmount(String.format("%.2f", item.getDeductibleAmount()));
+            mySheepFoldRedeemedViewModel.setPaymentAmount(String.format("%.2f", item.getPaymentAmount()));
+            mySheepFoldRedeemedViewModel.setRedemAmount(String.format("%.2f", item.getRedemAmount()));
+            mySheepFoldRedeemedViewModel.setRedPrice(String.format("%.2f", item.getRedPrice()));
 
-            list.add(mySheepRoomRedeemedViewModel);
-        }
-        if(model.getPageIndex()==1){
-            int sheepTotalCount = sheepOrderDao.mySheepFoldSheepTotalCount(customerId, Constants.SHEEP_IN_THE_BAR_STATE);
-            int sheepRedeemedTotalCount = sheepOrderDao.mySheepFoldSheepTotalCount(customerId, Constants.REDEMING);
-            int level = sheepLevelDao.getLevelBySheepCount(sheepTotalCount);
-            MySheepRoomHeadViewModel headModel = new MySheepRoomHeadViewModel();
-            headModel.setSheepTotalCount(sheepRedeemedTotalCount);
-            headModel.setLevel(sheepTotalCount <= 0 ? 0 : level);
-            returnModel.setHead(headModel);
+            list.add(mySheepFoldRedeemedViewModel);
         }
 
         returnModel.setTotalPage(totalPage);
