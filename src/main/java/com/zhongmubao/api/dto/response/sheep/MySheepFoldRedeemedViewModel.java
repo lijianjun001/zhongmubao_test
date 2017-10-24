@@ -106,18 +106,18 @@ public class MySheepFoldRedeemedViewModel {
         this.paymentAmount = paymentAmount;
     }
 
-    private int id ;
-    private String orderCode ;
-    private int venderId ;
-    private String title ;
-    private String type ;
-    private int count ;
-    private String beginTime ;
-    private String effectiveTime ;
-    private String redemTime ;
-    private String deductibleAmount ;
-    private String redemAmount ;
-    private String redPrice ;
-    private String paymentAmount ;
+    private int id;
+    private String orderCode;
+    private int venderId;
+    private String title;
+    private String type;
+    private int count;
+    private String beginTime;
+    private String effectiveTime;
+    private String redemTime;
+    private String deductibleAmount;
+    private String redemAmount;
+    private String redPrice;
+    private String paymentAmount;
 }
 

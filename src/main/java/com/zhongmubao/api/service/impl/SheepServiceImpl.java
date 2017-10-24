@@ -59,6 +59,7 @@ public class SheepServiceImpl extends BaseService implements SheepService {
     private final CustomerOrderLogMongoDao customerOrderLogMongoDao;
     private final SheepPhotoDao sheepPhotoDao;
     private final CustomerDao customerDao;
+    //endregion
 
     @Autowired
     public SheepServiceImpl(RedisCache redisCache, CustomerSinaDao customerSinaDao, ExtActivityRecordDao extActivityRecordDao, SheepOrderDao sheepOrderDao, SheepProjectDao sheepProjectDao, ExtBannerMongoDao extBannerMongoDao, SheepProjectPlanDao sheepProjectPlanDao, SheepStageMongoDao sheepStageMongoDao, SheepLevelDao levelDao, SheepVendorDao sheepVendorDao, SheepLevelDao sheepLevelDao, CustomerOrderLogMongoDao customerOrderLogMongoDao, SheepPhotoDao sheepPhotoDao, CustomerDao customerDao) {
@@ -79,7 +80,7 @@ public class SheepServiceImpl extends BaseService implements SheepService {
     }
 
 
-    //endregion
+    //region 首页
     @Override
     public IndexModel index(Customer customer) throws Exception {
         //region 字段
@@ -162,6 +163,120 @@ public class SheepServiceImpl extends BaseService implements SheepService {
                 newPeopleProjectViewModel,
                 isShowNewProject);
     }
+
+    private NewPeopleProjectViewModel newPeopleProject(Customer customer) {
+        Date now = new Date();
+        int customerId = customer.getId();
+        boolean exped120 = false;
+        boolean exped7 = false;
+        boolean isBuyed120 = false;
+        boolean isBuyed7 = false;
+        boolean canReceiveXiaoEn = false;
+        boolean canBuy120 = false;
+        boolean canBuy7 = false;
+        int surplusDay7 = 0;
+        SheepOrderCountAndMinCreated sheepOrderCountAndMinCreated120 = sheepOrderDao.getSheepOrderCountAndMinCreatedByCustomerAndStatesAndProjectType(customerId, Constants.SHEEP_IN_THE_BAR_STATE_AND_REDEMING_ANDREDEMED, ProjectType.NEW_PEOPLE_120.getName());
+        SheepOrderCountAndMinCreated sheepOrderCountAndMinCreated7 = sheepOrderDao.getSheepOrderCountAndMinCreatedByCustomerAndStatesAndProjectType(customerId, Constants.SHEEP_IN_THE_BAR_STATE_AND_REDEMING_ANDREDEMED, ProjectType.NEW_PEOPLE_7.getName());
+        //06
+        if (sheepOrderCountAndMinCreated120.getCount() > 0) {
+            //已购买可以领取肖恩
+            canReceiveXiaoEn = true;
+        } else {
+            if (sheepOrderCountAndMinCreated7.getCount() > 0) {
+                Date created7 = DateUtil.strToDate(sheepOrderCountAndMinCreated7.getCreated());
+                Date endTime120Exp = DateUtil.addDay(created7, Constants.EXP_120_NEW_PROJECT);
+                if (endTime120Exp.getTime() < now.getTime()) {
+                    exped120 = true;
+                }
+                canBuy120 = true;
+            } else {
+                canBuy120 = true;
+            }
+        }
+        //04
+        if (sheepOrderCountAndMinCreated7.getCount() > 0) {
+            isBuyed7 = true;
+        } else {
+            Date endTime7Exp = DateUtil.addDay(customer.getCreated(), Constants.EXP_7_NEW_PROJECT);
+            if (endTime7Exp.getTime() < now.getTime()) {
+                //已过期
+                exped7 = true;
+                surplusDay7 = 30; //TODO
+            } else {
+                canBuy7 = true;
+            }
+        }
+        return new NewPeopleProjectViewModel(exped120, exped7, isBuyed120, isBuyed7, canBuy120, canBuy7, canReceiveXiaoEn, surplusDay7);
+    }
+
+    private ProjectViewModel formartProject(SheepProjectIndex projectIndex, ProjectSaleState saleState, List<SheepVendor> sheepVendorList) {
+        //region 字段
+        Date now = new Date();
+        Date projectBeginTime = projectIndex.getBeginTime();
+        String daoJiShiLeiXing = "01";
+        String daoJiShiStr = "";
+        String rate = StringUtil.subZeroAndDot(projectIndex.getRate().toString());
+        String rateImg = "";
+        //endregion
+
+        //region 倒计时时间
+        long countdown = DateUtil.subDateOfSecond(projectIndex.getBeginTime(), now);
+        int day = DateUtil.subDateOfDay(now, projectBeginTime);
+        if (day <= 0) {
+            long hour = DateUtil.subDateOfHour(projectBeginTime, now);
+            if (hour >= 2) {
+                daoJiShiStr = "今天" + DateUtil.hourOfDate(projectBeginTime) + "点开标";
+            } else {
+                daoJiShiLeiXing = "00";
+            }
+        } else {
+            if (day == 1) {
+                daoJiShiStr = "明天" + DateUtil.hourOfDate(projectBeginTime) + "点开标";
+            } else if (day == 2) {
+                daoJiShiStr = "后天" + DateUtil.hourOfDate(projectBeginTime) + "点开标";
+            } else {
+                daoJiShiStr = DateUtil.monthOfDate(projectBeginTime) + "月" + DateUtil.dateOfDate(projectBeginTime) + "号" + DateUtil.hourOfDate(projectBeginTime) + "点开标";
+            }
+        }
+        //endregion
+
+        //region 新手标图标
+        switch (rate) {
+            case "9":
+                rateImg = "https://s.emubao.com/weixin/images/rate9.png";
+                break;
+            case "12":
+                rateImg = "https://s.emubao.com/weixin/images/rate12.png";
+                break;
+            case "12.5":
+                rateImg = "https://s.emubao.com/weixin/images/rate125.png";
+                break;
+            case "13.5":
+                rateImg = "https://s.emubao.com/weixin/images/rate135.png";
+                break;
+        }
+        //endregion
+
+        return new ProjectViewModel(
+                projectIndex.getId(),
+                projectIndex.getTitle(),
+                projectIndex.getPrice(),
+                rate,
+                rateImg,
+                DateUtil.formatDefault(projectIndex.getEffectiveTime()),
+                DateUtil.formatDefault(projectIndex.getBeginTime()),
+                projectIndex.getPeriod(),
+                saleState.getName(),
+                countdown,
+                projectIndex.getType(),
+                sheepVendorList.stream().filter(en -> en.getId() == projectIndex.getVendorId()).limit(1).findFirst().get().getShorthand(),
+                daoJiShiLeiXing,
+                daoJiShiStr,
+                projectIndex.getPurchaseCount()
+        );
+    }
+
+    //endregion
 
     // region 买羊订单
 
@@ -895,10 +1010,7 @@ public class SheepServiceImpl extends BaseService implements SheepService {
             model.setProjectType("");
         }
         MySheepFoldRedeemedListViewModel returnModel = new MySheepFoldRedeemedListViewModel();
-        //int pageSize = 10;
-        //int totalCount = sheepOrderDao.mySheepFoldSheepRedeemedListCount(customerId, model.getProjectType());
-        //int totalPage = totalCount % pageSize == 0 ? totalCount / pageSize : (totalCount / pageSize + 1);
-        List<MySheepFoldRedeemedViewModel> list = new ArrayList<MySheepFoldRedeemedViewModel>();
+        List<MySheepFoldRedeemedViewModel> list = new ArrayList<>();
 
         PageHelper.startPage(model.getPageIndex(), Constants.PAGE_SIZE);
         List<MySheepFoldRedeemedItem> mySheepFoldRedeemedItems = sheepOrderDao.mySheepFoldSheepRedeemedList(customerId, model.getProjectType());
@@ -928,118 +1040,6 @@ public class SheepServiceImpl extends BaseService implements SheepService {
         returnModel.setTotalPage(totalPage);
         returnModel.setList(list);
         return returnModel;
-    }
-
-    private NewPeopleProjectViewModel newPeopleProject(Customer customer) {
-        Date now = new Date();
-        int customerId = customer.getId();
-        boolean exped120 = false;
-        boolean exped7 = false;
-        boolean isBuyed120 = false;
-        boolean isBuyed7 = false;
-        boolean canReceiveXiaoEn = false;
-        boolean canBuy120 = false;
-        boolean canBuy7 = false;
-        int surplusDay7 = 0;
-        SheepOrderCountAndMinCreated sheepOrderCountAndMinCreated120 = sheepOrderDao.getSheepOrderCountAndMinCreatedByCustomerAndStatesAndProjectType(customerId, Constants.SHEEP_IN_THE_BAR_STATE_AND_REDEMING_ANDREDEMED, ProjectType.NEW_PEOPLE_120.getName());
-        SheepOrderCountAndMinCreated sheepOrderCountAndMinCreated7 = sheepOrderDao.getSheepOrderCountAndMinCreatedByCustomerAndStatesAndProjectType(customerId, Constants.SHEEP_IN_THE_BAR_STATE_AND_REDEMING_ANDREDEMED, ProjectType.NEW_PEOPLE_7.getName());
-        //06
-        if (sheepOrderCountAndMinCreated120.getCount() > 0) {
-            //已购买可以领取肖恩
-            canReceiveXiaoEn = true;
-        } else {
-            if (sheepOrderCountAndMinCreated7.getCount() > 0) {
-                Date created7 = DateUtil.strToDate(sheepOrderCountAndMinCreated7.getCreated());
-                Date endTime120Exp = DateUtil.addDay(created7, Constants.EXP_120_NEW_PROJECT);
-                if (endTime120Exp.getTime() < now.getTime()) {
-                    exped120 = true;
-                }
-                canBuy120 = true;
-            } else {
-                canBuy120 = true;
-            }
-        }
-        //04
-        if (sheepOrderCountAndMinCreated7.getCount() > 0) {
-            isBuyed7 = true;
-        } else {
-            Date endTime7Exp = DateUtil.addDay(customer.getCreated(), Constants.EXP_7_NEW_PROJECT);
-            if (endTime7Exp.getTime() < now.getTime()) {
-                //已过期
-                exped7 = true;
-                surplusDay7 = 30; //TODO
-            } else {
-                canBuy7 = true;
-            }
-        }
-        return new NewPeopleProjectViewModel(exped120, exped7, isBuyed120, isBuyed7, canBuy120, canBuy7, canReceiveXiaoEn, surplusDay7);
-    }
-
-    private ProjectViewModel formartProject(SheepProjectIndex projectIndex, ProjectSaleState saleState, List<SheepVendor> sheepVendorList) {
-        //region 字段
-        Date now = new Date();
-        Date projectBeginTime = projectIndex.getBeginTime();
-        String daoJiShiLeiXing = "01";
-        String daoJiShiStr = "";
-        String rate = StringUtil.subZeroAndDot(projectIndex.getRate().toString());
-        String rateImg = "";
-        //endregion
-
-        //region 倒计时时间
-        long countdown = DateUtil.subDateOfSecond(projectIndex.getBeginTime(), now);
-        int day = DateUtil.subDateOfDay(now, projectBeginTime);
-        if (day <= 0) {
-            long hour = DateUtil.subDateOfHour(projectBeginTime, now);
-            if (hour >= 2) {
-                daoJiShiStr = "今天" + DateUtil.hourOfDate(projectBeginTime) + "点开标";
-            } else {
-                daoJiShiLeiXing = "00";
-            }
-        } else {
-            if (day == 1) {
-                daoJiShiStr = "明天" + DateUtil.hourOfDate(projectBeginTime) + "点开标";
-            } else if (day == 2) {
-                daoJiShiStr = "后天" + DateUtil.hourOfDate(projectBeginTime) + "点开标";
-            } else {
-                daoJiShiStr = DateUtil.monthOfDate(projectBeginTime) + "月" + DateUtil.dateOfDate(projectBeginTime) + "号" + DateUtil.hourOfDate(projectBeginTime) + "点开标";
-            }
-        }
-        //endregion
-
-        //region 新手标图标
-        switch (rate) {
-            case "9":
-                rateImg = "https://s.emubao.com/weixin/images/rate9.png";
-                break;
-            case "12":
-                rateImg = "https://s.emubao.com/weixin/images/rate12.png";
-                break;
-            case "12.5":
-                rateImg = "https://s.emubao.com/weixin/images/rate125.png";
-                break;
-            case "13.5":
-                rateImg = "https://s.emubao.com/weixin/images/rate135.png";
-                break;
-        }
-        //endregion
-
-        return new ProjectViewModel(
-                projectIndex.getId(),
-                projectIndex.getTitle(),
-                projectIndex.getPrice(),
-                rate,
-                rateImg,
-                DateUtil.formatDefault(projectIndex.getEffectiveTime()),
-                DateUtil.formatDefault(projectIndex.getBeginTime()),
-                projectIndex.getPeriod(),
-                saleState.getName(),
-                countdown,
-                projectIndex.getType(),
-                sheepVendorList.stream().filter(en -> en.getId() == projectIndex.getVendorId()).limit(1).findFirst().get().getShorthand(),
-                daoJiShiLeiXing,
-                daoJiShiStr,
-                projectIndex.getPurchaseCount()
-        );
     }
 
     /**
