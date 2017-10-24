@@ -1036,71 +1036,73 @@ public class SheepServiceImpl extends BaseService implements SheepService {
                 switch (project.getPeriod()) {
                     case 30:
                         //region 30Day
-                        if (28 >= day && day >= 25 && day > 0) {
+                        if (28 >= day && day >= 25) {
                             projectState.setDayTypeInt(1);
                             projectState.setDayType("物流");
-                        } else if (24 >= day && day >= 20 && day > 0) {
+                        } else if (24 >= day && day >= 20) {
                             projectState.setDayTypeInt(2);
                             projectState.setDayType("运输");
-                        } else if (19 >= day && day >= 15 && day > 0) {
+                        } else if (19 >= day && day >= 15) {
                             projectState.setDayTypeInt(3);
                             projectState.setDayType("仓储入库");
-                        } else if (14 >= day && day >= 5 && day > 0) {
+                        } else if (14 >= day && day >= 5) {
                             projectState.setDayTypeInt(4);
                             projectState.setDayType("羊肉分销");
-                        } else if (4 >= day && day >= 1 && day > 0) {
+                        } else if (4 >= day && day >= 1) {
                             projectState.setDayTypeInt(5);
                             projectState.setDayType("批发");
                         } else if (day <= 0) {
                             projectState.setDayTypeInt(6);
                             projectState.setDayType("结算回款");
+                        }else{
+
                         }
                         break;
                     //endregion
                     case 40:
                         //region 40Day
-                        if (40 >= day && day >= 35 && day > 0) {
+                        if (40 >= day && day >= 35) {
                             projectState.setDayTypeInt(0);
                             projectState.setDayType("采购羊只");
-                        } else if (34 >= day && day >= 25 && day > 0) {
+                        } else if (34 >= day && day >= 25) {
                             projectState.setDayTypeInt(1);
                             projectState.setDayType("物流");
-                        } else if (24 >= day && day >= 20 && day > 0) {
+                        } else if (24 >= day && day >= 20) {
                             projectState.setDayTypeInt(2);
                             projectState.setDayType("运输");
-                        } else if (19 >= day && day >= 15 && day > 0) {
+                        } else if (19 >= day && day >= 15) {
                             projectState.setDayTypeInt(3);
                             projectState.setDayType("仓储入库");
-                        } else if (14 >= day && day >= 5 && day > 0) {
+                        } else if (14 >= day && day >= 5) {
                             projectState.setDayTypeInt(4);
                             projectState.setDayType("羊肉分销");
-                        } else if (4 >= day && day >= 1 && day > 0) {
+                        } else if (4 >= day && day >= 1) {
                             projectState.setDayTypeInt(5);
                             projectState.setDayType("批发");
                         } else if (day <= 0) {
                             projectState.setDayTypeInt(6);
                             projectState.setDayType("结算回款");
-                        }
+                        }else{}
                         break;
                     //endregion
                     case 50:
                         //region 50Day
-                        if (50 >= day && day >= 35 && day > 0) {
+                        if (50 >= day && day >= 35) {
                             projectState.setDayTypeInt(0);
                             projectState.setDayType("采购羊只");
-                        } else if (34 >= day && day >= 25 && day > 0) {
+                        } else if (34 >= day && day >= 25) {
                             projectState.setDayTypeInt(1);
                             projectState.setDayType("物流");
-                        } else if (24 >= day && day >= 20 && day > 0) {
+                        } else if (24 >= day && day >= 20) {
                             projectState.setDayTypeInt(2);
                             projectState.setDayType("运输");
-                        } else if (19 >= day && day >= 15 && day > 0) {
+                        } else if (19 >= day && day >= 15) {
                             projectState.setDayTypeInt(3);
                             projectState.setDayType("仓储入库");
-                        } else if (14 >= day && day >= 5 && day > 0) {
+                        } else if (14 >= day && day >= 5) {
                             projectState.setDayTypeInt(4);
                             projectState.setDayType("羊肉分销");
-                        } else if (4 >= day && day >= 1 && day > 0) {
+                        } else if (4 >= day && day >= 1) {
                             projectState.setDayTypeInt(5);
                             projectState.setDayType("批发");
                         } else if (day <= 0) {
@@ -1111,48 +1113,48 @@ public class SheepServiceImpl extends BaseService implements SheepService {
                     //endregion
                     case 60:
                         //region 60Day
-                        if (60 >= day && day >= 45 && day > 0) {
+                        if (60 >= day && day >= 45) {
                             projectState.setDayTypeInt(0);
                             projectState.setDayType("采购羊只");
-                        } else if (44 >= day && day >= 35 && day > 0) {
+                        } else if (44 >= day && day >= 35) {
                             projectState.setDayTypeInt(1);
                             projectState.setDayType("物流");
-                        } else if (34 >= day && day >= 25 && day > 0) {
+                        } else if (34 >= day && day >= 25) {
                             projectState.setDayTypeInt(2);
                             projectState.setDayType("运输");
-                        } else if (24 >= day && day >= 15 && day > 0) {
+                        } else if (24 >= day && day >= 15) {
                             projectState.setDayTypeInt(3);
                             projectState.setDayType("仓储入库");
-                        } else if (14 >= day && day >= 5 && day > 0) {
+                        } else if (14 >= day && day >= 5) {
                             projectState.setDayTypeInt(4);
                             projectState.setDayType("羊肉分销");
-                        } else if (4 >= day && day >= 1 && day > 0) {
+                        } else if (4 >= day && day >= 1) {
                             projectState.setDayTypeInt(5);
                             projectState.setDayType("批发");
                         } else if (day <= 0) {
                             projectState.setDayTypeInt(6);
                             projectState.setDayType("结算回款");
-                        }
+                        }else{}
                         break;
                     //endregion
                     case 90:
                         //region 90Day
-                        if (90 >= day && day >= 70 && day > 0) {
+                        if (90 >= day && day >= 70) {
                             projectState.setDayTypeInt(0);
                             projectState.setDayType("采购羊只");
-                        } else if (69 >= day && day >= 60 && day > 0) {
+                        } else if (69 >= day && day >= 60) {
                             projectState.setDayTypeInt(1);
                             projectState.setDayType("物流");
-                        } else if (59 >= day && day >= 50 && day > 0) {
+                        } else if (59 >= day && day >= 50) {
                             projectState.setDayTypeInt(2);
                             projectState.setDayType("运输");
-                        } else if (49 >= day && day >= 30 && day > 0) {
+                        } else if (49 >= day && day >= 30) {
                             projectState.setDayTypeInt(3);
                             projectState.setDayType("仓储入库");
-                        } else if (29 >= day && day >= 15 && day > 0) {
+                        } else if (29 >= day && day >= 15) {
                             projectState.setDayTypeInt(4);
                             projectState.setDayType("羊肉分销");
-                        } else if (14 >= day && day >= 1 && day > 0) {
+                        } else if (14 >= day && day >= 1) {
                             projectState.setDayTypeInt(5);
                             projectState.setDayType("批发");
                         } else if (day <= 0) {
@@ -1163,22 +1165,22 @@ public class SheepServiceImpl extends BaseService implements SheepService {
                     //endregion
                     case 120:
                         //region 120Day
-                        if (120 >= day && day >= 100 && day > 0) {
+                        if (120 >= day && day >= 100) {
                             projectState.setDayTypeInt(0);
                             projectState.setDayType("采购羊只");
-                        } else if (99 >= day && day >= 90 && day > 0) {
+                        } else if (99 >= day && day >= 90) {
                             projectState.setDayTypeInt(1);
                             projectState.setDayType("物流");
-                        } else if (89 >= day && day >= 80 && day > 0) {
+                        } else if (89 >= day && day >= 80) {
                             projectState.setDayTypeInt(2);
                             projectState.setDayType("运输");
-                        } else if (79 >= day && day >= 60 && day > 0) {
+                        } else if (79 >= day && day >= 60) {
                             projectState.setDayTypeInt(3);
                             projectState.setDayType("仓储入库");
-                        } else if (59 >= day && day >= 15 && day > 0) {
+                        } else if (59 >= day && day >= 15) {
                             projectState.setDayTypeInt(4);
                             projectState.setDayType("羊肉分销");
-                        } else if (14 >= day && day >= 1 && day > 0) {
+                        } else if (14 >= day && day >= 1) {
                             projectState.setDayTypeInt(5);
                             projectState.setDayType("批发");
                         } else if (day <= 0) {
@@ -1209,22 +1211,22 @@ public class SheepServiceImpl extends BaseService implements SheepService {
             } else if (project.getState().equals(SheepOrderState.HAS_INTOBAR.getName())) {
                 Date outDate = DateUtil.addDay(project.getRedemTime(), -1);
                 int day = DateUtil.subDateOfDay(outDate, now);
-                if (day >= 110 && day > 0) {
+                if (day >= 110) {
                     projectState.setDayTypeInt(1);
                     projectState.setDayType("养殖中1");
-                } else if (109 >= day && day >= 90 && day > 0) {
+                } else if (109 >= day && day >= 90) {
                     projectState.setDayTypeInt(2);
                     projectState.setDayType("养殖中2");
-                } else if (89 >= day && day >= 60 && day > 0) {
+                } else if (89 >= day && day >= 60) {
                     projectState.setDayTypeInt(3);
                     projectState.setDayType("养殖中3");
-                } else if (59 >= day && day >= 40 && day > 0) {
+                } else if (59 >= day && day >= 40) {
                     projectState.setDayTypeInt(4);
                     projectState.setDayType("养殖中4");
-                } else if (39 >= day && day >= 10 && day > 0) {
+                } else if (39 >= day && day >= 10) {
                     projectState.setDayTypeInt(5);
                     projectState.setDayType("养殖中5");
-                } else if (9 >= day && day >= 1 && day > 0) {
+                } else if (9 >= day && day >= 1) {
                     projectState.setDayTypeInt(6);
                     projectState.setDayType("养殖中6");
                 } else if (day <= 0) {
@@ -1258,19 +1260,19 @@ public class SheepServiceImpl extends BaseService implements SheepService {
                 switch (project.getPeriod()) {
                     case 30:
                         //region 30Day
-                        if (28 >= day && day >= 25 && day > 0) {
+                        if (28 >= day && day >= 25) {
                             projectState.setDayTypeInt(1);
                             projectState.setDayType("物流");
-                        } else if (24 >= day && day >= 20 && day > 0) {
+                        } else if (24 >= day && day >= 20) {
                             projectState.setDayTypeInt(2);
                             projectState.setDayType("运输");
-                        } else if (19 >= day && day >= 15 && day > 0) {
+                        } else if (19 >= day && day >= 15) {
                             projectState.setDayTypeInt(3);
                             projectState.setDayType("仓储入库");
-                        } else if (14 >= day && day >= 5 && day > 0) {
+                        } else if (14 >= day && day >= 5) {
                             projectState.setDayTypeInt(4);
                             projectState.setDayType("羊肉分销");
-                        } else if (4 >= day && day >= 1 && day > 0) {
+                        } else if (4 >= day && day >= 1) {
                             projectState.setDayTypeInt(5);
                             projectState.setDayType("批发");
                         } else if (day <= 0) {
@@ -1281,22 +1283,22 @@ public class SheepServiceImpl extends BaseService implements SheepService {
                     //endregion
                     case 40:
                         //region 40Day
-                        if (40 >= day && day >= 35 && day > 0) {
+                        if (40 >= day && day >= 35) {
                             projectState.setDayTypeInt(0);
                             projectState.setDayType("采购羊只");
-                        } else if (34 >= day && day >= 25 && day > 0) {
+                        } else if (34 >= day && day >= 25) {
                             projectState.setDayTypeInt(1);
                             projectState.setDayType("物流");
-                        } else if (24 >= day && day >= 20 && day > 0) {
+                        } else if (24 >= day && day >= 20) {
                             projectState.setDayTypeInt(2);
                             projectState.setDayType("运输");
-                        } else if (19 >= day && day >= 15 && day > 0) {
+                        } else if (19 >= day && day >= 15) {
                             projectState.setDayTypeInt(3);
                             projectState.setDayType("仓储入库");
-                        } else if (14 >= day && day >= 5 && day > 0) {
+                        } else if (14 >= day && day >= 5) {
                             projectState.setDayTypeInt(4);
                             projectState.setDayType("羊肉分销");
-                        } else if (4 >= day && day >= 1 && day > 0) {
+                        } else if (4 >= day && day >= 1) {
                             projectState.setDayTypeInt(5);
                             projectState.setDayType("批发");
                         } else if (day <= 0) {
@@ -1307,22 +1309,22 @@ public class SheepServiceImpl extends BaseService implements SheepService {
                     //endregion
                     case 50:
                         //region 50Day
-                        if (50 >= day && day >= 35 && day > 0) {
+                        if (50 >= day && day >= 35) {
                             projectState.setDayTypeInt(0);
                             projectState.setDayType("采购羊只");
-                        } else if (34 >= day && day >= 25 && day > 0) {
+                        } else if (34 >= day && day >= 25) {
                             projectState.setDayTypeInt(1);
                             projectState.setDayType("物流");
-                        } else if (24 >= day && day >= 20 && day > 0) {
+                        } else if (24 >= day && day >= 20) {
                             projectState.setDayTypeInt(2);
                             projectState.setDayType("运输");
-                        } else if (19 >= day && day >= 15 && day > 0) {
+                        } else if (19 >= day && day >= 15) {
                             projectState.setDayTypeInt(3);
                             projectState.setDayType("仓储入库");
-                        } else if (14 >= day && day >= 5 && day > 0) {
+                        } else if (14 >= day && day >= 5) {
                             projectState.setDayTypeInt(4);
                             projectState.setDayType("羊肉分销");
-                        } else if (4 >= day && day >= 1 && day > 0) {
+                        } else if (4 >= day && day >= 1) {
                             projectState.setDayTypeInt(5);
                             projectState.setDayType("批发");
                         } else if (day <= 0) {
@@ -1333,22 +1335,22 @@ public class SheepServiceImpl extends BaseService implements SheepService {
                     //endregion
                     case 60:
                         //region 60Day
-                        if (60 >= day && day >= 45 && day > 0) {
+                        if (60 >= day && day >= 45) {
                             projectState.setDayTypeInt(0);
                             projectState.setDayType("采购羊只");
-                        } else if (44 >= day && day >= 35 && day > 0) {
+                        } else if (44 >= day && day >= 35) {
                             projectState.setDayTypeInt(1);
                             projectState.setDayType("物流");
-                        } else if (34 >= day && day >= 25 && day > 0) {
+                        } else if (34 >= day && day >= 25) {
                             projectState.setDayTypeInt(2);
                             projectState.setDayType("运输");
-                        } else if (24 >= day && day >= 15 && day > 0) {
+                        } else if (24 >= day && day >= 15) {
                             projectState.setDayTypeInt(3);
                             projectState.setDayType("仓储入库");
-                        } else if (14 >= day && day >= 5 && day > 0) {
+                        } else if (14 >= day && day >= 5) {
                             projectState.setDayTypeInt(4);
                             projectState.setDayType("羊肉分销");
-                        } else if (4 >= day && day >= 1 && day > 0) {
+                        } else if (4 >= day && day >= 1) {
                             projectState.setDayTypeInt(5);
                             projectState.setDayType("批发");
                         } else if (day <= 0) {
@@ -1359,22 +1361,22 @@ public class SheepServiceImpl extends BaseService implements SheepService {
                     //endregion
                     case 90:
                         //region 90Day
-                        if (90 >= day && day >= 70 && day > 0) {
+                        if (90 >= day && day >= 70) {
                             projectState.setDayTypeInt(0);
                             projectState.setDayType("采购羊只");
-                        } else if (69 >= day && day >= 60 && day > 0) {
+                        } else if (69 >= day && day >= 60) {
                             projectState.setDayTypeInt(1);
                             projectState.setDayType("物流");
-                        } else if (59 >= day && day >= 50 && day > 0) {
+                        } else if (59 >= day && day >= 50) {
                             projectState.setDayTypeInt(2);
                             projectState.setDayType("运输");
-                        } else if (49 >= day && day >= 30 && day > 0) {
+                        } else if (49 >= day && day >= 30) {
                             projectState.setDayTypeInt(3);
                             projectState.setDayType("仓储入库");
-                        } else if (29 >= day && day >= 15 && day > 0) {
+                        } else if (29 >= day && day >= 15) {
                             projectState.setDayTypeInt(4);
                             projectState.setDayType("羊肉分销");
-                        } else if (14 >= day && day >= 1 && day > 0) {
+                        } else if (14 >= day && day >= 1) {
                             projectState.setDayTypeInt(5);
                             projectState.setDayType("批发");
                         } else if (day <= 0) {
@@ -1385,22 +1387,22 @@ public class SheepServiceImpl extends BaseService implements SheepService {
                     //endregion
                     case 120:
                         //region 120Day
-                        if (120 >= day && day >= 100 && day > 0) {
+                        if (120 >= day && day >= 100) {
                             projectState.setDayTypeInt(0);
                             projectState.setDayType("采购羊只");
-                        } else if (99 >= day && day >= 90 && day > 0) {
+                        } else if (99 >= day && day >= 90) {
                             projectState.setDayTypeInt(1);
                             projectState.setDayType("物流");
-                        } else if (89 >= day && day >= 80 && day > 0) {
+                        } else if (89 >= day && day >= 80) {
                             projectState.setDayTypeInt(2);
                             projectState.setDayType("运输");
-                        } else if (79 >= day && day >= 60 && day > 0) {
+                        } else if (79 >= day && day >= 60) {
                             projectState.setDayTypeInt(3);
                             projectState.setDayType("仓储入库");
-                        } else if (59 >= day && day >= 15 && day > 0) {
+                        } else if (59 >= day && day >= 15) {
                             projectState.setDayTypeInt(4);
                             projectState.setDayType("羊肉分销");
-                        } else if (14 >= day && day >= 1 && day > 0) {
+                        } else if (14 >= day && day >= 1) {
                             projectState.setDayTypeInt(5);
                             projectState.setDayType("批发");
                         } else if (day <= 0) {
@@ -1409,6 +1411,10 @@ public class SheepServiceImpl extends BaseService implements SheepService {
                         }
                         break;
                     //endregion
+                    default:
+                        projectState.setDayTypeInt(6);
+                        projectState.setDayType("结算回款");
+                        break;
                 }
             } else {
                 projectState.setDayTypeInt(6);
@@ -1426,25 +1432,28 @@ public class SheepServiceImpl extends BaseService implements SheepService {
             } else if (project.getOrderState().equals(SheepOrderState.HAS_INTOBAR.getName())) {
                 Date outDate = DateUtil.addDay(project.getRedemTime(), -1);
                 int day = DateUtil.subDateOfDay(outDate, now);
-                if (day >= 110 && day > 0) {
+                if (day >= 110) {
                     projectState.setDayTypeInt(1);
                     projectState.setDayType("养殖中1");
-                } else if (109 >= day && day >= 90 && day > 0) {
+                } else if (109 >= day && day >= 90) {
                     projectState.setDayTypeInt(2);
                     projectState.setDayType("养殖中2");
-                } else if (89 >= day && day >= 60 && day > 0) {
+                } else if (89 >= day && day >= 60) {
                     projectState.setDayTypeInt(3);
                     projectState.setDayType("养殖中3");
-                } else if (59 >= day && day >= 40 && day > 0) {
+                } else if (59 >= day && day >= 40) {
                     projectState.setDayTypeInt(4);
                     projectState.setDayType("养殖中4");
-                } else if (39 >= day && day >= 10 && day > 0) {
+                } else if (39 >= day && day >= 10) {
                     projectState.setDayTypeInt(5);
                     projectState.setDayType("养殖中5");
-                } else if (9 >= day && day >= 1 && day > 0) {
+                } else if (9 >= day && day >= 1) {
                     projectState.setDayTypeInt(6);
                     projectState.setDayType("养殖中6");
                 } else if (day <= 0) {
+                    projectState.setDayTypeInt(7);
+                    projectState.setDayType("已出栏");
+                }else{
                     projectState.setDayTypeInt(7);
                     projectState.setDayType("已出栏");
                 }
