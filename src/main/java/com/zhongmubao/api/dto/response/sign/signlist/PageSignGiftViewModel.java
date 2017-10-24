@@ -1,5 +1,8 @@
 package com.zhongmubao.api.dto.response.sign.signlist;
 
+/**
+ * @author 孙阿龙
+ */
 public class PageSignGiftViewModel {
     public PageSignGiftViewModel() {
     }

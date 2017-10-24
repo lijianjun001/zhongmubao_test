@@ -1,10 +1,13 @@
 package com.zhongmubao.api.dto.response.sign;
 
+/**
+ * @author 孙阿龙
+ */
 public class SignModel {
     public SignModel() {
     }
 
-    public SignModel(int shareDayCount, String redPackagePrice, String info, SignGiftViewModel signGift,boolean todayIsShare,boolean showPop) {
+    public SignModel(int shareDayCount, String redPackagePrice, String info, SignGiftViewModel signGift, boolean todayIsShare, boolean showPop) {
         this.redPackagePrice = redPackagePrice;
         this.info = info;
         this.signGift = signGift;

@@ -1,5 +1,8 @@
 package com.zhongmubao.api.dto.response.sign.signpackagelist;
 
+/**
+ * @author 孙阿龙
+ */
 public class SignPackageViewModel {
     public SignPackageViewModel() {
     }

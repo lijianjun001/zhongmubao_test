@@ -2,6 +2,7 @@ package com.zhongmubao.api.dto.response.sign;
 
 /**
  * 话费卡
+ * @author 米立林
  */
 public class SignGiftCharge {
     private String price;

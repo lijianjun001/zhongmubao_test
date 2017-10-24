@@ -1,5 +1,8 @@
 package com.zhongmubao.api.dto.response.sign;
 
+/**
+ * @author 孙阿龙
+ */
 public class SignGiftAddressViewModel {
     public SignGiftAddressViewModel() {
     }

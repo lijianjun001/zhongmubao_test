@@ -4,6 +4,9 @@ import com.zhongmubao.api.dto.response.sign.SignGiftAddressViewModel;
 
 import java.util.List;
 
+/**
+ * @author 孙阿龙
+ */
 public class PageSignGiftModel {
 
     public PageSignGiftModel() {
