@@ -82,7 +82,8 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
         try {
             if (lock.lock()) {
                 //region 逻辑
-                // 分享天数
+
+                //分享天数
                 int shareDayCount = extRedPackageDao.countExtRedPackageByCustomerIdAndBeginTimeAndEndTimeAndType(customerId, monthBegin, monthEnd, dayShareType);
 
                 //region 验证
