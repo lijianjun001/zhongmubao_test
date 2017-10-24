@@ -26,14 +26,16 @@
 		<foreach collection="states" item="item" index="index" open="(" close=")" separator=",">
 			#{item}
 		</foreach>
-		<if test="type=='03'" >
-			<![CDATA[ and (p.Type='03' or p.Type='04') ]]>
-		</if>
-		<if test="type=='00'" >
-			<![CDATA[ and (p.Type<>'03' and p.Type<>'04') ]]>
-		</if>
+		<choose>
+			<when test="type=='03'">
+				<![CDATA[ and (p.Type='03' or p.Type='04') ]]>
+			</when>
+			<otherwise>
+				<![CDATA[ and (p.Type<>'03' and p.Type<>'04') ]]>
+			</otherwise>
+		</choose>
 		and o.Deleted=false and o.Frozened=false and p.Deleted=false
-		group by p.Id order by case when p.Type='03' or p.Type='04' then 2 else 1 end,o.Id desc
+		group by p.Id order by o.Id desc
 	</select>
 
 </mapper>

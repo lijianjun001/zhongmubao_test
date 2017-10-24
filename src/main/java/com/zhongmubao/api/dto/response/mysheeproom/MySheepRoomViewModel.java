@@ -1,45 +1,18 @@
 package com.zhongmubao.api.dto.response.mysheeproom;
 
-import com.zhongmubao.api.dto.response.mysheeproom.mysheeproomlist.MySheepRoomListModel;
+import com.zhongmubao.api.dto.response.mysheeproom.mysheeproomlist.MySheepRoomModel;
 
+/**
+ * @author xy
+ * @data 2017/10/24
+ */
 public class MySheepRoomViewModel {
-    public MySheepRoomViewModel(){}
-
-
-    public boolean isNewOrders() {
-        return isNewOrders;
+    public MySheepRoomViewModel() {
     }
 
-    public void setNewOrders(boolean newOrders) {
-        isNewOrders = newOrders;
-    }
 
-    public int getCustomerLevel() {
-        return customerLevel;
-    }
-
-    public void setCustomerLevel(int customerLevel) {
-        this.customerLevel = customerLevel;
-    }
-
-    public int getTotalSheepCount() {
-        return totalSheepCount;
-    }
-
-    public void setTotalSheepCount(int totalSheepCount) {
-        this.totalSheepCount = totalSheepCount;
-    }
-
-    public MySheepRoomListModel getListing() {
-        return listing;
-    }
-
-    public void setListing(MySheepRoomListModel listing) {
-        this.listing = listing;
-    }
-
-    private boolean isNewOrders;
+    private boolean hasOrder;
     private int customerLevel;
     private int totalSheepCount;
-    private MySheepRoomListModel listing;
+    private MySheepRoomModel model;
 }
