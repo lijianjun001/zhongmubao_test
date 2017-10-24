@@ -22,5 +22,13 @@ public interface SheepOrderDao {
      * @return 订单数
      */
     int countSheepOrderByCustomerIdAndBeginTimeAndEndTimeAndState(@Param("customerId") int customerId, @Param("beginTime") Date beginTime, @Param("endTime") Date endTime, @Param("states") List<String> states);
+
+    /**
+     *
+     * @param customerId 客户id
+     * @param states 状态（List）
+     * @param Type 类型 00 or 03  默认00
+     * @return List<MySheepRoomSheepOrderAndProject>
+     */
     List<MySheepRoomSheepOrderAndProject> getSheepOrderAndProjectByCustomeridAndStatesAndType(@Param("customerId") int customerId, @Param("states") List<String> states, @Param("customerId") int Type);
 }

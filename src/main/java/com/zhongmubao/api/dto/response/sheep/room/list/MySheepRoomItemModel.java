@@ -82,28 +82,28 @@ public class MySheepRoomItemModel {
         this.state = state;
     }
 
-    public String getDayType() {
-        return dayType;
+    public String getBreedProgress() {
+        return breedProgress;
     }
 
-    public void setDayType(String dayType) {
-        this.dayType = dayType;
+    public void setBreedProgress(String breedProgress) {
+        this.breedProgress = breedProgress;
     }
 
-    public String getDayTypeImg() {
-        return dayTypeImg;
+    public String getBreedProgressImg() {
+        return breedProgressImg;
     }
 
-    public void setDayTypeImg(String dayTypeImg) {
-        this.dayTypeImg = dayTypeImg;
+    public void setBreedProgressImg(String breedProgressImg) {
+        this.breedProgressImg = breedProgressImg;
     }
 
-    public int getDayTypeInt() {
-        return dayTypeInt;
+    public int getBreedProgressInt() {
+        return breedProgressInt;
     }
 
-    public void setDayTypeInt(int dayTypeInt) {
-        this.dayTypeInt = dayTypeInt;
+    public void setBreedProgressInt(int breedProgressInt) {
+        this.breedProgressInt = breedProgressInt;
     }
 
     public String getVendor() {
@@ -139,9 +139,9 @@ public class MySheepRoomItemModel {
     private String beginTime;
     private String endTime;
     private String state;
-    private String dayType;
-    private String dayTypeImg;
-    private int dayTypeInt;
+    private String breedProgress;
+    private String breedProgressImg;
+    private int breedProgressInt;
     private String vendor;
     private int leftDays;
     private int period;

@@ -1,5 +1,10 @@
 package com.zhongmubao.api.dto.request.sheep.room;
 
+/**
+ * 我的羊圈
+ * @author xy
+ * @date 2017/10/24
+ */
 public class MySheepRoomRequestModel {
     public MySheepRoomRequestModel() {
     }
