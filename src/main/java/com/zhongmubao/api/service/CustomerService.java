@@ -2,9 +2,9 @@ package com.zhongmubao.api.service;
 
 import com.zhongmubao.api.dto.request.sign.*;
 import com.zhongmubao.api.dto.response.sign.MyGiftCardModel;
-import com.zhongmubao.api.dto.response.sign.signlist.PageSignGiftModel;
+import com.zhongmubao.api.dto.response.sign.list.PageSignGiftModel;
 import com.zhongmubao.api.dto.response.sign.SignModel;
-import com.zhongmubao.api.dto.response.sign.signpackagelist.PageSignPackageModel;
+import com.zhongmubao.api.dto.response.sign.packagelist.PageSignPackageModel;
 import com.zhongmubao.api.entity.Customer;
 
 /**

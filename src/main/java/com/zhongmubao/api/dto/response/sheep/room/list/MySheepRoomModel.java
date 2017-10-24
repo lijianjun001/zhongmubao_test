@@ -1,4 +1,4 @@
-package com.zhongmubao.api.dto.response.mysheeproom.mysheeproomlist;
+package com.zhongmubao.api.dto.response.sheep.room.list;
 
 
 import java.util.List;

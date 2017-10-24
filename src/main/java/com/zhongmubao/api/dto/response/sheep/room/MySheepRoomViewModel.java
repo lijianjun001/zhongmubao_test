@@ -1,6 +1,6 @@
-package com.zhongmubao.api.dto.response.mysheeproom;
+package com.zhongmubao.api.dto.response.sheep.room;
 
-import com.zhongmubao.api.dto.response.mysheeproom.mysheeproomlist.MySheepRoomModel;
+import com.zhongmubao.api.dto.response.sheep.room.list.MySheepRoomModel;
 
 /**
  * 我的羊圈

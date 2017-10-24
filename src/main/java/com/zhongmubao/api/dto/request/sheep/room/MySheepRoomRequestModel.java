@@ -1,4 +1,4 @@
-package com.zhongmubao.api.dto.request.mysheeproom;
+package com.zhongmubao.api.dto.request.sheep.room;
 
 public class MySheepRoomRequestModel {
     public MySheepRoomRequestModel() {

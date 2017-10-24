@@ -1,4 +1,4 @@
-package com.zhongmubao.api.dto.response.sign.signlist;
+package com.zhongmubao.api.dto.response.sign.list;
 
 /**
  * @author 孙阿龙
