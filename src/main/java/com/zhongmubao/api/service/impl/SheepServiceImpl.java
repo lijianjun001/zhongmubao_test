@@ -990,10 +990,10 @@ public class SheepServiceImpl extends BaseService implements SheepService {
             mySheepRoomRedeemedViewModel.setVenderId(item.getVendorId());
             mySheepRoomRedeemedViewModel.setOrderCode(item.getOrderCode());
             mySheepRoomRedeemedViewModel.setTitle(item.getTitle());
-            mySheepRoomRedeemedViewModel.setDeductibleAmount(String.format("%.2f", item.getDeductibleAmount()));
-            mySheepRoomRedeemedViewModel.setPaymentAmount(String.format("%.2f", item.getPaymentAmount()));
-            mySheepRoomRedeemedViewModel.setRedemAmount(String.format("%.2f", item.getRedemAmount()));
-            mySheepRoomRedeemedViewModel.setRedPrice(String.format("%.2f", item.getRedPrice()));
+            mySheepRoomRedeemedViewModel.setDeductibleAmount(DoubleUtil.toFixed (item.getDeductibleAmount(),"%.2f"));
+            mySheepRoomRedeemedViewModel.setPaymentAmount(DoubleUtil.toFixed ( item.getPaymentAmount(),"%.2f"));
+            mySheepRoomRedeemedViewModel.setRedemAmount(DoubleUtil.toFixed (item.getRedemAmount(),"%.2f"));
+            mySheepRoomRedeemedViewModel.setRedPrice(DoubleUtil.toFixed (item.getRedPrice(),"%.2f"));
 
             list.add(mySheepRoomRedeemedViewModel);
         }
