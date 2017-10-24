@@ -1,4 +1,4 @@
-package com.zhongmubao.api.dto.response.sign.signPackageList;
+package com.zhongmubao.api.dto.response.sign.signpackagelist;
 
 public class SignPackageViewModel {
     public SignPackageViewModel() {

@@ -1,4 +1,4 @@
-package com.zhongmubao.api.dto.request.touTiaoAdv;
+package com.zhongmubao.api.dto.request.toutiaoadv;
 
 /**
  * TouTiaoAdvRequestModel
