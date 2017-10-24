@@ -28,13 +28,6 @@ public class SystemServiceImpl extends BaseService implements SystemService {
         this.touTiaoAdvMongoDao = touTiaoAdvMongoDao;
     }
 
-    /**
-     * 头条广告
-     *
-     * @param model 请求实体
-     * @throws Exception 异常
-     * @author xy
-     */
     @Override
     public void touTiaoAdv(TouTiaoAdvRequestModel model) throws Exception {
         if (null == model) {
