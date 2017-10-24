@@ -4,7 +4,7 @@ import com.zhongmubao.api.authorization.annotation.Authorization;
 import com.zhongmubao.api.authorization.annotation.CurrentUser;
 import com.zhongmubao.api.dto.request.OnlyPrimaryIdRequestModel;
 import com.zhongmubao.api.dto.request.PageIndexRequestModel;
-import com.zhongmubao.api.dto.request.sheep.MySheepFoldRequestModel;
+import com.zhongmubao.api.dto.request.sheep.MySheepRoomRequestModel;
 import com.zhongmubao.api.dto.request.sheep.SheepOrderRequestModel;
 import com.zhongmubao.api.dto.request.ProjectPlanRequestModel;
 import com.zhongmubao.api.dto.request.SystemMonitorRequestModel;
@@ -247,31 +247,16 @@ public class SheepController {
      * @author xy 2017-10-09
      */
     @Authorization
-    @RequestMapping(value = "/mySheepFoldList", method = RequestMethod.POST, consumes = "application/json")
-    public ResponseEntity<ReponseModel> mySheepFoldList(@CurrentUser Customer customer,HttpEntity<MySheepFoldRequestModel> model) {
+    @RequestMapping(value = "/mySheepRoom", method = RequestMethod.POST, consumes = "application/json")
+    public ResponseEntity<ReponseModel> mySheepRoom(@CurrentUser Customer customer,HttpEntity<MySheepRoomRequestModel> model) {
         try {
-            MySheepFoldListViewModel mySheepFoldListViewModel = sheepService.mySheepFoldList(customer.getId(),model.getBody());
-            return new ResponseEntity<>(ReponseModel.ok(mySheepFoldListViewModel), HttpStatus.OK);
+            MySheepRoomListViewModel mySheepRoomListViewModel = sheepService.mySheepRoom(customer.getId(),model.getBody());
+            return new ResponseEntity<>(ReponseModel.ok(mySheepRoomListViewModel), HttpStatus.OK);
         } catch (Exception ex) {
             return new ResponseEntity<>(ReponseModel.error(ex, this.getClass()), HttpStatus.OK);
         }
     }
 
-    /**
-     * @param customer     当前用户
-     * @return 我的羊圈 头
-     * @author xy 2017-10-09
-     */
-    @Authorization
-    @RequestMapping(value = "/mySheepFoldHead", method = RequestMethod.POST, consumes = "application/json")
-    public ResponseEntity<ReponseModel> mySheepFoldHead(@CurrentUser Customer customer) {
-        try {
-            MySheepFoldHeadViewModel mySheepFoldHeadViewModel = sheepService.mySheepFoldHead(customer.getId());
-            return new ResponseEntity<>(ReponseModel.ok(mySheepFoldHeadViewModel), HttpStatus.OK);
-        } catch (Exception ex) {
-            return new ResponseEntity<>(ReponseModel.error(ex, this.getClass()), HttpStatus.OK);
-        }
-    }
 
     /**
      * @param customer     当前用户
@@ -279,31 +264,16 @@ public class SheepController {
      * @author xy 2017-10-09
      */
     @Authorization
-    @RequestMapping(value = "/mySheepFoldRedeemedList", method = RequestMethod.POST, consumes = "application/json")
-    public ResponseEntity<ReponseModel> mySheepFoldRedeemedList(@CurrentUser Customer customer,HttpEntity<MySheepFoldRequestModel> model) {
+    @RequestMapping(value = "/mySheepRoomRedeemed", method = RequestMethod.POST, consumes = "application/json")
+    public ResponseEntity<ReponseModel> mySheepRoomRedeemed(@CurrentUser Customer customer,HttpEntity<MySheepRoomRequestModel> model) {
         try {
-            MySheepFoldRedeemedListViewModel mySheepFoldRedeemedListViewModel = sheepService.mySheepFoldRedeemedList(customer.getId(),model.getBody());
+            MySheepRoomRedeemedListViewModel mySheepFoldRedeemedListViewModel = sheepService.mySheepRoomRedeemed(customer.getId(),model.getBody());
             return new ResponseEntity<>(ReponseModel.ok(mySheepFoldRedeemedListViewModel), HttpStatus.OK);
         } catch (Exception ex) {
             return new ResponseEntity<>(ReponseModel.error(ex, this.getClass()), HttpStatus.OK);
         }
     }
 
-    /**
-     * @param customer     当前用户
-     * @return 我的羊圈 已售出 头部
-     * @author xy 2017-10-09
-     */
-    @Authorization
-    @RequestMapping(value = "/mySheepFoldRedeemedHead", method = RequestMethod.POST, consumes = "application/json")
-    public ResponseEntity<ReponseModel> mySheepFoldRedeemedHead(@CurrentUser Customer customer) {
-        try {
-            MySheepFoldHeadViewModel mySheepFoldHeadViewModel = sheepService.mySheepFoldRedeemedHead(customer.getId());
-            return new ResponseEntity<>(ReponseModel.ok(mySheepFoldHeadViewModel), HttpStatus.OK);
-        } catch (Exception ex) {
-            return new ResponseEntity<>(ReponseModel.error(ex, this.getClass()), HttpStatus.OK);
-        }
-    }
 
     @RequestMapping(value = "/projectPlan", method = RequestMethod.POST, consumes = "application/json")
     public ResponseEntity<ReponseModel> ProjectPlan(HttpEntity<ProjectPlanRequestModel> requestModel) {

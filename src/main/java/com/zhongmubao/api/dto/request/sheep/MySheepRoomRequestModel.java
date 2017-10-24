@@ -1,7 +1,7 @@
 package com.zhongmubao.api.dto.request.sheep;
 
-public class MySheepFoldRequestModel {
-    public  MySheepFoldRequestModel(){}
+public class MySheepRoomRequestModel {
+    public  MySheepRoomRequestModel(){}
 
     public int getPageIndex() {
         return pageIndex;

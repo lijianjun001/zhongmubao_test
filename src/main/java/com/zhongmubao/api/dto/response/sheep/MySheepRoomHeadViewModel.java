@@ -1,6 +1,6 @@
 package com.zhongmubao.api.dto.response.sheep;
 
-public class MySheepFoldHeadViewModel {
+public class MySheepRoomHeadViewModel {
     public int getSheepTotalCount() {
         return sheepTotalCount;
     }

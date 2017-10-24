@@ -3,7 +3,7 @@ package com.zhongmubao.api.service;
 import com.zhongmubao.api.dto.request.OnlyPrimaryIdRequestModel;
 import com.zhongmubao.api.dto.request.PageIndexRequestModel;
 import com.zhongmubao.api.dto.request.ProjectPlanRequestModel;
-import com.zhongmubao.api.dto.request.sheep.MySheepFoldRequestModel;
+import com.zhongmubao.api.dto.request.sheep.MySheepRoomRequestModel;
 import com.zhongmubao.api.dto.request.sheep.SheepOrderRequestModel;
 import com.zhongmubao.api.dto.request.SystemMonitorRequestModel;
 import com.zhongmubao.api.dto.response.index.IndexModel;
@@ -32,13 +32,9 @@ public interface SheepService {
 
     ProjectPlanModel projectPlan(ProjectPlanRequestModel model) throws Exception;
 
-    MySheepFoldListViewModel mySheepFoldList(int customerId, MySheepFoldRequestModel model) throws Exception;
+    MySheepRoomListViewModel mySheepRoom(int customerId, MySheepRoomRequestModel model) throws Exception;
 
-    MySheepFoldHeadViewModel mySheepFoldHead(int customerId) throws Exception;
-
-    MySheepFoldHeadViewModel mySheepFoldRedeemedHead(int customerId) throws Exception;
-
-    MySheepFoldRedeemedListViewModel mySheepFoldRedeemedList(int customerId, MySheepFoldRequestModel model) throws Exception;
+    MySheepRoomRedeemedListViewModel mySheepRoomRedeemed(int customerId, MySheepRoomRequestModel model) throws Exception;
 
     SheepProjectOrdersModel mySheepfoldSheepProjectOrders(int customerId, OnlyPrimaryIdRequestModel model) throws Exception;
 

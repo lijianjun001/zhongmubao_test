@@ -1,6 +1,6 @@
 package com.zhongmubao.api.dto.response.sheep;
 
-public class MySheepFoldRedeemedViewModel {
+public class MySheepRoomRedeemedViewModel {
 
     public int getId() {
         return id;
