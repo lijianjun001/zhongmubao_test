@@ -27,8 +27,15 @@ public class TouTiaoAdvMongoDao implements BaseDao<TouTiaoAdvMongo> {
     public void update(TouTiaoAdvMongo entity) throws Exception {
 
     }
-    public void updateMulti(Query query, Update update) throws Exception {
-        this.mongoTemplate.updateMulti(query,update,"TouTiaoAdvMongo");
+
+    /**
+     * 修改 所有狀態
+     * @author xy
+     * @param touTiaoAdvMongo
+     * @throws Exception
+     */
+    public void updateMulti(TouTiaoAdvMongo touTiaoAdvMongo) throws Exception {
+        this.mongoTemplate.updateMulti(new Query(Criteria.where("imei").is(touTiaoAdvMongo.getImei()).and("mac").is(touTiaoAdvMongo.getMac()).and("os").is(touTiaoAdvMongo.getOs())),new Update().set("status", "01"),"TouTiaoAdvMongo");
     }
     @Override
     public void save(TouTiaoAdvMongo entity) throws Exception {
@@ -40,9 +47,9 @@ public class TouTiaoAdvMongoDao implements BaseDao<TouTiaoAdvMongo> {
 
     }
 
-    public TouTiaoAdvMongo getOrderBy(Criteria criteria) throws Exception {
+    public TouTiaoAdvMongo getOrderBy(String imei,String os) throws Exception {
         Aggregation aggregation = Aggregation.newAggregation(
-                Aggregation.match(criteria),
+                Aggregation.match(Criteria.where("imei").is(imei).and("os").is(os).and("status").is("00")),
                 Aggregation.sort(new Sort(Sort.Direction.DESC,"_id")),
                 Aggregation.limit(1)
         );
