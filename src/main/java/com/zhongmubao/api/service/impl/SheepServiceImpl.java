@@ -864,7 +864,7 @@ public class SheepServiceImpl extends BaseService implements SheepService {
         if (model.getPageIndex() <= 0) {
             model.setPageIndex(1);
         }
-        if (model.getProjectType() == null || model.getProjectType().equals("")) {
+        if (model.getProjectType() == null || "".equals(model.getProjectType())) {
             model.setProjectType("");
         }
         MySheepRoomViewModel viewModel = new MySheepRoomViewModel();
