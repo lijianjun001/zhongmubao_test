@@ -4,7 +4,7 @@
 		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.zhongmubao.api.dao.SheepOrderDao">
 	<select id="countSheepOrderByCustomerIdAndBeginTimeAndEndTimeAndState" resultType="int">
-		select IFNULL(count(1),0) from SheepOrder where
+		select ifnull(count(1),0) from SheepOrder where
 		state in
 		<foreach collection="states" item="item" index="index" open="(" close=")" separator=",">
 			#{item}
@@ -14,4 +14,26 @@
 		and created &lt;= #{endTime}
 		and customerid = #{customerId}
 	</select>
+
+	<select id="getSheepOrderAndProjectByCustomeridAndStatesAndType" resultType="MySheepRoomSheepOrderAndProject">
+		<!-- 具体的sql -->
+		select
+		sum(o.Count) OrderSheepCount,max(o.State) OrderState,p.Id,p.VendorId,p.Title,p.Type,p.BeginTime,p.EffectiveTime,p.RedemTime,p.Period
+		from SheepOrder o
+		inner join SheepProject p on (o.ProjectId=p.Id)
+		where
+		o.CustomerId=#{customerId} and o.State in
+		<foreach collection="states" item="item" index="index" open="(" close=")" separator=",">
+			#{item}
+		</foreach>
+		<if test="type=='03'" >
+			<![CDATA[ and (p.Type='03' or p.Type='04') ]]>
+		</if>
+		<if test="type=='00'" >
+			<![CDATA[ and (p.Type<>'03' and p.Type<>'04') ]]>
+		</if>
+		and o.Deleted=false and o.Frozened=false and p.Deleted=false
+		group by p.Id order by case when p.Type='03' or p.Type='04' then 2 else 1 end,o.Id desc
+	</select>
+
 </mapper>

@@ -1,5 +1,7 @@
 package com.zhongmubao.api.dao;
 
+
+import com.zhongmubao.api.entity.ext.MySheepRoomSheepOrderAndProject;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.Date;
@@ -20,4 +22,5 @@ public interface SheepOrderDao {
      * @return 订单数
      */
     int countSheepOrderByCustomerIdAndBeginTimeAndEndTimeAndState(@Param("customerId") int customerId, @Param("beginTime") Date beginTime, @Param("endTime") Date endTime, @Param("states") List<String> states);
+    List<MySheepRoomSheepOrderAndProject> getSheepOrderAndProjectByCustomeridAndStatesAndType(@Param("customerId") int customerId, @Param("states") List<String> states, @Param("customerId") int Type);
 }
