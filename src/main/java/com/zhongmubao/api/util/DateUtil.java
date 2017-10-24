@@ -272,7 +272,7 @@ public class DateUtil {
     /**
      * 获取当前日期是星期几
      *
-     * @param dt
+     * @param dt 日期
      * @return 当前日期是星期几
      */
     public static String getWeekOfDate(Date dt) {
