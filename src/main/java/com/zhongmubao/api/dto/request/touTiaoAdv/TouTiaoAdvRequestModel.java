@@ -1,4 +1,4 @@
-package com.zhongmubao.api.dto.request.toutiaoadv;
+package com.zhongmubao.api.dto.request.touTiaoAdv;
 
 /**
  * TouTiaoAdvRequestModel
@@ -50,7 +50,7 @@ public class TouTiaoAdvRequestModel {
     private String mac;
     private String imei;
     private String ip;
-    private String os;//0-android,1-ios
+    private String os;
     private String deviceid;
 
 }
