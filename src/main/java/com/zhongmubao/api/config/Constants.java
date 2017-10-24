@@ -1,7 +1,7 @@
 package com.zhongmubao.api.config;
 
 import com.zhongmubao.api.config.enmu.SignGiftType;
-import com.zhongmubao.api.dto.SignGift;
+import com.zhongmubao.api.config.entity.SignGift;
 
 import java.util.Arrays;
 import java.util.Collections;

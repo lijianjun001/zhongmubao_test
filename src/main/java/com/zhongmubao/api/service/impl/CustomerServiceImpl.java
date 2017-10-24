@@ -14,7 +14,7 @@ import com.zhongmubao.api.dto.response.sign.signList.PageSignGiftModel;
 import com.zhongmubao.api.dto.response.sign.signList.PageSignGiftViewModel;
 import com.zhongmubao.api.dto.response.sign.signPackageList.PageSignPackageModel;
 import com.zhongmubao.api.dto.response.sign.signPackageList.SignPackageViewModel;
-import com.zhongmubao.api.dto.SignGift;
+import com.zhongmubao.api.config.entity.SignGift;
 import com.zhongmubao.api.entity.*;
 import com.zhongmubao.api.exception.ApiException;
 import com.zhongmubao.api.mongo.dao.ShareCardMongoDao;

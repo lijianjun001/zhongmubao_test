@@ -1,4 +1,4 @@
-package com.zhongmubao.api.dto;
+package com.zhongmubao.api.config.entity;
 
 import com.zhongmubao.api.config.enmu.SignGiftType;
 

@@ -1,6 +1,6 @@
 package com.zhongmubao.api.web;
 
-import com.zhongmubao.api.dto.request.TouTiaoAdvRequestModel;
+import com.zhongmubao.api.dto.request.toutiaoadv.TouTiaoAdvRequestModel;
 import com.zhongmubao.api.dto.response.ReponseModel;
 import com.zhongmubao.api.exception.ApiException;
 import com.zhongmubao.api.service.SystemService;
