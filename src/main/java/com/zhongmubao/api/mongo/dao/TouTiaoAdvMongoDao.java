@@ -29,7 +29,7 @@ public class TouTiaoAdvMongoDao implements BaseDao<TouTiaoAdvMongo> {
     }
 
     /**
-     * 修改 所有狀態
+     * 修改 所有满足条件的 状态
      * @author xy
      * @param touTiaoAdvMongo
      * @throws Exception
@@ -47,6 +47,14 @@ public class TouTiaoAdvMongoDao implements BaseDao<TouTiaoAdvMongo> {
 
     }
 
+    /**
+     * 查询 满足条件排序 最后一个
+     * @author xy
+     * @param imei
+     * @param os
+     * @return
+     * @throws Exception
+     */
     public TouTiaoAdvMongo getOrderBy(String imei,String os) throws Exception {
         Aggregation aggregation = Aggregation.newAggregation(
                 Aggregation.match(Criteria.where("imei").is(imei).and("os").is(os).and("status").is("00")),
