@@ -250,7 +250,7 @@ public class SheepController {
     @RequestMapping(value = "/mySheepRoom", method = RequestMethod.POST, consumes = "application/json")
     public ResponseEntity<ReponseModel> mySheepRoom(@CurrentUser Customer customer,HttpEntity<MySheepRoomRequestModel> model) {
         try {
-            MySheepRoomListViewModel mySheepRoomListViewModel = sheepService.mySheepRoom(customer.getId(),model.getBody());
+            MySheepRoomViewModel mySheepRoomListViewModel = sheepService.mySheepRoom(customer.getId(), model.getBody());
             return new ResponseEntity<>(ReponseModel.ok(mySheepRoomListViewModel), HttpStatus.OK);
         } catch (Exception ex) {
             return new ResponseEntity<>(ReponseModel.error(ex, this.getClass()), HttpStatus.OK);
@@ -267,7 +267,7 @@ public class SheepController {
     @RequestMapping(value = "/mySheepRoomRedeemed", method = RequestMethod.POST, consumes = "application/json")
     public ResponseEntity<ReponseModel> mySheepRoomRedeemed(@CurrentUser Customer customer,HttpEntity<MySheepRoomRequestModel> model) {
         try {
-            MySheepRoomRedeemedListViewModel mySheepFoldRedeemedListViewModel = sheepService.mySheepRoomRedeemed(customer.getId(),model.getBody());
+            MySheepRoomRedeemedViewModel mySheepFoldRedeemedListViewModel = sheepService.mySheepRoomRedeemed(customer.getId(), model.getBody());
             return new ResponseEntity<>(ReponseModel.ok(mySheepFoldRedeemedListViewModel), HttpStatus.OK);
         } catch (Exception ex) {
             return new ResponseEntity<>(ReponseModel.error(ex, this.getClass()), HttpStatus.OK);

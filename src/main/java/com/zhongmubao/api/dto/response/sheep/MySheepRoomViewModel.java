@@ -2,7 +2,7 @@ package com.zhongmubao.api.dto.response.sheep;
 
 import java.util.List;
 
-public class MySheepRoomListViewModel {
+public class MySheepRoomViewModel {
 
     public MySheepRoomHeadViewModel getHead() {
         return head;

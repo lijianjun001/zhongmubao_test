@@ -1,123 +1,37 @@
 package com.zhongmubao.api.dto.response.sheep;
 
+import java.util.List;
+
 public class MySheepRoomRedeemedViewModel {
 
-    public int getId() {
-        return id;
+    public MySheepRoomHeadViewModel getHead() {
+        return head;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setHead(MySheepRoomHeadViewModel head) {
+        this.head = head;
     }
 
-    public String getOrderCode() {
-        return orderCode;
+    private MySheepRoomHeadViewModel head;
+
+    public int getTotalPage() {
+        return totalPage;
     }
 
-    public void setOrderCode(String orderCode) {
-        this.orderCode = orderCode;
+    public void setTotalPage(int totalPage) {
+        this.totalPage = totalPage;
     }
 
-    public int getVenderId() {
-        return venderId;
+    private int totalPage;
+
+    public List<MySheepRoomProjectViewModel> getList() {
+        return list;
     }
 
-    public void setVenderId(int venderId) {
-        this.venderId = venderId;
+    public void setList(List<MySheepRoomProjectViewModel> list) {
+        this.list = list;
     }
 
-    public String getTitle() {
-        return title;
-    }
+    private List<MySheepRoomProjectViewModel> list;
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public int getCount() {
-        return count;
-    }
-
-    public void setCount(int count) {
-        this.count = count;
-    }
-
-    public String getBeginTime() {
-        return beginTime;
-    }
-
-    public void setBeginTime(String beginTime) {
-        this.beginTime = beginTime;
-    }
-
-    public String getEffectiveTime() {
-        return effectiveTime;
-    }
-
-    public void setEffectiveTime(String effectiveTime) {
-        this.effectiveTime = effectiveTime;
-    }
-
-    public String getRedemTime() {
-        return redemTime;
-    }
-
-    public void setRedemTime(String redemTime) {
-        this.redemTime = redemTime;
-    }
-
-    public String getDeductibleAmount() {
-        return deductibleAmount;
-    }
-
-    public void setDeductibleAmount(String deductibleAmount) {
-        this.deductibleAmount = deductibleAmount;
-    }
-
-    public String getRedemAmount() {
-        return redemAmount;
-    }
-
-    public void setRedemAmount(String redemAmount) {
-        this.redemAmount = redemAmount;
-    }
-
-    public String getRedPrice() {
-        return redPrice;
-    }
-
-    public void setRedPrice(String redPrice) {
-        this.redPrice = redPrice;
-    }
-
-    public String getPaymentAmount() {
-        return paymentAmount;
-    }
-
-    public void setPaymentAmount(String paymentAmount) {
-        this.paymentAmount = paymentAmount;
-    }
-
-    private int id;
-    private String orderCode;
-    private int venderId;
-    private String title;
-    private String type;
-    private int count;
-    private String beginTime;
-    private String effectiveTime;
-    private String redemTime;
-    private String deductibleAmount;
-    private String redemAmount;
-    private String redPrice;
-    private String paymentAmount;
 }
-

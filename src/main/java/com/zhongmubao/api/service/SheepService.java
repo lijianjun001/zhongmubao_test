@@ -32,9 +32,9 @@ public interface SheepService {
 
     ProjectPlanModel projectPlan(ProjectPlanRequestModel model) throws Exception;
 
-    MySheepRoomListViewModel mySheepRoom(int customerId, MySheepRoomRequestModel model) throws Exception;
+    MySheepRoomViewModel mySheepRoom(int customerId, MySheepRoomRequestModel model) throws Exception;
 
-    MySheepRoomRedeemedListViewModel mySheepRoomRedeemed(int customerId, MySheepRoomRequestModel model) throws Exception;
+    MySheepRoomRedeemedViewModel mySheepRoomRedeemed(int customerId, MySheepRoomRequestModel model) throws Exception;
 
     SheepProjectOrdersModel mySheepfoldSheepProjectOrders(int customerId, OnlyPrimaryIdRequestModel model) throws Exception;
 
