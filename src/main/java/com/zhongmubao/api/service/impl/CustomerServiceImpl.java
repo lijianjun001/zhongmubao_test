@@ -2,7 +2,6 @@ package com.zhongmubao.api.service.impl;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
-import com.zhongmubao.api.authorization.manager.TokenManager;
 import com.zhongmubao.api.cache.RedisCache;
 import com.zhongmubao.api.components.recharge.Recharge;
 import com.zhongmubao.api.config.Constants;
@@ -41,22 +40,18 @@ import static com.zhongmubao.api.config.enmu.SignGiftType.*;
 @Service
 public class CustomerServiceImpl extends BaseService implements CustomerService {
 
-    private final CustomerDao customerDao;
     private final ExtRedPackageDao extRedPackageDao;
     private final ShareCardMongoDao shareCardMongoDao;
     private final CustomerAddressDao customerAddressDao;
-    private final TokenManager tokenManager;
     private final RedisCache redisCache;
     private final SheepOrderDao sheepOrderDao;
     private final ExtActivityRecordDao activityRecordDao;
 
     @Autowired
-    public CustomerServiceImpl(CustomerDao customerDao, ExtRedPackageDao extRedPackageDao, ShareCardMongoDao shareCardMongoDao, CustomerAddressDao customerAddressDao, TokenManager tokenManager, RedisCache redisCache, SheepOrderDao sheepOrderDao, ExtActivityRecordDao activityRecordDao) {
-        this.customerDao = customerDao;
+    public CustomerServiceImpl(ExtRedPackageDao extRedPackageDao, ShareCardMongoDao shareCardMongoDao, CustomerAddressDao customerAddressDao, RedisCache redisCache, SheepOrderDao sheepOrderDao, ExtActivityRecordDao activityRecordDao) {
         this.extRedPackageDao = extRedPackageDao;
         this.shareCardMongoDao = shareCardMongoDao;
         this.customerAddressDao = customerAddressDao;
-        this.tokenManager = tokenManager;
         this.redisCache = redisCache;
         this.sheepOrderDao = sheepOrderDao;
         this.activityRecordDao = activityRecordDao;
@@ -64,12 +59,6 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
 
     //region 签到相关
 
-    /***
-     * 签到
-     * @param customer 客户id
-     * @return PageSignGiftModel
-     * @throws Exception
-     */
     @Override
     public SignModel sign(Customer customer) throws Exception {
         int customerId = customer.getId();
@@ -97,10 +86,10 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
                 int shareDayCount = extRedPackageDao.countExtRedPackageByCustomerIdAndBeginTimeAndEndTimeAndType(customerId, monthBegin, monthEnd, dayShareType);
 
                 //region 验证
-                boolean todayIsShare = extRedPackageDao.countExtRedPackageByCustomerIdAndBeginTimeAndEndTimeAndType(customerId, dayBegin, dayEnd, dayShareType) > 0;
+                boolean todayIsShare = redisCache.getCustomerIsShare(customerId);
 
                 if (todayIsShare) {
-                    return new com.zhongmubao.api.dto.response.sign.SignModel(shareDayCount, "0.00", null, null, todayIsShare, false);
+                    return new com.zhongmubao.api.dto.response.sign.SignModel(shareDayCount, "0.00", null, null, true, false);
                 }
 
                 //判断这个月分享了多少次
@@ -129,6 +118,8 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
                 //添加红包
                 sendRedPackage(customer, dayShareType, price, expTime, 1);
 
+                //设置今天已分享
+                redisCache.saveCustomerIsShare(customerId);
                 //endregion
 
                 //region 礼物
@@ -146,8 +137,7 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
                     if (signGift.getType().equals(SECRET_GIFT)) {
                         //判断30天内是否买羊
                         Date buySheepBeginTime = DateUtil.addDay(now, -30);
-                        Date buySheepEndTime = now;
-                        int buySheepCount = sheepOrderDao.countSheepOrderByCustomerIdAndBeginTimeAndEndTimeAndState(customerId, buySheepBeginTime, buySheepEndTime, Constants.SHEEP_IN_THE_BAR_STATE);
+                        int buySheepCount = sheepOrderDao.countSheepOrderByCustomerIdAndBeginTimeAndEndTimeAndState(customerId, buySheepBeginTime, now, Constants.SHEEP_IN_THE_BAR_STATE);
                         if (buySheepCount <= 0) {
                             // 没买羊默认奖励红包
                             signGift = Constants.SIGN_GIFT_LIST.get(0);
@@ -156,7 +146,7 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
                         }
                     }
                     // 如果中奖是红包
-                    double redPackagePrice = 0;
+                    double redPackagePrice;
                     if (signGift.getType().equals(RED_PACKAGE)) {
                         signGiftRedPackageViewModel = new SignGiftRedPackageViewModel();
                         redPackagePrice = MathUtil.random(10, 200) * 0.01;
@@ -199,21 +189,21 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
                         shareCardMongoDao.add(shareCard);
                     }
 
-                    signGiftViewModel = new SignGiftViewModel();
-                    signGiftViewModel.setId(shareCard.id);
-                    signGiftViewModel.setType(shareCard.getType());
-                    signGiftViewModel.setCount(signGift.getCount());
-                    signGiftViewModel.setSignGiftRedPackage(signGiftRedPackageViewModel);
-                    signGiftViewModel.setSignGiftAddress(signGiftAddressViewModel);
-                    signGiftViewModel.setTitle(formatGiftShortTitle(signGift.getType(), shareCard.getCount(), giftPrice));
-                    signGiftViewModel.setUnit(formatGiftUnit(signGift.getType()));
-                    signGiftViewModel.setSignGiftCharge(new SignGiftCharge(Integer.toString(telephoneMoney), customer.getAccount()));
-                }
-                //设置今天已分享
-                redisCache.saveCustomerIsShare(customerId);
+                    if (null != shareCard) {
+                        signGiftViewModel = new SignGiftViewModel();
+                        signGiftViewModel.setId(shareCard.id);
+                        signGiftViewModel.setType(shareCard.getType());
+                        signGiftViewModel.setCount(signGift.getCount());
+                        signGiftViewModel.setSignGiftRedPackage(signGiftRedPackageViewModel);
+                        signGiftViewModel.setSignGiftAddress(signGiftAddressViewModel);
+                        signGiftViewModel.setTitle(formatGiftShortTitle(signGift.getType(), shareCard.getCount(), giftPrice));
+                        signGiftViewModel.setUnit(formatGiftUnit(signGift.getType()));
+                        signGiftViewModel.setSignGiftCharge(new SignGiftCharge(Integer.toString(telephoneMoney), customer.getAccount()));
+                    }
 
+                }
                 //endregion
-                return new SignModel(shareDayCount, DoubleUtil.toFixed(price, "0.00"), signInfo, signGiftViewModel, todayIsShare, true);
+                return new SignModel(shareDayCount, DoubleUtil.toFixed(price, "0.00"), signInfo, signGiftViewModel, true, true);
 
                 //endregion
             }
@@ -223,12 +213,6 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
         throw new ApiException(ResultStatus.FAIL);
     }
 
-    /***
-     * 客户中奖记录
-     * @param customer 当前客户
-     * @param model 请求参数对象
-     * @return PageSignGiftModel
-     */
     @Override
     public PageSignGiftModel pageGift(Customer customer, PageSignGiftRequestModel model) throws Exception {
         if (null == model) {
@@ -276,7 +260,7 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
         if (packageList.size() != packageCount) {
             throw new ApiException(ResultStatus.RED_PACKAGE_NOT_EXIT);
         }
-        double totalPrice = packageList.stream().mapToDouble(en -> en.getPrice()).sum();
+        double totalPrice = packageList.stream().mapToDouble(ExtRedPackage::getPrice).sum();
 
         ExtRedPackage firstPackage = packageList.get(0);
         extRedPackageDao.updateExtRedPackageIsUsedByCustomerIdAndIds(customerId, ids);
@@ -329,7 +313,7 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
      *
      * @param customerId 用户id
      * @param model      请求参数
-     * @throws Exception
+     * @throws Exception 异常
      * @author 孙阿龙
      */
     @Override
@@ -346,7 +330,6 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
         }
         shareCard.setStatus(ShareCardState.RECEIVED.getName());
         shareCardMongoDao.save(shareCard);
-        //(int customerId, int extActivityId, String name, String phone, String remark, Date created, boolean deleted, String info, String state, String auditReason)
         String info = model.getName() + " " + model.getPhone() + " " + model.getAddress();
         ExtActivityRecord activityRecord = new ExtActivityRecord(
                 customerId,
@@ -367,7 +350,7 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
      *
      * @param customer 当前用户
      * @param model    请求参数
-     * @throws Exception
+     * @throws Exception 异常
      * @author 米立林 2017-10-10
      */
     @Override
