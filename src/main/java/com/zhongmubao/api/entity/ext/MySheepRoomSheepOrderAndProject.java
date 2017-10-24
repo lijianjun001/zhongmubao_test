@@ -2,6 +2,10 @@ package com.zhongmubao.api.entity.ext;
 
 import java.util.Date;
 
+/**
+ * 我的羊圈 列表
+ * @author xy
+ */
 public class MySheepRoomSheepOrderAndProject {
     public MySheepRoomSheepOrderAndProject(){}
 
