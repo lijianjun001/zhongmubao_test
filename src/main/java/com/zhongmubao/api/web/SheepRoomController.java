@@ -33,7 +33,7 @@ public class SheepRoomController {
     @Authorization
     public ResponseEntity<ReponseModel> touTiaoAdv(@CurrentUser Customer customer, HttpEntity<SheepRoomRequestModel> model) {
         try {
-            SheepRoomViewModel sheepRoomViewModel = sheepRoomService.mySheepRoom(customer, model.getBody());
+            SheepRoomViewModel sheepRoomViewModel = sheepRoomService.sheepRoom(customer, model.getBody());
             return new ResponseEntity<>(ReponseModel.ok(sheepRoomViewModel), HttpStatus.OK);
         } catch (ApiException ex) {
             return new ResponseEntity<>(ReponseModel.error(ex.getStatus()), HttpStatus.OK);

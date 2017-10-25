@@ -29,7 +29,7 @@ public class SheepRoomServiceImpl extends BaseService implements SheepRoomServic
     }
 
     @Override
-    public SheepRoomViewModel mySheepRoom(Customer customer, SheepRoomRequestModel model) throws Exception {
+    public SheepRoomViewModel sheepRoom(Customer customer, SheepRoomRequestModel model) throws Exception {
         SheepRoomViewModel sheepRoomViewModel = new SheepRoomViewModel();
         sheepRoomViewModel.setCustomerLevel(1);
         sheepRoomViewModel.setHasOrder(true);

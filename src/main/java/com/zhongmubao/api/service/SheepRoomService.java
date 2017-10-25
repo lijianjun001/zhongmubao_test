@@ -17,5 +17,5 @@ public interface SheepRoomService {
      * @return SheepRoomViewModel
      * @throws Exception 异常
      */
-    SheepRoomViewModel mySheepRoom(Customer customer, SheepRoomRequestModel model) throws Exception;
+    SheepRoomViewModel sheepRoom(Customer customer, SheepRoomRequestModel model) throws Exception;
 }
