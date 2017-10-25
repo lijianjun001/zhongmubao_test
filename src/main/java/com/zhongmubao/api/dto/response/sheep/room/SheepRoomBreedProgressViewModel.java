@@ -6,9 +6,12 @@ import java.util.List;
 
 /**
  * 我的羊圈 养殖进度
+ *
+ * @author xy
  */
 public class SheepRoomBreedProgressViewModel {
-    public SheepRoomBreedProgressViewModel(){}
+    public SheepRoomBreedProgressViewModel() {
+    }
 
     public List<SheepRoomBreedProgressItemModel> getList() {
         return list;

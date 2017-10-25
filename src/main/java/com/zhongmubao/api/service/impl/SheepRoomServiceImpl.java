@@ -1,12 +1,8 @@
 package com.zhongmubao.api.service.impl;
 
 import com.zhongmubao.api.dao.SheepOrderDao;
-import com.zhongmubao.api.dto.request.sheep.room.SheepRoomBreedProgressRequestModel;
-import com.zhongmubao.api.dto.request.sheep.room.SheepRoomOrdersRequestModel;
-import com.zhongmubao.api.dto.request.sheep.room.SheepRoomRequestModel;
-import com.zhongmubao.api.dto.response.sheep.room.SheepRoomBreedProgressViewModel;
-import com.zhongmubao.api.dto.response.sheep.room.SheepRoomOrdersViewModel;
-import com.zhongmubao.api.dto.response.sheep.room.SheepRoomViewModel;
+import com.zhongmubao.api.dto.request.sheep.room.*;
+import com.zhongmubao.api.dto.response.sheep.room.*;
 import com.zhongmubao.api.dto.response.sheep.room.list.*;
 import com.zhongmubao.api.entity.Customer;
 import com.zhongmubao.api.service.BaseService;
@@ -32,7 +28,7 @@ public class SheepRoomServiceImpl extends BaseService implements SheepRoomServic
     }
 
     @Override
-    public SheepRoomViewModel sheepRoom(Customer customer, SheepRoomRequestModel model) throws Exception {
+    public SheepRoomViewModel room(Customer customer, SheepRoomRequestModel model) throws Exception {
         SheepRoomViewModel sheepRoomViewModel = new SheepRoomViewModel();
         sheepRoomViewModel.setCustomerLevel(1);
         sheepRoomViewModel.setHasOrder(true);
@@ -61,7 +57,7 @@ public class SheepRoomServiceImpl extends BaseService implements SheepRoomServic
     }
 
     @Override
-    public SheepRoomOrdersViewModel sheepRoomOrders(Customer customer, SheepRoomOrdersRequestModel model) throws Exception {
+    public SheepRoomOrdersViewModel orders(Customer customer, SheepRoomOrdersRequestModel model) throws Exception {
         SheepRoomOrdersViewModel sheepRoomOrdersViewModel = new SheepRoomOrdersViewModel();
         sheepRoomOrdersViewModel.setTitle("测试100期");
         sheepRoomOrdersViewModel.setTotalCount(10);
@@ -79,7 +75,7 @@ public class SheepRoomServiceImpl extends BaseService implements SheepRoomServic
     }
 
     @Override
-    public SheepRoomBreedProgressViewModel sheepRoomBreedProgress(SheepRoomBreedProgressRequestModel model) throws Exception {
+    public SheepRoomBreedProgressViewModel breedProgress(SheepRoomBreedProgressRequestModel model) throws Exception {
         SheepRoomBreedProgressViewModel sheepRoomBreedProgressViewModel = new SheepRoomBreedProgressViewModel();
         List<SheepRoomBreedProgressItemModel> sheepRoomBreedProgressItemModels = new ArrayList<>();
         SheepRoomBreedProgressItemModel sheepRoomBreedProgressItemModel1 = new SheepRoomBreedProgressItemModel();

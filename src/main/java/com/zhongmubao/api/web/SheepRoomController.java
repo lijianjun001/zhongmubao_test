@@ -33,7 +33,7 @@ public class SheepRoomController {
     @Authorization
     public ResponseEntity<ReponseModel> room(@CurrentUser Customer customer, HttpEntity<SheepRoomRequestModel> model) {
         try {
-            SheepRoomViewModel sheepRoomViewModel = sheepRoomService.sheepRoom(customer, model.getBody());
+            SheepRoomViewModel sheepRoomViewModel = sheepRoomService.room(customer, model.getBody());
             return new ResponseEntity<>(ReponseModel.ok(sheepRoomViewModel), HttpStatus.OK);
         } catch (ApiException ex) {
             return new ResponseEntity<>(ReponseModel.error(ex.getStatus()), HttpStatus.OK);
@@ -44,9 +44,9 @@ public class SheepRoomController {
 
     @RequestMapping(value = "/room/orders", method = RequestMethod.POST, consumes = "application/json")
     @Authorization
-    public ResponseEntity<ReponseModel> roomOrders(@CurrentUser Customer customer, HttpEntity<SheepRoomOrdersRequestModel> model) {
+    public ResponseEntity<ReponseModel> orders(@CurrentUser Customer customer, HttpEntity<SheepRoomOrdersRequestModel> model) {
         try {
-            SheepRoomOrdersViewModel sheepRoomOrdersViewModel = sheepRoomService.sheepRoomOrders(customer, model.getBody());
+            SheepRoomOrdersViewModel sheepRoomOrdersViewModel = sheepRoomService.orders(customer, model.getBody());
             return new ResponseEntity<>(ReponseModel.ok(sheepRoomOrdersViewModel), HttpStatus.OK);
         } catch (ApiException ex) {
             return new ResponseEntity<>(ReponseModel.error(ex.getStatus()), HttpStatus.OK);
@@ -56,9 +56,9 @@ public class SheepRoomController {
     }
 
     @RequestMapping(value = "/room/breedprogress", method = RequestMethod.POST, consumes = "application/json")
-    public ResponseEntity<ReponseModel> roomBreedProgress(HttpEntity<SheepRoomBreedProgressRequestModel> model) {
+    public ResponseEntity<ReponseModel> breedProgress(HttpEntity<SheepRoomBreedProgressRequestModel> model) {
         try {
-            SheepRoomBreedProgressViewModel sheepRoomBreedProgressViewModel = sheepRoomService.sheepRoomBreedProgress(model.getBody());
+            SheepRoomBreedProgressViewModel sheepRoomBreedProgressViewModel = sheepRoomService.breedProgress(model.getBody());
             return new ResponseEntity<>(ReponseModel.ok(sheepRoomBreedProgressViewModel), HttpStatus.OK);
         } catch (ApiException ex) {
             return new ResponseEntity<>(ReponseModel.error(ex.getStatus()), HttpStatus.OK);

@@ -4,9 +4,12 @@ import java.util.List;
 
 /**
  * 我的羊圈 养殖流程
+ *
+ * @author xy
  */
 public class SheepRoomBreedProgressItemModel {
-    public SheepRoomBreedProgressItemModel(){}
+    public SheepRoomBreedProgressItemModel() {
+    }
 
     public int getId() {
         return id;
@@ -42,7 +45,7 @@ public class SheepRoomBreedProgressItemModel {
 
     private int id;
     /**
-     *  选中 状态 1 选中 2 进行中 3 未进行
+     * 选中 状态 1 选中 2 进行中 3 未进行
      */
     private int selectd;
     private String text;
