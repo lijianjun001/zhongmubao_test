@@ -67,4 +67,15 @@ public class SheepRoomController {
         }
     }
 
+    @RequestMapping(value = "/room/insurance", method = RequestMethod.POST, consumes = "application/json")
+    public ResponseEntity<ReponseModel> insurance(HttpEntity<SheepRoomInsuranceRequestModel> model) {
+        try {
+            SheepRoomInsuranceViewModel sheepRoomInsuranceViewModel = sheepRoomService.insurance(model.getBody());
+            return new ResponseEntity<>(ReponseModel.ok(sheepRoomInsuranceViewModel), HttpStatus.OK);
+        } catch (ApiException ex) {
+            return new ResponseEntity<>(ReponseModel.error(ex.getStatus()), HttpStatus.OK);
+        } catch (Exception ex) {
+            return new ResponseEntity<>(ReponseModel.error(ex, this.getClass()), HttpStatus.OK);
+        }
+    }
 }

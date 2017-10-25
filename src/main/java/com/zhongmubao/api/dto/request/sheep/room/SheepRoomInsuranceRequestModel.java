@@ -6,6 +6,8 @@ package com.zhongmubao.api.dto.request.sheep.room;
  * @author xy
  */
 public class SheepRoomInsuranceRequestModel {
+    public SheepRoomInsuranceRequestModel() {
+    }
 
     public int getProjectId() {
         return projectId;

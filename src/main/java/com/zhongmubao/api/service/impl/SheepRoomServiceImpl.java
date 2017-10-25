@@ -99,4 +99,12 @@ public class SheepRoomServiceImpl extends BaseService implements SheepRoomServic
         sheepRoomBreedProgressViewModel.setList(sheepRoomBreedProgressItemModels);
         return sheepRoomBreedProgressViewModel;
     }
+
+    @Override
+    public SheepRoomInsuranceViewModel insurance(SheepRoomInsuranceRequestModel model) throws Exception {
+        SheepRoomInsuranceViewModel sheepRoomInsuranceViewModel = new SheepRoomInsuranceViewModel();
+        sheepRoomInsuranceViewModel.setImg("http://s.emubao.com/weixin/images/sntbx1.jpg?保险图片");
+        sheepRoomInsuranceViewModel.setTitle("中国人保");
+        return sheepRoomInsuranceViewModel;
+    }
 }

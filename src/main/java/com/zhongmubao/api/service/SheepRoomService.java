@@ -6,14 +6,16 @@ import com.zhongmubao.api.entity.Customer;
 
 /**
  * 我的羊圈
- * @author  xy
+ *
+ * @author xy
  * @date 2017/10/25
  */
 public interface SheepRoomService {
     /**
      * 我的羊圈
+     *
      * @param customer 用户
-     * @param model 请求参数 pageIndex projectType
+     * @param model    请求参数 pageIndex projectType
      * @return SheepRoomViewModel
      * @throws Exception 异常
      */
@@ -21,8 +23,9 @@ public interface SheepRoomService {
 
     /**
      * 我的羊圈 订单弹框
+     *
      * @param customer 用户
-     * @param model 请求参数 projectId
+     * @param model    请求参数 projectId
      * @return SheepRoomOrdersViewModel
      * @throws Exception 异常
      */
@@ -30,9 +33,19 @@ public interface SheepRoomService {
 
     /**
      * 我的羊圈 养殖流程
+     *
      * @param model 请求参数 projectId
      * @return SheepRoomBreedProgressViewModel
      * @throws Exception 异常
      */
-    SheepRoomBreedProgressViewModel breedProgress(SheepRoomBreedProgressRequestModel model)throws Exception;
+    SheepRoomBreedProgressViewModel breedProgress(SheepRoomBreedProgressRequestModel model) throws Exception;
+
+    /**
+     * 我的羊圈 保险
+     *
+     * @param model 请求参数 projectId
+     * @return SheepRoomInsuranceViewModel
+     * @throws Exception 异常
+     */
+    SheepRoomInsuranceViewModel insurance(SheepRoomInsuranceRequestModel model) throws Exception;
 }
