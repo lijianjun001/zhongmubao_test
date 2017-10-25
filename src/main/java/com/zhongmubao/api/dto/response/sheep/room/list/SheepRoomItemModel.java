@@ -6,8 +6,8 @@ package com.zhongmubao.api.dto.response.sheep.room.list;
  * @author xy
  * @date 2017/10/24
  */
-public class MySheepRoomItemModel {
-    public MySheepRoomItemModel() {
+public class SheepRoomItemModel {
+    public SheepRoomItemModel() {
     }
 
 

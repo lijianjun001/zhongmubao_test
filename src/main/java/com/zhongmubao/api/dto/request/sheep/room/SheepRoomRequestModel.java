@@ -5,8 +5,8 @@ package com.zhongmubao.api.dto.request.sheep.room;
  * @author xy
  * @date 2017/10/24
  */
-public class MySheepRoomRequestModel {
-    public MySheepRoomRequestModel() {
+public class SheepRoomRequestModel {
+    public SheepRoomRequestModel() {
     }
 
     public int getPageIndex() {

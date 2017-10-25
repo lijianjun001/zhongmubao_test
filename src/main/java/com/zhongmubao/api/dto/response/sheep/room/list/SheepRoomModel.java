@@ -8,8 +8,8 @@ import java.util.List;
  * @author xy
  * @date 2017/10/24
  */
-public class MySheepRoomModel {
-    public MySheepRoomModel() {
+public class SheepRoomModel {
+    public SheepRoomModel() {
     }
 
 
@@ -29,15 +29,15 @@ public class MySheepRoomModel {
         this.totalSheepCount = totalSheepCount;
     }
 
-    public List<MySheepRoomItemModel> getList() {
+    public List<SheepRoomItemModel> getList() {
         return list;
     }
 
-    public void setList(List<MySheepRoomItemModel> list) {
+    public void setList(List<SheepRoomItemModel> list) {
         this.list = list;
     }
 
     private int totalPage;
     private int totalSheepCount;
-    private List<MySheepRoomItemModel> list;
+    private List<SheepRoomItemModel> list;
 }
