@@ -26,11 +26,11 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/customer")
 public class CustomerController {
-    private final SignService customerService;
+    private final SignService signService;
 
     @Autowired
     public CustomerController(SignService customerService) {
-        this.customerService = customerService;
+        this.signService = customerService;
     }
 
     //region 签到
@@ -45,7 +45,7 @@ public class CustomerController {
     @Authorization
     public ResponseEntity<ReponseModel> sign(@CurrentUser Customer customer) {
         try {
-            SignModel signModel = customerService.sign(customer);
+            SignModel signModel = signService.sign(customer);
             return new ResponseEntity<>(ReponseModel.ok(signModel), HttpStatus.OK);
         } catch (ApiException ex) {
             return new ResponseEntity<>(ReponseModel.error(ex.getStatus()), HttpStatus.OK);
@@ -65,7 +65,7 @@ public class CustomerController {
     @Authorization
     public ResponseEntity<ReponseModel> pageGift(@CurrentUser Customer customer, HttpEntity<PageSignGiftRequestModel> model) {
         try {
-            PageSignGiftModel giftModel = customerService.pageGift(customer, model.getBody());
+            PageSignGiftModel giftModel = signService.pageGift(customer, model.getBody());
             return new ResponseEntity<>(ReponseModel.ok(giftModel), HttpStatus.OK);
         } catch (ApiException ex) {
             return new ResponseEntity<>(ReponseModel.error(ex.getStatus()), HttpStatus.OK);
@@ -84,7 +84,7 @@ public class CustomerController {
     @Authorization
     public ResponseEntity<ReponseModel> myGiftCard(@CurrentUser Customer customer) {
         try {
-            MyGiftCardModel cardModel = customerService.myGiftCard(customer.getId());
+            MyGiftCardModel cardModel = signService.myGiftCard(customer.getId());
             return new ResponseEntity<>(ReponseModel.ok(cardModel), HttpStatus.OK);
         } catch (ApiException ex) {
             return new ResponseEntity<>(ReponseModel.error(ex.getStatus()), HttpStatus.OK);
@@ -104,7 +104,7 @@ public class CustomerController {
     @Authorization
     public ResponseEntity<ReponseModel> megreCard(@CurrentUser Customer customer, HttpEntity<MegreCardRequestModel> model) {
         try {
-            customerService.megreCard(customer, model.getBody());
+            signService.megreCard(customer, model.getBody());
             return new ResponseEntity<>(ReponseModel.ok(), HttpStatus.OK);
         } catch (ApiException ex) {
             return new ResponseEntity<>(ReponseModel.error(ex.getStatus()), HttpStatus.OK);
@@ -124,7 +124,7 @@ public class CustomerController {
     @Authorization
     public ResponseEntity<ReponseModel> delayedCard(@CurrentUser Customer customer, HttpEntity<DelayedCardRequestModel> model) {
         try {
-            customerService.delayedCard(customer.getId(), model.getBody());
+            signService.delayedCard(customer.getId(), model.getBody());
             return new ResponseEntity<>(ReponseModel.ok(), HttpStatus.OK);
         } catch (ApiException ex) {
             return new ResponseEntity<>(ReponseModel.error(ex.getStatus()), HttpStatus.OK);
@@ -144,7 +144,7 @@ public class CustomerController {
     @Authorization
     public ResponseEntity<ReponseModel> pageSignPackage(@CurrentUser Customer customer, HttpEntity<PageSignPackageRequestModel> model) {
         try {
-            PageSignPackageModel pageSignPackage = customerService.pageSignPackage(customer.getId(), model.getBody());
+            PageSignPackageModel pageSignPackage = signService.pageSignPackage(customer.getId(), model.getBody());
             return new ResponseEntity<>(ReponseModel.ok(pageSignPackage), HttpStatus.OK);
         } catch (ApiException ex) {
             return new ResponseEntity<>(ReponseModel.error(ex.getStatus()), HttpStatus.OK);
@@ -164,7 +164,7 @@ public class CustomerController {
     @Authorization
     public ResponseEntity<ReponseModel> recevieSecretGift(@CurrentUser Customer customer, HttpEntity<RrcevieSecretGiftRequestModel> model) {
         try {
-            customerService.recevieSecretGift(customer.getId(), model.getBody());
+            signService.recevieSecretGift(customer.getId(), model.getBody());
             return new ResponseEntity<>(ReponseModel.ok(), HttpStatus.OK);
         } catch (ApiException ex) {
             return new ResponseEntity<>(ReponseModel.error(ex.getStatus()), HttpStatus.OK);
@@ -184,7 +184,7 @@ public class CustomerController {
     @Authorization
     public ResponseEntity<ReponseModel> receiveRechargeGift(@CurrentUser Customer customer, HttpEntity<ReceiveRechargeGiftRequestModel> model) {
         try {
-            customerService.receiveRechargeGift(customer, model.getBody());
+            signService.receiveRechargeGift(customer, model.getBody());
             return new ResponseEntity<>(ReponseModel.ok(), HttpStatus.OK);
         } catch (ApiException ex) {
             return new ResponseEntity<>(ReponseModel.error(ex.getStatus()), HttpStatus.OK);
