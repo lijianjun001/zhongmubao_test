@@ -2,6 +2,7 @@ package com.zhongmubao.api.dto.response.sheep.room.list;
 
 /**
  * 我的羊圈 列表单项类
+ *
  * @author xy
  * @date 2017/10/24
  */
@@ -98,15 +99,48 @@ public class MySheepRoomItemModel {
         this.surplusDay = surplusDay;
     }
 
+    /**
+     * 项目Id
+     */
     private int projectId;
+    /**
+     * 公司id （视频用）
+     */
     private int venderId;
+    /**
+     * 标题
+     */
     private String title;
+    /**
+     * 羊只头像
+     */
     private String sheepPhoto;
+    /**
+     * 数量
+     */
     private int count;
+    /**
+     * 开始时间
+     */
     private String beginTime;
+    /**
+     * 结束时间
+     */
     private String endTime;
+    /**
+     * 养殖进度
+     */
     private String breedProgress;
+    /**
+     * 养殖进度图
+     */
     private String breedProgressImg;
+    /**
+     * 公司名称
+     */
     private String vendor;
+    /**
+     * 剩余天数
+     */
     private int surplusDay;
 }
