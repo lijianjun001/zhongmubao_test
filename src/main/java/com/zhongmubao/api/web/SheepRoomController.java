@@ -54,4 +54,17 @@ public class SheepRoomController {
             return new ResponseEntity<>(ReponseModel.error(ex, this.getClass()), HttpStatus.OK);
         }
     }
+
+    @RequestMapping(value = "/room/breedprogress", method = RequestMethod.POST, consumes = "application/json")
+    public ResponseEntity<ReponseModel> roomBreedProgress(HttpEntity<SheepRoomBreedProgressRequestModel> model) {
+        try {
+            SheepRoomBreedProgressViewModel sheepRoomBreedProgressViewModel = sheepRoomService.sheepRoomBreedProgress(model.getBody());
+            return new ResponseEntity<>(ReponseModel.ok(sheepRoomBreedProgressViewModel), HttpStatus.OK);
+        } catch (ApiException ex) {
+            return new ResponseEntity<>(ReponseModel.error(ex.getStatus()), HttpStatus.OK);
+        } catch (Exception ex) {
+            return new ResponseEntity<>(ReponseModel.error(ex, this.getClass()), HttpStatus.OK);
+        }
+    }
+
 }

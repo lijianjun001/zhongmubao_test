@@ -1,14 +1,13 @@
 package com.zhongmubao.api.service.impl;
 
 import com.zhongmubao.api.dao.SheepOrderDao;
+import com.zhongmubao.api.dto.request.sheep.room.SheepRoomBreedProgressRequestModel;
 import com.zhongmubao.api.dto.request.sheep.room.SheepRoomOrdersRequestModel;
 import com.zhongmubao.api.dto.request.sheep.room.SheepRoomRequestModel;
+import com.zhongmubao.api.dto.response.sheep.room.SheepRoomBreedProgressViewModel;
 import com.zhongmubao.api.dto.response.sheep.room.SheepRoomOrdersViewModel;
 import com.zhongmubao.api.dto.response.sheep.room.SheepRoomViewModel;
-import com.zhongmubao.api.dto.response.sheep.room.list.SheepRoomItemModel;
-import com.zhongmubao.api.dto.response.sheep.room.list.SheepRoomModel;
-import com.zhongmubao.api.dto.response.sheep.room.list.SheepRoomOrdersItemModel;
-import com.zhongmubao.api.dto.response.sheep.room.list.SheepRoomOrdersModel;
+import com.zhongmubao.api.dto.response.sheep.room.list.*;
 import com.zhongmubao.api.entity.Customer;
 import com.zhongmubao.api.service.BaseService;
 import com.zhongmubao.api.service.SheepRoomService;
@@ -77,5 +76,31 @@ public class SheepRoomServiceImpl extends BaseService implements SheepRoomServic
 
 
         return sheepRoomOrdersViewModel;
+    }
+
+    @Override
+    public SheepRoomBreedProgressViewModel sheepRoomBreedProgress(SheepRoomBreedProgressRequestModel model) throws Exception {
+        SheepRoomBreedProgressViewModel sheepRoomBreedProgressViewModel = new SheepRoomBreedProgressViewModel();
+        List<SheepRoomBreedProgressItemModel> sheepRoomBreedProgressItemModels = new ArrayList<>();
+        SheepRoomBreedProgressItemModel sheepRoomBreedProgressItemModel1 = new SheepRoomBreedProgressItemModel();
+        sheepRoomBreedProgressItemModel1.setId(0);
+        sheepRoomBreedProgressItemModel1.setText("喂水，喂青草");
+        sheepRoomBreedProgressItemModel1.setSelectd(1);
+        sheepRoomBreedProgressItemModel1.setImg("http://192.168.31.210:10210/weixin/images/foldshui3.png?类型图片");
+        sheepRoomBreedProgressItemModels.add(sheepRoomBreedProgressItemModel1);
+        SheepRoomBreedProgressItemModel sheepRoomBreedProgressItemModel2 = new SheepRoomBreedProgressItemModel();
+        sheepRoomBreedProgressItemModel2.setId(1);
+        sheepRoomBreedProgressItemModel2.setText("分群");
+        sheepRoomBreedProgressItemModel2.setSelectd(2);
+        sheepRoomBreedProgressItemModel2.setImg("http://192.168.31.210:10210/weixin/images/foldshui2.png?类型图片");
+        sheepRoomBreedProgressItemModels.add(sheepRoomBreedProgressItemModel2);
+        SheepRoomBreedProgressItemModel sheepRoomBreedProgressItemModel3 = new SheepRoomBreedProgressItemModel();
+        sheepRoomBreedProgressItemModel3.setId(2);
+        sheepRoomBreedProgressItemModel3.setText("出栏");
+        sheepRoomBreedProgressItemModel3.setSelectd(3);
+        sheepRoomBreedProgressItemModel3.setImg("http://192.168.31.210:10210/weixin/images/foldshui1.png?类型图片");
+        sheepRoomBreedProgressItemModels.add(sheepRoomBreedProgressItemModel3);
+        sheepRoomBreedProgressViewModel.setList(sheepRoomBreedProgressItemModels);
+        return sheepRoomBreedProgressViewModel;
     }
 }

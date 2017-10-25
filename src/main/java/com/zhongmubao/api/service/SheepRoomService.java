@@ -27,4 +27,12 @@ public interface SheepRoomService {
      * @throws Exception 异常
      */
     SheepRoomOrdersViewModel sheepRoomOrders(Customer customer, SheepRoomOrdersRequestModel model) throws Exception;
+
+    /**
+     * 我的羊圈 养殖流程
+     * @param model 请求参数 projectId
+     * @return SheepRoomBreedProgressViewModel
+     * @throws Exception 异常
+     */
+    SheepRoomBreedProgressViewModel sheepRoomBreedProgress(SheepRoomBreedProgressRequestModel model)throws Exception;
 }

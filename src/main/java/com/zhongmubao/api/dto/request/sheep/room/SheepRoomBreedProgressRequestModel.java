@@ -1,12 +1,12 @@
 package com.zhongmubao.api.dto.request.sheep.room;
 
 /**
- * 我的羊圈 订单弹框
+ * 我的羊圈 养殖流程
  *
  * @author xy
  */
-public class SheepRoomOrdersRequestModel {
-    public SheepRoomOrdersRequestModel() {
+public class SheepRoomBreedProgressRequestModel {
+    public SheepRoomBreedProgressRequestModel() {
     }
 
     public int getProjectId() {

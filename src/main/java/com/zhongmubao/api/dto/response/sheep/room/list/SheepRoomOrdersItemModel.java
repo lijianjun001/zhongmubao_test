@@ -6,6 +6,7 @@ package com.zhongmubao.api.dto.response.sheep.room.list;
  * @author xy
  */
 public class SheepRoomOrdersItemModel {
+    public SheepRoomOrdersItemModel(){}
 
     public String getOrderCode() {
         return orderCode;

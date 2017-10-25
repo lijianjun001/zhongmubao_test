@@ -8,6 +8,8 @@ import com.zhongmubao.api.dto.response.sheep.room.list.SheepRoomOrdersModel;
  * @author xy
  */
 public class SheepRoomOrdersViewModel {
+    public SheepRoomOrdersViewModel() {
+    }
 
     public String getTitle() {
         return title;
