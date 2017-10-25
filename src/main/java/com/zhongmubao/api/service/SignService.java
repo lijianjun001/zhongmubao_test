@@ -12,7 +12,7 @@ import com.zhongmubao.api.entity.Customer;
  *
  * @author 孙阿龙
  */
-public interface CustomerService {
+public interface SignService {
 
     /**
      * 签到

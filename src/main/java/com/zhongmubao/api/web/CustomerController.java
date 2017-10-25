@@ -10,7 +10,7 @@ import com.zhongmubao.api.dto.response.sign.SignModel;
 import com.zhongmubao.api.dto.response.sign.packagelist.PageSignPackageModel;
 import com.zhongmubao.api.entity.Customer;
 import com.zhongmubao.api.exception.ApiException;
-import com.zhongmubao.api.service.CustomerService;
+import com.zhongmubao.api.service.SignService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
@@ -26,10 +26,10 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/customer")
 public class CustomerController {
-    private final CustomerService customerService;
+    private final SignService customerService;
 
     @Autowired
-    public CustomerController(CustomerService customerService) {
+    public CustomerController(SignService customerService) {
         this.customerService = customerService;
     }
 

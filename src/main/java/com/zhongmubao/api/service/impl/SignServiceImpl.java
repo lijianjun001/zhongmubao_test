@@ -21,7 +21,7 @@ import com.zhongmubao.api.mongo.dao.ShareCardMongoDao;
 import com.zhongmubao.api.mongo.entity.*;
 import com.zhongmubao.api.mongo.entity.base.PageModel;
 import com.zhongmubao.api.service.BaseService;
-import com.zhongmubao.api.service.CustomerService;
+import com.zhongmubao.api.service.SignService;
 import com.zhongmubao.api.util.*;
 import com.zhongmubao.api.util.redis.RedisLock;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +38,7 @@ import static com.zhongmubao.api.config.enmu.SignGiftType.*;
  * @author 孙阿龙
  */
 @Service
-public class CustomerServiceImpl extends BaseService implements CustomerService {
+public class SignServiceImpl extends BaseService implements SignService {
 
     private final ExtRedPackageDao extRedPackageDao;
     private final ShareCardMongoDao shareCardMongoDao;
@@ -48,7 +48,7 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
     private final ExtActivityRecordDao activityRecordDao;
 
     @Autowired
-    public CustomerServiceImpl(ExtRedPackageDao extRedPackageDao, ShareCardMongoDao shareCardMongoDao, CustomerAddressDao customerAddressDao, RedisCache redisCache, SheepOrderDao sheepOrderDao, ExtActivityRecordDao activityRecordDao) {
+    public SignServiceImpl(ExtRedPackageDao extRedPackageDao, ShareCardMongoDao shareCardMongoDao, CustomerAddressDao customerAddressDao, RedisCache redisCache, SheepOrderDao sheepOrderDao, ExtActivityRecordDao activityRecordDao) {
         this.extRedPackageDao = extRedPackageDao;
         this.shareCardMongoDao = shareCardMongoDao;
         this.customerAddressDao = customerAddressDao;
