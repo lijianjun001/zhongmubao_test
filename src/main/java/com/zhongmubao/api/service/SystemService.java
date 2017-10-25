@@ -1,7 +1,7 @@
 package com.zhongmubao.api.service;
 
-import com.zhongmubao.api.dto.request.PlatformTrackingRequestModel;
-import com.zhongmubao.api.dto.request.toutiaoadv.TouTiaoAdvRequestModel;
+import com.zhongmubao.api.dto.request.system.PlatformTrackingRequestModel;
+import com.zhongmubao.api.dto.request.system.TouTiaoAdvRequestModel;
 import com.zhongmubao.api.entity.Customer;
 
 /**

@@ -1,4 +1,4 @@
-package com.zhongmubao.api.dto.request;
+package com.zhongmubao.api.dto.request.system;
 
 /**
  * 平台跟踪请求model

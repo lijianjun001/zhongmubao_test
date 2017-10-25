@@ -1,8 +1,8 @@
 package com.zhongmubao.api.service.impl;
 
 import com.zhongmubao.api.config.ResultStatus;
-import com.zhongmubao.api.dto.request.PlatformTrackingRequestModel;
-import com.zhongmubao.api.dto.request.toutiaoadv.TouTiaoAdvRequestModel;
+import com.zhongmubao.api.dto.request.system.PlatformTrackingRequestModel;
+import com.zhongmubao.api.dto.request.system.TouTiaoAdvRequestModel;
 import com.zhongmubao.api.entity.Customer;
 import com.zhongmubao.api.exception.ApiException;
 import com.zhongmubao.api.mongo.dao.PlatformTrackingMongoDao;
