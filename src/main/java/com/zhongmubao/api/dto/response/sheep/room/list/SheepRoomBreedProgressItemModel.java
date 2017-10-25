@@ -19,12 +19,12 @@ public class SheepRoomBreedProgressItemModel {
         this.id = id;
     }
 
-    public int getSelectd() {
-        return selectd;
+    public int getProgress() {
+        return progress;
     }
 
-    public void setSelectd(int selectd) {
-        this.selectd = selectd;
+    public void setProgress(int progress) {
+        this.progress = progress;
     }
 
     public String getText() {
@@ -47,7 +47,7 @@ public class SheepRoomBreedProgressItemModel {
     /**
      * 选中 状态 1 选中 2 进行中 3 未进行
      */
-    private int selectd;
+    private int progress;
     private String text;
     private String img;
 
