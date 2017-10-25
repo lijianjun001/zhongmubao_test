@@ -17,7 +17,7 @@ public interface SheepRoomService {
      * @return SheepRoomViewModel
      * @throws Exception 异常
      */
-    SheepRoomViewModel sheepRoom(Customer customer, SheepRoomRequestModel model) throws Exception;
+    SheepRoomViewModel room(Customer customer, SheepRoomRequestModel model) throws Exception;
 
     /**
      * 我的羊圈 订单弹框
@@ -26,7 +26,7 @@ public interface SheepRoomService {
      * @return SheepRoomOrdersViewModel
      * @throws Exception 异常
      */
-    SheepRoomOrdersViewModel sheepRoomOrders(Customer customer, SheepRoomOrdersRequestModel model) throws Exception;
+    SheepRoomOrdersViewModel orders(Customer customer, SheepRoomOrdersRequestModel model) throws Exception;
 
     /**
      * 我的羊圈 养殖流程
@@ -34,5 +34,5 @@ public interface SheepRoomService {
      * @return SheepRoomBreedProgressViewModel
      * @throws Exception 异常
      */
-    SheepRoomBreedProgressViewModel sheepRoomBreedProgress(SheepRoomBreedProgressRequestModel model)throws Exception;
+    SheepRoomBreedProgressViewModel breedProgress(SheepRoomBreedProgressRequestModel model)throws Exception;
 }
