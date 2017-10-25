@@ -15,6 +15,10 @@
 		and customerid = #{customerId}
 	</select>
 
+	<select id="getSheepOrderByProjectIdAndCustomerId" resultType="SheepOrder">
+		select * from SheepOrder where Deleted=false and Frozened=false and CustomerId=#{customerId} and ProjectId=#{projectId}
+	</select>
+
 	<select id="getSheepOrderAndProjectByCustomeridAndStatesAndType" resultType="MySheepRoomSheepOrderAndProject">
 		<!-- 具体的sql -->
 		select

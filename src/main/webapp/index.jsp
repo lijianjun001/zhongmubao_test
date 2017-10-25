@@ -24,13 +24,13 @@
 //            isDefault:0
 //        };
 
-        var data = {"imei":"865982025113575","mac":"A0:86:C6:FB:1B:17","os":"0"};
+        var data = {"pageIndex":1,"projectType":"00"};
         console.info(JSON.stringify(data));
 //        var saveData ={"USER_ID":leader,"Users":users};
 
         $.ajax({
             type: "POST",
-            url: "/customer/sign",
+            url: "/sheep/room",
             data: JSON.stringify(data),
             contentType: 'application/json;charset=UTF-8',
             dataType: "json",                                     //预期服务器返回类型
@@ -39,6 +39,7 @@
                 Platform: "04"
             },
             success: function (data) {
+                console.log(JSON.stringify(data));
                 alert(JSON.stringify(data))
                 //alert(data.msg);
             }, error: function (data) {

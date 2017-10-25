@@ -1,10 +1,14 @@
 package com.zhongmubao.api.service.impl;
 
 import com.zhongmubao.api.dao.SheepOrderDao;
+import com.zhongmubao.api.dto.request.sheep.room.SheepRoomOrdersRequestModel;
 import com.zhongmubao.api.dto.request.sheep.room.SheepRoomRequestModel;
+import com.zhongmubao.api.dto.response.sheep.room.SheepRoomOrdersViewModel;
 import com.zhongmubao.api.dto.response.sheep.room.SheepRoomViewModel;
 import com.zhongmubao.api.dto.response.sheep.room.list.SheepRoomItemModel;
 import com.zhongmubao.api.dto.response.sheep.room.list.SheepRoomModel;
+import com.zhongmubao.api.dto.response.sheep.room.list.SheepRoomOrdersItemModel;
+import com.zhongmubao.api.dto.response.sheep.room.list.SheepRoomOrdersModel;
 import com.zhongmubao.api.entity.Customer;
 import com.zhongmubao.api.service.BaseService;
 import com.zhongmubao.api.service.SheepRoomService;
@@ -55,5 +59,23 @@ public class SheepRoomServiceImpl extends BaseService implements SheepRoomServic
         sheepRoomViewModel.setSheepRoomModel(sheepRoomModel);
 
         return sheepRoomViewModel;
+    }
+
+    @Override
+    public SheepRoomOrdersViewModel sheepRoomOrders(Customer customer, SheepRoomOrdersRequestModel model) throws Exception {
+        SheepRoomOrdersViewModel sheepRoomOrdersViewModel = new SheepRoomOrdersViewModel();
+        sheepRoomOrdersViewModel.setTitle("测试100期");
+        sheepRoomOrdersViewModel.setTotalCount(10);
+        SheepRoomOrdersModel sheepRoomOrdersModel = new SheepRoomOrdersModel();
+        List<SheepRoomOrdersItemModel> sheepRoomOrdersItemModels = new ArrayList<>();
+        SheepRoomOrdersItemModel sheepRoomOrdersItemModel = new SheepRoomOrdersItemModel();
+        sheepRoomOrdersItemModel.setOrderCode("00000");
+        sheepRoomOrdersItemModel.setCount(10);
+        sheepRoomOrdersItemModels.add(sheepRoomOrdersItemModel);
+        sheepRoomOrdersModel.setList(sheepRoomOrdersItemModels);
+        sheepRoomOrdersViewModel.setSheepRoomOrdersModel(sheepRoomOrdersModel);
+
+
+        return sheepRoomOrdersViewModel;
     }
 }

@@ -1,9 +1,9 @@
 package com.zhongmubao.api.web;
 
 import com.zhongmubao.api.authorization.annotation.*;
-import com.zhongmubao.api.dto.request.sheep.room.SheepRoomRequestModel;
+import com.zhongmubao.api.dto.request.sheep.room.*;
 import com.zhongmubao.api.dto.response.ReponseModel;
-import com.zhongmubao.api.dto.response.sheep.room.SheepRoomViewModel;
+import com.zhongmubao.api.dto.response.sheep.room.*;
 import com.zhongmubao.api.entity.Customer;
 import com.zhongmubao.api.exception.ApiException;
 import com.zhongmubao.api.service.SheepRoomService;
@@ -31,7 +31,7 @@ public class SheepRoomController {
 
     @RequestMapping(value = "/room", method = RequestMethod.POST, consumes = "application/json")
     @Authorization
-    public ResponseEntity<ReponseModel> touTiaoAdv(@CurrentUser Customer customer, HttpEntity<SheepRoomRequestModel> model) {
+    public ResponseEntity<ReponseModel> room(@CurrentUser Customer customer, HttpEntity<SheepRoomRequestModel> model) {
         try {
             SheepRoomViewModel sheepRoomViewModel = sheepRoomService.sheepRoom(customer, model.getBody());
             return new ResponseEntity<>(ReponseModel.ok(sheepRoomViewModel), HttpStatus.OK);
@@ -42,4 +42,16 @@ public class SheepRoomController {
         }
     }
 
+    @RequestMapping(value = "/room/orders", method = RequestMethod.POST, consumes = "application/json")
+    @Authorization
+    public ResponseEntity<ReponseModel> roomOrders(@CurrentUser Customer customer, HttpEntity<SheepRoomOrdersRequestModel> model) {
+        try {
+            SheepRoomOrdersViewModel sheepRoomOrdersViewModel = sheepRoomService.sheepRoomOrders(customer, model.getBody());
+            return new ResponseEntity<>(ReponseModel.ok(sheepRoomOrdersViewModel), HttpStatus.OK);
+        } catch (ApiException ex) {
+            return new ResponseEntity<>(ReponseModel.error(ex.getStatus()), HttpStatus.OK);
+        } catch (Exception ex) {
+            return new ResponseEntity<>(ReponseModel.error(ex, this.getClass()), HttpStatus.OK);
+        }
+    }
 }
