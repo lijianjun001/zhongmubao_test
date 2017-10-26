@@ -1,6 +1,9 @@
 package com.zhongmubao.api.dto.response.sheep.room;
 
+import com.zhongmubao.api.dto.response.sheep.room.list.SheepRoomOrdersItemModel;
 import com.zhongmubao.api.dto.response.sheep.room.list.SheepRoomOrdersModel;
+
+import java.util.List;
 
 /**
  * 我的羊圈 订单弹框
@@ -27,15 +30,15 @@ public class SheepRoomOrdersViewModel {
         this.totalCount = totalCount;
     }
 
-    public SheepRoomOrdersModel getSheepRoomOrdersModel() {
-        return sheepRoomOrdersModel;
+    public List<SheepRoomOrdersItemModel> getList() {
+        return list;
     }
 
-    public void setSheepRoomOrdersModel(SheepRoomOrdersModel sheepRoomOrdersModel) {
-        this.sheepRoomOrdersModel = sheepRoomOrdersModel;
+    public void setList(List<SheepRoomOrdersItemModel> list) {
+        this.list = list;
     }
 
     private String title;
     private int totalCount;
-    private SheepRoomOrdersModel sheepRoomOrdersModel;
+    private List<SheepRoomOrdersItemModel> list;
 }

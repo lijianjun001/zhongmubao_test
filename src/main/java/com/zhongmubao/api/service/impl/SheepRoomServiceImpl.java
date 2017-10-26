@@ -61,14 +61,12 @@ public class SheepRoomServiceImpl extends BaseService implements SheepRoomServic
         SheepRoomOrdersViewModel sheepRoomOrdersViewModel = new SheepRoomOrdersViewModel();
         sheepRoomOrdersViewModel.setTitle("测试100期");
         sheepRoomOrdersViewModel.setTotalCount(10);
-        SheepRoomOrdersModel sheepRoomOrdersModel = new SheepRoomOrdersModel();
         List<SheepRoomOrdersItemModel> sheepRoomOrdersItemModels = new ArrayList<>();
         SheepRoomOrdersItemModel sheepRoomOrdersItemModel = new SheepRoomOrdersItemModel();
         sheepRoomOrdersItemModel.setOrderCode("00000");
         sheepRoomOrdersItemModel.setCount(10);
         sheepRoomOrdersItemModels.add(sheepRoomOrdersItemModel);
-        sheepRoomOrdersModel.setList(sheepRoomOrdersItemModels);
-        sheepRoomOrdersViewModel.setSheepRoomOrdersModel(sheepRoomOrdersModel);
+        sheepRoomOrdersViewModel.setList(sheepRoomOrdersItemModels);
 
 
         return sheepRoomOrdersViewModel;
@@ -81,19 +79,19 @@ public class SheepRoomServiceImpl extends BaseService implements SheepRoomServic
         SheepRoomBreedProgressItemModel sheepRoomBreedProgressItemModel1 = new SheepRoomBreedProgressItemModel();
         sheepRoomBreedProgressItemModel1.setId(0);
         sheepRoomBreedProgressItemModel1.setText("喂水，喂青草");
-        sheepRoomBreedProgressItemModel1.setSelectd(1);
+        sheepRoomBreedProgressItemModel1.setProgress(1);
         sheepRoomBreedProgressItemModel1.setImg("http://192.168.31.210:10210/weixin/images/foldshui3.png?类型图片");
         sheepRoomBreedProgressItemModels.add(sheepRoomBreedProgressItemModel1);
         SheepRoomBreedProgressItemModel sheepRoomBreedProgressItemModel2 = new SheepRoomBreedProgressItemModel();
         sheepRoomBreedProgressItemModel2.setId(1);
         sheepRoomBreedProgressItemModel2.setText("分群");
-        sheepRoomBreedProgressItemModel2.setSelectd(2);
+        sheepRoomBreedProgressItemModel2.setProgress(2);
         sheepRoomBreedProgressItemModel2.setImg("http://192.168.31.210:10210/weixin/images/foldshui2.png?类型图片");
         sheepRoomBreedProgressItemModels.add(sheepRoomBreedProgressItemModel2);
         SheepRoomBreedProgressItemModel sheepRoomBreedProgressItemModel3 = new SheepRoomBreedProgressItemModel();
         sheepRoomBreedProgressItemModel3.setId(2);
         sheepRoomBreedProgressItemModel3.setText("出栏");
-        sheepRoomBreedProgressItemModel3.setSelectd(3);
+        sheepRoomBreedProgressItemModel3.setProgress(3);
         sheepRoomBreedProgressItemModel3.setImg("http://192.168.31.210:10210/weixin/images/foldshui1.png?类型图片");
         sheepRoomBreedProgressItemModels.add(sheepRoomBreedProgressItemModel3);
         sheepRoomBreedProgressViewModel.setList(sheepRoomBreedProgressItemModels);
@@ -106,5 +104,20 @@ public class SheepRoomServiceImpl extends BaseService implements SheepRoomServic
         sheepRoomInsuranceViewModel.setImg("http://s.emubao.com/weixin/images/sntbx1.jpg?保险图片");
         sheepRoomInsuranceViewModel.setTitle("中国人保");
         return sheepRoomInsuranceViewModel;
+    }
+
+    @Override
+    public SheepRoomEarTagViewModel eartag(Customer customer, SheepRoomEarTagRequestModel model) throws Exception {
+        SheepRoomEarTagViewModel sheepRoomEarTagViewModel = new SheepRoomEarTagViewModel();
+        sheepRoomEarTagViewModel.setVideoUrl("视频地址");
+        List<SheepRoomEarTagItemModel> sheepRoomEarTagItemModels = new ArrayList<>();
+        SheepRoomEarTagItemModel sheepRoomEarTagItemModel = new SheepRoomEarTagItemModel();
+        sheepRoomEarTagItemModel.setOrderCode("123");
+        sheepRoomEarTagItemModel.setBegin("1");
+        sheepRoomEarTagItemModel.setEnd("2");
+        sheepRoomEarTagItemModel.setPhoto("图片");
+        sheepRoomEarTagItemModels.add(sheepRoomEarTagItemModel);
+        sheepRoomEarTagViewModel.setList(sheepRoomEarTagItemModels);
+        return sheepRoomEarTagViewModel;
     }
 }

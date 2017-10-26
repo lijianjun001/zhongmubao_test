@@ -48,4 +48,13 @@ public interface SheepRoomService {
      * @throws Exception 异常
      */
     SheepRoomInsuranceViewModel insurance(SheepRoomInsuranceRequestModel model) throws Exception;
+    /**
+     * 我的羊圈 耳标
+     *
+     * @param model 请求参数 projectId
+     * @return SheepRoomInsuranceViewModel
+     * @throws Exception 异常
+     */
+    SheepRoomEarTagViewModel eartag(Customer customer,SheepRoomEarTagRequestModel model) throws Exception;
+
 }

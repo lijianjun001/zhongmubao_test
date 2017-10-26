@@ -11,13 +11,5 @@ public class SheepRoomOrdersModel {
     public SheepRoomOrdersModel() {
     }
 
-    public List<SheepRoomOrdersItemModel> getList() {
-        return list;
-    }
 
-    public void setList(List<SheepRoomOrdersItemModel> list) {
-        this.list = list;
-    }
-
-    private List<SheepRoomOrdersItemModel> list;
 }

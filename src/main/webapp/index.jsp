@@ -24,13 +24,13 @@
 //            isDefault:0
 //        };
 
-        var data = {"pageIndex":1,"projectType":"00"};
+        var data = {"projectId":"00"};
         console.info(JSON.stringify(data));
 //        var saveData ={"USER_ID":leader,"Users":users};
 
         $.ajax({
             type: "POST",
-            url: "/sheep/room",
+            url: "/sheep/room/insurance",
             data: JSON.stringify(data),
             contentType: 'application/json;charset=UTF-8',
             dataType: "json",                                     //预期服务器返回类型
