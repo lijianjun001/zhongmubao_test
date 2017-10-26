@@ -78,4 +78,18 @@ public class SheepRoomController {
             return new ResponseEntity<>(ReponseModel.error(ex, this.getClass()), HttpStatus.OK);
         }
     }
+
+    @RequestMapping(value = "/room/eartag", method = RequestMethod.POST, consumes = "application/json")
+    @Authorization
+    public ResponseEntity<ReponseModel> eartag(@CurrentUser Customer customer, HttpEntity<SheepRoomEarTagRequestModel> model) {
+        try {
+            SheepRoomEarTagViewModel sheepRoomEarTagViewModel = sheepRoomService.eartag(customer, model.getBody());
+            return new ResponseEntity<>(ReponseModel.ok(sheepRoomEarTagViewModel), HttpStatus.OK);
+        } catch (ApiException ex) {
+            return new ResponseEntity<>(ReponseModel.error(ex.getStatus()), HttpStatus.OK);
+        } catch (Exception ex) {
+            return new ResponseEntity<>(ReponseModel.error(ex, this.getClass()), HttpStatus.OK);
+        }
+    }
+
 }
