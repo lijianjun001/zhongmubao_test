@@ -1,7 +1,6 @@
 package com.zhongmubao.api.dto.response.sheep.room;
 
 import com.zhongmubao.api.dto.response.sheep.room.list.SheepRoomOrdersItemModel;
-import com.zhongmubao.api.dto.response.sheep.room.list.SheepRoomOrdersModel;
 
 import java.util.List;
 
