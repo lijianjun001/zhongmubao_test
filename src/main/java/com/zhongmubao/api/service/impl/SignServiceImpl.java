@@ -230,7 +230,7 @@ public class SignServiceImpl extends BaseService implements SignService {
                         en.getCount(),
                         en.getStatus(),
                         en.getType(),
-                        DateUtil.format(en.getCreated(), "yyyy.MM.dd")))
+                        DateUtil.format(DateUtil.addHours(en.getCreated(), -8), "yyyy.MM.dd")))
                 .collect(Collectors.toList());
         return new PageSignGiftModel(pager.getTotalPages(), list, formartAddress(customer.getId()), customer.getPhone());
     }
