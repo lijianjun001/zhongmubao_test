@@ -314,6 +314,19 @@ public class SignServiceImpl extends BaseService implements SignService {
         if (null == model) {
             throw new ApiException(ResultStatus.PARAMETER_MISSING);
         }
+
+        if (StringUtil.isNullOrEmpty(model.getName())) {
+            throw new ApiException(ResultStatus.PARAMETER_MISSING);
+        }
+
+        if (StringUtil.isNullOrEmpty(model.getPhone())) {
+            throw new ApiException(ResultStatus.PARAMETER_MISSING);
+        }
+
+        if (StringUtil.isNullOrEmpty(model.getAddress())) {
+            throw new ApiException(ResultStatus.PARAMETER_MISSING);
+        }
+
         String type = SignGiftType.SECRET_GIFT.getName();
         int activityId = Activity.SECRET_GIFT_ID.getName();
 
