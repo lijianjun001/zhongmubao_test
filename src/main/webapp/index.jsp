@@ -23,14 +23,24 @@
 //            phone:'17701314001',
 //            isDefault:0
 //        };
-
-        var data = {"projectId":"00"};
+//        private String mac;
+//        private String imei;
+//        private String ip;
+//        private String os;
+//        private String deviceid;
+        var data = {
+            "mac": "ef276f2fcfd8cdee9f28ed4f3fd70762",
+            "imei": "13bb0aec4302a5f8732c11b7575c142c",
+            "ip": "192.168.31.1",
+            "os": "0",
+            "deviceid": ""
+        };
         console.info(JSON.stringify(data));
 //        var saveData ={"USER_ID":leader,"Users":users};
 
         $.ajax({
             type: "POST",
-            url: "/customer/sign",
+            url: "/system/touTiaoAdv",
             data: JSON.stringify(data),
             contentType: 'application/json;charset=UTF-8',
             dataType: "json",                                     //预期服务器返回类型

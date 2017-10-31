@@ -47,7 +47,7 @@ public class TouTiaoAdvMongoDao implements BaseDao<TouTiaoAdvMongo> {
 
     @Override
     public TouTiaoAdvMongo get(Query query) throws Exception {
-        return null;
+        return mongoTemplate.findOne(query, TouTiaoAdvMongo.class);
     }
 
     @Override
