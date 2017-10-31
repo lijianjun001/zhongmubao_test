@@ -19,8 +19,12 @@ import java.util.UUID;
 @Component
 public class TokenManagerImpl implements TokenManager {
 
+    private final SystemTokenMongoDao systemTokenMongoDao;
+
     @Autowired
-    private SystemTokenMongoDao systemTokenMongoDao;
+    public TokenManagerImpl(SystemTokenMongoDao systemTokenMongoDao) {
+        this.systemTokenMongoDao = systemTokenMongoDao;
+    }
 
     @Override
     public TokenModel createToken(int customerId,String platform) throws Exception  {
