@@ -117,7 +117,7 @@ public class SignServiceImpl extends BaseService implements SignService {
                 }
 
                 //添加红包
-                sendRedPackage(customer, dayShareType, price, expTime, 1);
+                sendRedPackage(customer, dayShareType, price, expTime, 1,"");
 
                 //设置今天已分享
                 redisCache.saveCustomerIsShare(customerId);
@@ -153,7 +153,7 @@ public class SignServiceImpl extends BaseService implements SignService {
                         redPackagePrice = MathUtil.random(10, 200) * 0.01;
                         signGiftRedPackageViewModel.setPrice(DoubleUtil.toFixed(redPackagePrice, "0.00"));
                         //添加红包
-                        sendRedPackage(customer, dayShareType, redPackagePrice, expTime, 1);
+                        sendRedPackage(customer, dayShareType, redPackagePrice, expTime, 1,"00");
                         giftPrice = redPackagePrice;
                     }
 
@@ -265,7 +265,7 @@ public class SignServiceImpl extends BaseService implements SignService {
 
         ExtRedPackage firstPackage = packageList.get(0);
         extRedPackageDao.updateExtRedPackageIsUsedByCustomerIdAndIds(customerId, ids);
-        sendRedPackage(customer, RedPackageType.MERGE_CARD.getName(), totalPrice, firstPackage.getExpTime(), 1);
+        sendRedPackage(customer, RedPackageType.MERGE_CARD.getName(), totalPrice, firstPackage.getExpTime(), 1,"");
 
         shareCardMongo.setDelete(true);
         shareCardMongoDao.save(shareCardMongo);
