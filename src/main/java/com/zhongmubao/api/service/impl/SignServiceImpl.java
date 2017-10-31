@@ -203,6 +203,8 @@ public class SignServiceImpl extends BaseService implements SignService {
                     }
 
                 }
+                //活动统一入口
+                signActivity(customerId);
                 //endregion
                 return new SignModel(shareDayCount, DoubleUtil.toFixed(price, "0.00"), signInfo, signGiftViewModel, true, true);
 
@@ -212,6 +214,12 @@ public class SignServiceImpl extends BaseService implements SignService {
             lock.unlock();
         }
         throw new ApiException(ResultStatus.FAIL);
+    }
+
+    private void signActivity(int customerId) {
+        //判断活动期间是否送过，送过就不送，Redis里取。
+        //进行送话费
+        //发送push公告，app进行弹层
     }
 
     @Override
