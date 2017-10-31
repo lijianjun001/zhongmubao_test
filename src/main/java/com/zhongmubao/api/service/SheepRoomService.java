@@ -57,4 +57,14 @@ public interface SheepRoomService {
      */
     SheepRoomEarTagViewModel eartag(Customer customer,SheepRoomEarTagRequestModel model) throws Exception;
 
+    /**
+     * 我的羊圈 赎回弹框
+     *
+     * @param model 请求参数 projectId
+     * @return SheepRoomInsuranceViewModel
+     * @throws Exception 异常
+     */
+    SheepRoomRedeemableViewModel redeemable(Customer customer,SheepRoomRedeemableRequestModel model) throws Exception;
+
+
 }

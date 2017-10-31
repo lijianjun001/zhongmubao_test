@@ -120,4 +120,9 @@ public class SheepRoomServiceImpl extends BaseService implements SheepRoomServic
         sheepRoomEarTagViewModel.setList(sheepRoomEarTagItemModels);
         return sheepRoomEarTagViewModel;
     }
+
+    @Override
+    public SheepRoomRedeemableViewModel redeemable(Customer customer, SheepRoomRedeemableRequestModel model) throws Exception {
+        return null;
+    }
 }
