@@ -17,6 +17,7 @@ import com.zhongmubao.api.dto.response.sign.packagelist.SignPackageViewModel;
 import com.zhongmubao.api.config.entity.SignGift;
 import com.zhongmubao.api.entity.*;
 import com.zhongmubao.api.exception.ApiException;
+import com.zhongmubao.api.mongo.dao.CustomerNoticMongoDao;
 import com.zhongmubao.api.mongo.dao.ShareCardMongoDao;
 import com.zhongmubao.api.mongo.entity.*;
 import com.zhongmubao.api.mongo.entity.base.PageModel;
@@ -46,15 +47,17 @@ public class SignServiceImpl extends BaseService implements SignService {
     private final RedisCache redisCache;
     private final SheepOrderDao sheepOrderDao;
     private final ExtActivityRecordDao activityRecordDao;
+    private final CustomerNoticMongoDao customerNoticMongoDao;
 
     @Autowired
-    public SignServiceImpl(ExtRedPackageDao extRedPackageDao, ShareCardMongoDao shareCardMongoDao, CustomerAddressDao customerAddressDao, RedisCache redisCache, SheepOrderDao sheepOrderDao, ExtActivityRecordDao activityRecordDao) {
+    public SignServiceImpl(ExtRedPackageDao extRedPackageDao, ShareCardMongoDao shareCardMongoDao, CustomerAddressDao customerAddressDao, RedisCache redisCache, SheepOrderDao sheepOrderDao, ExtActivityRecordDao activityRecordDao,CustomerNoticMongoDao customerNoticMongoDao) {
         this.extRedPackageDao = extRedPackageDao;
         this.shareCardMongoDao = shareCardMongoDao;
         this.customerAddressDao = customerAddressDao;
         this.redisCache = redisCache;
         this.sheepOrderDao = sheepOrderDao;
         this.activityRecordDao = activityRecordDao;
+        this.customerNoticMongoDao = customerNoticMongoDao;
     }
 
     //region 签到相关
@@ -203,8 +206,9 @@ public class SignServiceImpl extends BaseService implements SignService {
                     }
 
                 }
+
                 //活动统一入口
-                signActivity(customerId);
+                signActivity(customer);
                 //endregion
                 return new SignModel(shareDayCount, DoubleUtil.toFixed(price, "0.00"), signInfo, signGiftViewModel, true, true);
 
@@ -216,10 +220,24 @@ public class SignServiceImpl extends BaseService implements SignService {
         throw new ApiException(ResultStatus.FAIL);
     }
 
-    private void signActivity(int customerId) {
+    private void signActivity(Customer customer) throws Exception {
         //判断活动期间是否送过，送过就不送，Redis里取。
-        //进行送话费
-        //公告添加数据进行弹层
+        if(!redisCache.hasSinglesDay(customer.getId())){
+            //进行送话费
+            String orderId = "SD"+customer.getAccount()+""+System.currentTimeMillis();
+            Recharge.submit(customer.getAccount(),2,orderId);
+            //公告添加数据进行弹层
+            CustomerNoticMongo customerNoticMongo = new CustomerNoticMongo();
+            customerNoticMongo.setCustomerId(customer.getId());
+            customerNoticMongo.setContent("");
+            customerNoticMongo.setTitle("");
+            customerNoticMongo.setBeginTime(DateUtil.formatMongo(new Date()));
+            customerNoticMongo.setEndTime(DateUtil.formatMongo(new Date()));
+            customerNoticMongo.setCreateTime(DateUtil.formatMongo(new Date()));
+
+            customerNoticMongoDao.save(customerNoticMongo);
+            redisCache.saveSinglesDay(customer.getId());
+        }
     }
 
     @Override

@@ -75,6 +75,10 @@ public class Constants {
     public static final String CACHE_SHARE_RANDOM_KEY = "ShareRandom";
 
     /**
+     * Cache 双十一送过话费
+     */
+    public static final String SINGLESDAY = "SinglesDay";
+    /**
      * Cache省市区
      */
     public static final String CACHE_SYSTEM_DISTRICT_KEY = "SystemDistrict";

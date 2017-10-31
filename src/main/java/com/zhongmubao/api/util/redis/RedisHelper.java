@@ -64,6 +64,17 @@ public class RedisHelper {
     }
 
     /**
+     * 判断HashTable是否存在Key
+     * @param table 表名
+     * @param key 键
+     * @return 对象
+     */
+    public boolean hasKey(String table, String key) {
+        HashOperations<String, String, Object> hashOper = redisTemplate.opsForHash();
+        return hashOper.hasKey(table, key);
+    }
+
+    /**
      * 设置HashTable
      * @param table 表名
      * @param key 键
