@@ -219,7 +219,7 @@ public class SignServiceImpl extends BaseService implements SignService {
     private void signActivity(int customerId) {
         //判断活动期间是否送过，送过就不送，Redis里取。
         //进行送话费
-        //发送push公告，app进行弹层
+        //公告添加数据进行弹层
     }
 
     @Override
