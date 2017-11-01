@@ -227,12 +227,85 @@ public class SignServiceImpl extends BaseService implements SignService {
             String orderId = "SD"+customer.getAccount()+""+System.currentTimeMillis();
             Recharge.submit(customer.getAccount(),2,orderId);
             //公告添加数据进行弹层
+
+            String str = "<style>" +
+                    "    body,html{" +
+                    "        margin:0;" +
+                    "        padding:0;" +
+                    "        background:none;" +
+                    "        width:100%;" +
+                    "        height:100%;" +
+                    "    }" +
+                    "    .active-double-cover{" +
+                    "        width:100%;" +
+                    "        height:100%;" +
+                    "        position:fixed;" +
+                    "        top:0;" +
+                    "        left:0;" +
+                    "        background:rgba(0,0,0,0.6);" +
+                    "        z-index:200000;" +
+                    "    }" +
+                    "    .active-double-cover .active-double-box{" +
+                    "        width:6.890625rem;" +
+                    "        height:11.015625rem;" +
+                    "        background:url(https://s.emubao.com/weixin/images/active-double-cover.png) no-repeat;" +
+                    "        background-size:100% 100%;" +
+                    "        position:absolute;" +
+                    "        top:0;" +
+                    "        left:0;" +
+                    "        right:0;" +
+                    "        bottom:0;" +
+                    "        margin:auto;" +
+                    "    }" +
+                    "    .active-double-cover .active-double-box p{" +
+                    "        width:80%;" +
+                    "        text-align:center;" +
+                    "        font-size:0.34375rem;" +
+                    "        color:#ef573b;" +
+                    "        padding-top:6.875rem;" +
+                    "        margin:0 auto;" +
+                    "    }" +
+                    "    .active-double-cover .active-double-box .cover-close{" +
+                    "        display:block;" +
+                    "        width:0.640625rem;" +
+                    "        height:0.640625rem;" +
+                    "        position:absolute;" +
+                    "        top:-0.55rem;" +
+                    "        right:0.2rem;" +
+                    "    }" +
+                    "    .active-double-cover .active-double-box .liaojie{" +
+                    "        display:block;" +
+                    "        width:3.25rem;" +
+                    "        height:0.765625rem;" +
+                    "        margin:0 auto;" +
+                    "        padding-top:1.7rem;" +
+                    "    }" +
+                    "</style>" +
+                    "<div class=\"active-double-cover\">" +
+                    "    <div class=\"active-double-box\">" +
+                    "        <img class=\"cover-close\" src=\"https://s.emubao.com/weixin/images/active-cover-close.png\" alt=\"\"/>" +
+                    "        <p>2017年11月04日-2017年11月30日</p>" +
+                    "        <a href=\"javascript:void(0);\"><img class=\"liaojie\" src=\"https://s.emubao.com/weixin/images/active-double-coverbtn.png\" alt=\"\"/></a>" +
+                    "    </div>" +
+                    "</div>" +
+                    "<script>" +
+                    "    $(\".cover-close\").click(function(){" +
+                    "        var platfrom=$(\"#customerShiYiPlatform\").val();" +
+                    "        if(platfrom==='00'){" +
+                    "            $(\".active-double-cover\").hide();" +
+                    "        }else{" +
+                    "            location.href='http://closewebview'" +
+                    "        }" +
+                    "    })" +
+                    "</script>"+
+                    "<input type=\"hidden\" value=\"00\" id=\"customerShiYiPlatform\">";
+
             CustomerNoticMongo customerNoticMongo = new CustomerNoticMongo();
             customerNoticMongo.setCustomerId(customer.getId());
-            customerNoticMongo.setContent("");
+            customerNoticMongo.setContent(str);
             customerNoticMongo.setTitle("");
-            customerNoticMongo.setBeginTime(DateUtil.formatMongo(new Date()));
-            customerNoticMongo.setEndTime(DateUtil.formatMongo(new Date()));
+            customerNoticMongo.setBeginTime(DateUtil.formatMongo(DateUtil.strToDate("2017-11-04 00:00:00")));
+            customerNoticMongo.setEndTime(DateUtil.formatMongo(DateUtil.strToDate("2017-11-30 23:59:59")));
             customerNoticMongo.setCreateTime(DateUtil.formatMongo(new Date()));
 
             customerNoticMongoDao.save(customerNoticMongo);
