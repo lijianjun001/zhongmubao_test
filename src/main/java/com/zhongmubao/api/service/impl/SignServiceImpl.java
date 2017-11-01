@@ -228,76 +228,85 @@ public class SignServiceImpl extends BaseService implements SignService {
             Recharge.submit(customer.getAccount(),2,orderId);
             //公告添加数据进行弹层
 
-            String str = "<style>" +
-                    "    body,html{" +
-                    "        margin:0;" +
-                    "        padding:0;" +
-                    "        background:none;" +
-                    "        width:100%;" +
-                    "        height:100%;" +
-                    "    }" +
-                    "    .active-double-cover{" +
-                    "        width:100%;" +
-                    "        height:100%;" +
-                    "        position:fixed;" +
-                    "        top:0;" +
-                    "        left:0;" +
-                    "        background:rgba(0,0,0,0.6);" +
-                    "        z-index:200000;" +
-                    "    }" +
-                    "    .active-double-cover .active-double-box{" +
-                    "        width:6.890625rem;" +
-                    "        height:11.015625rem;" +
-                    "        background:url(https://s.emubao.com/weixin/images/active-double-cover.png) no-repeat;" +
-                    "        background-size:100% 100%;" +
-                    "        position:absolute;" +
-                    "        top:0;" +
-                    "        left:0;" +
-                    "        right:0;" +
-                    "        bottom:0;" +
-                    "        margin:auto;" +
-                    "    }" +
-                    "    .active-double-cover .active-double-box p{" +
-                    "        width:80%;" +
-                    "        text-align:center;" +
-                    "        font-size:0.34375rem;" +
-                    "        color:#ef573b;" +
-                    "        padding-top:6.875rem;" +
-                    "        margin:0 auto;" +
-                    "    }" +
-                    "    .active-double-cover .active-double-box .cover-close{" +
-                    "        display:block;" +
-                    "        width:0.640625rem;" +
-                    "        height:0.640625rem;" +
-                    "        position:absolute;" +
-                    "        top:-0.55rem;" +
-                    "        right:0.2rem;" +
-                    "    }" +
-                    "    .active-double-cover .active-double-box .liaojie{" +
-                    "        display:block;" +
-                    "        width:3.25rem;" +
-                    "        height:0.765625rem;" +
-                    "        margin:0 auto;" +
-                    "        padding-top:1.7rem;" +
-                    "    }" +
-                    "</style>" +
-                    "<div class=\"active-double-cover\">" +
-                    "    <div class=\"active-double-box\">" +
-                    "        <img class=\"cover-close\" src=\"https://s.emubao.com/weixin/images/active-cover-close.png\" alt=\"\"/>" +
-                    "        <p>2017年11月04日-2017年11月30日</p>" +
-                    "        <a href=\"javascript:void(0);\"><img class=\"liaojie\" src=\"https://s.emubao.com/weixin/images/active-double-coverbtn.png\" alt=\"\"/></a>" +
-                    "    </div>" +
-                    "</div>" +
-                    "<script>" +
-                    "    $(\".cover-close\").click(function(){" +
-                    "        var platfrom=$(\"#customerShiYiPlatform\").val();" +
-                    "        if(platfrom==='00'){" +
-                    "            $(\".active-double-cover\").hide();" +
-                    "        }else{" +
-                    "            location.href='http://closewebview'" +
-                    "        }" +
-                    "    })" +
-                    "</script>"+
+            String str = ""+"<style>\n" +
+                    "    body,html{\n" +
+                    "        margin:0;\n" +
+                    "        padding:0;\n" +
+                    "        background:none;\n" +
+                    "        width:100%;\n" +
+                    "        height:100%;\n" +
+                    "    }\n" +
+                    "    .active-shuang-cover{\n" +
+                    "        width:100%;\n" +
+                    "        height:100%;\n" +
+                    "        position:fixed;\n" +
+                    "        top:0;\n" +
+                    "        left:0;\n" +
+                    "        background:rgba(0,0,0,0.6);\n" +
+                    "        z-index:5;\n" +
+                    "    }\n" +
+                    "    .active-shuang-cover .active-shuang-div{\n" +
+                    "        width:7.40625rem;\n" +
+                    "        height:5.28125rem;\n" +
+                    "        position:absolute;\n" +
+                    "        top:0;\n" +
+                    "        left:0;\n" +
+                    "        right:0;\n" +
+                    "        bottom:0;\n" +
+                    "        margin: auto;\n" +
+                    "    }\n" +
+                    "    .active-shuang-cover .active-shuang-div .active-top{\n" +
+                    "        width:100%;\n" +
+                    "        height:5.28125rem;\n" +
+                    "        background:url(https://s.emubao.com/weixin/images/active-single-cover1.png?1.0) no-repeat;\n" +
+                    "        background-size:100% 100%;\n" +
+                    "        position:relative;\n" +
+                    "    }\n" +
+                    "    .active-shuang-cover .active-shuang-div .active-top .active-btn{\n" +
+                    "        display:block;\n" +
+                    "        width:0.640625rem;\n" +
+                    "        height:0.640625rem;\n" +
+                    "        position:absolute;\n" +
+                    "        top:0.25rem;\n" +
+                    "        right:1.4375rem;\n" +
+                    "    }\n" +
+                    "    .active-shuang-cover .active-shuang-div .active-top .active-gongxi{\n" +
+                    "        display:block;\n" +
+                    "        width:1.625rem;\n" +
+                    "        height:0.5rem;\n" +
+                    "        margin:0 auto;\n" +
+                    "        padding-top:3.38125rem;\n" +
+                    "    }\n" +
+                    "    .active-shuang-cover .active-shuang-div .active-top span{\n" +
+                    "        display:block;;\n" +
+                    "        text-align:center;\n" +
+                    "        font-size:0.40625rem;\n" +
+                    "        color:white;\n" +
+                    "        -webkit-text-shadow:#000 0.017rem 0 0,#000 0 0.017rem 0,#000 -0.017rem 0 0,#000 0 -0.017rem 0;\n" +
+                    "        -moz-text-shadow:#000 0.017rem 0 0,#000 0 0.017rem 0,#000 -0.017rem 0 0,#000 0 -0.017rem 0;\n" +
+                    "        text-shadow:#000 0.017rem 0 0,#000 0 0.017rem 0,#000 -0.017rem 0 0,#000 0 -0.017rem 0;\n" +
+                    "    }\n" +
+                    "</style>\n" +
+                    "<div class=\"active-shuang-cover\" style=\"display:block;\">\n" +
+                    "    <div class=\"active-shuang-div\" >\n" +
+                    "        <div class=\"active-top\">\n" +
+                    "            <img class=\"active-btn\" src=\"https://s.emubao.com/weixin/images/active-cover-close.png\" alt=\"\"/>\n" +
+                    "            <img class=\"active-gongxi\" src=\"https://s.emubao.com/weixin/images/active-cover-img.png\" alt=\"\"/>\n" +
+                    "            <span>获得2元话费</span>\n" +
+                    "            <span>将在两小时内到账</span>\n" +
+                    "        </div>\n" +
+                    "    </div>\n" +
+                    "</div>\n" +
+                    "<script>\n" +
+                    "    $(\".active-btn\").click(function(){\n" +
+                    "        var platfrom=$(\"#customerShiYiPlatform\").val();\n" +
+                    "        if(platfrom==='00'){\n" +
+                    "            $(\".active-shuang-cover\").hide();\n" +
+                    "        }else{\n" +
+                    "            location.href='http://closewebview'\n" +
+                    "        }\n" +
+                    "    })\n" +
+                    "</script>\n" +
                     "<input type=\"hidden\" value=\"00\" id=\"customerShiYiPlatform\">";
 
             CustomerNoticMongo customerNoticMongo = new CustomerNoticMongo();
