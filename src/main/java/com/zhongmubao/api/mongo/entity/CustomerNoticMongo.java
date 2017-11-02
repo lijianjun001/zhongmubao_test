@@ -8,6 +8,7 @@ import java.util.Date;
 
 /**
  * 公告通知
+ * @author xy
  */
 @Document(collection = "CustomerNoticMongo")
 public class CustomerNoticMongo extends BaseModel {
@@ -17,7 +18,7 @@ public class CustomerNoticMongo extends BaseModel {
     private String title;
     @Field("Content")
     private String content;
-    @Field("EeginTime")
+    @Field("BeginTime")
     private Date beginTime;
     @Field("EndTime")
     private Date endTime;

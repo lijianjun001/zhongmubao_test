@@ -86,7 +86,7 @@ public class RedisCache {
     public void saveSinglesDay(int key) {
         try {
             String table = Constants.SINGLESDAY;
-            redisHelper.setHash(table, String.valueOf(key) + "", true);
+            redisHelper.setHash(table, String.valueOf(key) + "", "true");
         } catch (Exception ex) {
         }
     }
