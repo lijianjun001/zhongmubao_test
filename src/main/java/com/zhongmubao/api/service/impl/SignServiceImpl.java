@@ -222,6 +222,11 @@ public class SignServiceImpl extends BaseService implements SignService {
 
     private void signActivity(Customer customer) throws Exception {
         //判断活动期间是否送过，送过就不送，Redis里取。
+        Date now = new Date();
+        if(now.getTime()>DateUtil.strToDate("2017-11-04 00:00:00").getTime() && now.getTime()<DateUtil.strToDate("2017-11-30 23:59:59").getTime())
+        {
+            //活动时间 限制 活动期内
+        }
         if(!redisCache.hasSinglesDay(customer.getId())){
             //进行送话费
             String orderId = "SD"+customer.getAccount()+""+System.currentTimeMillis();
