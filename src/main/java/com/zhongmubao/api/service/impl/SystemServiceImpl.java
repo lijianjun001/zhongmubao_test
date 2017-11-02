@@ -49,17 +49,23 @@ public class SystemServiceImpl extends BaseService implements SystemService {
         if (null == model.getOs()) {
             throw new ApiException(ResultStatus.PARAMETER_MISSING);
         }
-
-        String imei = SecurityUtil.md5(model.getImei()).toLowerCase();
+        String iosNoIdfa = "00000000-0000-0000-0000-000000000000";
+        if (iosNoIdfa.equals(model.getImei())) {
+            throw new ApiException(ResultStatus.PARAMETER_MISSING);
+        }
+        String ios = "1";
+        String imei = model.getOs().equals(ios) ? model.getImei() : SecurityUtil.md5(model.getImei()).toLowerCase();
         TouTiaoAdvMongo touTiaoAdvMongo = touTiaoAdvMongoDao.getByImeiAndOsAndStatus(imei, model.getOs(), "00");
         if (touTiaoAdvMongo == null) {
             throw new ApiException(ResultStatus.DATA_QUERY_FAILED);
         }
         String convTime = String.valueOf(System.currentTimeMillis());
+
+        touTiaoAdvMongoDao.update(touTiaoAdvMongo);
+
         //回传
         String url = "http://ad.toutiao.com/track/activate/?callback=" + URLEncoder.encode(touTiaoAdvMongo.getCallback(), "UTF-8") + "&muid=" + touTiaoAdvMongo.getImei() + touTiaoAdvMongo.getMac() + "&os=" + touTiaoAdvMongo.getOs() + "&source=TD&conv_time=" + convTime + "&event_type=0";
         HttpUtil.get(url);
-        touTiaoAdvMongoDao.update(touTiaoAdvMongo);
     }
 
     @Override
