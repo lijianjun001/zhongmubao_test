@@ -5,9 +5,16 @@ import com.zhongmubao.api.mongo.entity.CustomerNoticMongo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+/**
+ * CustomerNoticMongoDao
+ *
+ * @author xy
+ */
+@Repository
 public class CustomerNoticMongoDao implements BaseDao<CustomerNoticMongo> {
     private final MongoTemplate mongoTemplate;
 
