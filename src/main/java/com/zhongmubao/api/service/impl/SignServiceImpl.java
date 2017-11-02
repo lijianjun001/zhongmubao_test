@@ -304,7 +304,7 @@ public class SignServiceImpl extends BaseService implements SignService {
                     "</div>\n" +
                     "<script>\n" +
                     "    $(\".active-btn\").click(function(){\n" +
-                    "        var platfrom=$(\"#customerShiYiPlatform\").val();\n" +
+                    "        var platfrom=$(\"#customerNoticPlatform\").val();\n" +
                     "        if(platfrom==='00'){\n" +
                     "            $(\".active-shuang-cover\").hide();\n" +
                     "            $(\".common-gonggao\").hide();\n" +
@@ -313,7 +313,7 @@ public class SignServiceImpl extends BaseService implements SignService {
                     "        }\n" +
                     "    })\n" +
                     "</script>\n" +
-                    "<input type=\"hidden\" value=\"00\" id=\"customerShiYiPlatform\">";
+                    "<input type=\"hidden\" value=\"00\" id=\"customerNoticPlatform\">";
 
             CustomerNoticMongo customerNoticMongo = new CustomerNoticMongo();
             customerNoticMongo.setCustomerId(customer.getId());
