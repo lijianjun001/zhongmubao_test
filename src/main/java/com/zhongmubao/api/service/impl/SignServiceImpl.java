@@ -307,6 +307,7 @@ public class SignServiceImpl extends BaseService implements SignService {
                     "        var platfrom=$(\"#customerShiYiPlatform\").val();\n" +
                     "        if(platfrom==='00'){\n" +
                     "            $(\".active-shuang-cover\").hide();\n" +
+                    "            $(\".common-gonggao\").hide();\n" +
                     "        }else{\n" +
                     "            location.href='http://closewebview'\n" +
                     "        }\n" +
