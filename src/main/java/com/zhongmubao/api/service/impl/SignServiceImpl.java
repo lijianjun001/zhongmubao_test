@@ -312,8 +312,7 @@ public class SignServiceImpl extends BaseService implements SignService {
                     "            location.href='http://closewebview'\n" +
                     "        }\n" +
                     "    })\n" +
-                    "</script>\n" +
-                    "<input type=\"hidden\" value=\"00\" id=\"customerNoticPlatform\">";
+                    "</script>" ;
 
             CustomerNoticMongo customerNoticMongo = new CustomerNoticMongo();
             customerNoticMongo.setCustomerId(customer.getId());
