@@ -207,8 +207,6 @@ public class SignServiceImpl extends BaseService implements SignService {
 
                 }
 
-                //活动统一入口
-                signActivity(customer);
                 //endregion
                 return new SignModel(shareDayCount, DoubleUtil.toFixed(price, "0.00"), signInfo, signGiftViewModel, true, true);
 
@@ -220,7 +218,9 @@ public class SignServiceImpl extends BaseService implements SignService {
         throw new ApiException(ResultStatus.FAIL);
     }
 
-    private void signActivity(Customer customer) throws Exception {
+
+    @Override
+    public void signActivity1111(Customer customer) throws Exception {
         //判断活动期间是否送过，送过就不送，Redis里取。
         Date now = new Date();
         if (!(now.getTime() > DateUtil.strToDate("2017-11-04 00:00:00").getTime() && now.getTime() < DateUtil.strToDate("2017-11-30 23:59:59").getTime())) {
