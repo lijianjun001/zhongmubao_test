@@ -40,7 +40,7 @@
 
         $.ajax({
             type: "POST",
-            url: "/customer/signActivity1111",
+            url: "http://192.168.31.188:9001/customer/signActivity1111",
             data: JSON.stringify(data),
             contentType: 'application/json;charset=UTF-8',
             dataType: "json",                                     //预期服务器返回类型

@@ -223,9 +223,9 @@ public class SignServiceImpl extends BaseService implements SignService {
     public void signActivity1111(Customer customer) throws Exception {
         //判断活动期间是否送过，送过就不送，Redis里取。
         Date now = new Date();
-//        if (!(now.getTime() > DateUtil.strToDate("2017-11-04 00:00:00").getTime() && now.getTime() < DateUtil.strToDate("2017-11-30 23:59:59").getTime())) {
-//            return;
-//        }
+        if (!(now.getTime() > DateUtil.strToDate("2017-11-04 00:00:00").getTime() && now.getTime() < DateUtil.strToDate("2017-11-30 23:59:59").getTime())) {
+            return;
+        }
 
         if (redisCache.hasSinglesDay(customer.getId())) {
             return;
