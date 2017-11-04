@@ -15,6 +15,17 @@
 		and customerid = #{customerId}
 	</select>
 
+	<select id="countSheepOrderByCustomerIdAndState" resultType="int">
+		select ifnull(count(1),0) from SheepOrder where
+		state in
+		<foreach collection="states" item="item" index="index" open="(" close=")" separator=",">
+			#{item}
+		</foreach>
+		and deleted = 0
+		and frozened = 0
+		and customerid = #{customerId}
+	</select>
+
 	<select id="getSheepOrderByProjectIdAndCustomerId" resultType="SheepOrder">
 		select * from SheepOrder where Deleted=false and Frozened=false and CustomerId=#{customerId} and ProjectId=#{projectId}
 	</select>

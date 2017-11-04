@@ -230,7 +230,10 @@ public class SignServiceImpl extends BaseService implements SignService {
         if (redisCache.hasSinglesDay(customer.getId())) {
             return;
         }
-
+        //判断有没买过羊
+        if(sheepOrderDao.countSheepOrderByCustomerIdAndState(customer.getId(), Constants.SHEEP_IN_THE_BAR_STATE_AND_REDEMING_ANDREDEMED)<=0){
+            return;
+        }
         //进行送话费
         String orderId = "SD" + customer.getAccount() + "" + System.currentTimeMillis();
         Recharge.submit(customer.getAccount(), 2, orderId);

@@ -26,6 +26,16 @@ public interface SheepOrderDao {
     int countSheepOrderByCustomerIdAndBeginTimeAndEndTimeAndState(@Param("customerId") int customerId, @Param("beginTime") Date beginTime, @Param("endTime") Date endTime, @Param("states") List<String> states);
 
     /**
+     * 统计用户订单数
+     *
+     * @param customerId 客户id
+     * @param states     状态
+     * @return 订单数
+     */
+    int countSheepOrderByCustomerIdAndState(@Param("customerId") int customerId, @Param("states") List<String> states);
+
+
+    /**
      * 获取 标 和 订单 数据 （特殊字段 我的羊圈 使用）
      *
      * @param customerId 客户id
