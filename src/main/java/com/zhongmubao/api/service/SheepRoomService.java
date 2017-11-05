@@ -51,8 +51,9 @@ public interface SheepRoomService {
     /**
      * 我的羊圈 耳标
      *
-     * @param model 请求参数 projectId
-     * @return SheepRoomInsuranceViewModel
+     * @param customer 用户
+     * @param model 请求参数
+     * @return SheepRoomEarTagViewModel
      * @throws Exception 异常
      */
     SheepRoomEarTagViewModel eartag(Customer customer,SheepRoomEarTagRequestModel model) throws Exception;
@@ -60,8 +61,9 @@ public interface SheepRoomService {
     /**
      * 我的羊圈 赎回弹框
      *
-     * @param model 请求参数 projectId
-     * @return SheepRoomInsuranceViewModel
+     * @param customer 用户
+     * @param model 请求参数
+     * @return SheepRoomRedeemableViewModel
      * @throws Exception 异常
      */
     SheepRoomRedeemableViewModel redeemable(Customer customer,SheepRoomRedeemableRequestModel model) throws Exception;
