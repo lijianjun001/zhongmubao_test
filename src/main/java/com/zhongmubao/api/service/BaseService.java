@@ -48,8 +48,8 @@ public class BaseService {
 
         if (!StringUtil.isNullOrEmpty(customer.getOpenId())) {
             String priceStr = DoubleUtil.toFixed(price * count, "0.00");
-            String content = WinXinContent(type, price, expTime, count);
-
+            String remark = formartRedPackageRemark(type, price, expTime, count);
+            String content = WxTemplate.redPackage(customer.getOpenId(), priceStr + "元", remark);
             push(customer, "获赠红包", content, SystemPushType.WEIXIN);
         }
     }
@@ -60,9 +60,9 @@ public class BaseService {
      * @param price 金额
      * @param expTime 过期时间
      * @param count 数量
-     * @return
+     * @return 格式化后的内容
      */
-    protected String WinXinContent(RedPackageType type, double price, Date expTime, int count) {
+    private String formartRedPackageRemark(RedPackageType type, double price, Date expTime, int count) {
         String priceStr = DoubleUtil.toFixed(price * count, "0.00");
         String remark = "" + priceStr + "元（" + DoubleUtil.toFixed(price, "0.00") + "元*" + count + "）增益红包请在：个人中心-现金红包 中查看。";
 
@@ -83,7 +83,7 @@ public class BaseService {
      * @param content  内容
      * @param type     类型
      */
-    protected void push(Customer customer, String title, String content, SystemPushType type) {
+    private void push(Customer customer, String title, String content, SystemPushType type) {
         try {
             SystemPushMongo pushMongo = new SystemPushMongo();
             pushMongo.setCustomerId(customer.getId());
