@@ -71,11 +71,9 @@ public class RedisCache {
     public boolean hasSinglesDay(int key) {
         try {
             String table = Constants.SINGLESDAY;
-            Object obj = redisHelper.getHash(table, String.valueOf(key));
-            String value = String.valueOf(redisHelper.getHash(table, String.valueOf(key)));
-            return "true".equals(value);
+            return redisHelper.hasKey(table, String.valueOf(key));
         } catch (Exception ex) {
-            return false;
+            return true;
         }
     }
 
