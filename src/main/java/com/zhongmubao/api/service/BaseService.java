@@ -26,12 +26,12 @@ public class BaseService {
     @Autowired
     private SystemPushMongoDao systemPushMongoDao;
 
-    protected void sendRedPackage(Customer customer, String type, double price, Date expTime, int count,String state) {
+    protected void sendRedPackage(Customer customer, RedPackageType type, double price, Date expTime, int count) {
         Date now = new Date();
         for (int i = 0; i < count; i++) {
             ExtRedPackage extRedPackage = new ExtRedPackage(
                     customer.getId(),
-                    type,
+                    type.getName(),
                     0,
                     false,
                     price,
@@ -48,8 +48,7 @@ public class BaseService {
 
         if (!StringUtil.isNullOrEmpty(customer.getOpenId())) {
             String priceStr = DoubleUtil.toFixed(price * count, "0.00");
-            String remark = "" + priceStr + "元（" + DoubleUtil.toFixed(price, "0.00") + "元*" + count + "）增益红包请在：个人中心-现金红包 中查看。";
-            String content = WinXinContent(type,price,expTime,count,state);//WxTemplate.redPackage(customer.getOpenId(), priceStr + "元", remark);
+            String content = WinXinContent(type, price, expTime, count);
 
             push(customer, "获赠红包", content, SystemPushType.WEIXIN);
         }
@@ -61,21 +60,15 @@ public class BaseService {
      * @param price 金额
      * @param expTime 过期时间
      * @param count 数量
-     * @param state 同类型下 状态 02 -> 00（分享礼物）
      * @return
      */
-    protected String WinXinContent(String type, double price, Date expTime, int count,String state){
+    protected String WinXinContent(RedPackageType type, double price, Date expTime, int count) {
         String priceStr = DoubleUtil.toFixed(price * count, "0.00");
         String remark = "" + priceStr + "元（" + DoubleUtil.toFixed(price, "0.00") + "元*" + count + "）增益红包请在：个人中心-现金红包 中查看。";
 
         switch (type){
-
-            case "02":
-                if(state=="00"){
-                    remark = "中奖啦！恭喜您已开启宝箱获得"+priceStr+"元收益红包！可以在“我的-现金红包”中查看，购羊可使用，请注意红包使用期限以免过期哦！";
-                }else{
+            case DAY_SHARE:
                     remark = "红包到账！恭喜您今日抢到拼手气红包"+priceStr+"元，快去抢羊增加收益吧！（每日仅有一次分享签到得红包机会）累积分享签到还可得神秘礼物哦！";
-                }
                 break;
             default:
                 break;
