@@ -231,7 +231,7 @@ public class SignServiceImpl extends BaseService implements SignService {
             return;
         }
         //判断有没买过羊
-        if(sheepOrderDao.countSheepOrderByCustomerIdAndState(customer.getId(), Constants.SHEEP_IN_THE_BAR_STATE_AND_REDEMING_ANDREDEMED)<=0){
+        if (sheepOrderDao.countSheepOrderByCustomerIdAndState(customer.getId(), Constants.SHEEP_IN_THE_BAR_STATE) <= 0) {
             return;
         }
         //进行送话费
