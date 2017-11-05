@@ -24,7 +24,8 @@ public class RedisHelper {
 
     /**
      * 保存
-     * @param key 键
+     *
+     * @param key   键
      * @param value 值
      */
     public void save(String key, String value) {
@@ -34,6 +35,7 @@ public class RedisHelper {
 
     /**
      * 根据 key获取
+     *
      * @param key 键
      * @return 字符串
      */
@@ -44,6 +46,7 @@ public class RedisHelper {
 
     /**
      * 根据key删除
+     *
      * @param key 键
      */
     public void remove(String key) {
@@ -54,8 +57,9 @@ public class RedisHelper {
 
     /**
      * 获取HashTable
+     *
      * @param table 表名
-     * @param key 键
+     * @param key   键
      * @return 对象
      */
     public Object getHash(String table, String key) {
@@ -65,20 +69,22 @@ public class RedisHelper {
 
     /**
      * 判断HashTable是否存在Key
+     *
      * @param table 表名
-     * @param key 键
+     * @param key   键
      * @return 对象
      */
     public boolean hasKey(String table, String key) {
         HashOperations<String, String, Object> hashOper = redisTemplate.opsForHash();
-        return hashOper.hasKey(table, key);
+        return hashOper.get(table, key) != null;
     }
 
     /**
      * 设置HashTable
+     *
      * @param table 表名
-     * @param key 键
-     * @param obj 对象
+     * @param key   键
+     * @param obj   对象
      */
     public void setHash(String table, String key, Object obj) {
         HashOperations<String, String, Object> hashOper = redisTemplate.opsForHash();
