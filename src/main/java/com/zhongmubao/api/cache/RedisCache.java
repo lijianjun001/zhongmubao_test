@@ -35,7 +35,7 @@ public class RedisCache {
             String key = Constants.CACHE_NEW_PEOPLE_PROJECT_IS_SHOW_KEY + "_" + customerId;
             redisHelper.save(key, "1");
         } catch (Exception ex) {
-
+            //ignore
         }
     }
 
@@ -44,13 +44,7 @@ public class RedisCache {
             String str = String.valueOf(redisHelper.getHash(Constants.CACHE_CUSTOMER_IS_SHARE_KEY, customerId + ""));
             String value = DateUtil.formatShort(new Date());
 
-            if (StringUtil.isNullOrEmpty(str)) {
-                return false;
-            }
-            if (!str.equals(value)) {
-                return false;
-            }
-            return true;
+            return !StringUtil.isNullOrEmpty(str) && str.equals(value);
         } catch (Exception ex) {
             return false;
         }
@@ -61,7 +55,7 @@ public class RedisCache {
             String value = DateUtil.formatShort(new Date());
             redisHelper.setHash(Constants.CACHE_CUSTOMER_IS_SHARE_KEY, customerId + "", value);
         } catch (Exception ex) {
-
+            //ignore
         }
     }
 
@@ -79,7 +73,7 @@ public class RedisCache {
             String table = Constants.SINGLESDAY;
             Object obj = redisHelper.getHash(table, String.valueOf(key));
             String value = String.valueOf(redisHelper.getHash(table, String.valueOf(key)));
-            return value.equals("true") ? true : false;
+            return "true".equals(value);
         } catch (Exception ex) {
             return false;
         }
@@ -90,6 +84,7 @@ public class RedisCache {
             String table = Constants.SINGLESDAY;
             redisHelper.setHash(table, String.valueOf(key) + "", "true");
         } catch (Exception ex) {
+            //ignore
         }
     }
 }
