@@ -53,4 +53,39 @@
 		group by p.Id order by o.Id desc
 	</select>
 
+	<select id="pageSheepOrderByCustomerIdGroupByProjectId" resultType="SheepOrderInfoExt">
+		<!-- 具体的sql -->
+		SELECT so.Id,so.ProjectId,so.CustomerId,so.State AS SheepOrderState,sp.Title,sp.Type,sp.State,sp.Price,sp.Rate,sp.Period,sp.State AS SheepProjectState,sp.EffectiveTime,sp.RedemTime AS RedeemTime,sv.Shorthand,SUM(so.Count) AS Count,sp.VendorId,SUM(so.TotalAmount) AS TotalAmount,
+		SUM((SELECT SUM(Price) FROM ExtRedPackage erp WHERE erp.SheepOrderId=so.Id)) AS RedPackageAmount,sp.BeginTime,sp.EndTime
+		FROM SheepOrder so
+		INNER JOIN SheepProject sp ON so.ProjectId=sp.Id
+		INNER JOIN SheepVendor sv ON sp.VendorId=sv.Id
+		WHERE so.CustomerId=#{customerId}
+		AND so.state IN
+		<foreach collection="states" item="item" index="index" open="(" close=")" separator=",">
+			#{item}
+		</foreach>
+		<choose>
+			<when test="type=='03'">
+				<![CDATA[ and (sp.Type='03' or sp.Type='04') ]]>
+			</when>
+			<otherwise>
+				<![CDATA[ and (sp.Type<>'03' and sp.Type<>'04') ]]>
+			</otherwise>
+		</choose>
+		AND so.deleted = 0 and so.Frozened=0 and sp.Deleted=0
+		GROUP BY so.ProjectId desc
+	</select>
+
+	<select id="sumSheepOrderCountByCustomerIdAndState" resultType="int">
+		select ifnull(Sum(count),0) as TotalCount from SheepOrder where
+		state in
+		<foreach collection="states" item="item" index="index" open="(" close=")" separator=",">
+			#{item}
+		</foreach>
+		and deleted = 0
+		and frozened = 0
+		and customerid = #{customerId}
+	</select>
+
 </mapper>
