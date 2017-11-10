@@ -21,6 +21,14 @@
         <!-- 默认匹配所有的请求 -->
         <url-pattern>/</url-pattern>
     </servlet-mapping>
+
+    <!-- 应用启动调用-->
+    <servlet>
+        <servlet-name>ApplicationStartServlet</servlet-name>
+        <servlet-class>com.zhongmubao.api.init.ApplicationStartServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+
     <context-param>
         <param-name>log4jConfigLocation</param-name>
         <param-value>classpath:log4j.properties</param-value>
