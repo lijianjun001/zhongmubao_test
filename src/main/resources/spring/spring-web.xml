@@ -75,4 +75,6 @@
 
     <!-- 4.扫描web相关的bean -->
     <context:component-scan base-package="com.zhongmubao.api.web"/>
+
+    <context:component-scan base-package="com.zhongmubao.api.init"/>
 </beans>

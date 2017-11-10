@@ -16,6 +16,7 @@ import com.zhongmubao.api.entity.Customer;
 import com.zhongmubao.api.entity.SheepLevel;
 import com.zhongmubao.api.entity.ext.SheepOrderInfoExt;
 import com.zhongmubao.api.exception.ApiException;
+import com.zhongmubao.api.init.Redis;
 import com.zhongmubao.api.mongo.dao.CustomerOrderLogMongoDao;
 import com.zhongmubao.api.mongo.dao.SheepProgressMongoDao;
 import com.zhongmubao.api.mongo.entity.CustomerOrderLogMongo;
@@ -42,7 +43,6 @@ public class SheepRoomServiceImpl extends BaseService implements SheepRoomServic
     private final SheepOrderDao sheepOrderDao;
     private final SheepProgressMongoDao sheepProgressMongoDao;
     private final CustomerOrderLogMongoDao customerOrderLogMongoDao;
-
     @Autowired
     public SheepRoomServiceImpl(RedisCache redisCache, SheepOrderDao sheepOrderDao, SheepProgressMongoDao sheepProgressMongoDao, CustomerOrderLogMongoDao customerOrderLogMongoDao) {
         this.redisCache = redisCache;
@@ -53,6 +53,7 @@ public class SheepRoomServiceImpl extends BaseService implements SheepRoomServic
 
     @Override
     public SheepRoomViewModel room(Customer customer, SheepRoomRequestModel model) throws Exception {
+
         if (model == null) {
             throw new ApiException(ResultStatus.PARAMETER_MISSING);
         }

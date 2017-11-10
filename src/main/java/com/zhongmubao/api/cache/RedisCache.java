@@ -1,9 +1,6 @@
 package com.zhongmubao.api.cache;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.zhongmubao.api.config.Constants;
-import com.zhongmubao.api.dao.SheepLevelDao;
 import com.zhongmubao.api.entity.SheepLevel;
 import com.zhongmubao.api.util.DateUtil;
 import com.zhongmubao.api.util.StringUtil;
@@ -24,8 +21,6 @@ public class RedisCache {
 
     @Autowired
     public RedisHelper redisHelper;
-    @Autowired
-    public SheepLevelDao sheepLevelDao;
 
     public boolean getNewPeopleProjectIsShow(int customerId) {
         try {
@@ -102,17 +97,11 @@ public class RedisCache {
      */
     public List<SheepLevel> getCustomerLevel() {
         try {
-            String str = redisHelper.get(Constants.CACHE_CUSTOMER_LEVEL_KEY);
-            ObjectMapper mapper = new ObjectMapper();
-
-            if (StringUtil.isNullOrEmpty(str)) {
-                List<SheepLevel> sheepLevels = sheepLevelDao.pagerSheepLevelList(0, 10);
-                String json = mapper.writeValueAsString(sheepLevels);
-                redisHelper.save(Constants.CACHE_CUSTOMER_LEVEL_KEY, json);
-                return sheepLevels;
+            if (redisHelper.hasKey(Constants.CACHE_CUSTOMER_LEVEL_TABLE, Constants.CACHE_CUSTOMER_LEVEL_KEY)) {
+                Object object = redisHelper.getHash(Constants.CACHE_CUSTOMER_LEVEL_TABLE, Constants.CACHE_CUSTOMER_LEVEL_KEY);
+                return (List<SheepLevel>) object;
             } else {
-                return mapper.readValue(str, new TypeReference<List<SheepLevel>>() {
-                });
+                return null;
             }
         } catch (Exception ex) {
             return null;

@@ -84,9 +84,13 @@ public class Constants {
     public static final String CACHE_SYSTEM_DISTRICT_KEY = "SystemDistrict";
 
     /**
-     * Cache客户等级
+     * 客户等级表名
      */
-    public static final String CACHE_CUSTOMER_LEVEL_KEY = "CustomerLevel";
+    public static final String CACHE_CUSTOMER_LEVEL_TABLE = "CustomerLevel";
+    /**
+     * RedisCache客户等级
+     */
+    public static final String CACHE_CUSTOMER_LEVEL_KEY = "CustomerLevel_RedisCache";
 
     /**
      * Cache牧场监控
