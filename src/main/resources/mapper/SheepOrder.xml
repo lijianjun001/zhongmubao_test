@@ -54,7 +54,7 @@
 	</select>
 
 	<select id="pageSheepOrderByCustomerIdGroupByProjectId" resultType="SheepOrderInfoExt">
-		<!-- 具体的sql -->
+		<!-- 我的羊圈View -->
 		SELECT so.Id,so.ProjectId,so.CustomerId,so.State AS SheepOrderState,sp.Title,sp.Type,sp.State,sp.Price,sp.Rate,sp.Period,sp.State AS SheepProjectState,sp.EffectiveTime,sp.RedemTime AS RedeemTime,sv.Shorthand,SUM(so.Count) AS Count,sp.VendorId,SUM(so.TotalAmount) AS TotalAmount,
 		SUM((SELECT SUM(Price) FROM ExtRedPackage erp WHERE erp.SheepOrderId=so.Id)) AS RedPackageAmount,sp.BeginTime,sp.EndTime
 		FROM SheepOrder so
@@ -78,6 +78,7 @@
 	</select>
 
 	<select id="sumSheepOrderCountByCustomerIdAndState" resultType="int">
+		<!-- 在栏总羊只（包括羊只和店铺） -->
 		select ifnull(Sum(count),0) as TotalCount from SheepOrder where
 		state in
 		<foreach collection="states" item="item" index="index" open="(" close=")" separator=",">
@@ -86,6 +87,21 @@
 		and deleted = 0
 		and frozened = 0
 		and customerid = #{customerId}
+	</select>
+
+	<select id="getOrderByCustomerIdAndProjectIdAndState" resultType="SheepOrderInfo">
+		<!-- 羊标订单列表 -->
+		SELECT so.Id,so.CustomerId,so.`Code`,so.Count,sp.Title
+		FROM SheepOrder so
+		INNER JOIN SheepProject sp ON so.ProjectId=sp.Id
+		WHERE so.CustomerId=#{customerId}
+		AND so.ProjectId=#{projectId}
+		AND
+		so.state IN
+		<foreach collection="states" item="item" index="index" open="(" close=")" separator=",">
+			#{item}
+		</foreach>
+		AND so.deleted = 0
 	</select>
 
 </mapper>
