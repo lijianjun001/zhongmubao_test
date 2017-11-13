@@ -74,4 +74,14 @@ public interface SheepOrderDao {
      * @return
      */
     int sumSheepOrderCountByCustomerIdAndState(@Param("customerId") int customerId, @Param("states") List<String> states);
+
+    /**
+     * 羊标订单列表
+     *
+     * @param customerId 用户ID
+     * @param projectId  羊标ID
+     * @param states     订单状态
+     * @return
+     */
+    List<SheepOrderInfoExt> getOrderByCustomerIdAndProjectIdAndState(@Param("customerId") int customerId, @Param("projectId") int projectId, @Param("states") List<String> states);
 }

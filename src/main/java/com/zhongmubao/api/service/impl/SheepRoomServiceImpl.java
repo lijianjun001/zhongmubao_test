@@ -9,18 +9,21 @@ import com.zhongmubao.api.config.enmu.ProjectType;
 import com.zhongmubao.api.config.enmu.SheepOrderState;
 import com.zhongmubao.api.config.enmu.SheepProjectPeriod;
 import com.zhongmubao.api.dao.SheepOrderDao;
+import com.zhongmubao.api.dao.SheepProjectDao;
 import com.zhongmubao.api.dto.request.sheep.room.*;
 import com.zhongmubao.api.dto.response.sheep.room.*;
 import com.zhongmubao.api.dto.response.sheep.room.list.*;
 import com.zhongmubao.api.entity.Customer;
 import com.zhongmubao.api.entity.SheepLevel;
+import com.zhongmubao.api.entity.SheepProject;
 import com.zhongmubao.api.entity.ext.SheepOrderInfoExt;
 import com.zhongmubao.api.exception.ApiException;
-import com.zhongmubao.api.init.Redis;
 import com.zhongmubao.api.mongo.dao.CustomerOrderLogMongoDao;
 import com.zhongmubao.api.mongo.dao.SheepProgressMongoDao;
+import com.zhongmubao.api.mongo.dao.SheepStageMongoDao;
 import com.zhongmubao.api.mongo.entity.CustomerOrderLogMongo;
 import com.zhongmubao.api.mongo.entity.SheepProgressMongo;
+import com.zhongmubao.api.mongo.entity.SheepStageMongo;
 import com.zhongmubao.api.service.BaseService;
 import com.zhongmubao.api.service.SheepRoomService;
 import com.zhongmubao.api.util.DateUtil;
@@ -29,7 +32,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.IntSummaryStatistics;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 我的羊圈
@@ -43,12 +48,17 @@ public class SheepRoomServiceImpl extends BaseService implements SheepRoomServic
     private final SheepOrderDao sheepOrderDao;
     private final SheepProgressMongoDao sheepProgressMongoDao;
     private final CustomerOrderLogMongoDao customerOrderLogMongoDao;
+    private final SheepProjectDao sheepProjectDao;
+    private final SheepStageMongoDao sheepStageMongoDao;
+
     @Autowired
-    public SheepRoomServiceImpl(RedisCache redisCache, SheepOrderDao sheepOrderDao, SheepProgressMongoDao sheepProgressMongoDao, CustomerOrderLogMongoDao customerOrderLogMongoDao) {
+    public SheepRoomServiceImpl(RedisCache redisCache, SheepOrderDao sheepOrderDao, SheepProgressMongoDao sheepProgressMongoDao, CustomerOrderLogMongoDao customerOrderLogMongoDao, SheepProjectDao sheepProjectDao, SheepStageMongoDao sheepStageMongoDao) {
         this.redisCache = redisCache;
         this.sheepOrderDao = sheepOrderDao;
         this.sheepProgressMongoDao = sheepProgressMongoDao;
         this.customerOrderLogMongoDao = customerOrderLogMongoDao;
+        this.sheepProjectDao = sheepProjectDao;
+        this.sheepStageMongoDao = sheepStageMongoDao;
     }
 
     @Override
@@ -122,23 +132,52 @@ public class SheepRoomServiceImpl extends BaseService implements SheepRoomServic
 
     @Override
     public SheepRoomOrdersViewModel orders(Customer customer, SheepRoomOrdersRequestModel model) throws Exception {
+        if (null == model || model.getProjectId() <= 0) {
+            throw new ApiException(ResultStatus.PARAMETER_MISSING);
+        }
         SheepRoomOrdersViewModel sheepRoomOrdersViewModel = new SheepRoomOrdersViewModel();
-        sheepRoomOrdersViewModel.setTitle("测试100期");
-        sheepRoomOrdersViewModel.setTotalCount(10);
-        List<SheepRoomOrdersItemModel> sheepRoomOrdersItemModels = new ArrayList<>();
-        SheepRoomOrdersItemModel sheepRoomOrdersItemModel = new SheepRoomOrdersItemModel();
-        sheepRoomOrdersItemModel.setOrderCode("00000");
-        sheepRoomOrdersItemModel.setCount(10);
-        sheepRoomOrdersItemModels.add(sheepRoomOrdersItemModel);
+        List<SheepOrderInfoExt> sheepOrderInfos = sheepOrderDao.getOrderByCustomerIdAndProjectIdAndState(customer.getId(), model.getProjectId(), Constants.SHEEP_IN_THE_BAR_STATE);
+        if (null == sheepOrderInfos || sheepOrderInfos.size() == 0) {
+            throw new ApiException(ResultStatus.PARAMETER_MISSING);
+        }
+        sheepRoomOrdersViewModel.setTitle(sheepOrderInfos.get(0).getTitle());
+        IntSummaryStatistics stats = sheepOrderInfos.stream().mapToInt((x) -> x.getCount()).summaryStatistics();
+        sheepRoomOrdersViewModel.setTotalCount((int) stats.getSum());
+        List<SheepRoomOrdersItemModel> sheepRoomOrdersItemModels = sheepOrderInfos.stream().map(
+                en -> new SheepRoomOrdersItemModel(
+                        en.getCode(),
+                        en.getCount()
+                ))
+                .collect(Collectors.toList());
         sheepRoomOrdersViewModel.setList(sheepRoomOrdersItemModels);
-
 
         return sheepRoomOrdersViewModel;
     }
 
     @Override
     public SheepRoomBreedProgressViewModel breedProgress(SheepRoomBreedProgressRequestModel model) throws Exception {
+        if (null == model || model.getProjectId() <= 0) {
+            throw new ApiException(ResultStatus.PARAMETER_MISSING);
+        }
+        SheepProject sheepProject = sheepProjectDao.getSheepProjectById(model.getProjectId());
+        if (null == sheepProject) {
+            throw new ApiException(ResultStatus.PARAMETER_ERROR);
+        }
+        // 判断类型 羊只00 Or 店铺03
+        String type = null;
+        if (sheepProject.getType().equals(ProjectType.NORMAL.getName()) || sheepProject.getType().equals(ProjectType.NEW_PEOPLE_120.getName())) {
+            type = ProjectType.NORMAL.getName();
+        } else if (sheepProject.getType().equals(ProjectType.SLAUGHTER.getName()) || sheepProject.getType().equals(ProjectType.NEW_PEOPLE_7.getName())) {
+            type = ProjectType.SLAUGHTER.getName();
+        }
+        // 获取养殖流程
+        List<SheepStageMongo> stages = sheepStageMongoDao.getListByPeriodAndType(sheepProject.getPeriod(), type);
+
+        int curStageDay = DateUtil.subDateOfDay(new Date(), sheepProject.getEffectiveTime());
+        int pages = stages.size();
+
         SheepRoomBreedProgressViewModel sheepRoomBreedProgressViewModel = new SheepRoomBreedProgressViewModel();
+
         List<SheepRoomBreedProgressItemModel> sheepRoomBreedProgressItemModels = new ArrayList<>();
         SheepRoomBreedProgressItemModel sheepRoomBreedProgressItemModel1 = new SheepRoomBreedProgressItemModel();
         sheepRoomBreedProgressItemModel1.setId(0);
@@ -158,6 +197,8 @@ public class SheepRoomServiceImpl extends BaseService implements SheepRoomServic
         sheepRoomBreedProgressItemModel3.setProgress(3);
         sheepRoomBreedProgressItemModel3.setImg("http://192.168.31.210:10210/weixin/images/foldshui1.png?类型图片");
         sheepRoomBreedProgressItemModels.add(sheepRoomBreedProgressItemModel3);
+
+
         sheepRoomBreedProgressViewModel.setList(sheepRoomBreedProgressItemModels);
         return sheepRoomBreedProgressViewModel;
     }
@@ -231,7 +272,7 @@ public class SheepRoomServiceImpl extends BaseService implements SheepRoomServic
                     sheepProgress = sheepProgressMongoList.get(sheepProgressMongoList.size() - 1);
                     break;
                 }
-                if( day >= SheepProjectPeriod.PERIOD_120.getName()){
+                if (day >= SheepProjectPeriod.PERIOD_120.getName()) {
                     sheepProgress = sheepProgressMongoList.get(sheepProgressMongoList.size() - 2);
                     break;
                 }

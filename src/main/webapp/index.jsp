@@ -29,15 +29,14 @@
 //        private String os;
 //        private String deviceid;
         var data = {
-            "pageIndex": "1",
-            "projectType": "00"
+            "projectId": 1715
         };
         console.info(JSON.stringify(data));
 //        var saveData ={"USER_ID":leader,"Users":users};
 
         $.ajax({
             type: "POST",
-            url: "/sheep/room",
+            url: "/sheep/orders",
             data: JSON.stringify(data),
             contentType: 'application/json;charset=UTF-8',
             dataType: "json",                                     //预期服务器返回类型

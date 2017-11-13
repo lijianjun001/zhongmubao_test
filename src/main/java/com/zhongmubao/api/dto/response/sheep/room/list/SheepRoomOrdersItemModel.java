@@ -8,6 +8,11 @@ package com.zhongmubao.api.dto.response.sheep.room.list;
 public class SheepRoomOrdersItemModel {
     public SheepRoomOrdersItemModel(){}
 
+    public SheepRoomOrdersItemModel(String orderCode, int count) {
+        this.orderCode = orderCode;
+        this.count = count;
+    }
+
     public String getOrderCode() {
         return orderCode;
     }
