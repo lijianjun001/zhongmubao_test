@@ -25,6 +25,10 @@ public class Redis {
         this.sheepLevelDao = sheepLevelDao;
     }
 
+    public void init() {
+        this.initCustomerLevelCacheToRedis();
+    }
+
     /**
      * 客户等级缓存至Redis
      * Redis Key:CACHE_CUSTOMER_LEVEL_KEY
@@ -32,7 +36,7 @@ public class Redis {
      * @return 客户等级集合
      * @author 米立林 2017-10-09
      */
-    public void setCustomerLevelCacheToRedis() {
+    private void initCustomerLevelCacheToRedis() {
         List<SheepLevel> sheepLevels = sheepLevelDao.pagerSheepLevelList(0, 10);
         redisHelper.setHash(Constants.CACHE_CUSTOMER_LEVEL_TABLE, Constants.CACHE_CUSTOMER_LEVEL_KEY, sheepLevels);
     }
