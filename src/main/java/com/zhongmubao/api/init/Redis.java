@@ -25,6 +25,11 @@ public class Redis {
         this.sheepLevelDao = sheepLevelDao;
     }
 
+    /**
+     * 加载Redis
+     *
+     * @author 孙阿龙
+     */
     public void init() {
         this.initCustomerLevelCacheToRedis();
     }
