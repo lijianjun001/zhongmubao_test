@@ -7,14 +7,13 @@ import org.springframework.context.event.ContextRefreshedEvent;
 /**
  * @author 孙阿龙
  */
-public class AppStartInit implements ApplicationListener<ContextRefreshedEvent> {
+public class ApplicationStart implements ApplicationListener<ContextRefreshedEvent> {
 
     @Autowired
     private Redis redis;
 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
-        redis.init();
         if (event.getApplicationContext().getParent() == null) {
             redis.init();
         }

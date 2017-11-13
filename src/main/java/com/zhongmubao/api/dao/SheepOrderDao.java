@@ -4,7 +4,7 @@ package com.zhongmubao.api.dao;
 import com.github.pagehelper.Page;
 import com.zhongmubao.api.entity.SheepOrder;
 import com.zhongmubao.api.entity.ext.MySheepRoomSheepOrderAndProject;
-import com.zhongmubao.api.entity.ext.SheepOrderInfoExt;
+import com.zhongmubao.api.entity.ext.SheepOrderInfo;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.Date;
@@ -64,7 +64,7 @@ public interface SheepOrderDao {
      * @param type       "00" 羊只 "03"店铺
      * @return
      */
-    Page<SheepOrderInfoExt> pageSheepOrderByCustomerIdGroupByProjectId(@Param("customerId") int customerId, @Param("states") List<String> states, @Param("type") String type);
+    Page<SheepOrderInfo> pageSheepOrderByCustomerIdGroupByProjectId(@Param("customerId") int customerId, @Param("states") List<String> states, @Param("type") String type);
 
     /**
      * 获取所有购羊数（包括羊只和店铺）
@@ -83,5 +83,5 @@ public interface SheepOrderDao {
      * @param states     订单状态
      * @return
      */
-    List<SheepOrderInfoExt> getOrderByCustomerIdAndProjectIdAndState(@Param("customerId") int customerId, @Param("projectId") int projectId, @Param("states") List<String> states);
+    List<SheepOrderInfo> getOrderByCustomerIdAndProjectIdAndState(@Param("customerId") int customerId, @Param("projectId") int projectId, @Param("states") List<String> states);
 }

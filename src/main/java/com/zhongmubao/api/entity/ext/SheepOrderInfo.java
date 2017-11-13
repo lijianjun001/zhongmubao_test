@@ -6,7 +6,7 @@ import java.util.Date;
  * 购羊订单信息扩展类
  * @author 米立林
  */
-public class SheepOrderInfoExt {
+public class SheepOrderInfo {
 
     private int id;
     private int projectId;

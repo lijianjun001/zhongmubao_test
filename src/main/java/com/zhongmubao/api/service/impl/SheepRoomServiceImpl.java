@@ -16,7 +16,7 @@ import com.zhongmubao.api.dto.response.sheep.room.list.*;
 import com.zhongmubao.api.entity.Customer;
 import com.zhongmubao.api.entity.SheepLevel;
 import com.zhongmubao.api.entity.SheepProject;
-import com.zhongmubao.api.entity.ext.SheepOrderInfoExt;
+import com.zhongmubao.api.entity.ext.SheepOrderInfo;
 import com.zhongmubao.api.exception.ApiException;
 import com.zhongmubao.api.mongo.dao.CustomerOrderLogMongoDao;
 import com.zhongmubao.api.mongo.dao.SheepProgressMongoDao;
@@ -75,9 +75,9 @@ public class SheepRoomServiceImpl extends BaseService implements SheepRoomServic
         }
         List<SheepRoomItemModel> sheepRoomItemModels = new ArrayList<>();
         PageHelper.startPage(model.getPageIndex(), Constants.PAGE_SIZE);
-        Page<SheepOrderInfoExt> sheepOrderInfos = sheepOrderDao.pageSheepOrderByCustomerIdGroupByProjectId(customer.getId(), Constants.SHEEP_IN_THE_BAR_STATE, model.getProjectType());
+        Page<SheepOrderInfo> sheepOrderInfos = sheepOrderDao.pageSheepOrderByCustomerIdGroupByProjectId(customer.getId(), Constants.SHEEP_IN_THE_BAR_STATE, model.getProjectType());
         int count = 0;
-        for (SheepOrderInfoExt info : sheepOrderInfos) {
+        for (SheepOrderInfo info : sheepOrderInfos) {
             // 累计羊只数
             count += info.getCount();
             // 当前养殖状态
@@ -136,7 +136,7 @@ public class SheepRoomServiceImpl extends BaseService implements SheepRoomServic
             throw new ApiException(ResultStatus.PARAMETER_MISSING);
         }
         SheepRoomOrdersViewModel sheepRoomOrdersViewModel = new SheepRoomOrdersViewModel();
-        List<SheepOrderInfoExt> sheepOrderInfos = sheepOrderDao.getOrderByCustomerIdAndProjectIdAndState(customer.getId(), model.getProjectId(), Constants.SHEEP_IN_THE_BAR_STATE);
+        List<SheepOrderInfo> sheepOrderInfos = sheepOrderDao.getOrderByCustomerIdAndProjectIdAndState(customer.getId(), model.getProjectId(), Constants.SHEEP_IN_THE_BAR_STATE);
         if (null == sheepOrderInfos || sheepOrderInfos.size() == 0) {
             throw new ApiException(ResultStatus.PARAMETER_MISSING);
         }
@@ -239,7 +239,7 @@ public class SheepRoomServiceImpl extends BaseService implements SheepRoomServic
      * @return CurrentSheepProjectState
      * @author 米立林 2017-10-17
      */
-    private SheepProgressMongo calcCurrentSheepProjectState(SheepOrderInfoExt project) throws Exception {
+    private SheepProgressMongo calcCurrentSheepProjectState(SheepOrderInfo project) throws Exception {
         SheepProgressMongo sheepProgress = new SheepProgressMongo();
         List<SheepProgressMongo> sheepProgressMongoList = new ArrayList<>();
         // 判断是否为商铺订单

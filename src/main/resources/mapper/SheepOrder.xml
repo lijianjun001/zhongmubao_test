@@ -53,7 +53,7 @@
 		group by p.Id order by o.Id desc
 	</select>
 
-	<select id="pageSheepOrderByCustomerIdGroupByProjectId" resultType="SheepOrderInfoExt">
+	<select id="pageSheepOrderByCustomerIdGroupByProjectId" resultType="SheepOrderInfo">
 		<!-- 我的羊圈View -->
 		SELECT so.Id,so.ProjectId,so.CustomerId,so.State AS SheepOrderState,sp.Title,sp.Type,sp.State,sp.Price,sp.Rate,sp.Period,sp.State AS SheepProjectState,sp.EffectiveTime,sp.RedemTime AS RedeemTime,sv.Shorthand,SUM(so.Count) AS Count,sp.VendorId,SUM(so.TotalAmount) AS TotalAmount,
 		SUM((SELECT SUM(Price) FROM ExtRedPackage erp WHERE erp.SheepOrderId=so.Id)) AS RedPackageAmount,sp.BeginTime,sp.EndTime
