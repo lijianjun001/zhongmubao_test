@@ -14,6 +14,7 @@ public class ApplicationStart implements ApplicationListener<ContextRefreshedEve
 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
+
         if (event.getApplicationContext().getParent() == null) {
             redis.init();
         }

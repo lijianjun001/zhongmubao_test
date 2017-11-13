@@ -4,6 +4,7 @@ package com.zhongmubao.api.init;
 import com.zhongmubao.api.config.Constants;
 import com.zhongmubao.api.dao.SheepLevelDao;
 import com.zhongmubao.api.entity.SheepLevel;
+import com.zhongmubao.api.util.SerializeUtil;
 import com.zhongmubao.api.util.redis.RedisHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -42,7 +43,10 @@ public class Redis {
      * @author 米立林 2017-10-09
      */
     private void initCustomerLevelCacheToRedis() {
+        if (redisHelper.get(Constants.CACHE_CUSTOMER_LEVEL_TABLE) != null) {
+            return;
+        }
         List<SheepLevel> sheepLevels = sheepLevelDao.pagerSheepLevelList(0, 10);
-        redisHelper.setHash(Constants.CACHE_CUSTOMER_LEVEL_TABLE, Constants.CACHE_CUSTOMER_LEVEL_KEY, sheepLevels);
+        redisHelper.save(Constants.CACHE_CUSTOMER_LEVEL_TABLE, SerializeUtil.serialize(sheepLevels));
     }
 }

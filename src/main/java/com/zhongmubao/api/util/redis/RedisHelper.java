@@ -86,7 +86,7 @@ public class RedisHelper {
      * @param key   键
      * @param obj   对象
      */
-    public void setHash(String table, String key, Object obj) {
+    public void setHash(String table, String key, String obj) {
         HashOperations<String, String, Object> hashOper = redisTemplate.opsForHash();
         hashOper.put(table, key, obj);
     }
