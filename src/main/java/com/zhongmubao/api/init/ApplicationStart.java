@@ -1,5 +1,7 @@
 package com.zhongmubao.api.init;
 
+import com.zhongmubao.api.entity.ExtActivityRecord;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
@@ -16,7 +18,11 @@ public class ApplicationStart implements ApplicationListener<ContextRefreshedEve
     public void onApplicationEvent(ContextRefreshedEvent event) {
 
         if (event.getApplicationContext().getParent() == null) {
-            redis.init();
+            try {
+                redis.init();
+            } catch (Exception ex) {
+                Logger.getLogger(this.getClass()).error(ex.getMessage(), ex);
+            }
         }
     }
 }
