@@ -31,7 +31,7 @@ public class Redis {
      *
      * @author 孙阿龙
      */
-    public void init() {
+    void init() {
         this.initCustomerLevelCacheToRedis();
     }
 
@@ -39,7 +39,6 @@ public class Redis {
      * 客户等级缓存至Redis
      * Redis Key:CACHE_CUSTOMER_LEVEL_KEY
      *
-     * @return 客户等级集合
      * @author 米立林 2017-10-09
      */
     private void initCustomerLevelCacheToRedis() {
