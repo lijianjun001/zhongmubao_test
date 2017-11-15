@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
+import com.zhongmubao.api.components.hf.request.HfCashRequest;
 import com.zhongmubao.api.components.hf.request.HfQueryAcctsRequest;
 import com.zhongmubao.api.components.hf.response.HfQueryAcctsResponse;
 import com.zhongmubao.api.components.hf.request.HfQueryBalanceBgRequest;
@@ -144,5 +145,32 @@ public class Core {
             throw new Exception("验证签名失败");
         }
         return response;
+    }
+
+    /**
+     * 提现
+     *
+     * @param requestModel 请求参数
+     * @return HTML
+     * @throws Exception 异常
+     */
+    public static String cash(HfCashRequest requestModel) throws Exception {
+        String version = "20";
+        String cmdId = "Cash";
+
+        HfBaseModel model = new HfBaseModel();
+        List<HfBaseModel> list = new ArrayList<>();
+        list.add(new HfBaseModel(1, "Version", version));
+        list.add(new HfBaseModel(2, "CmdId", cmdId));
+        list.add(new HfBaseModel(3, "MerCustId", requestModel.getMerCustId()));
+        list.add(new HfBaseModel(4, "OrdId", requestModel.getOrdId()));
+        list.add(new HfBaseModel(5, "UsrCustId", requestModel.getUsrCustId()));
+        list.add(new HfBaseModel(6, "TransAmt", requestModel.getTransAmt()));
+        list.add(new HfBaseModel(7, "RetUrl", requestModel.getRetUrl()));
+        list.add(new HfBaseModel(8, "BgRetUrl", requestModel.getBgRetUrl()));
+        list.add(new HfBaseModel(9, "Remark", requestModel.getRemark()));
+
+        Map<String, String> params = formartParams(list);
+        return doPost(params);
     }
 }
