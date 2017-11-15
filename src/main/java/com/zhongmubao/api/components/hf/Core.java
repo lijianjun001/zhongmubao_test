@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import com.zhongmubao.api.components.hf.request.HfCashRequest;
+import com.zhongmubao.api.components.hf.request.HfDirectRechargeRequest;
 import com.zhongmubao.api.components.hf.request.HfQueryAcctsRequest;
 import com.zhongmubao.api.components.hf.response.HfQueryAcctsResponse;
 import com.zhongmubao.api.components.hf.request.HfQueryBalanceBgRequest;
@@ -171,6 +172,31 @@ public class Core {
         list.add(new HfBaseModel(9, "Remark", requestModel.getRemark()));
 
         Map<String, String> params = formartParams(list);
+        return doPost(params);
+    }
+
+    public static String directRecharge(HfDirectRechargeRequest requestModel) throws Exception {
+        String version = "10";
+        String cmdId = "DirectRecharge";
+
+        //            requestModel.setMerCustId("6000060007633813");
+//            requestModel.setUsrCustId("6000060007653943");
+        HfBaseModel model = new HfBaseModel();
+        List<HfBaseModel> list = new ArrayList<>();
+        list.add(new HfBaseModel(1, "Version", version));
+        list.add(new HfBaseModel(2, "CmdId", cmdId));
+        list.add(new HfBaseModel(3, "MerCustId", "6000060007633813"));
+        list.add(new HfBaseModel(4, "UsrCustId", "6000060007653943"));
+        list.add(new HfBaseModel(5, "OrdId", "2017111517511152222"));
+        list.add(new HfBaseModel(6, "OrdDate", "20171115"));
+        list.add(new HfBaseModel(7, "GateBusiId", "B2C"));
+        list.add(new HfBaseModel(8, "TransAmt", "1.0"));
+        list.add(new HfBaseModel(9, "RetUrl", "http://baidu.com"));
+        list.add(new HfBaseModel(10, "BgRetUrl", "http://baidu.com"));
+
+
+        Map<String, String> params = formartParams(list);
+        String str = doPost(params);
         return doPost(params);
     }
 }

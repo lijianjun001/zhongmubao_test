@@ -29,7 +29,7 @@ public class HfController {
 //            requestModel.setMerCustId("6000060007633813");
 //            requestModel.setUsrCustId("6000060007653943");
 //            Core.QueryBalanceBg(requestModel);
-            Core.cash(null);
+            Core.directRecharge(null);
             HfQueryAcctsRequest requestModel = new HfQueryAcctsRequest();
             requestModel.setMerCustId("6000060007633813");
             Core.queryaccts(requestModel);
