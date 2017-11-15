@@ -31,7 +31,7 @@ public class HfController {
 //            Core.QueryBalanceBg(requestModel);
             HfQueryAcctsRequest requestModel = new HfQueryAcctsRequest();
             requestModel.setMerCustId("6000060007633813");
-            Core.QueryAccts(requestModel);
+            Core.queryaccts(requestModel);
             return null;
         } catch (ApiException ex) {
             return new ResponseEntity<>(ReponseModel.error(ex.getStatus()), HttpStatus.OK);

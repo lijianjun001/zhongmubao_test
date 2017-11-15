@@ -15,7 +15,6 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpStatus;
 import org.apache.http.NameValuePair;
-import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.entity.EntityBuilder;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
@@ -35,29 +34,28 @@ public class Core {
     static ObjectMapper mapper = new ObjectMapper();
     //region 基础
 
-    private static String doPost(Map<String, String> params) throws ClientProtocolException, IOException {
+    private static String doPost(Map<String, String> params) throws IOException {
         String result = null;
         List<NameValuePair> nvps = HttpClientHandler.buildNameValuePair(params);
-        CloseableHttpClient httpclient = HttpClients.createDefault();
         EntityBuilder builder = EntityBuilder.create();
-        try {
+        try (CloseableHttpClient httpclient = HttpClients.createDefault()) {
             HttpPost httpPost = new HttpPost(HttpClientHandler.HTTP_HOST);
             builder.setParameters(nvps);
             httpPost.setEntity(builder.build());
-            CloseableHttpResponse response = httpclient.execute(httpPost);
 
-            try {
-                HttpEntity entity = response.getEntity();
-                if (response.getStatusLine().getReasonPhrase().equals("OK")
-                        && response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
-                    result = EntityUtils.toString(entity, "UTF-8");
+            try (CloseableHttpResponse response = httpclient.execute(httpPost)) {
+                try {
+                    HttpEntity entity = response.getEntity();
+                    String ok = "OK";
+                    if (ok.equals(response.getStatusLine().getReasonPhrase())
+                            && response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
+                        result = EntityUtils.toString(entity, "UTF-8");
+                    }
+                    EntityUtils.consume(entity);
+                } finally {
+                    response.close();
                 }
-                EntityUtils.consume(entity);
-            } finally {
-                response.close();
             }
-        } finally {
-            httpclient.close();
         }
         return result;
     }
@@ -67,11 +65,11 @@ public class Core {
     /**
      * 格式化请求参数
      *
-     * @throws Exception
+     * @throws Exception 错误信息
      */
     private static Map<String, String> formartParams(List<HfBaseModel> list) throws Exception {
         Map<String, String> params = new HashMap<>(0);
-        StringBuffer buffer = new StringBuffer();
+        StringBuilder buffer = new StringBuilder();
         list = list.stream().sorted(Comparator.comparing(HfBaseModel::getSort)).collect(Collectors.toList());
         for (HfBaseModel model : list) {
             params.put(model.getKey(), model.getValue());
@@ -86,11 +84,11 @@ public class Core {
     /**
      * 查询后台账户余额
      *
-     * @param requestModel
-     * @return
-     * @throws Exception
+     * @param requestModel 请求参数
+     * @return HfQueryBalanceBgResponse
+     * @throws Exception 异常
      */
-    public static HfQueryBalanceBgResponse QueryBalanceBg(HfQueryBalanceBgRequest requestModel) throws Exception {
+    public static HfQueryBalanceBgResponse queryBalanceBg(HfQueryBalanceBgRequest requestModel) throws Exception {
         String version = "10";
         String cmdId = "QueryBalanceBg";
         if (StringUtil.isNullOrEmpty(requestModel.getMerCustId())) {
@@ -120,11 +118,11 @@ public class Core {
     /**
      * 商户子账户查询
      *
-     * @param requestModel
-     * @return
-     * @throws Exception
+     * @param requestModel 请求参数
+     * @return HfQueryAcctsResponse
+     * @throws Exception 异常
      */
-    public static HfQueryAcctsResponse QueryAccts(HfQueryAcctsRequest requestModel) throws Exception {
+    public static HfQueryAcctsResponse queryaccts(HfQueryAcctsRequest requestModel) throws Exception {
         String version = "10";
         String cmdId = "QueryAccts";
         if (StringUtil.isNullOrEmpty(requestModel.getMerCustId())) {

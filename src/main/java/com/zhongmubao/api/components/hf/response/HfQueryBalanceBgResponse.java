@@ -1,6 +1,5 @@
 package com.zhongmubao.api.components.hf.response;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.gson.annotations.SerializedName;
 
 /**
