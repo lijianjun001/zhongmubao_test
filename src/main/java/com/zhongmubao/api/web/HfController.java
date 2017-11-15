@@ -1,6 +1,8 @@
 package com.zhongmubao.api.web;
 
-import com.zhongmubao.api.components.hf.TransSubmit;
+import com.zhongmubao.api.components.hf.Core;
+import com.zhongmubao.api.components.hf.request.HfQueryAcctsRequest;
+import com.zhongmubao.api.components.hf.request.HfQueryBalanceBgRequest;
 import com.zhongmubao.api.dto.request.system.TouTiaoAdvRequestModel;
 import com.zhongmubao.api.dto.response.ReponseModel;
 import com.zhongmubao.api.exception.ApiException;
@@ -23,7 +25,13 @@ public class HfController {
     @RequestMapping(value = "/test", method = RequestMethod.POST, consumes = "application/json")
     public ResponseEntity<ReponseModel> test(HttpEntity<TouTiaoAdvRequestModel> model) {
         try {
-            TransSubmit.main();
+//            HfQueryBalanceBgRequest requestModel =new HfQueryBalanceBgRequest();
+//            requestModel.setMerCustId("6000060007633813");
+//            requestModel.setUsrCustId("6000060007653943");
+//            Core.QueryBalanceBg(requestModel);
+            HfQueryAcctsRequest requestModel = new HfQueryAcctsRequest();
+            requestModel.setMerCustId("6000060007633813");
+            Core.QueryAccts(requestModel);
             return null;
         } catch (ApiException ex) {
             return new ResponseEntity<>(ReponseModel.error(ex.getStatus()), HttpStatus.OK);

@@ -1,6 +1,6 @@
 package com.zhongmubao.api.util;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
 
 /**
  * 序列化类
@@ -15,8 +15,7 @@ public class SerializeUtil {
      */
     public static String serialize(Object o){
         try {
-            ObjectMapper mapper = new ObjectMapper();
-            return mapper.writeValueAsString(o);
+            return new Gson().toJson(o);
         } catch (Exception ignored){}
         return "";
     }
@@ -30,8 +29,7 @@ public class SerializeUtil {
      */
     public static <T> T deSerialize(String jsonStr, Class<T> c){
         try {
-            ObjectMapper mapper = new ObjectMapper();
-            return mapper.readValue(jsonStr, c);
+            return new Gson().fromJson(jsonStr, c);
         } catch (Exception ignored){
 
         }

@@ -179,17 +179,6 @@
             <version>0.7.4</version>
         </dependency>
 
-        <!--&lt;!&ndash;跨域&ndash;&gt;-->
-        <!--<dependency>-->
-        <!--<groupId>com.thetransactioncompany</groupId>-->
-        <!--<artifactId>java-property-utils</artifactId>-->
-        <!--<version>1.9</version>-->
-        <!--</dependency>-->
-        <!--<dependency>-->
-        <!--<groupId>com.thetransactioncompany</groupId>-->
-        <!--<artifactId>cors-filter</artifactId>-->
-        <!--<version>2.6</version>-->
-        <!--</dependency>-->
         <dependency>
             <groupId>org.json</groupId>
             <artifactId>json</artifactId>
@@ -199,6 +188,12 @@
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>
             <version>2.5</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>2.8.2</version>
         </dependency>
 
         <!-- HF -->
