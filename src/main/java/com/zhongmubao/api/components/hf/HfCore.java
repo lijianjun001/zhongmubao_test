@@ -251,9 +251,7 @@ public class HfCore {
 
         Map<String, String> params = formartParams(list, false);
         String result = HttpClientHandler.doPost(params);
-        HfTrfReconciliationResponse response = new Gson().fromJson(result, HfTrfReconciliationResponse.class);
-
-        return response;
+        return new Gson().fromJson(result, HfTrfReconciliationResponse.class);
     }
 
     /**
