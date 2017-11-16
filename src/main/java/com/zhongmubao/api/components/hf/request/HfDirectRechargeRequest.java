@@ -7,8 +7,6 @@ package com.zhongmubao.api.components.hf.request;
  */
 public class HfDirectRechargeRequest {
 
-    private String merCustId;
-
     private String usrCustId;
 
     private String ordId;
@@ -20,14 +18,6 @@ public class HfDirectRechargeRequest {
     private String smsCode;
 
     private String chkValue;
-
-    public String getMerCustId() {
-        return merCustId;
-    }
-
-    public void setMerCustId(String merCustId) {
-        this.merCustId = merCustId;
-    }
 
     public String getUsrCustId() {
         return usrCustId;
