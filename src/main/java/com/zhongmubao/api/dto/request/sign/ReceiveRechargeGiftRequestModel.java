@@ -1,11 +1,13 @@
 package com.zhongmubao.api.dto.request.sign;
 
+import com.zhongmubao.api.dto.request.BaseRequest;
+
 /**
  * ReceiveRechargeGiftRequestModel
  *
  * @author 孙阿龙
  */
-public class ReceiveRechargeGiftRequestModel {
+public class ReceiveRechargeGiftRequestModel extends BaseRequest {
     private String giftId;
     private String phone;
 

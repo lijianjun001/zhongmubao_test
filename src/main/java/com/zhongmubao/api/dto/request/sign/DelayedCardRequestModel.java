@@ -1,11 +1,13 @@
 package com.zhongmubao.api.dto.request.sign;
 
+import com.zhongmubao.api.dto.request.BaseRequest;
+
 /**
  * DelayedCardRequestModel
  *
  * @author 孙阿龙
  */
-public class DelayedCardRequestModel {
+public class DelayedCardRequestModel extends BaseRequest {
     public DelayedCardRequestModel() {
     }
 

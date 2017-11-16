@@ -1,11 +1,13 @@
 package com.zhongmubao.api.dto.request.sheep.room;
 
+import com.zhongmubao.api.dto.request.BaseRequest;
+
 /**
  * 我的羊圈 耳标弹框
  *
  * @author xy
  */
-public class SheepRoomEarTagRequestModel {
+public class SheepRoomEarTagRequestModel extends BaseRequest {
     public SheepRoomEarTagRequestModel() {
     }
 
