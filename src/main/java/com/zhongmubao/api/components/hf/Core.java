@@ -5,10 +5,7 @@ import java.util.stream.Collectors;
 
 import com.google.gson.Gson;
 import com.zhongmubao.api.components.hf.request.*;
-import com.zhongmubao.api.components.hf.response.HfDirectRechargeResponse;
-import com.zhongmubao.api.components.hf.response.HfQueryAcctsResponse;
-import com.zhongmubao.api.components.hf.response.HfQueryBalanceBgResponse;
-import com.zhongmubao.api.components.hf.response.HfSendSmsCodeResponse;
+import com.zhongmubao.api.components.hf.response.*;
 import com.zhongmubao.api.util.DateUtil;
 import com.zhongmubao.api.util.DoubleUtil;
 import com.zhongmubao.api.util.SecurityUtil;
@@ -174,7 +171,7 @@ public class Core {
      * 充值
      *
      * @param requestModel 请求参数
-     * @return HTML
+     * @return HfDirectRechargeResponse
      * @throws Exception 异常
      */
     public static HfDirectRechargeResponse directRecharge(HfDirectRechargeRequest requestModel) throws Exception {
@@ -199,5 +196,63 @@ public class Core {
         Map<String, String> params = formartParams(list, true);
         String result = HttpClientHandler.doPost(params);
         return new Gson().fromJson(result, HfDirectRechargeResponse.class);
+    }
+
+    /**
+     * 交易状态查询
+     *
+     * @param requestModel 请求参数
+     * @return HfDirectRechargeResponse
+     * @throws Exception 异常
+     */
+    public static HfQueryTransStatResponse queryTransStat(HfQueryTransStatRequest requestModel) throws Exception {
+        String version = "10";
+        String cmdId = "QueryTransStat";
+
+        BaseModel model = new BaseModel();
+        List<BaseModel> list = new ArrayList<>();
+        list.add(new BaseModel(1, "Version", version));
+        list.add(new BaseModel(2, "CmdId", cmdId));
+        list.add(new BaseModel(3, "MerCustId", Config.MER_CUST_ID));
+        list.add(new BaseModel(5, "OrdId", requestModel.getOrdId()));
+        list.add(new BaseModel(6, "OrdDate", DateUtil.format(requestModel.getOrdDate(), "yyyyMMdd")));
+        list.add(new BaseModel(7, "QueryTransType", requestModel.getQueryTransType().getName()));
+
+        Map<String, String> params = formartParams(list, false);
+        String result = HttpClientHandler.doPost(params);
+        HfQueryTransStatResponse response = new Gson().fromJson(result, HfQueryTransStatResponse.class);
+        boolean isCheckSuccess = SignUtils.verifyByRSA(response.getPlainStr(), response.getChkValue());
+        if (!isCheckSuccess) {
+            throw new Exception("验证签名失败");
+        }
+        return response;
+    }
+
+    /**
+     * 商户扣款对账
+     *
+     * @param requestModel 请求参数
+     * @return HfDirectRechargeResponse
+     * @throws Exception 异常
+     */
+    public static HfTrfReconciliationResponse trfReconciliation(HfTrfReconciliationRequest requestModel) throws Exception {
+        String version = "10";
+        String cmdId = "TrfReconciliation";
+
+        BaseModel model = new BaseModel();
+        List<BaseModel> list = new ArrayList<>();
+        list.add(new BaseModel(1, "Version", version));
+        list.add(new BaseModel(2, "CmdId", cmdId));
+        list.add(new BaseModel(3, "MerCustId", Config.MER_CUST_ID));
+        list.add(new BaseModel(5, "BeginDate", DateUtil.format(requestModel.getBeginDate(), "yyyyMMdd")));
+        list.add(new BaseModel(6, "EndDate", DateUtil.format(requestModel.getEndDate(), "yyyyMMdd")));
+        list.add(new BaseModel(7, "PageNum", requestModel.getPageNum() + ""));
+        list.add(new BaseModel(7, "PageSize", requestModel.getPageSize() + ""));
+
+        Map<String, String> params = formartParams(list, false);
+        String result = HttpClientHandler.doPost(params);
+        HfTrfReconciliationResponse response = new Gson().fromJson(result, HfTrfReconciliationResponse.class);
+
+        return response;
     }
 }
