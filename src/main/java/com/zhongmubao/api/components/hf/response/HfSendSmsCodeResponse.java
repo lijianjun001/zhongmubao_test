@@ -7,22 +7,7 @@ import com.google.gson.annotations.SerializedName;
  *
  * @author 孙阿龙
  */
-public class HfSendSmsCodeResponse {
-
-    @SerializedName("CmdId")
-    private String cmdId;
-
-    @SerializedName("RespCode")
-    private String respCode;
-
-    @SerializedName("RespDesc")
-    private String respDesc;
-
-    @SerializedName("ChkValue")
-    private String chkValue;
-
-    @SerializedName("MerCustId")
-    private String merCustId;
+public class HfSendSmsCodeResponse extends HfBaseResponse {
 
     @SerializedName("UsrCustId")
     private String usrCustId;
@@ -35,46 +20,6 @@ public class HfSendSmsCodeResponse {
 
     @SerializedName("DepoBankSeq")
     private String depoBankSeq;
-
-    public String getCmdId() {
-        return cmdId;
-    }
-
-    public void setCmdId(String cmdId) {
-        this.cmdId = cmdId;
-    }
-
-    public String getRespCode() {
-        return respCode;
-    }
-
-    public void setRespCode(String respCode) {
-        this.respCode = respCode;
-    }
-
-    public String getRespDesc() {
-        return respDesc;
-    }
-
-    public void setRespDesc(String respDesc) {
-        this.respDesc = respDesc;
-    }
-
-    public String getChkValue() {
-        return chkValue;
-    }
-
-    public void setChkValue(String chkValue) {
-        this.chkValue = chkValue;
-    }
-
-    public String getMerCustId() {
-        return merCustId;
-    }
-
-    public void setMerCustId(String merCustId) {
-        this.merCustId = merCustId;
-    }
 
     public String getUsrCustId() {
         return usrCustId;

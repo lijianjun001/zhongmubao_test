@@ -7,30 +7,7 @@ import com.google.gson.annotations.SerializedName;
  *
  * @author 孙阿龙
  */
-public class HfQueryBalanceBgResponse {
-    /**
-     * 商户号
-     */
-    @SerializedName("CmdId")
-    private String cmdId;
-
-    /**
-     * 响应码
-     */
-    @SerializedName("RespCode")
-    private String respCode;
-
-    /**
-     * 响应描述
-     */
-    @SerializedName("RespDesc")
-    private String respDesc;
-
-    /**
-     * 签名
-     */
-    @SerializedName("ChkValue")
-    private String chkValue;
+public class HfQueryBalanceBgResponse extends HfBaseResponse {
 
     /**
      * 版本
@@ -73,38 +50,6 @@ public class HfQueryBalanceBgResponse {
      */
     @SerializedName("PlainStr")
     private String plainStr;
-
-    public String getCmdId() {
-        return cmdId;
-    }
-
-    public void setCmdId(String cmdId) {
-        this.cmdId = cmdId;
-    }
-
-    public String getRespCode() {
-        return respCode;
-    }
-
-    public void setRespCode(String respCode) {
-        this.respCode = respCode;
-    }
-
-    public String getRespDesc() {
-        return respDesc;
-    }
-
-    public void setRespDesc(String respDesc) {
-        this.respDesc = respDesc;
-    }
-
-    public String getChkValue() {
-        return chkValue;
-    }
-
-    public void setChkValue(String chkValue) {
-        this.chkValue = chkValue;
-    }
 
     public String getVersion() {
         return version;
