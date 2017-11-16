@@ -7,8 +7,6 @@ package com.zhongmubao.api.components.hf.request;
  */
 public class HfCashRequest {
 
-    private String merCustId;
-
     private String ordId;
 
     private String usrCustId;
@@ -21,19 +19,7 @@ public class HfCashRequest {
 
     private String openAcctId;
 
-    private String retUrl;
-
-    private String bgRetUrl;
-
     private String remark;
-
-    public String getMerCustId() {
-        return merCustId;
-    }
-
-    public void setMerCustId(String merCustId) {
-        this.merCustId = merCustId;
-    }
 
     public String getOrdId() {
         return ordId;
@@ -81,22 +67,6 @@ public class HfCashRequest {
 
     public void setOpenAcctId(String openAcctId) {
         this.openAcctId = openAcctId;
-    }
-
-    public String getRetUrl() {
-        return retUrl;
-    }
-
-    public void setRetUrl(String retUrl) {
-        this.retUrl = retUrl;
-    }
-
-    public String getBgRetUrl() {
-        return bgRetUrl;
-    }
-
-    public void setBgRetUrl(String bgRetUrl) {
-        this.bgRetUrl = bgRetUrl;
     }
 
     public String getRemark() {

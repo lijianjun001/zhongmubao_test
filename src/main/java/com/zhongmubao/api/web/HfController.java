@@ -3,6 +3,8 @@ package com.zhongmubao.api.web;
 import com.zhongmubao.api.components.hf.Core;
 import com.zhongmubao.api.components.hf.request.HfQueryAcctsRequest;
 import com.zhongmubao.api.components.hf.request.HfQueryBalanceBgRequest;
+import com.zhongmubao.api.components.hf.request.HfSendSmsCodeRequest;
+import com.zhongmubao.api.components.hf.request.enmu.HfSendSmsCodeBusiType;
 import com.zhongmubao.api.dto.request.system.TouTiaoAdvRequestModel;
 import com.zhongmubao.api.dto.response.ReponseModel;
 import com.zhongmubao.api.exception.ApiException;
@@ -25,14 +27,19 @@ public class HfController {
     @RequestMapping(value = "/test", method = RequestMethod.POST, consumes = "application/json")
     public ResponseEntity<ReponseModel> test(HttpEntity<TouTiaoAdvRequestModel> model) {
         try {
+            HfSendSmsCodeRequest sendSmsCodeRequest = new HfSendSmsCodeRequest();
+            sendSmsCodeRequest.setBusiType(HfSendSmsCodeBusiType.RECHARGE);
+            sendSmsCodeRequest.setUsrMp("18811496596");
+            sendSmsCodeRequest.setUsrCustId("6000060007867339");
+            Core.sendSmsCode(sendSmsCodeRequest);
 //            HfQueryBalanceBgRequest requestModel =new HfQueryBalanceBgRequest();
 //            requestModel.setMerCustId("6000060007633813");
 //            requestModel.setUsrCustId("6000060007653943");
 //            Core.QueryBalanceBg(requestModel);
             Core.directRecharge(null);
-            HfQueryAcctsRequest requestModel = new HfQueryAcctsRequest();
-            requestModel.setMerCustId("6000060007633813");
-            Core.queryaccts(requestModel);
+//            HfQueryAcctsRequest requestModel = new HfQueryAcctsRequest();
+//            requestModel.setMerCustId("6000060007633813");
+//            Core.queryaccts(requestModel);
             return null;
         } catch (ApiException ex) {
             return new ResponseEntity<>(ReponseModel.error(ex.getStatus()), HttpStatus.OK);

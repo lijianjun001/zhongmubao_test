@@ -1,5 +1,10 @@
 package com.zhongmubao.api.components.hf.request;
 
+/**
+ * 充值请求参数
+ *
+ * @author 孙阿龙
+ */
 public class HfDirectRechargeRequest {
 
     private String merCustId;
@@ -8,13 +13,11 @@ public class HfDirectRechargeRequest {
 
     private String ordId;
 
-    private String ordDate;
+    private Double transAmt;
 
-    private String transAmt;
+    private String smsSeq;
 
-    private String retUrl;
-
-    private String bgRetUrl;
+    private String smsCode;
 
     private String chkValue;
 
@@ -42,36 +45,12 @@ public class HfDirectRechargeRequest {
         this.ordId = ordId;
     }
 
-    public String getOrdDate() {
-        return ordDate;
-    }
-
-    public void setOrdDate(String ordDate) {
-        this.ordDate = ordDate;
-    }
-
-    public String getTransAmt() {
+    public Double getTransAmt() {
         return transAmt;
     }
 
-    public void setTransAmt(String transAmt) {
+    public void setTransAmt(Double transAmt) {
         this.transAmt = transAmt;
-    }
-
-    public String getRetUrl() {
-        return retUrl;
-    }
-
-    public void setRetUrl(String retUrl) {
-        this.retUrl = retUrl;
-    }
-
-    public String getBgRetUrl() {
-        return bgRetUrl;
-    }
-
-    public void setBgRetUrl(String bgRetUrl) {
-        this.bgRetUrl = bgRetUrl;
     }
 
     public String getChkValue() {
@@ -80,6 +59,22 @@ public class HfDirectRechargeRequest {
 
     public void setChkValue(String chkValue) {
         this.chkValue = chkValue;
+    }
+
+    public String getSmsSeq() {
+        return smsSeq;
+    }
+
+    public void setSmsSeq(String smsSeq) {
+        this.smsSeq = smsSeq;
+    }
+
+    public String getSmsCode() {
+        return smsCode;
+    }
+
+    public void setSmsCode(String smsCode) {
+        this.smsCode = smsCode;
     }
 
 }

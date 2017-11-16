@@ -7,22 +7,9 @@ package com.zhongmubao.api.components.hf.request;
  */
 public class HfQueryBalanceBgRequest {
     /**
-     * 商户号
-     */
-    private String merCustId;
-
-    /**
      * 客户号
      */
     private String usrCustId;
-
-    public String getMerCustId() {
-        return merCustId;
-    }
-
-    public void setMerCustId(String merCustId) {
-        this.merCustId = merCustId;
-    }
 
     public String getUsrCustId() {
         return usrCustId;

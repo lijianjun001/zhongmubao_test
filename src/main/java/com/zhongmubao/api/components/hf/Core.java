@@ -1,28 +1,19 @@
 package com.zhongmubao.api.components.hf;
 
-import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
-import com.zhongmubao.api.components.hf.request.HfCashRequest;
-import com.zhongmubao.api.components.hf.request.HfDirectRechargeRequest;
-import com.zhongmubao.api.components.hf.request.HfQueryAcctsRequest;
+import com.zhongmubao.api.components.hf.request.*;
+import com.zhongmubao.api.components.hf.response.HfDirectRechargeResponse;
 import com.zhongmubao.api.components.hf.response.HfQueryAcctsResponse;
-import com.zhongmubao.api.components.hf.request.HfQueryBalanceBgRequest;
 import com.zhongmubao.api.components.hf.response.HfQueryBalanceBgResponse;
+import com.zhongmubao.api.components.hf.response.HfSendSmsCodeResponse;
+import com.zhongmubao.api.util.DateUtil;
+import com.zhongmubao.api.util.DoubleUtil;
+import com.zhongmubao.api.util.SecurityUtil;
 import com.zhongmubao.api.util.StringUtil;
 import org.apache.commons.lang.StringUtils;
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpStatus;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.entity.EntityBuilder;
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
-import org.apache.http.util.EntityUtils;
 
 import com.zhongmubao.api.components.hf.http.HttpClientHandler;
 
@@ -33,54 +24,61 @@ import com.zhongmubao.api.components.hf.http.HttpClientHandler;
  */
 public class Core {
 
-    static ObjectMapper mapper = new ObjectMapper();
     //region 基础
-
-    private static String doPost(Map<String, String> params) throws IOException {
-        String result = null;
-        List<NameValuePair> nvps = HttpClientHandler.buildNameValuePair(params);
-        EntityBuilder builder = EntityBuilder.create();
-        try (CloseableHttpClient httpclient = HttpClients.createDefault()) {
-            HttpPost httpPost = new HttpPost(HttpClientHandler.HTTP_HOST);
-            builder.setParameters(nvps);
-            httpPost.setEntity(builder.build());
-
-            try (CloseableHttpResponse response = httpclient.execute(httpPost)) {
-                try {
-                    HttpEntity entity = response.getEntity();
-                    String ok = "OK";
-                    if (ok.equals(response.getStatusLine().getReasonPhrase())
-                            && response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
-                        result = EntityUtils.toString(entity, "UTF-8");
-                    }
-                    EntityUtils.consume(entity);
-                } finally {
-                    response.close();
-                }
-            }
-        }
-        return result;
-    }
-
-    //endregion
 
     /**
      * 格式化请求参数
      *
      * @throws Exception 错误信息
      */
-    private static Map<String, String> formartParams(List<HfBaseModel> list) throws Exception {
+    private static Map<String, String> formartParams(List<HfBaseModel> list, boolean md5Encryption) throws Exception {
         Map<String, String> params = new HashMap<>(0);
         StringBuilder buffer = new StringBuilder();
         list = list.stream().sorted(Comparator.comparing(HfBaseModel::getSort)).collect(Collectors.toList());
         for (HfBaseModel model : list) {
+            if (StringUtil.isNullOrEmpty(model.getValue())) {
+                continue;
+            }
             params.put(model.getKey(), model.getValue());
             if (model.getSort() > 0) {
                 buffer.append(StringUtils.trimToEmpty(model.getValue()));
             }
         }
-        params.put("ChkValue", SignUtils.encryptByRSA(buffer.toString()));
+        String sign = buffer.toString();
+        if (md5Encryption) {
+            sign = SecurityUtil.md5(sign).toLowerCase();
+        }
+        params.put("ChkValue", SignUtils.encryptByRSA(sign));
         return params;
+    }
+
+    //endregion
+
+    /**
+     * 查询后台账户余额
+     *
+     * @param requestModel 请求参数
+     * @return HfQueryBalanceBgResponse
+     * @throws Exception 异常
+     */
+    public static HfSendSmsCodeResponse sendSmsCode(HfSendSmsCodeRequest requestModel) throws Exception {
+        String version = "10";
+        String cmdId = "SendSmsCode";
+
+        HfBaseModel model = new HfBaseModel();
+        List<HfBaseModel> list = new ArrayList<>();
+        list.add(new HfBaseModel(1, "Version", version));
+        list.add(new HfBaseModel(2, "CmdId", cmdId));
+        list.add(new HfBaseModel(3, "MerCustId", Config.MER_CUST_ID));
+        list.add(new HfBaseModel(4, "UsrCustId", requestModel.getUsrCustId()));
+        list.add(new HfBaseModel(5, "BusiType", requestModel.getBusiType().getName()));
+        list.add(new HfBaseModel(6, "OpenAcctId", requestModel.getOpenAcctId()));
+        list.add(new HfBaseModel(7, "UsrMp", requestModel.getUsrMp()));
+        list.add(new HfBaseModel(8, "SmsTempType", requestModel.getSmsTempType() == null ? null : requestModel.getSmsTempType().getName()));
+
+        Map<String, String> params = formartParams(list, true);
+        String result = HttpClientHandler.doPost(params);
+        return new Gson().fromJson(result, HfSendSmsCodeResponse.class);
     }
 
     /**
@@ -93,9 +91,6 @@ public class Core {
     public static HfQueryBalanceBgResponse queryBalanceBg(HfQueryBalanceBgRequest requestModel) throws Exception {
         String version = "10";
         String cmdId = "QueryBalanceBg";
-        if (StringUtil.isNullOrEmpty(requestModel.getMerCustId())) {
-            throw new Exception("商户号不能为空");
-        }
         if (StringUtil.isNullOrEmpty(requestModel.getUsrCustId())) {
             throw new Exception("客户号不能为空");
         }
@@ -104,11 +99,11 @@ public class Core {
         List<HfBaseModel> list = new ArrayList<>();
         list.add(new HfBaseModel(1, "Version", version));
         list.add(new HfBaseModel(2, "CmdId", cmdId));
-        list.add(new HfBaseModel(3, "MerCustId", requestModel.getMerCustId()));
+        list.add(new HfBaseModel(3, "MerCustId", Config.MER_CUST_ID));
         list.add(new HfBaseModel(4, "UsrCustId", requestModel.getUsrCustId()));
 
-        Map<String, String> params = formartParams(list);
-        String result = doPost(params);
+        Map<String, String> params = formartParams(list, false);
+        String result = HttpClientHandler.doPost(params);
         HfQueryBalanceBgResponse response = new Gson().fromJson(result, HfQueryBalanceBgResponse.class);
         boolean isCheckSuccess = SignUtils.verifyByRSA(response.getPlainStr(), response.getChkValue());
         if (!isCheckSuccess) {
@@ -135,10 +130,10 @@ public class Core {
         List<HfBaseModel> list = new ArrayList<>();
         list.add(new HfBaseModel(1, "Version", version));
         list.add(new HfBaseModel(2, "CmdId", cmdId));
-        list.add(new HfBaseModel(3, "MerCustId", requestModel.getMerCustId()));
+        list.add(new HfBaseModel(3, "MerCustId", Config.MER_CUST_ID));
 
-        Map<String, String> params = formartParams(list);
-        String result = doPost(params);
+        Map<String, String> params = formartParams(list, false);
+        String result = HttpClientHandler.doPost(params);
         HfQueryAcctsResponse response = new Gson().fromJson(result, HfQueryAcctsResponse.class);
 
         boolean isCheckSuccess = SignUtils.verifyByRSA(response.getPlaintStr(), response.getChkValue());
@@ -163,40 +158,46 @@ public class Core {
         List<HfBaseModel> list = new ArrayList<>();
         list.add(new HfBaseModel(1, "Version", version));
         list.add(new HfBaseModel(2, "CmdId", cmdId));
-        list.add(new HfBaseModel(3, "MerCustId", requestModel.getMerCustId()));
+        list.add(new HfBaseModel(3, "MerCustId", Config.MER_CUST_ID));
         list.add(new HfBaseModel(4, "OrdId", requestModel.getOrdId()));
         list.add(new HfBaseModel(5, "UsrCustId", requestModel.getUsrCustId()));
         list.add(new HfBaseModel(6, "TransAmt", requestModel.getTransAmt()));
-        list.add(new HfBaseModel(7, "RetUrl", requestModel.getRetUrl()));
-        list.add(new HfBaseModel(8, "BgRetUrl", requestModel.getBgRetUrl()));
+        list.add(new HfBaseModel(7, "RetUrl", Config.CASH_RET_URL));
+        list.add(new HfBaseModel(8, "BgRetUrl", Config.CASH_BG_RET_URL));
         list.add(new HfBaseModel(9, "Remark", requestModel.getRemark()));
 
-        Map<String, String> params = formartParams(list);
-        return doPost(params);
+        Map<String, String> params = formartParams(list, false);
+        return HttpClientHandler.doPost(params);
     }
 
-    public static String directRecharge(HfDirectRechargeRequest requestModel) throws Exception {
+    /**
+     * 充值
+     *
+     * @param requestModel 请求参数
+     * @return HTML
+     * @throws Exception 异常
+     */
+    public static HfDirectRechargeResponse directRecharge(HfDirectRechargeRequest requestModel) throws Exception {
         String version = "10";
         String cmdId = "DirectRecharge";
 
-        //            requestModel.setMerCustId("6000060007633813");
-//            requestModel.setUsrCustId("6000060007653943");
         HfBaseModel model = new HfBaseModel();
         List<HfBaseModel> list = new ArrayList<>();
         list.add(new HfBaseModel(1, "Version", version));
         list.add(new HfBaseModel(2, "CmdId", cmdId));
-        list.add(new HfBaseModel(3, "MerCustId", "6000060007633813"));
-        list.add(new HfBaseModel(4, "UsrCustId", "6000060007653943"));
-        list.add(new HfBaseModel(5, "OrdId", "2017111517511152222"));
-        list.add(new HfBaseModel(6, "OrdDate", "20171115"));
-        list.add(new HfBaseModel(7, "GateBusiId", "B2C"));
-        list.add(new HfBaseModel(8, "TransAmt", "1.0"));
-        list.add(new HfBaseModel(9, "RetUrl", "http://baidu.com"));
-        list.add(new HfBaseModel(10, "BgRetUrl", "http://baidu.com"));
+        list.add(new HfBaseModel(3, "MerCustId", Config.MER_CUST_ID));
+        list.add(new HfBaseModel(4, "UsrCustId", requestModel.getUsrCustId()));
+        list.add(new HfBaseModel(5, "OrdId", requestModel.getOrdId()));
+        list.add(new HfBaseModel(6, "OrdDate", DateUtil.format(new Date(), "yyyyMMdd")));
+        list.add(new HfBaseModel(7, "GateBusiId", "QP"));
+        list.add(new HfBaseModel(8, "TransAmt", DoubleUtil.toFixed(requestModel.getTransAmt(), "0.00")));
+        list.add(new HfBaseModel(9, "SmsSeq", requestModel.getSmsSeq()));
+        list.add(new HfBaseModel(10, "SmsCode", requestModel.getSmsCode()));
+        list.add(new HfBaseModel(12, "BgRetUrl", Config.DIRECT_RECHARGE_BG_URL));
 
 
-        Map<String, String> params = formartParams(list);
-        String str = doPost(params);
-        return doPost(params);
+        Map<String, String> params = formartParams(list, true);
+        String result = HttpClientHandler.doPost(params);
+        return new Gson().fromJson(result, HfDirectRechargeResponse.class);
     }
 }
