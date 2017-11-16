@@ -1,6 +1,5 @@
 package com.zhongmubao.api.init;
 
-
 import com.zhongmubao.api.config.Constants;
 import com.zhongmubao.api.dao.SheepLevelDao;
 import com.zhongmubao.api.entity.SheepLevel;
