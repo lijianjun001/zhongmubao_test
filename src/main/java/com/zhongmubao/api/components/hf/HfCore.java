@@ -19,7 +19,7 @@ import com.zhongmubao.api.components.hf.http.HttpClientHandler;
  *
  * @author 孙阿龙
  */
-public class Core {
+public class HfCore {
 
     //region 基础
 
