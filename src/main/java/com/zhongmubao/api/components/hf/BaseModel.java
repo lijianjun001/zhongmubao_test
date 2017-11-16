@@ -3,12 +3,12 @@ package com.zhongmubao.api.components.hf;
 /**
  * @author 孙阿龙
  */
-public class HfBaseModel {
+public class BaseModel {
 
-    public HfBaseModel() {
+    public BaseModel() {
     }
 
-    public HfBaseModel(int sort, String key, String value) {
+    public BaseModel(int sort, String key, String value) {
         this.sort = sort;
         this.key = key;
         this.value = value;

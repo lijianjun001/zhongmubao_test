@@ -31,11 +31,11 @@ public class Core {
      *
      * @throws Exception 错误信息
      */
-    private static Map<String, String> formartParams(List<HfBaseModel> list, boolean md5Encryption) throws Exception {
+    private static Map<String, String> formartParams(List<BaseModel> list, boolean md5Encryption) throws Exception {
         Map<String, String> params = new HashMap<>(0);
         StringBuilder buffer = new StringBuilder();
-        list = list.stream().sorted(Comparator.comparing(HfBaseModel::getSort)).collect(Collectors.toList());
-        for (HfBaseModel model : list) {
+        list = list.stream().sorted(Comparator.comparing(BaseModel::getSort)).collect(Collectors.toList());
+        for (BaseModel model : list) {
             if (StringUtil.isNullOrEmpty(model.getValue())) {
                 continue;
             }
@@ -65,16 +65,16 @@ public class Core {
         String version = "10";
         String cmdId = "SendSmsCode";
 
-        HfBaseModel model = new HfBaseModel();
-        List<HfBaseModel> list = new ArrayList<>();
-        list.add(new HfBaseModel(1, "Version", version));
-        list.add(new HfBaseModel(2, "CmdId", cmdId));
-        list.add(new HfBaseModel(3, "MerCustId", Config.MER_CUST_ID));
-        list.add(new HfBaseModel(4, "UsrCustId", requestModel.getUsrCustId()));
-        list.add(new HfBaseModel(5, "BusiType", requestModel.getBusiType().getName()));
-        list.add(new HfBaseModel(6, "OpenAcctId", requestModel.getOpenAcctId()));
-        list.add(new HfBaseModel(7, "UsrMp", requestModel.getUsrMp()));
-        list.add(new HfBaseModel(8, "SmsTempType", requestModel.getSmsTempType() == null ? null : requestModel.getSmsTempType().getName()));
+        BaseModel model = new BaseModel();
+        List<BaseModel> list = new ArrayList<>();
+        list.add(new BaseModel(1, "Version", version));
+        list.add(new BaseModel(2, "CmdId", cmdId));
+        list.add(new BaseModel(3, "MerCustId", Config.MER_CUST_ID));
+        list.add(new BaseModel(4, "UsrCustId", requestModel.getUsrCustId()));
+        list.add(new BaseModel(5, "BusiType", requestModel.getBusiType().getName()));
+        list.add(new BaseModel(6, "OpenAcctId", requestModel.getOpenAcctId()));
+        list.add(new BaseModel(7, "UsrMp", requestModel.getUsrMp()));
+        list.add(new BaseModel(8, "SmsTempType", requestModel.getSmsTempType() == null ? null : requestModel.getSmsTempType().getName()));
 
         Map<String, String> params = formartParams(list, true);
         String result = HttpClientHandler.doPost(params);
@@ -95,12 +95,12 @@ public class Core {
             throw new Exception("客户号不能为空");
         }
 
-        HfBaseModel model = new HfBaseModel();
-        List<HfBaseModel> list = new ArrayList<>();
-        list.add(new HfBaseModel(1, "Version", version));
-        list.add(new HfBaseModel(2, "CmdId", cmdId));
-        list.add(new HfBaseModel(3, "MerCustId", Config.MER_CUST_ID));
-        list.add(new HfBaseModel(4, "UsrCustId", requestModel.getUsrCustId()));
+        BaseModel model = new BaseModel();
+        List<BaseModel> list = new ArrayList<>();
+        list.add(new BaseModel(1, "Version", version));
+        list.add(new BaseModel(2, "CmdId", cmdId));
+        list.add(new BaseModel(3, "MerCustId", Config.MER_CUST_ID));
+        list.add(new BaseModel(4, "UsrCustId", requestModel.getUsrCustId()));
 
         Map<String, String> params = formartParams(list, false);
         String result = HttpClientHandler.doPost(params);
@@ -126,11 +126,11 @@ public class Core {
             throw new Exception("商户号不能为空");
         }
 
-        HfBaseModel model = new HfBaseModel();
-        List<HfBaseModel> list = new ArrayList<>();
-        list.add(new HfBaseModel(1, "Version", version));
-        list.add(new HfBaseModel(2, "CmdId", cmdId));
-        list.add(new HfBaseModel(3, "MerCustId", Config.MER_CUST_ID));
+        BaseModel model = new BaseModel();
+        List<BaseModel> list = new ArrayList<>();
+        list.add(new BaseModel(1, "Version", version));
+        list.add(new BaseModel(2, "CmdId", cmdId));
+        list.add(new BaseModel(3, "MerCustId", Config.MER_CUST_ID));
 
         Map<String, String> params = formartParams(list, false);
         String result = HttpClientHandler.doPost(params);
@@ -154,17 +154,17 @@ public class Core {
         String version = "20";
         String cmdId = "Cash";
 
-        HfBaseModel model = new HfBaseModel();
-        List<HfBaseModel> list = new ArrayList<>();
-        list.add(new HfBaseModel(1, "Version", version));
-        list.add(new HfBaseModel(2, "CmdId", cmdId));
-        list.add(new HfBaseModel(3, "MerCustId", Config.MER_CUST_ID));
-        list.add(new HfBaseModel(4, "OrdId", requestModel.getOrdId()));
-        list.add(new HfBaseModel(5, "UsrCustId", requestModel.getUsrCustId()));
-        list.add(new HfBaseModel(6, "TransAmt", requestModel.getTransAmt()));
-        list.add(new HfBaseModel(7, "RetUrl", Config.CASH_RET_URL));
-        list.add(new HfBaseModel(8, "BgRetUrl", Config.CASH_BG_RET_URL));
-        list.add(new HfBaseModel(9, "Remark", requestModel.getRemark()));
+        BaseModel model = new BaseModel();
+        List<BaseModel> list = new ArrayList<>();
+        list.add(new BaseModel(1, "Version", version));
+        list.add(new BaseModel(2, "CmdId", cmdId));
+        list.add(new BaseModel(3, "MerCustId", Config.MER_CUST_ID));
+        list.add(new BaseModel(4, "OrdId", requestModel.getOrdId()));
+        list.add(new BaseModel(5, "UsrCustId", requestModel.getUsrCustId()));
+        list.add(new BaseModel(6, "TransAmt", requestModel.getTransAmt()));
+        list.add(new BaseModel(7, "RetUrl", Config.CASH_RET_URL));
+        list.add(new BaseModel(8, "BgRetUrl", Config.CASH_BG_RET_URL));
+        list.add(new BaseModel(9, "Remark", requestModel.getRemark()));
 
         Map<String, String> params = formartParams(list, false);
         return HttpClientHandler.doPost(params);
@@ -181,19 +181,19 @@ public class Core {
         String version = "10";
         String cmdId = "DirectRecharge";
 
-        HfBaseModel model = new HfBaseModel();
-        List<HfBaseModel> list = new ArrayList<>();
-        list.add(new HfBaseModel(1, "Version", version));
-        list.add(new HfBaseModel(2, "CmdId", cmdId));
-        list.add(new HfBaseModel(3, "MerCustId", Config.MER_CUST_ID));
-        list.add(new HfBaseModel(4, "UsrCustId", requestModel.getUsrCustId()));
-        list.add(new HfBaseModel(5, "OrdId", requestModel.getOrdId()));
-        list.add(new HfBaseModel(6, "OrdDate", DateUtil.format(new Date(), "yyyyMMdd")));
-        list.add(new HfBaseModel(7, "GateBusiId", "QP"));
-        list.add(new HfBaseModel(8, "TransAmt", DoubleUtil.toFixed(requestModel.getTransAmt(), "0.00")));
-        list.add(new HfBaseModel(9, "SmsSeq", requestModel.getSmsSeq()));
-        list.add(new HfBaseModel(10, "SmsCode", requestModel.getSmsCode()));
-        list.add(new HfBaseModel(12, "BgRetUrl", Config.DIRECT_RECHARGE_BG_URL));
+        BaseModel model = new BaseModel();
+        List<BaseModel> list = new ArrayList<>();
+        list.add(new BaseModel(1, "Version", version));
+        list.add(new BaseModel(2, "CmdId", cmdId));
+        list.add(new BaseModel(3, "MerCustId", Config.MER_CUST_ID));
+        list.add(new BaseModel(4, "UsrCustId", requestModel.getUsrCustId()));
+        list.add(new BaseModel(5, "OrdId", requestModel.getOrdId()));
+        list.add(new BaseModel(6, "OrdDate", DateUtil.format(new Date(), "yyyyMMdd")));
+        list.add(new BaseModel(7, "GateBusiId", "QP"));
+        list.add(new BaseModel(8, "TransAmt", DoubleUtil.toFixed(requestModel.getTransAmt(), "0.00")));
+        list.add(new BaseModel(9, "SmsSeq", requestModel.getSmsSeq()));
+        list.add(new BaseModel(10, "SmsCode", requestModel.getSmsCode()));
+        list.add(new BaseModel(12, "BgRetUrl", Config.DIRECT_RECHARGE_BG_URL));
 
 
         Map<String, String> params = formartParams(list, true);
