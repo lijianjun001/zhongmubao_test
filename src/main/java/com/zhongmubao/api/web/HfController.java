@@ -2,6 +2,7 @@ package com.zhongmubao.api.web;
 
 import com.zhongmubao.api.components.hf.HfCore;
 import com.zhongmubao.api.components.hf.request.*;
+import com.zhongmubao.api.components.hf.response.HfSaveReconciliationResponse;
 import com.zhongmubao.api.dto.request.system.TouTiaoAdvRequestModel;
 import com.zhongmubao.api.dto.response.ReponseModel;
 import com.zhongmubao.api.exception.ApiException;
@@ -56,5 +57,41 @@ public class HfController {
             return new ResponseEntity<>(ReponseModel.error(ex, this.getClass()), HttpStatus.OK);
         }
     }
+
+
+    @RequestMapping(value = "/test2", method = RequestMethod.POST, consumes = "application/json")
+    public ResponseEntity<ReponseModel> test2(HttpEntity<TouTiaoAdvRequestModel> model) {
+        try {
+//            HfReconciliationRequest request = new HfReconciliationRequest();
+//            request.setBeginDate(DateUtil.strToDate("2017-11-11 00:00:00"));
+//            request.setEndDate(DateUtil.strToDate("2017-11-17 00:00:00"));
+//            request.setPageNum("1");
+//            request.setPageSize("100");
+//            request.setQuerytranstype("LOANS");
+//            HfCore.reconciliation(request);
+
+//            HfCashReconciliationRequeset request = new HfCashReconciliationRequeset();
+//            request.setBeginDate(DateUtil.strToDate("2017-11-11 00:00:00"));
+//            request.setEndDate(DateUtil.strToDate("2017-11-17 00:00:00"));
+//            request.setPageNum("1");
+//            request.setPageSize("100");
+//            HfCore.cashReconciliation(request);
+
+            HfSaveReconciliationRequeset request = new HfSaveReconciliationRequeset();
+            request.setBeginDate(DateUtil.strToDate("2017-11-11 00:00:00"));
+            request.setEndDate(DateUtil.strToDate("2017-11-17 00:00:00"));
+            request.setPageNum("1");
+            request.setPageSize("100");
+            HfCore.saveReconciliation(request);
+
+
+            return null;
+        } catch (ApiException ex) {
+            return new ResponseEntity<>(ReponseModel.error(ex.getStatus()), HttpStatus.OK);
+        } catch (Exception ex) {
+            return new ResponseEntity<>(ReponseModel.error(ex, this.getClass()), HttpStatus.OK);
+        }
+    }
+
 
 }
