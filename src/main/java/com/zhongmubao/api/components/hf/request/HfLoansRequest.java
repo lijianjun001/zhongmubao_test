@@ -1,7 +1,9 @@
 package com.zhongmubao.api.components.hf.request;
 
+import java.util.Date;
+
 /**
- * 自动扣款（放款）接口
+ * 自动扣款（放款）请求
  *
  * @author 孙阿龙
  */
@@ -15,7 +17,7 @@ public class HfLoansRequest extends HfBaseRequest {
     /**
      * 订单日期
      */
-    private String ordDate;
+    private Date ordDate;
 
     /**
      * 出帐客户号
@@ -25,7 +27,7 @@ public class HfLoansRequest extends HfBaseRequest {
     /**
      * 交易金额
      */
-    private String transAmt;
+    private Double transAmt;
 
     /**
      * 扣款手续费
@@ -40,18 +42,12 @@ public class HfLoansRequest extends HfBaseRequest {
     /**
      * 标的订单时间
      */
-    private String subOrdDate;
+    private Date subOrdDate;
 
     /**
      * 入账账户
      */
     private String inCustId;
-
-
-    /**
-     * 是否解冻
-     */
-    private String isUnFreeze;
 
     /**
      * 解冻订单号
@@ -71,7 +67,7 @@ public class HfLoansRequest extends HfBaseRequest {
     /**
      * 扩展请求参数
      */
-    private HfLoansReqExt reqExt;
+    private String reqExt;
 
     /**
      * 订单号
@@ -87,11 +83,11 @@ public class HfLoansRequest extends HfBaseRequest {
         this.ordId = ordId;
     }
 
-    public String getOrdDate() {
+    public Date getOrdDate() {
         return ordDate;
     }
 
-    public void setOrdDate(String ordDate) {
+    public void setOrdDate(Date ordDate) {
         this.ordDate = ordDate;
     }
 
@@ -103,11 +99,11 @@ public class HfLoansRequest extends HfBaseRequest {
         this.outCustId = outCustId;
     }
 
-    public String getTransAmt() {
+    public Double getTransAmt() {
         return transAmt;
     }
 
-    public void setTransAmt(String transAmt) {
+    public void setTransAmt(Double transAmt) {
         this.transAmt = transAmt;
     }
 
@@ -127,11 +123,11 @@ public class HfLoansRequest extends HfBaseRequest {
         this.subOrdId = subOrdId;
     }
 
-    public String getSubOrdDate() {
+    public Date getSubOrdDate() {
         return subOrdDate;
     }
 
-    public void setSubOrdDate(String subOrdDate) {
+    public void setSubOrdDate(Date subOrdDate) {
         this.subOrdDate = subOrdDate;
     }
 
@@ -141,14 +137,6 @@ public class HfLoansRequest extends HfBaseRequest {
 
     public void setInCustId(String inCustId) {
         this.inCustId = inCustId;
-    }
-
-    public String getIsUnFreeze() {
-        return isUnFreeze;
-    }
-
-    public void setIsUnFreeze(String isUnFreeze) {
-        this.isUnFreeze = isUnFreeze;
     }
 
     public String getUnFreezeOrdId() {
@@ -167,14 +155,6 @@ public class HfLoansRequest extends HfBaseRequest {
         this.bgRetUrl = bgRetUrl;
     }
 
-    public HfLoansReqExt getReqExt() {
-        return reqExt;
-    }
-
-    public void setReqExt(HfLoansReqExt reqExt) {
-        this.reqExt = reqExt;
-    }
-
     public String getProId() {
         return proId;
     }
@@ -190,5 +170,14 @@ public class HfLoansRequest extends HfBaseRequest {
     public void setFreezeTrxId(String freezeTrxId) {
         this.freezeTrxId = freezeTrxId;
     }
+
+    public String getReqExt() {
+        return reqExt;
+    }
+
+    public void setReqExt(String reqExt) {
+        this.reqExt = reqExt;
+    }
+
 
 }

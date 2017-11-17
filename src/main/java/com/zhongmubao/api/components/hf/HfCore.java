@@ -275,9 +275,8 @@ public class HfCore {
 
         Map<String, String> params = formartParams(list, false);
         String result = HttpClientHandler.doPost(params);
-        HfReconciliationResponse response = new Gson().fromJson(result, HfReconciliationResponse.class);
+        return new Gson().fromJson(result, HfReconciliationResponse.class);
 
-        return response;
     }
 
     /**
@@ -303,9 +302,8 @@ public class HfCore {
 
         Map<String, String> params = formartParams(list, false);
         String result = HttpClientHandler.doPost(params);
-        HfCashReconciliationResponse response = new Gson().fromJson(result, HfCashReconciliationResponse.class);
+        return new Gson().fromJson(result, HfCashReconciliationResponse.class);
 
-        return response;
     }
 
     /**
@@ -331,9 +329,8 @@ public class HfCore {
 
         Map<String, String> params = formartParams(list, false);
         String result = HttpClientHandler.doPost(params);
-        HfSaveReconciliationResponse response = new Gson().fromJson(result, HfSaveReconciliationResponse.class);
+        return new Gson().fromJson(result, HfSaveReconciliationResponse.class);
 
-        return response;
     }
 
     /**
@@ -343,36 +340,37 @@ public class HfCore {
      * @return HfReconciliationRequest
      * @throws Exception 异常
      */
-    public static void loans(HfLoansRequest requestModel) throws Exception {
+    public static HfLoansResponse loans(HfLoansRequest requestModel) throws Exception {
         String version = "20";
         String cmdId = "Loans";
-
-        HfLoansReqExt reqExt = new HfLoansReqExt();
-        reqExt.setProId("1705");
 
         BaseModel model = new BaseModel();
         List<BaseModel> list = new ArrayList<>();
         list.add(new BaseModel(1, "Version", version));
         list.add(new BaseModel(2, "CmdId", cmdId));
         list.add(new BaseModel(3, "MerCustId", Config.MER_CUST_ID));
-        list.add(new BaseModel(4, "OrdId", "201711171120102521111"));
-        list.add(new BaseModel(5, "OrdDate", "20171117"));
-        list.add(new BaseModel(6, "OutCustId", "6000060007867339"));
-        list.add(new BaseModel(7, "TransAmt", "1000.00"));
+        list.add(new BaseModel(4, "OrdId", requestModel.getOrdId()));
+        list.add(new BaseModel(5, "OrdDate", DateUtil.format(requestModel.getOrdDate(), "yyyyMMdd")));
+        list.add(new BaseModel(6, "OutCustId", requestModel.getOutCustId()));
+        list.add(new BaseModel(7, "TransAmt", DoubleUtil.toFixed(requestModel.getTransAmt(), "0.00")));
         list.add(new BaseModel(8, "Fee", "0.00"));
-        list.add(new BaseModel(9, "SubOrdId", "171117111946907755574"));
-        list.add(new BaseModel(10, "SubOrdDate", "20171117"));
-        list.add(new BaseModel(11, "InCustId", "6000060007653943"));
+        list.add(new BaseModel(9, "SubOrdId", requestModel.getSubOrdId()));
+        list.add(new BaseModel(10, "SubOrdDate", DateUtil.format(requestModel.getSubOrdDate(), "yyyyMMdd")));
+        list.add(new BaseModel(11, "InCustId", requestModel.getInCustId()));
         list.add(new BaseModel(12, "IsUnFreeze", "Y"));
-        list.add(new BaseModel(13, "UnFreezeOrdId", "00201711171120127201111"));
-        list.add(new BaseModel(14, "FreezeTrxId", "201711170011388710"));
-        list.add(new BaseModel(15, "BgRetUrl", "http://baidu.com"));
-        list.add(new BaseModel(16, "ReqExt", "{\"ProId\":\"1705\"}"));
-
+        list.add(new BaseModel(13, "UnFreezeOrdId", requestModel.getUnFreezeOrdId()));
+        list.add(new BaseModel(14, "FreezeTrxId", requestModel.getFreezeTrxId()));
+        list.add(new BaseModel(15, "BgRetUrl", Config.LOANS_BG_URL));
+        //{"ProId":"1705"}
+        list.add(new BaseModel(16, "ReqExt", requestModel.getReqExt()));
 
         Map<String, String> params = formartParams(list, false);
         String result = HttpClientHandler.doPost(params);
-
-
+        HfLoansResponse response = new Gson().fromJson(result, HfLoansResponse.class);
+        boolean isCheckSuccess = SignUtils.verifyByRSA(response.getPlainStr(), response.getChkValue());
+        if (!isCheckSuccess) {
+            throw new Exception("验证签名失败");
+        }
+        return response;
     }
 }

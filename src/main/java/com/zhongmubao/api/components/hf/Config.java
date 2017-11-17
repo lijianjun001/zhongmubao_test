@@ -70,4 +70,9 @@ public class Config implements Serializable {
      */
     public static final String CASH_BG_RET_URL = "";
 
+    /**
+     * 自动扣款（放款）回调地址
+     */
+    public static final String LOANS_BG_URL = "";
+
 }
