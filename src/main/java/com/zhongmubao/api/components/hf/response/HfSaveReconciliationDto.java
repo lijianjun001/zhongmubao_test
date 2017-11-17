@@ -12,26 +12,31 @@ public class HfSaveReconciliationDto {
      */
     @SerializedName("OrdId")
     private String ordId;
+
     /**
      * 由汇付生成，商户的唯一性标识
      */
     @SerializedName("MerCustId")
     private String merCustId;
+
     /**
      * 由汇付生成，用户的唯一性标识
      */
     @SerializedName("UsrCustId")
     private String usrCustId;
+
     /**
      * 订单日期
      */
     @SerializedName("OrdDate")
     private String ordDate;
+
     /**
      * 泛指交易金额，如充值、支付、取现、冻结和解冻金额（金额格式必须是###.00）比如 2.00，2.01
      */
     @SerializedName("TransAmt")
     private String transAmt;
+
     /**
      * 汇付交易状态
      * I--初始
@@ -39,32 +44,38 @@ public class HfSaveReconciliationDto {
      */
     @SerializedName("TransStat")
     private String transStat;
+
     /**
      * 网关的细分业务类型
      * B2C--B2C 网银支付 B2B--B2B 网银支付
      */
     @SerializedName("GateBusiId")
     private String gateBusiId;
+
     /**
      * 开户银行代号
      */
     @SerializedName("OpenBankId")
     private String openBankId;
+
     /**
      * 开户银行账号
      */
     @SerializedName("OpenAcctId")
     private String openAcctId;
+
     /**
      * 手续费金额（取现手续费+垫资手续费）
      */
     @SerializedName("FeeAmt")
     private String feeAmt;
+
     /**
      * 手续费扣款客户号
      */
     @SerializedName("FeeCustId")
     private String feeCustId;
+
     /**
      * 手续费扣款子账户号
      */

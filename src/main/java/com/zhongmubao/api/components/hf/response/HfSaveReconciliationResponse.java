@@ -16,32 +16,38 @@ public class HfSaveReconciliationResponse extends HfBaseResponse {
      */
     @SerializedName("BeginDate")
     private String beginDate;
+
     /**
      * YYYYMMDD 格式 BeginDate 和 EndDate 日期跨度不能大于 90 天
      */
     @SerializedName("EndDate")
     private String endDate;
+
     /**
      * 查询数据的所在页号，>0 的整数
      */
     @SerializedName("PageNum")
     private String pageNum;
+
     /**
      * 查询数据的所在页号，>0 且<=1000 的整数
      */
     @SerializedName("PageSize")
     private String pageSize;
+
     /**
      * 记录总条数
      */
     @SerializedName("TotalItems")
     private String totalItems;
+
     /**
      * 取现的手续费收取方
      * U--向用户收取 M--向商户收取
      */
     @SerializedName("FeeObj")
     private String feeObj;
+
     /**
      * 对账结果单
      */

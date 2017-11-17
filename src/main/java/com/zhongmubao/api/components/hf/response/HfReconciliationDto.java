@@ -15,31 +15,37 @@ public class HfReconciliationDto {
      */
     @SerializedName("OrdId")
     private String ordId;
+
     /**
      * YYYYMMDD，例如：20130307
      */
     @SerializedName("OrdDate")
     private String ordDate;
+
     /**
      * 由汇付生成，商户的唯一性标识
      */
     @SerializedName("MerCustId")
     private String merCustId;
+
     /**
      * 投资人客户号，由汇付生成，用户的唯一性标识
      */
     @SerializedName("InvestCustId")
     private String investCustId;
+
     /**
      * 借款人客户号，由汇付生成，用户的唯一性标识
      */
     @SerializedName("BorrCustId")
     private String borrCustId;
+
     /**
      * 泛指交易金额，如充值、支付、取现、冻结和解冻金额（金额格式必须是###.00）比如 2.00，2.01
      */
     @SerializedName("TransAmt")
     private String transAmt;
+
     /**
      * 汇付交易状态
      * I--初始
@@ -47,36 +53,43 @@ public class HfReconciliationDto {
      */
     @SerializedName("TransStat")
     private String transStat;
+
     /**
      * YYYYMMDD 格式
      */
     @SerializedName("PnrDate")
     private String pnrDate;
+
     /**
      * 汇付交易流水
      */
     @SerializedName("PnrSeqId")
     private String pnrSeqId;
+
     /**
      * 分账客户号
      */
     @SerializedName("DivDetails")
     private ArrayList<String> divDetails;
+
     /**
      * 分账账户号
      */
     @SerializedName("DivAcctId")
     private String divAcctId;
+
     /**
      * 分账金额
      */
     @SerializedName("DivAmt")
     private String divAmt;
+
     /**
      * 还款本金
      */
     @SerializedName("PrincipalAmt")
     private String principalAmt;
+
     /**
      * 还款利息
      */
