@@ -73,6 +73,6 @@ public class Config implements Serializable {
     /**
      * 自动扣款（放款）回调地址
      */
-    public static final String LOANS_BG_URL = "";
+    public static final String LOANS_BG_URL = "http://baidu.com";
 
 }

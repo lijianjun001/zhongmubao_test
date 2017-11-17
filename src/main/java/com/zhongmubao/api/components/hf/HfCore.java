@@ -341,6 +341,7 @@ public class HfCore {
      * @throws Exception 异常
      */
     public static HfLoansResponse loans(HfLoansRequest requestModel) throws Exception {
+
         String version = "20";
         String cmdId = "Loans";
 
@@ -367,7 +368,7 @@ public class HfCore {
         Map<String, String> params = formartParams(list, false);
         String result = HttpClientHandler.doPost(params);
         HfLoansResponse response = new Gson().fromJson(result, HfLoansResponse.class);
-        boolean isCheckSuccess = SignUtils.verifyByRSA(response.getPlainStr(), response.getChkValue());
+        boolean isCheckSuccess = SignUtils.verifyByRSA(java.net.URLDecoder.decode(response.getPlainStr(), "utf-8"), response.getChkValue());
         if (!isCheckSuccess) {
             throw new Exception("验证签名失败");
         }

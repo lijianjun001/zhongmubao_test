@@ -26,8 +26,18 @@ public class HfController {
     @RequestMapping(value = "/test", method = RequestMethod.POST, consumes = "application/json")
     public ResponseEntity<ReponseModel> test(HttpEntity<TouTiaoAdvRequestModel> model) {
         try {
-
-            HfCore.loans(null);
+            HfLoansRequest request = new HfLoansRequest();
+            request.setOrdId("0620171117175526823");
+            request.setOrdDate(DateUtil.strToDate("2017-11-17 00:00:00"));
+            request.setOutCustId("6000060007867339");
+            request.setTransAmt(990.00);
+            request.setSubOrdId("0820171117170401073");
+            request.setSubOrdDate(DateUtil.strToDate("2017-11-17 00:00:00"));
+            request.setInCustId("6000060007653943");
+            request.setUnFreezeOrdId("20171117175526823");
+            request.setFreezeTrxId("201711170011392481");
+            request.setReqExt("{\"ProId\":\"1704\"}");
+            HfCore.loans(request);
 //            HfQueryTransStatRequest request =new HfQueryTransStatRequest();
 //            request.setOrdId("20171115175643195");
 //            request.setOrdDate(DateUtil.strToDate("2017-11-15 00:00:00"));
