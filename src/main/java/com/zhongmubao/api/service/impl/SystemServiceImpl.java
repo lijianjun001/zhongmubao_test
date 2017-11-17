@@ -40,12 +40,12 @@ public class SystemServiceImpl extends BaseService implements SystemService {
         if (null == model) {
             throw new ApiException(ResultStatus.PARAMETER_MISSING);
         }
-        if (null == model.getMac()) {
-            throw new ApiException(ResultStatus.PARAMETER_MISSING);
-        }
-        if (null == model.getImei()) {
-            throw new ApiException(ResultStatus.PARAMETER_MISSING);
-        }
+//        if (null == model.getMac()) {
+//            throw new ApiException(ResultStatus.PARAMETER_MISSING);
+//        }
+//        if (null == model.getImei()) {
+//            throw new ApiException(ResultStatus.PARAMETER_MISSING);
+//        }
         if (null == model.getOs()) {
             throw new ApiException(ResultStatus.PARAMETER_MISSING);
         }

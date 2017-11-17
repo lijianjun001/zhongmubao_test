@@ -6,10 +6,7 @@ import java.util.stream.Collectors;
 import com.google.gson.Gson;
 import com.zhongmubao.api.components.hf.request.*;
 import com.zhongmubao.api.components.hf.response.*;
-import com.zhongmubao.api.util.DateUtil;
-import com.zhongmubao.api.util.DoubleUtil;
-import com.zhongmubao.api.util.SecurityUtil;
-import com.zhongmubao.api.util.StringUtil;
+import com.zhongmubao.api.util.*;
 import org.apache.commons.lang.StringUtils;
 
 import com.zhongmubao.api.components.hf.http.HttpClientHandler;
@@ -337,5 +334,45 @@ public class HfCore {
         HfSaveReconciliationResponse response = new Gson().fromJson(result, HfSaveReconciliationResponse.class);
 
         return response;
+    }
+
+    /**
+     * 自动扣款（放款）
+     *
+     * @param requestModel 请求参数
+     * @return HfReconciliationRequest
+     * @throws Exception 异常
+     */
+    public static void loans(HfLoansRequest requestModel) throws Exception {
+        String version = "20";
+        String cmdId = "Loans";
+
+        HfLoansReqExt reqExt = new HfLoansReqExt();
+        reqExt.setProId("1705");
+
+        BaseModel model = new BaseModel();
+        List<BaseModel> list = new ArrayList<>();
+        list.add(new BaseModel(1, "Version", version));
+        list.add(new BaseModel(2, "CmdId", cmdId));
+        list.add(new BaseModel(3, "MerCustId", Config.MER_CUST_ID));
+        list.add(new BaseModel(4, "OrdId", "201711171120102521111"));
+        list.add(new BaseModel(5, "OrdDate", "20171117"));
+        list.add(new BaseModel(6, "OutCustId", "6000060007867339"));
+        list.add(new BaseModel(7, "TransAmt", "1000.00"));
+        list.add(new BaseModel(8, "Fee", "0.00"));
+        list.add(new BaseModel(9, "SubOrdId", "171117111946907755574"));
+        list.add(new BaseModel(10, "SubOrdDate", "20171117"));
+        list.add(new BaseModel(11, "InCustId", "6000060007653943"));
+        list.add(new BaseModel(12, "IsUnFreeze", "Y"));
+        list.add(new BaseModel(13, "UnFreezeOrdId", "00201711171120127201111"));
+        list.add(new BaseModel(14, "FreezeTrxId", "201711170011388710"));
+        list.add(new BaseModel(15, "BgRetUrl", "http://baidu.com"));
+        list.add(new BaseModel(16, "ReqExt", "{\"ProId\":\"1705\"}"));
+
+
+        Map<String, String> params = formartParams(list, false);
+        String result = HttpClientHandler.doPost(params);
+
+
     }
 }

@@ -26,12 +26,8 @@ public class HfController {
     @RequestMapping(value = "/test", method = RequestMethod.POST, consumes = "application/json")
     public ResponseEntity<ReponseModel> test(HttpEntity<TouTiaoAdvRequestModel> model) {
         try {
-            HfTrfReconciliationRequest request = new HfTrfReconciliationRequest();
-            request.setBeginDate(DateUtil.strToDate("2017-11-11 00:00:00"));
-            request.setEndDate(DateUtil.strToDate("2017-11-17 00:00:00"));
-            request.setPageNum(1);
-            request.setPageSize(100);
-            HfCore.trfReconciliation(request);
+
+            HfCore.loans(null);
 //            HfQueryTransStatRequest request =new HfQueryTransStatRequest();
 //            request.setOrdId("20171115175643195");
 //            request.setOrdDate(DateUtil.strToDate("2017-11-15 00:00:00"));
