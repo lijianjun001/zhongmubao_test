@@ -1,11 +1,13 @@
 package com.zhongmubao.api.dto.request.sheep.room;
 
+import com.zhongmubao.api.dto.request.BaseRequest;
+
 /**
  * 我的羊圈 保险
  *
  * @author xy
  */
-public class SheepRoomInsuranceRequestModel {
+public class SheepRoomInsuranceRequestModel extends BaseRequest {
     public SheepRoomInsuranceRequestModel() {
     }
 

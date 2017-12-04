@@ -1,11 +1,13 @@
 package com.zhongmubao.api.dto.request.system;
 
+import com.zhongmubao.api.dto.request.BaseRequest;
+
 /**
  * 平台跟踪请求model
  *
  * @author 孙阿龙
  */
-public class PlatformTrackingRequestModel {
+public class PlatformTrackingRequestModel extends BaseRequest {
 
     public String getPlatform() {
         return platform;

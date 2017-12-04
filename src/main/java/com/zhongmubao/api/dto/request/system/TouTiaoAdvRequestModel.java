@@ -1,11 +1,13 @@
 package com.zhongmubao.api.dto.request.system;
 
+import com.zhongmubao.api.dto.request.BaseRequest;
+
 /**
  * TouTiaoAdvRequestModel
  *
  * @author xy
  */
-public class TouTiaoAdvRequestModel {
+public class TouTiaoAdvRequestModel extends BaseRequest {
 
     public String getMac() {
         return mac;

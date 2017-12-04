@@ -1,9 +1,11 @@
 package com.zhongmubao.api.dto.request.sign;
 
+import com.zhongmubao.api.dto.request.BaseRequest;
+
 /**
  * @author 米立林
  */
-public class RrcevieSecretGiftRequestModel {
+public class RrcevieSecretGiftRequestModel extends BaseRequest {
     private String giftId;
     private String phone;
     private String address;

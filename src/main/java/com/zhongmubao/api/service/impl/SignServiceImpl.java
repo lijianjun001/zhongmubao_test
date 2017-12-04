@@ -558,10 +558,9 @@ public class SignServiceImpl extends BaseService implements SignService {
     }
 
     private SignGiftAddressViewModel formartAddress(int customerId) {
-        SignGiftAddressViewModel signGiftAddressViewModel = null;
+        SignGiftAddressViewModel signGiftAddressViewModel = new SignGiftAddressViewModel();
         CustomerAddress customerAddress = customerAddressDao.getCustomerAddressByCustomerId(customerId);
         if (null != customerAddress) {
-            signGiftAddressViewModel = new SignGiftAddressViewModel();
             signGiftAddressViewModel.setName(customerAddress.getName());
             signGiftAddressViewModel.setPhone(customerAddress.getPhone());
             signGiftAddressViewModel.setAddress(

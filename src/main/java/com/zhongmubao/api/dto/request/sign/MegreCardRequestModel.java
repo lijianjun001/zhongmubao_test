@@ -1,5 +1,7 @@
 package com.zhongmubao.api.dto.request.sign;
 
+import com.zhongmubao.api.dto.request.BaseRequest;
+
 import java.util.List;
 
 /**
@@ -7,7 +9,7 @@ import java.util.List;
  *
  * @author 孙阿龙
  */
-public class MegreCardRequestModel {
+public class MegreCardRequestModel extends BaseRequest {
     public MegreCardRequestModel() {
     }
 

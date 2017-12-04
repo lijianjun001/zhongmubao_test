@@ -10,6 +10,20 @@ public class SheepRoomItemModel {
     public SheepRoomItemModel() {
     }
 
+    public SheepRoomItemModel(int projectId, int venderId, String title, String sheepPhoto, int count, String beginTime, String endTime, String breedProgress, String breedProgressImg, String vendor, int surplusDay) {
+        this.projectId = projectId;
+        this.venderId = venderId;
+        this.title = title;
+        this.sheepPhoto = sheepPhoto;
+        this.count = count;
+        this.beginTime = beginTime;
+        this.endTime = endTime;
+        this.breedProgress = breedProgress;
+        this.breedProgressImg = breedProgressImg;
+        this.vendor = vendor;
+        this.surplusDay = surplusDay;
+    }
+
 
     public int getProjectId() {
         return projectId;

@@ -28,6 +28,9 @@ public class PlatformTrackingMongo extends BaseModel {
     @Field("CreateTime")
     private Date createTime;
 
+    @Field("Version")
+    private String version;
+
     public int getCustomerId() {
         return customerId;
     }
@@ -66,5 +69,13 @@ public class PlatformTrackingMongo extends BaseModel {
 
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
+    }
+
+    public String getVersion() {
+        return version;
+    }
+
+    public void setVersion(String version) {
+        this.version = version;
     }
 }

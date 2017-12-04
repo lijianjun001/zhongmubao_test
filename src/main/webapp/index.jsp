@@ -29,18 +29,14 @@
 //        private String os;
 //        private String deviceid;
         var data = {
-            "mac": "ef276f2fcfd8cdee9f28ed4f3fd70762",
-            "imei": "3D638F10-7D1C-4223-8A17-B1D81E1CA419",
-            "ip": "192.168.31.1",
-            "os": "1",
-            "deviceid": ""
+            "projectId": 1715
         };
         console.info(JSON.stringify(data));
 //        var saveData ={"USER_ID":leader,"Users":users};
 
         $.ajax({
             type: "POST",
-            url: "/customer/signActivity1111",
+            url: "/hf/test",
             data: JSON.stringify(data),
             contentType: 'application/json;charset=UTF-8',
             dataType: "json",                                     //预期服务器返回类型

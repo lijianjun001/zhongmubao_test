@@ -44,8 +44,20 @@ public class SheepRoomViewModel {
         this.sheepRoomModel = sheepRoomModel;
     }
 
+    public String getCustomerLevelName() {
+        return CustomerLevelName;
+    }
+
+    public void setCustomerLevelName(String customerLevelName) {
+        CustomerLevelName = customerLevelName;
+    }
+
+    /**
+     * 是否有新订单（今天）
+     */
     private boolean hasOrder;
     private int customerLevel;
+    private String CustomerLevelName;
     private int totalSheepCount;
     private SheepRoomModel sheepRoomModel;
 }

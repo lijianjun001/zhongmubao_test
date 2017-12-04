@@ -47,15 +47,15 @@ public class ShareCardMongoDao implements BaseDao<ShareCardMongo> {
     public ShareCardMongo get(Query query) throws Exception {
         return null;
     }
-
     @Override
     public List<ShareCardMongo> getList(Query query) throws Exception {
-        return null;
+
+        return mongoTemplate.find(query, ShareCardMongo.class);
     }
 
     @Override
     public void delete(ShareCardMongo entity) throws Exception {
-
+        mongoTemplate.remove(entity);
     }
 
     @Override
@@ -66,7 +66,7 @@ public class ShareCardMongoDao implements BaseDao<ShareCardMongo> {
     public PageModel<ShareCardMongo> pager(int customerId, boolean searchHasDeleted, PageModel<ShareCardMongo> page) {
         Query query = new Query();
         query.addCriteria(Criteria.where("CustomerId").is(customerId));
-        if(!searchHasDeleted){
+        if (!searchHasDeleted) {
             query.addCriteria(Criteria.where("Delete").is(false));
         }
 
@@ -98,7 +98,7 @@ public class ShareCardMongoDao implements BaseDao<ShareCardMongo> {
         return mongoTemplate.findOne(query, ShareCardMongo.class);
     }
 
-    public ShareCardMongo getByCustomerIdAndIdAndType(int customerId,String id, String type) {
+    public ShareCardMongo getByCustomerIdAndIdAndType(int customerId, String id, String type) {
         Query query = new Query();
         query.addCriteria(Criteria.where("CustomerId").is(customerId));
         query.addCriteria(Criteria.where("_id").is(id));

@@ -165,31 +165,18 @@
             <version>1.7.13</version>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/com.github.pagehelper/pagehelper -->
         <dependency>
             <groupId>com.github.pagehelper</groupId>
             <artifactId>pagehelper</artifactId>
             <version>5.1.1</version>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/org.log4mongo/log4mongo-java -->
         <dependency>
             <groupId>org.log4mongo</groupId>
             <artifactId>log4mongo-java</artifactId>
             <version>0.7.4</version>
         </dependency>
 
-        <!--&lt;!&ndash;跨域&ndash;&gt;-->
-        <!--<dependency>-->
-        <!--<groupId>com.thetransactioncompany</groupId>-->
-        <!--<artifactId>java-property-utils</artifactId>-->
-        <!--<version>1.9</version>-->
-        <!--</dependency>-->
-        <!--<dependency>-->
-        <!--<groupId>com.thetransactioncompany</groupId>-->
-        <!--<artifactId>cors-filter</artifactId>-->
-        <!--<version>2.6</version>-->
-        <!--</dependency>-->
         <dependency>
             <groupId>org.json</groupId>
             <artifactId>json</artifactId>
@@ -200,6 +187,45 @@
             <artifactId>commons-io</artifactId>
             <version>2.5</version>
         </dependency>
+
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>2.8.2</version>
+        </dependency>
+
+        <!-- HF -->
+        <dependency>
+            <groupId>chinapnr</groupId>
+            <artifactId>chinapnr</artifactId>
+            <version>1.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>commons-lang</groupId>
+            <artifactId>commons-lang</artifactId>
+            <version>2.6</version>
+        </dependency>
+
+        <dependency>
+            <groupId>commons-logging</groupId>
+            <artifactId>commons-logging</artifactId>
+            <version>1.1.3</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+            <version>4.3.3</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpcore</artifactId>
+            <version>4.3.2</version>
+        </dependency>
+
+        <!-- hf end -->
     </dependencies>
     <build>
         <finalName>zhongmubao</finalName>

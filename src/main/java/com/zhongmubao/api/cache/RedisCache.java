@@ -1,6 +1,7 @@
 package com.zhongmubao.api.cache;
 
 import com.zhongmubao.api.config.Constants;
+import com.zhongmubao.api.entity.SheepLevel;
 import com.zhongmubao.api.util.DateUtil;
 import com.zhongmubao.api.util.StringUtil;
 import com.zhongmubao.api.util.redis.RedisHelper;
@@ -8,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * Redis缓存
@@ -83,6 +85,26 @@ public class RedisCache {
             redisHelper.setHash(table, String.valueOf(key) + "", "true");
         } catch (Exception ex) {
             //ignore
+        }
+    }
+
+    /**
+     * 客户等级
+     * Redis Key:CACHE_CUSTOMER_LEVEL_KEY
+     *
+     * @return 客户等级集合
+     * @author 米立林 2017-10-09
+     */
+    public List<SheepLevel> getCustomerLevel() {
+        try {
+            if (redisHelper.hasKey(Constants.CACHE_CUSTOMER_LEVEL_TABLE, Constants.CACHE_CUSTOMER_LEVEL_KEY)) {
+                Object object = redisHelper.getHash(Constants.CACHE_CUSTOMER_LEVEL_TABLE, Constants.CACHE_CUSTOMER_LEVEL_KEY);
+                return (List<SheepLevel>) object;
+            } else {
+                return null;
+            }
+        } catch (Exception ex) {
+            return null;
         }
     }
 

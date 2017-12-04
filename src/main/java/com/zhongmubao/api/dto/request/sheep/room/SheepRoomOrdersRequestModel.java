@@ -1,11 +1,13 @@
 package com.zhongmubao.api.dto.request.sheep.room;
 
+import com.zhongmubao.api.dto.request.BaseRequest;
+
 /**
  * 我的羊圈 订单弹框
  *
  * @author xy
  */
-public class SheepRoomOrdersRequestModel {
+public class SheepRoomOrdersRequestModel extends BaseRequest {
     public SheepRoomOrdersRequestModel() {
     }
 

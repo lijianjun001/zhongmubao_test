@@ -1,0 +1,1 @@
+mvn install:install-file -Dfile=D:\java\maven\lib\ext\chinapnr.jar -DgroupId=chinapnr -DartifactId=chinapnr -Dversion=1.0 -Dpackaging=jar
