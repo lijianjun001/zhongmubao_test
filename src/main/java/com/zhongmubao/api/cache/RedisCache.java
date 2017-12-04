@@ -85,4 +85,31 @@ public class RedisCache {
             //ignore
         }
     }
+
+    public void savePersonalCenter(String key,Object value) {
+        try {
+            String table = Constants.PERSONALCENTER;
+            redisHelper.setHash(table,key,value);
+        } catch (Exception ex) {
+            //ignore
+        }
+    }
+    public Object getPersonalCenter() {
+        try {
+            String table = Constants.PERSONALCENTER;
+            return redisHelper.getAllHash(table);
+        } catch (Exception ex) {
+            //ignore
+            return  null;
+        }
+    }
+    public boolean getRealNameType(int customerId) {
+        try {
+            String str = String.valueOf(redisHelper.getHash(Constants.REALNAMETYPE, customerId + ""));
+
+            return !StringUtil.isNullOrEmpty(str);
+        } catch (Exception ex) {
+            return false;
+        }
+    }
 }
