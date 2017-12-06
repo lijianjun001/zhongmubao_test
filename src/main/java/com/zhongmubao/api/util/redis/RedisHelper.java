@@ -7,6 +7,8 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Repository;
 
+import java.util.Map;
+
 /**
  * Redis帮助类
  *
@@ -66,7 +68,16 @@ public class RedisHelper {
         HashOperations<String, String, Object> hashOper = redisTemplate.opsForHash();
         return hashOper.get(table, key);
     }
-
+    /**
+     * 获取HashTable
+     *
+     * @param table 表名
+     * @return 对象
+     */
+    public Object getAllHash(String table) {
+        HashOperations<String, String, Object> hashOper = redisTemplate.opsForHash();
+        return hashOper.values(table);
+    }
     /**
      * 判断HashTable是否存在Key
      *
@@ -87,6 +98,17 @@ public class RedisHelper {
      * @param obj   对象
      */
     public void setHash(String table, String key, String obj) {
+        HashOperations<String, String, Object> hashOper = redisTemplate.opsForHash();
+        hashOper.put(table, key, obj);
+    }
+    /**
+     * 设置HashTable
+     *
+     * @param table 表名
+     * @param key   键
+     * @param obj   对象
+     */
+    public void setHash(String table, String key, Object obj) {
         HashOperations<String, String, Object> hashOper = redisTemplate.opsForHash();
         hashOper.put(table, key, obj);
     }

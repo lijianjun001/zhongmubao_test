@@ -79,6 +79,14 @@ public class Constants {
      */
     public static final String SINGLESDAY = "SinglesDay";
     /**
+     * Cache 个人中心列表
+     */
+    public static final String PERSONALCENTER = "PersonalCenter";
+    /**
+     * Cache 实名显示
+     */
+    public static final String REALNAMETYPE = "RealNameType";
+    /**
      * Cache省市区
      */
     public static final String CACHE_SYSTEM_DISTRICT_KEY = "SystemDistrict";
@@ -191,4 +199,12 @@ public class Constants {
      * 上传路径
      */
     public static final String UPLOAD_ADDRESS = "http://s.emubao.com/upload/";
+    /**
+     * 资源路径
+     */
+    public static final String RESOURES_ADDRESS = "http://s.emubao.com/weixin/";
+    /**
+     * 资源路径
+     */
+    public static final String RESOURES_ADDRESS_IMAGES = "http://s.emubao.com/weixin/images/";
 }
