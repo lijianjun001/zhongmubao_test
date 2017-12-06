@@ -44,6 +44,11 @@ public class ReadPackageGroupModel {
      */
     private ArrayList<ReadPackageModel> preLoadList;
 
+    /**
+     * 预加载数据页码
+     */
+    private int preLoadPageIndex;
+
     public String getPrice() {
         return price;
     }
@@ -108,8 +113,4 @@ public class ReadPackageGroupModel {
         this.preLoadPageIndex = preLoadPageIndex;
     }
 
-    /**
-     * 预加载数据页码
-     */
-    private int preLoadPageIndex;
 }
