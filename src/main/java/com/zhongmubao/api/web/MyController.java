@@ -29,12 +29,14 @@ import org.springframework.web.bind.annotation.RestController;
 public class MyController {
 
     private final CenterService centerService;
+
     @Autowired
-    public MyController(CenterService centerService){
+    public MyController(CenterService centerService) {
         this.centerService = centerService;
     }
 
     // region 个人中心列表
+
     /***
      * 个人中心 列表
      * @param customer 客户
@@ -43,9 +45,9 @@ public class MyController {
      */
     @RequestMapping(value = "/personalCenter", method = RequestMethod.POST, consumes = "application/json")
     @Authorization
-    public ResponseEntity<ReponseModel> personalCenter(@CurrentUser Customer customer,HttpEntity<PersonalCenterRequestModel> model) {
+    public ResponseEntity<ReponseModel> personalCenter(@CurrentUser Customer customer, HttpEntity<PersonalCenterRequestModel> model) {
         try {
-            PersonalCenterViewModel personalCenterViewModel = centerService.personalCenter(customer,model.getBody());
+            PersonalCenterViewModel personalCenterViewModel = centerService.personalCenter(customer, model.getBody());
             return new ResponseEntity<>(ReponseModel.ok(personalCenterViewModel), HttpStatus.OK);
         } catch (ApiException ex) {
             return new ResponseEntity<>(ReponseModel.error(ex.getStatus()), HttpStatus.OK);
@@ -56,6 +58,7 @@ public class MyController {
     //endregion
 
     //region 个人中心 实名OR开户
+
     /***
      * 个人中心 实名OR开户
      * @param customer 客户
@@ -66,7 +69,7 @@ public class MyController {
     @Authorization
     public ResponseEntity<ReponseModel> realName(@CurrentUser Customer customer, HttpEntity<RealNameRequestModel> model) {
         try {
-            RealNameViewModel realNameViewModel = centerService.realName(customer,model.getBody());
+            RealNameViewModel realNameViewModel = centerService.realName(customer, model.getBody());
             return new ResponseEntity<>(ReponseModel.ok(realNameViewModel), HttpStatus.OK);
         } catch (ApiException ex) {
             return new ResponseEntity<>(ReponseModel.error(ex.getStatus()), HttpStatus.OK);
@@ -75,7 +78,9 @@ public class MyController {
         }
     }
     //endregion
+
     //region 个人中心红包
+
     /**
      * 我的红包分组
      *
