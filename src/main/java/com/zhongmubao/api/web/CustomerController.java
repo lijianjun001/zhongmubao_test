@@ -2,14 +2,19 @@ package com.zhongmubao.api.web;
 
 import com.zhongmubao.api.authorization.annotation.Authorization;
 import com.zhongmubao.api.authorization.annotation.CurrentUser;
+import com.zhongmubao.api.dto.request.customer.center.PersonalCenterRequestModel;
+import com.zhongmubao.api.dto.request.customer.center.RealNameRequestModel;
 import com.zhongmubao.api.dto.request.sign.*;
 import com.zhongmubao.api.dto.response.ReponseModel;
+import com.zhongmubao.api.dto.response.customer.center.PersonalCenterViewModel;
+import com.zhongmubao.api.dto.response.customer.center.RealNameViewModel;
 import com.zhongmubao.api.dto.response.sign.MyGiftCardModel;
 import com.zhongmubao.api.dto.response.sign.list.PageSignGiftModel;
 import com.zhongmubao.api.dto.response.sign.SignModel;
 import com.zhongmubao.api.dto.response.sign.packagelist.PageSignPackageModel;
 import com.zhongmubao.api.entity.Customer;
 import com.zhongmubao.api.exception.ApiException;
+import com.zhongmubao.api.service.CustomerService;
 import com.zhongmubao.api.service.SignService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,11 +32,51 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/customer")
 public class CustomerController {
     private final SignService signService;
-
+    private final CustomerService customerService;
     @Autowired
-    public CustomerController(SignService customerService) {
-        this.signService = customerService;
+    public CustomerController(SignService signService,CustomerService customerService) {
+        this.signService = signService;
+        this.customerService = customerService;
     }
+
+    /***
+     * 个人中心 列表
+     * @param customer 客户
+     * @author xy
+     * @return ReponseModel
+     */
+    @RequestMapping(value = "/personalCenter", method = RequestMethod.POST, consumes = "application/json")
+    @Authorization
+    public ResponseEntity<ReponseModel> personalCenter(@CurrentUser Customer customer,HttpEntity<PersonalCenterRequestModel> model) {
+        try {
+            PersonalCenterViewModel personalCenterViewModel =customerService.personalCenter(customer,model.getBody());
+            return new ResponseEntity<>(ReponseModel.ok(personalCenterViewModel), HttpStatus.OK);
+        } catch (ApiException ex) {
+            return new ResponseEntity<>(ReponseModel.error(ex.getStatus()), HttpStatus.OK);
+        } catch (Exception ex) {
+            return new ResponseEntity<>(ReponseModel.error(ex, this.getClass()), HttpStatus.OK);
+        }
+    }
+    /***
+     * 个人中心 实名OR开户
+     * @param customer 客户
+     * @author xy
+     * @return ReponseModel
+     */
+    @RequestMapping(value = "/realName", method = RequestMethod.POST, consumes = "application/json")
+    @Authorization
+    public ResponseEntity<ReponseModel> realName(@CurrentUser Customer customer, HttpEntity<RealNameRequestModel> model) {
+        try {
+            RealNameViewModel realNameViewModel =customerService.realName(customer,model.getBody());
+            return new ResponseEntity<>(ReponseModel.ok(realNameViewModel), HttpStatus.OK);
+        } catch (ApiException ex) {
+            return new ResponseEntity<>(ReponseModel.error(ex.getStatus()), HttpStatus.OK);
+        } catch (Exception ex) {
+            return new ResponseEntity<>(ReponseModel.error(ex, this.getClass()), HttpStatus.OK);
+        }
+    }
+
+
 
     //region 签到
 

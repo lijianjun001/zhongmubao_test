@@ -225,6 +225,11 @@
             <version>4.3.2</version>
         </dependency>
 
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>1.2.41</version>
+        </dependency>
         <!-- hf end -->
     </dependencies>
     <build>

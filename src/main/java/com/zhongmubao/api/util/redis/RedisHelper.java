@@ -101,5 +101,15 @@ public class RedisHelper {
         HashOperations<String, String, Object> hashOper = redisTemplate.opsForHash();
         hashOper.put(table, key, obj);
     }
-
+    /**
+     * 设置HashTable
+     *
+     * @param table 表名
+     * @param key   键
+     * @param obj   对象
+     */
+    public void setHash(String table, String key, Object obj) {
+        HashOperations<String, String, Object> hashOper = redisTemplate.opsForHash();
+        hashOper.put(table, key, obj);
+    }
 }

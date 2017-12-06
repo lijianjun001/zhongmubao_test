@@ -6,6 +6,7 @@ package com.zhongmubao.api.dto.request;
  * @author 孙阿龙
  */
 public class BaseRequest {
+
     /**
      * 请求版本号
      */
