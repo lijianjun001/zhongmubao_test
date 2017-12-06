@@ -152,19 +152,18 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
     public RealNameViewModel realName(Customer customer, RealNameRequestModel model) throws Exception {
 
         RealNameViewModel realNameViewModel = new RealNameViewModel();
-        //Customer customerEntity = customerDao.getCustomerById(customer.getId());
         CustomerHF customerHF = customerHFDao.getCustomerHFById(customer.getId());
 
         //Redis 获取显示新浪 还是 汇付
         boolean ishf = false;
-        ishf = redisCache.getRealNameType(customer.getId());
+        //ishf = redisCache.getRealNameType(customer.getId());
         if (customerHF != null) {
             ishf = true;
         }
         if (!ishf && customer.getCreated().getTime() > (new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse("2017-12-01 00:00:00")).getTime()) {
             ishf = true;
         }
-        //显示新浪
+        //显示汇付 or 新浪
         if (ishf) {
 
             if (!StringUtil.isNullOrEmpty(customerHF.getUsrCustId()) && customerHF.getIsBandCard() && customerHF.getIsBosAcct()) {

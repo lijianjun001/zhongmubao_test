@@ -37,7 +37,7 @@
 
         $.ajax({
             type: "POST",
-            url: "/customer/personalCenter",
+            url: "/customer/realName",
             data: JSON.stringify(data),
             contentType: 'application/json;charset=UTF-8',
             dataType: "json",                                     //预期服务器返回类型
