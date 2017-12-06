@@ -75,6 +75,7 @@ public class MyController {
         }
     }
     //endregion
+    //region 个人中心红包
     /**
      * 我的红包分组
      *
@@ -87,4 +88,5 @@ public class MyController {
     public ResponseEntity<ReponseModel> readPackageGroup(@CurrentUser Customer customer, HttpEntity<ReadPackageGroupRequestModel> model) {
         return null;
     }
+    //endregion
 }
