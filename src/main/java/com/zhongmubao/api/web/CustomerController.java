@@ -32,51 +32,10 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/customer")
 public class CustomerController {
     private final SignService signService;
-    private final CenterService centerService;
     @Autowired
-    public CustomerController(SignService signService,CenterService centerService) {
+    public CustomerController(SignService signService) {
         this.signService = signService;
-        this.centerService = centerService;
     }
-
-    /***
-     * 个人中心 列表
-     * @param customer 客户
-     * @author xy
-     * @return ReponseModel
-     */
-    @RequestMapping(value = "/personalCenter", method = RequestMethod.POST, consumes = "application/json")
-    @Authorization
-    public ResponseEntity<ReponseModel> personalCenter(@CurrentUser Customer customer,HttpEntity<PersonalCenterRequestModel> model) {
-        try {
-            PersonalCenterViewModel personalCenterViewModel = centerService.personalCenter(customer,model.getBody());
-            return new ResponseEntity<>(ReponseModel.ok(personalCenterViewModel), HttpStatus.OK);
-        } catch (ApiException ex) {
-            return new ResponseEntity<>(ReponseModel.error(ex.getStatus()), HttpStatus.OK);
-        } catch (Exception ex) {
-            return new ResponseEntity<>(ReponseModel.error(ex, this.getClass()), HttpStatus.OK);
-        }
-    }
-    /***
-     * 个人中心 实名OR开户
-     * @param customer 客户
-     * @author xy
-     * @return ReponseModel
-     */
-    @RequestMapping(value = "/realName", method = RequestMethod.POST, consumes = "application/json")
-    @Authorization
-    public ResponseEntity<ReponseModel> realName(@CurrentUser Customer customer, HttpEntity<RealNameRequestModel> model) {
-        try {
-            RealNameViewModel realNameViewModel = centerService.realName(customer,model.getBody());
-            return new ResponseEntity<>(ReponseModel.ok(realNameViewModel), HttpStatus.OK);
-        } catch (ApiException ex) {
-            return new ResponseEntity<>(ReponseModel.error(ex.getStatus()), HttpStatus.OK);
-        } catch (Exception ex) {
-            return new ResponseEntity<>(ReponseModel.error(ex, this.getClass()), HttpStatus.OK);
-        }
-    }
-
-
 
     //region 签到
 
