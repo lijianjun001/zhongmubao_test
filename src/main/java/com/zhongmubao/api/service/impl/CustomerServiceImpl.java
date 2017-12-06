@@ -121,7 +121,37 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
         personalCenterItemModelSettings.setJumpType("01");
         personalCenterItemModels.add(personalCenterItemModelSettings);
 
+        PersonalCenterItemModel personalCenterItemModelHfWallet = new PersonalCenterItemModel();
+        personalCenterItemModelHfWallet.setIcon("personal-referee.png");
+        personalCenterItemModelHfWallet.setTitle("汇付钱包");
+        personalCenterItemModelHfWallet.setUrl("/Customer/HfWallet");
+        personalCenterItemModelHfWallet.setAction("hfwallet");
+        personalCenterItemModelHfWallet.setJumpType("00");
+        personalCenterItemModels.add(personalCenterItemModelHfWallet);
 
+        PersonalCenterItemModel personalCenterItemModelHfCard = new PersonalCenterItemModel();
+        personalCenterItemModelHfCard.setIcon("personal-referee.png");
+        personalCenterItemModelHfCard.setTitle("汇付银行卡");
+        personalCenterItemModelHfCard.setUrl("/Customer/HfCard");
+        personalCenterItemModelHfCard.setAction("hfcard");
+        personalCenterItemModelHfCard.setJumpType("00");
+        personalCenterItemModels.add(personalCenterItemModelHfCard);
+
+        PersonalCenterItemModel personalCenterItemModelHfAuth = new PersonalCenterItemModel();
+        personalCenterItemModelHfAuth.setIcon("personal-referee.png");
+        personalCenterItemModelHfAuth.setTitle("汇付开户");
+        personalCenterItemModelHfAuth.setUrl("/Customer/HfAuth");
+        personalCenterItemModelHfAuth.setAction("hfauth");
+        personalCenterItemModelHfAuth.setJumpType("00");
+        personalCenterItemModels.add(personalCenterItemModelHfAuth);
+
+        PersonalCenterItemModel personalCenterItemModelHfAuthInfo = new PersonalCenterItemModel();
+        personalCenterItemModelHfAuthInfo.setIcon("personal-referee.png");
+        personalCenterItemModelHfAuthInfo.setTitle("汇付开户信息");
+        personalCenterItemModelHfAuthInfo.setUrl("/Customer/HfAuthInfo");
+        personalCenterItemModelHfAuthInfo.setAction("hfauthinfo");
+        personalCenterItemModelHfAuthInfo.setJumpType("00");
+        personalCenterItemModels.add(personalCenterItemModelHfAuthInfo);
 //        List<PersonalCenterItemModel> personalCenterItemModelsRedis = new ArrayList<PersonalCenterItemModel>();
 //        personalCenterItemModelsRedis = personalCenterItemModels;
 //        List obj = (List) redisCache.getPersonalCenter();
