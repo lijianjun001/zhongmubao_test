@@ -1,4 +1,4 @@
-package com.zhongmubao.api.service.impl;
+package com.zhongmubao.api.service.impl.my;
 
 import com.alibaba.fastjson.JSON;
 import com.zhongmubao.api.cache.RedisCache;
