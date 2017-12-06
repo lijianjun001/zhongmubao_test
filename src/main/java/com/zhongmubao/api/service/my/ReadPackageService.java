@@ -1,4 +1,4 @@
-package com.zhongmubao.api.service;
+package com.zhongmubao.api.service.my;
 
 import com.zhongmubao.api.dto.request.my.readpackage.ReadPackageGroupRequestModel;
 import com.zhongmubao.api.dto.response.my.readpackage.ReadPackageGroupViewModel;
@@ -9,7 +9,7 @@ import com.zhongmubao.api.entity.Customer;
  *
  * @author 孙阿龙
  */
-public interface MyReadPackageService {
+public interface ReadPackageService {
     /**
      * 我的红包分组请求
      *

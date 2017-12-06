@@ -1,6 +1,5 @@
 package com.zhongmubao.api.service.impl.my;
 
-import com.alibaba.fastjson.JSON;
 import com.zhongmubao.api.cache.RedisCache;
 import com.zhongmubao.api.config.Constants;
 import com.zhongmubao.api.config.ResultStatus;
@@ -9,17 +8,17 @@ import com.zhongmubao.api.config.enmu.RealNameStatus;
 import com.zhongmubao.api.dao.CustomerDao;
 import com.zhongmubao.api.dao.CustomerHFDao;
 import com.zhongmubao.api.dao.CustomerSinaDao;
-import com.zhongmubao.api.dto.request.customer.center.PersonalCenterRequestModel;
-import com.zhongmubao.api.dto.request.customer.center.RealNameRequestModel;
-import com.zhongmubao.api.dto.response.customer.center.PersonalCenterViewModel;
-import com.zhongmubao.api.dto.response.customer.center.RealNameViewModel;
-import com.zhongmubao.api.dto.response.customer.center.list.PersonalCenterItemModel;
+import com.zhongmubao.api.dto.request.my.center.PersonalCenterRequestModel;
+import com.zhongmubao.api.dto.request.my.RealNameRequestModel;
+import com.zhongmubao.api.dto.response.my.center.PersonalCenterViewModel;
+import com.zhongmubao.api.dto.response.my.RealNameViewModel;
+import com.zhongmubao.api.dto.response.my.center.PersonalCenterItemModel;
 import com.zhongmubao.api.entity.Customer;
 import com.zhongmubao.api.entity.CustomerHF;
 import com.zhongmubao.api.entity.CustomerSina;
 import com.zhongmubao.api.exception.ApiException;
 import com.zhongmubao.api.service.BaseService;
-import com.zhongmubao.api.service.CustomerService;
+import com.zhongmubao.api.service.my.CenterService;
 import com.zhongmubao.api.util.StringUtil;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,14 +33,14 @@ import java.util.List;
  * @author xy
  */
 @Service
-public class CustomerServiceImpl extends BaseService implements CustomerService {
+public class CenterServiceImpl extends BaseService implements CenterService {
     private final CustomerDao customerDao;
     private final RedisCache redisCache;
     private final CustomerHFDao customerHFDao;
     public final CustomerSinaDao customerSinaDao;
 
     @Autowired
-    public CustomerServiceImpl(CustomerDao customerDao, RedisCache redisCache, CustomerHFDao customerHFDao, CustomerSinaDao customerSinaDao) {
+    public CenterServiceImpl(CustomerDao customerDao, RedisCache redisCache, CustomerHFDao customerHFDao, CustomerSinaDao customerSinaDao) {
         this.customerDao = customerDao;
         this.redisCache = redisCache;
         this.customerHFDao = customerHFDao;

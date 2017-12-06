@@ -1,7 +1,4 @@
-package com.zhongmubao.api.dto.response.customer.center;
-
-import com.zhongmubao.api.dto.response.ReponseModel;
-import com.zhongmubao.api.dto.response.customer.center.list.PersonalCenterItemModel;
+package com.zhongmubao.api.dto.response.my.center;
 
 import java.util.List;
 

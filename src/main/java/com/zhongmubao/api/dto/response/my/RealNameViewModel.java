@@ -1,4 +1,4 @@
-package com.zhongmubao.api.dto.response.customer.center;
+package com.zhongmubao.api.dto.response.my;
 
 /**
  * 是否实名

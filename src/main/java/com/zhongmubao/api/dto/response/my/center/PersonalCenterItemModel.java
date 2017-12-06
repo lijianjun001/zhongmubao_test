@@ -1,4 +1,4 @@
-package com.zhongmubao.api.dto.response.customer.center.list;
+package com.zhongmubao.api.dto.response.my.center;
 
 /**
  * 个人中心 列表单项

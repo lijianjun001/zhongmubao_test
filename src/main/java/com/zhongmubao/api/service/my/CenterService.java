@@ -1,16 +1,16 @@
-package com.zhongmubao.api.service;
+package com.zhongmubao.api.service.my;
 
-import com.zhongmubao.api.dto.request.customer.center.PersonalCenterRequestModel;
-import com.zhongmubao.api.dto.request.customer.center.RealNameRequestModel;
-import com.zhongmubao.api.dto.response.customer.center.PersonalCenterViewModel;
-import com.zhongmubao.api.dto.response.customer.center.RealNameViewModel;
+import com.zhongmubao.api.dto.request.my.center.PersonalCenterRequestModel;
+import com.zhongmubao.api.dto.request.my.RealNameRequestModel;
+import com.zhongmubao.api.dto.response.my.center.PersonalCenterViewModel;
+import com.zhongmubao.api.dto.response.my.RealNameViewModel;
 import com.zhongmubao.api.entity.Customer;
 
 /**
  * 个人中心
  * @author xy
  */
-public interface CustomerService {
+public interface CenterService {
 
     /**
      * 个人中心

@@ -1,4 +1,4 @@
-package com.zhongmubao.api.dto.request.customer.center;
+package com.zhongmubao.api.dto.request.my;
 
 import com.zhongmubao.api.dto.request.BaseRequest;
 
