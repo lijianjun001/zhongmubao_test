@@ -27,6 +27,9 @@ public class BaseService {
     private SystemPushMongoDao systemPushMongoDao;
 
     protected void sendRedPackage(Customer customer, RedPackageType type, double price, Date expTime, int count) {
+        if (price < 0) {
+            return;
+        }
         Date now = new Date();
         for (int i = 0; i < count; i++) {
             ExtRedPackage extRedPackage = new ExtRedPackage(
@@ -56,32 +59,35 @@ public class BaseService {
 
     /**
      * 获取微信 内容
-     * @param type 类型
-     * @param price 金额
+     *
+     * @param type    类型
+     * @param price   金额
      * @param expTime 过期时间
-     * @param count 数量
+     * @param count   数量
      * @return 格式化后的内容
      */
     private String formartRedPackageRemark(RedPackageType type, double price, Date expTime, int count) {
         String priceStr = DoubleUtil.toFixed(price * count, "0.00");
         String remark = "" + priceStr + "元（" + DoubleUtil.toFixed(price, "0.00") + "元*" + count + "）增益红包请在：个人中心-现金红包 中查看。";
 
-        switch (type){
+        switch (type) {
             case DAY_SHARE:
-                    remark = "红包到账！恭喜您今日抢到拼手气红包"+priceStr+"元，快去抢羊增加收益吧！（每日仅有一次分享签到得红包机会）累积分享签到还可得神秘礼物哦！";
+                remark = "红包到账！恭喜您今日抢到拼手气红包" + priceStr + "元，快去抢羊增加收益吧！（每日仅有一次分享签到得红包机会）累积分享签到还可得神秘礼物哦！";
                 break;
             default:
                 break;
         }
         return remark;
     }
+
     /**
      * 推送内容统一调用
-     * @author 孙阿龙
+     *
      * @param customer 客户
      * @param title    标题
      * @param content  内容
      * @param type     类型
+     * @author 孙阿龙
      */
     private void push(Customer customer, String title, String content, SystemPushType type) {
         try {
