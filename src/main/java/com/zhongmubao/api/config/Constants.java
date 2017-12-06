@@ -139,7 +139,7 @@ public class Constants {
     /**
      * 每日分享红包过期时间（天）
      */
-    public static final int DAY_SHARE_REDPACKAGE_EXP_DAY = 30;
+    public static final int DAY_SHARE_REDPACKAGE_EXP_DAY = 60;
 
     /**
      * 每月最多分享天数
