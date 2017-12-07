@@ -1,7 +1,9 @@
 package com.zhongmubao.api.service.impl.my;
 
+import com.zhongmubao.api.dto.request.my.readpackage.ReadPackageDetailRequestModel;
 import com.zhongmubao.api.dto.request.my.readpackage.ReadPackageGroupRequestModel;
 import com.zhongmubao.api.dto.request.my.readpackage.ReadPackageListRequestModel;
+import com.zhongmubao.api.dto.response.my.readpackage.ReadPackageDetailViewModel;
 import com.zhongmubao.api.dto.response.my.readpackage.ReadPackageGroupViewModel;
 import com.zhongmubao.api.entity.Customer;
 import com.zhongmubao.api.service.my.ReadPackageService;
@@ -19,6 +21,11 @@ public class ReadPackageServiceImpl implements ReadPackageService {
 
     @Override
     public ReadPackageGroupViewModel readPackageList(Customer customer, ReadPackageListRequestModel model) throws Exception {
+        return null;
+    }
+
+    @Override
+    public ReadPackageDetailViewModel readPackageDetail(Customer customer, ReadPackageDetailRequestModel model) throws Exception {
         return null;
     }
 }
