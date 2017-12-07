@@ -5,6 +5,7 @@ import com.zhongmubao.api.authorization.annotation.CurrentUser;
 import com.zhongmubao.api.dto.request.my.RealNameRequestModel;
 import com.zhongmubao.api.dto.request.my.center.PersonalCenterRequestModel;
 import com.zhongmubao.api.dto.request.my.readpackage.ReadPackageGroupRequestModel;
+import com.zhongmubao.api.dto.request.my.readpackage.ReadPackageListRequestModel;
 import com.zhongmubao.api.dto.response.ReponseModel;
 import com.zhongmubao.api.dto.response.my.RealNameViewModel;
 import com.zhongmubao.api.dto.response.my.center.PersonalCenterViewModel;
@@ -91,6 +92,19 @@ public class MyController {
     @RequestMapping(value = "/readPackageGroup", method = RequestMethod.POST, consumes = "application/json")
     @Authorization
     public ResponseEntity<ReponseModel> readPackageGroup(@CurrentUser Customer customer, HttpEntity<ReadPackageGroupRequestModel> model) {
+        return null;
+    }
+
+    /**
+     * 红包列表请求接口
+     *
+     * @param customer 客户
+     * @param model    请求model
+     * @return 结果
+     */
+    @RequestMapping(value = "/readPackageList", method = RequestMethod.POST, consumes = "application/json")
+    @Authorization
+    public ResponseEntity<ReponseModel> readPackageList(@CurrentUser Customer customer, HttpEntity<ReadPackageListRequestModel> model) {
         return null;
     }
     //endregion
