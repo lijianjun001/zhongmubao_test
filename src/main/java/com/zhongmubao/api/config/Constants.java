@@ -1,5 +1,6 @@
 package com.zhongmubao.api.config;
 
+import com.zhongmubao.api.config.enmu.RedPackageType;
 import com.zhongmubao.api.config.enmu.SignGiftType;
 import com.zhongmubao.api.config.entity.SignGift;
 
@@ -9,6 +10,7 @@ import java.util.List;
 
 /**
  * 常量
+ *
  * @author 孙阿龙
  */
 public class Constants {
@@ -190,10 +192,16 @@ public class Constants {
      * 日期格式
      */
     public static final String DATE_FORMAT = "yyyy-MM-dd";
+
     /**
      * 日期时分秒格式
      */
     public static final String DATE_TIME_FORMAT = "yyyy-MM-dd HH:mm:ss";
+
+    /**
+     * 金额格式（两位小数点）
+     */
+    public static final String Price_FORMAT = "0.00";
 
     /**
      * 上传路径
@@ -207,4 +215,60 @@ public class Constants {
      * 资源路径
      */
     public static final String RESOURES_ADDRESS_IMAGES = "http://s.emubao.com/weixin/images/";
+
+
+    /**
+     * 红包类型中文名
+     * @param type 红包类型
+     * @return
+     */
+    public static String redpackettypestr(String type) {
+        String typeStr;
+        switch (type) {
+            case "00":
+                typeStr = "新人红包";
+                break;
+            case "01":
+                typeStr = "春节红包";
+                break;
+            case "02":
+                typeStr = "分享红包";
+                break;
+            case "03":
+                typeStr = "每日分享";
+                break;
+            case "04":
+                typeStr = "买羊红包";
+                break;
+            case "05":
+                typeStr = "推荐红包";
+                break;
+            case "06":
+                typeStr = "注册红包";
+                break;
+            case "07":
+                typeStr = "合并红包";
+                break;
+            case "08":
+                typeStr = "赠送红包";
+                break;
+            case "09":
+                typeStr = "生日红包";
+                break;
+            case "10":
+                typeStr = "推荐好友购羊红包";
+                break;
+            case "11":
+                typeStr = "推荐好友红包";
+                break;
+            case "12":
+                typeStr = "羊肉节红包";
+                break;
+            default:
+                typeStr = "拼手气红包";
+                break;
+        }
+
+        return typeStr;
+    }
 }

@@ -241,7 +241,7 @@ public class SheepRoomServiceImpl extends BaseService implements SheepRoomServic
      */
     private SheepProgressMongo calcCurrentSheepProjectState(SheepOrderInfo project) throws Exception {
         SheepProgressMongo sheepProgress = new SheepProgressMongo();
-        List<SheepProgressMongo> sheepProgressMongoList = new ArrayList<>();
+        List<SheepProgressMongo> sheepProgressMongoList;
         // 判断是否为商铺订单
         if (project.getType().equals(ProjectType.SLAUGHTER.getName()) || project.getType().equals(ProjectType.NEW_PEOPLE_7)) {
             // 店铺进度

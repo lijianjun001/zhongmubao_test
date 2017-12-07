@@ -1,5 +1,6 @@
 package com.zhongmubao.api.dto.request.my.readpackage;
 
+import com.zhongmubao.api.config.enmu.RedPackageGroupType;
 import com.zhongmubao.api.dto.request.BaseRequest;
 
 /**
@@ -20,17 +21,17 @@ public class ReadPackageListRequestModel extends BaseRequest {
     /**
      * 红包类型
      */
-    private String type;
+    private RedPackageGroupType groupType;
 
     public void setPageIndex(int pageIndex) {
         this.pageIndex = pageIndex;
     }
 
-    public String getType() {
-        return type;
+    public RedPackageGroupType getGroupType() {
+        return groupType;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setGroupType(RedPackageGroupType groupType) {
+        this.groupType = groupType;
     }
 }

@@ -3,16 +3,16 @@ package com.zhongmubao.api.dto.response.my.readpackage;
 import java.util.ArrayList;
 
 /**
- * 红包列表分页
+ * 过期红包列表
  *
- * @author 孙阿龙
+ * @author 米立林
  */
-public class ReadPackageListViewModel {
+public class RedPackageExpiredViewModel {
 
-    public ReadPackageListViewModel() {
+    public RedPackageExpiredViewModel() {
     }
 
-    public ReadPackageListViewModel(int totalPage, ArrayList<ReadPackageModel> list) {
+    public RedPackageExpiredViewModel(int totalPage, ArrayList<ReadPackageModel> list) {
         this.totalPage = totalPage;
         this.list = list;
     }
@@ -20,7 +20,6 @@ public class ReadPackageListViewModel {
     /**
      * 总页码
      */
-
     private int totalPage;
 
     /**

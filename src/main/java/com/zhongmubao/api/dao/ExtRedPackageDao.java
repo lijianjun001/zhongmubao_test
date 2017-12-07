@@ -90,4 +90,28 @@ public interface ExtRedPackageDao {
      * @return
      */
     Page<ExtRedPackage> pageEffectiveExtRedPackageByCustomerIdOrderByType(@Param("customerId") int customerId, @Param("type")String type);
+
+    /**
+     * 用户所有有效红包
+     * @param customerId 用户id
+     * @param type 红包类型
+     * @return
+     */
+    List<ExtRedPackage> getByCustomerIdOrderByType(@Param("customerId") int customerId, @Param("type")String type);
+
+    /**
+     * 分组红包列表
+     * @param customerId 用户id
+     * @param price 红包金额
+     * @return
+     */
+    Page<ExtRedPackage> pageEffectiveByCustomerIdAndPrice(@Param("customerId") int customerId, @Param("price")double price);
+
+    /**
+     * 过期红包列表
+     * @param customerId 用户id
+     * @param type 红包金额
+     * @return
+     */
+    Page<ExtRedPackage> pageEffectiveByCustomerIdOrderByType(@Param("customerId") int customerId, @Param("type")String type);
 }
