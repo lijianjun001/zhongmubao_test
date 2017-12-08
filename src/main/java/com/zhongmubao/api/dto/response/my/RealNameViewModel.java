@@ -42,4 +42,6 @@ public class RealNameViewModel {
     private String realNameType;//XL 新浪 HF 汇付
     private String realNameImg;//图标
     private String realNameSatus;//S 已开户(已实名) F 未开户(未实名) B 未激活
+
+
 }

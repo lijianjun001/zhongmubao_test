@@ -144,13 +144,14 @@ public class CenterServiceImpl extends BaseService implements CenterService {
         personalCenterItemModelHfAuth.setJumpType("00");
         personalCenterItemModels.add(personalCenterItemModelHfAuth);
 
-        PersonalCenterItemModel personalCenterItemModelHfAuthInfo = new PersonalCenterItemModel();
-        personalCenterItemModelHfAuthInfo.setIcon("personal-referee.png");
-        personalCenterItemModelHfAuthInfo.setTitle("汇付开户信息");
-        personalCenterItemModelHfAuthInfo.setUrl("/Customer/HfAuthInfo");
-        personalCenterItemModelHfAuthInfo.setAction("hfauthinfo");
-        personalCenterItemModelHfAuthInfo.setJumpType("00");
-        personalCenterItemModels.add(personalCenterItemModelHfAuthInfo);
+//        PersonalCenterItemModel personalCenterItemModelHfAuthInfo = new PersonalCenterItemModel();
+//        personalCenterItemModelHfAuthInfo.setIcon("personal-referee.png");
+//        personalCenterItemModelHfAuthInfo.setTitle("汇付开户信息");
+//        personalCenterItemModelHfAuthInfo.setUrl("/Customer/HfAuthInfo");
+//        personalCenterItemModelHfAuthInfo.setAction("hfauthinfo");
+//        personalCenterItemModelHfAuthInfo.setJumpType("00");
+//        personalCenterItemModels.add(personalCenterItemModelHfAuthInfo);
+
 //        List<PersonalCenterItemModel> personalCenterItemModelsRedis = new ArrayList<PersonalCenterItemModel>();
 //        personalCenterItemModelsRedis = personalCenterItemModels;
 //        List obj = (List) redisCache.getPersonalCenter();
@@ -186,15 +187,23 @@ public class CenterServiceImpl extends BaseService implements CenterService {
         //Redis 获取显示新浪 还是 汇付
         boolean ishf = false;
         //ishf = redisCache.getRealNameType(customer.getId());
-        if (customerHF != null) {
+
+        if (customer.getCreated().getTime() > (new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse("2017-12-01 00:00:00")).getTime()) {
             ishf = true;
         }
-        if (!ishf && customer.getCreated().getTime() > (new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse("2017-12-01 00:00:00")).getTime()) {
+        if (!ishf && customerHF != null) {
             ishf = true;
         }
+
         //显示汇付 or 新浪
         if (ishf) {
-
+            if (customerHF == null) {
+                realNameViewModel.setRealName(RealNameStatus.HFF.getName());
+                realNameViewModel.setRealNameSatus(RealNameStatus.HFF.getStatus());
+                realNameViewModel.setRealNameType(RealNameStatus.HFF.getType());
+                realNameViewModel.setRealNameImg(Constants.RESOURES_ADDRESS_IMAGES + RealNameStatus.HFF.getImg());
+                return realNameViewModel;
+            }
             if (!StringUtil.isNullOrEmpty(customerHF.getUsrCustId()) && customerHF.getIsBandCard() && customerHF.getIsBosAcct()) {
                 realNameViewModel.setRealName(RealNameStatus.HFS.getName());
                 realNameViewModel.setRealNameSatus(RealNameStatus.HFS.getStatus());
@@ -213,6 +222,14 @@ public class CenterServiceImpl extends BaseService implements CenterService {
             }
         } else {
             CustomerSina customerSina = customerSinaDao.getCustomerSinaById(customer.getId());
+            if (customerSina == null) {
+                realNameViewModel.setRealName(RealNameStatus.XLF.getName());
+                realNameViewModel.setRealNameSatus(RealNameStatus.XLF.getStatus());
+                realNameViewModel.setRealNameType(RealNameStatus.XLF.getType());
+                realNameViewModel.setRealNameImg(Constants.RESOURES_ADDRESS_IMAGES + RealNameStatus.XLF.getImg());
+                return realNameViewModel;
+            }
+
             if (customerSina.getIsRealName()) {
                 realNameViewModel.setRealName(RealNameStatus.XLS.getName());
                 realNameViewModel.setRealNameSatus(RealNameStatus.XLS.getStatus());
