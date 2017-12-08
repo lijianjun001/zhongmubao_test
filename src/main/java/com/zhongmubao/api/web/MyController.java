@@ -44,19 +44,19 @@ public class MyController {
         this.readPackageService = readPackageService;
     }
 
-    // region 个人中心列表
+    // region 个人中心菜单
 
     /***
-     * 个人中心 列表
+     * 个人中心 菜单
      * @param customer 客户
      * @author xy
      * @return ReponseModel
      */
-    @RequestMapping(value = "/personalCenter", method = RequestMethod.POST, consumes = "application/json")
+    @RequestMapping(value = "/menu/list", method = RequestMethod.POST, consumes = "application/json")
     @Authorization
     public ResponseEntity<ReponseModel> personalCenter(@CurrentUser Customer customer, HttpEntity<PersonalCenterRequestModel> model) {
         try {
-            PersonalCenterViewModel personalCenterViewModel = menuService.personalCenter(customer, model.getBody());
+            PersonalCenterViewModel personalCenterViewModel = menuService.list(customer, model.getBody());
             return new ResponseEntity<>(ReponseModel.ok(personalCenterViewModel), HttpStatus.OK);
         } catch (ApiException ex) {
             return new ResponseEntity<>(ReponseModel.error(ex.getStatus()), HttpStatus.OK);
@@ -74,11 +74,11 @@ public class MyController {
      * @author xy
      * @return ReponseModel
      */
-    @RequestMapping(value = "/realName", method = RequestMethod.POST, consumes = "application/json")
+    @RequestMapping(value = "/menu/choosePaymentRealName", method = RequestMethod.POST, consumes = "application/json")
     @Authorization
     public ResponseEntity<ReponseModel> realName(@CurrentUser Customer customer, HttpEntity<RealNameRequestModel> model) {
         try {
-            RealNameViewModel realNameViewModel = menuService.realName(customer, model.getBody());
+            RealNameViewModel realNameViewModel = menuService.choosePaymentRealName(customer, model.getBody());
             return new ResponseEntity<>(ReponseModel.ok(realNameViewModel), HttpStatus.OK);
         } catch (ApiException ex) {
             return new ResponseEntity<>(ReponseModel.error(ex.getStatus()), HttpStatus.OK);
