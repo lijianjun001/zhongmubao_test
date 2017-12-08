@@ -160,4 +160,13 @@
         SELECT * FROM ExtRedPackage
         WHERE Id = #{id}
     </select>
+
+    <select id="getByCustomerIdGroupByPrice" resultType="ExtRedPackageGroup">
+        SELECT Price,Type,COUNT(1) AS TotalCount,ExpTime,SUM(IsNew) AS NewCount,SUM(Price) AS TotalPrice FROM ExtRedPackage
+        WHERE customerid = #{customerId}
+        AND expTime>now()
+        AND IsUsed = 0
+        AND IsLock = 0
+        GROUP BY Price
+    </select>
 </mapper>

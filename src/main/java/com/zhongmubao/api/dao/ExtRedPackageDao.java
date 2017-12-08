@@ -2,6 +2,7 @@ package com.zhongmubao.api.dao;
 
 import com.github.pagehelper.Page;
 import com.zhongmubao.api.entity.ExtRedPackage;
+import com.zhongmubao.api.entity.ext.ExtRedPackageGroup;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.Date;
@@ -18,14 +19,14 @@ public interface ExtRedPackageDao {
      * 单个用户有效红包
      * @param customerId upmgjiod
      * @param id 红包id
-     * @return 红包
+     * @return ExtRedPackage 红包
      */
     ExtRedPackage getEffectiveExtRedPackageByCustomerIdAndId(@Param("customerId") int customerId, @Param("id") int id);
 
     /**
      * 添加红包
      * @param extRedPackage 红包对象
-     * @return 0 1
+     * @return int 0 1
      */
     int insertExtRedPackage(ExtRedPackage extRedPackage);
 
@@ -64,7 +65,7 @@ public interface ExtRedPackageDao {
      * @param customerId 客户id
      * @param id         红包id
      * @param expTime    过期时间
-     * @return 0 1
+     * @return  int 0 1
      */
     int updateExtRedPackageExpTimeByCustomerIdAndId(@Param("customerId") int customerId, @Param("id") int id, @Param("expTime") Date expTime);
 
@@ -87,7 +88,7 @@ public interface ExtRedPackageDao {
      * 分页用户有效红包
      * @param customerId 用户id
      * @param type 红包类型
-     * @return
+     * @return Page<ExtRedPackage>
      */
     Page<ExtRedPackage> pageEffectiveExtRedPackageByCustomerIdOrderByType(@Param("customerId") int customerId, @Param("type")String type);
 
@@ -95,7 +96,7 @@ public interface ExtRedPackageDao {
      * 用户所有有效红包
      * @param customerId 用户id
      * @param type 红包类型
-     * @return
+     * @return List<ExtRedPackage>
      */
     List<ExtRedPackage> getByCustomerIdOrderByType(@Param("customerId") int customerId, @Param("type")String type);
 
@@ -103,7 +104,7 @@ public interface ExtRedPackageDao {
      * 分组红包列表
      * @param customerId 用户id
      * @param price 红包金额
-     * @return
+     * @return Page<ExtRedPackage>
      */
     Page<ExtRedPackage> pageEffectiveByCustomerIdAndPrice(@Param("customerId") int customerId, @Param("price")double price);
 
@@ -111,14 +112,21 @@ public interface ExtRedPackageDao {
      * 过期红包列表
      * @param customerId 用户id
      * @param type 红包金额
-     * @return
+     * @return Page<ExtRedPackage>
      */
     Page<ExtRedPackage> pageEffectiveHistoryByCustomerIdOrderByType(@Param("customerId") int customerId, @Param("type")String type);
 
     /**
      * 红包信息
      * @param id 红包id
-     * @return
+     * @return ExtRedPackage
      */
     ExtRedPackage getById(@Param("id") int id);
+
+    /**
+     * 红包分组（金额分组）
+     * @param customerId 用户id
+     * @return List<ExtRedPackageGroup>
+     */
+    List<ExtRedPackageGroup> getByCustomerIdGroupByPrice(@Param("customerId") int customerId);
 }

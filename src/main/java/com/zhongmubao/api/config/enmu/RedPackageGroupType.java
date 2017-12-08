@@ -41,15 +41,6 @@ public enum RedPackageGroupType {
         public double getName() {
             return 8;
         }
-    },
-    /**
-     * 20元红包
-     */
-    TWENTY {
-        @Override
-        public double getName() {
-            return 20;
-        }
     };
 
     public abstract double getName();

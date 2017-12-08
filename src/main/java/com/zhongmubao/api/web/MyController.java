@@ -16,7 +16,7 @@ import com.zhongmubao.api.dto.response.my.readpackage.ReadPackageListViewModel;
 import com.zhongmubao.api.dto.response.my.readpackage.RedPackageHistoryViewModel;
 import com.zhongmubao.api.entity.Customer;
 import com.zhongmubao.api.exception.ApiException;
-import com.zhongmubao.api.service.my.CenterService;
+import com.zhongmubao.api.service.my.MenuService;
 import com.zhongmubao.api.service.my.ReadPackageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
@@ -35,12 +35,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/my")
 public class MyController {
 
-    private final CenterService centerService;
+    private final MenuService menuService;
     private final ReadPackageService readPackageService;
 
     @Autowired
-    public MyController(CenterService centerService, ReadPackageService readPackageService) {
-        this.centerService = centerService;
+    public MyController(MenuService menuService, ReadPackageService readPackageService) {
+        this.menuService = menuService;
         this.readPackageService = readPackageService;
     }
 
@@ -56,7 +56,7 @@ public class MyController {
     @Authorization
     public ResponseEntity<ReponseModel> personalCenter(@CurrentUser Customer customer, HttpEntity<PersonalCenterRequestModel> model) {
         try {
-            PersonalCenterViewModel personalCenterViewModel = centerService.personalCenter(customer, model.getBody());
+            PersonalCenterViewModel personalCenterViewModel = menuService.personalCenter(customer, model.getBody());
             return new ResponseEntity<>(ReponseModel.ok(personalCenterViewModel), HttpStatus.OK);
         } catch (ApiException ex) {
             return new ResponseEntity<>(ReponseModel.error(ex.getStatus()), HttpStatus.OK);
@@ -78,7 +78,7 @@ public class MyController {
     @Authorization
     public ResponseEntity<ReponseModel> realName(@CurrentUser Customer customer, HttpEntity<RealNameRequestModel> model) {
         try {
-            RealNameViewModel realNameViewModel = centerService.realName(customer, model.getBody());
+            RealNameViewModel realNameViewModel = menuService.realName(customer, model.getBody());
             return new ResponseEntity<>(ReponseModel.ok(realNameViewModel), HttpStatus.OK);
         } catch (ApiException ex) {
             return new ResponseEntity<>(ReponseModel.error(ex.getStatus()), HttpStatus.OK);
