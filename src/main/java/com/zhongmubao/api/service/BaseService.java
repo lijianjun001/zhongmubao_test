@@ -44,6 +44,7 @@ public class BaseService {
                     expTime,
                     now,
                     now,
+                    1,
                     1
             );
             extRedPackageDao.insertExtRedPackage(extRedPackage);

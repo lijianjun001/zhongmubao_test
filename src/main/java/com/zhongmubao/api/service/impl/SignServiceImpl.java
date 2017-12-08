@@ -146,7 +146,13 @@ public class SignServiceImpl extends BaseService implements SignService {
                             // 没买羊默认奖励红包
                             signGift = Constants.SIGN_GIFT_LIST.get(0);
                         } else {
-                            signGiftAddressViewModel = formartAddress(customerId);
+                            // 每天做多产生2份神秘礼物，超出改为红包奖励
+                            long count = shareCardMongoDao.getGiftCount(SECRET_GIFT.getName(), DateUtil.formatMongo(DateUtil.dayBegin()));
+                            if (count >= 2) {
+                                signGift = Constants.SIGN_GIFT_LIST.get(0);
+                            } else {
+                                signGiftAddressViewModel = formartAddress(customerId);
+                            }
                         }
                     }
                     // 如果中奖是红包
@@ -170,7 +176,7 @@ public class SignServiceImpl extends BaseService implements SignService {
                         giftPrice = telephoneMoney;
                     }
 
-                    // 如果是神秘礼物或者话费卡，状态为未领取
+                    // 如果是神秘礼物或者话费卡，状态设为未领取
                     String status;
                     if (signGift.getType().equals(SECRET_GIFT) || signGift.getType().equals(TELEPHONE_CARD)) {
                         status = ShareCardState.UNCLAIMED.getName();

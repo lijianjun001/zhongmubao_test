@@ -10,6 +10,7 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -105,5 +106,13 @@ public class ShareCardMongoDao implements BaseDao<ShareCardMongo> {
         query.addCriteria(Criteria.where("Type").is(type));
         query.addCriteria(Criteria.where("Delete").is(false));
         return mongoTemplate.findOne(query, ShareCardMongo.class);
+    }
+
+    public long getGiftCount(String type, Date date) {
+        Query query = new Query();
+        query.addCriteria(Criteria.where("Type").is(type));
+        query.addCriteria(Criteria.where("Created").gt(date));
+        query.addCriteria(Criteria.where("Delete").is(false));
+        return mongoTemplate.count(query, ShareCardMongo.class);
     }
 }

@@ -37,6 +37,18 @@ public class ReadPackageModel {
      */
     private String expTime;
 
+    public ReadPackageModel(int id, String price, String remark, String typeStr, boolean whetherNew, String expTime) {
+        this.id = id;
+        this.price = price;
+        this.remark = remark;
+        this.typeStr = typeStr;
+        this.whetherNew = whetherNew;
+        this.expTime = expTime;
+    }
+
+    public ReadPackageModel() {
+    }
+
     public int getId() {
         return id;
     }

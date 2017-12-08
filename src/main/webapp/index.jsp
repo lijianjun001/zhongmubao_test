@@ -28,16 +28,21 @@
 //        private String ip;
 //        private String os;
 //        private String deviceid;
+//        var data = {
+//            platform:"01",
+//            version:"1.0"
+//        };
         var data = {
-            platform:"01",
-            version:"1.0"
+            id: 309149
         };
+
+
         console.info(JSON.stringify(data));
 //        var saveData ={"USER_ID":leader,"Users":users};
 
         $.ajax({
             type: "POST",
-            url: "/my/personalCenter",
+            url: "/my/readPackageDetail",
             data: JSON.stringify(data),
             contentType: 'application/json;charset=UTF-8',
             dataType: "json",                                     //预期服务器返回类型
