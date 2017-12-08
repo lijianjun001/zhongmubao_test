@@ -41,7 +41,7 @@ public class MenuServiceImpl extends BaseService implements MenuService {
     }
 
     @Override
-    public PersonalCenterViewModel personalCenter(Customer customer, PersonalCenterRequestModel model) throws Exception {
+    public PersonalCenterViewModel list(Customer customer, PersonalCenterRequestModel model) throws Exception {
         String url = "";
         if (model == null) {
             throw new ApiException(ResultStatus.PARAMETER_MISSING);
@@ -140,7 +140,7 @@ public class MenuServiceImpl extends BaseService implements MenuService {
     }
 
     @Override
-    public RealNameViewModel realName(Customer customer, RealNameRequestModel model) throws Exception {
+    public RealNameViewModel choosePaymentRealName(Customer customer, RealNameRequestModel model) throws Exception {
 
         RealNameViewModel realNameViewModel = new RealNameViewModel();
         CustomerHF customerHF = customerHFDao.getCustomerHFById(customer.getId());

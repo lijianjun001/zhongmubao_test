@@ -19,7 +19,7 @@ public interface MenuService {
      * @return PersonalCenterViewModel
      * @throws Exception
      */
-    PersonalCenterViewModel personalCenter(Customer customer, PersonalCenterRequestModel model) throws Exception;
+    PersonalCenterViewModel list(Customer customer, PersonalCenterRequestModel model) throws Exception;
 
     /**
      *  实名是否实名(汇付是否开户[激活])
@@ -28,5 +28,5 @@ public interface MenuService {
      * @return RealNameViewModel
      * @throws Exception
      */
-    RealNameViewModel realName(Customer customer, RealNameRequestModel model) throws Exception;
+    RealNameViewModel choosePaymentRealName(Customer customer, RealNameRequestModel model) throws Exception;
 }

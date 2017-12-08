@@ -56,7 +56,7 @@ public class MyController {
     @Authorization
     public ResponseEntity<ReponseModel> personalCenter(@CurrentUser Customer customer, HttpEntity<PersonalCenterRequestModel> model) {
         try {
-            PersonalCenterViewModel personalCenterViewModel = menuService.personalCenter(customer, model.getBody());
+            PersonalCenterViewModel personalCenterViewModel = menuService.list(customer, model.getBody());
             return new ResponseEntity<>(ReponseModel.ok(personalCenterViewModel), HttpStatus.OK);
         } catch (ApiException ex) {
             return new ResponseEntity<>(ReponseModel.error(ex.getStatus()), HttpStatus.OK);
@@ -78,7 +78,7 @@ public class MyController {
     @Authorization
     public ResponseEntity<ReponseModel> realName(@CurrentUser Customer customer, HttpEntity<RealNameRequestModel> model) {
         try {
-            RealNameViewModel realNameViewModel = menuService.realName(customer, model.getBody());
+            RealNameViewModel realNameViewModel = menuService.choosePaymentRealName(customer, model.getBody());
             return new ResponseEntity<>(ReponseModel.ok(realNameViewModel), HttpStatus.OK);
         } catch (ApiException ex) {
             return new ResponseEntity<>(ReponseModel.error(ex.getStatus()), HttpStatus.OK);
