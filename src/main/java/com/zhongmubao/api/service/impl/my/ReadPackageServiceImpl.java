@@ -98,7 +98,7 @@ public class ReadPackageServiceImpl implements ReadPackageService {
     private ReadPackageGroupModel redPacketGroupCalc(Customer customer, List<ExtRedPackageGroup> groupRedPacket, RedPackageGroupType groupType, boolean isPreLoad) {
 
         ReadPackageGroupModel groupModel = new ReadPackageGroupModel();
-        groupModel.setGroupType(groupType);
+        groupModel.setGroupType(groupType.getName());
         if (groupType == RedPackageGroupType.OTHER) {
             IntSummaryStatistics statsTotalCount = groupRedPacket.stream().mapToInt(ExtRedPackageGroup::getTotalCount).summaryStatistics();
             groupModel.setCount(Integer.parseInt(String.valueOf(statsTotalCount.getSum())));
@@ -127,7 +127,17 @@ public class ReadPackageServiceImpl implements ReadPackageService {
 
         if (isPreLoad) {
             PageHelper.startPage(1, 10);
-            Page<ExtRedPackage> pager = extRedPackageDao.pageEffectiveByCustomerIdAndPrice(customer.getId(), groupType.getName());
+            double price = 0;
+            if (groupType == RedPackageGroupType.OTHER) {
+                price = 0;
+            }else if (groupType == RedPackageGroupType.TWO) {
+                price = 2;
+            }else if (groupType == RedPackageGroupType.FIVE) {
+                price = 5;
+            }else if (groupType == RedPackageGroupType.EIGHT) {
+                price = 8;
+            }
+            Page<ExtRedPackage> pager = extRedPackageDao.pageEffectiveByCustomerIdAndPrice(customer.getId(), price);
             Date now = new Date();
             String remark = "仅可购买120天及以上长期羊使用";
             List<ReadPackageModel> eightViewGroup = pager.stream().map(
@@ -139,7 +149,7 @@ public class ReadPackageServiceImpl implements ReadPackageService {
                             en.getIsNew() == 1,
                             DateUtil.format(en.getExpTime(), Constants.DATE_FORMAT),
                             DateUtil.subDateOfDay(now, en.getExpTime()) > 30,
-                            en.isUsed() ? RedPackageState.USRD : RedPackageState.UNUSED
+                            en.isUsed() ? RedPackageState.USRD.getName() : RedPackageState.UNUSED.getName()
                     )).collect(Collectors.toList());
 
             groupModel.setPreLoadList((ArrayList<ReadPackageModel>) eightViewGroup);
@@ -156,7 +166,17 @@ public class ReadPackageServiceImpl implements ReadPackageService {
         }
 
         PageHelper.startPage(model.getPageIndex(), Constants.PAGE_SIZE);
-        Page<ExtRedPackage> pager = extRedPackageDao.pageEffectiveByCustomerIdAndPrice(customer.getId(), model.getGroupType().getName());
+        double price = 0;
+        if (model.getGroupType() == RedPackageGroupType.OTHER) {
+            price = 0;
+        }else if (model.getGroupType() == RedPackageGroupType.TWO) {
+            price = 2;
+        }else if (model.getGroupType() == RedPackageGroupType.FIVE) {
+            price = 5;
+        }else if (model.getGroupType() == RedPackageGroupType.EIGHT) {
+            price = 8;
+        }
+        Page<ExtRedPackage> pager = extRedPackageDao.pageEffectiveByCustomerIdAndPrice(customer.getId(),price);
 
         Date now = new Date();
         String remark = "仅可购买120天及以上长期羊使用";
@@ -169,7 +189,7 @@ public class ReadPackageServiceImpl implements ReadPackageService {
                         en.getIsNew() == 1,
                         DateUtil.format(en.getExpTime(), Constants.DATE_FORMAT),
                         DateUtil.subDateOfDay(now, en.getExpTime()) > 30,
-                        en.isUsed() ? RedPackageState.USRD : RedPackageState.UNUSED
+                        en.isUsed() ? RedPackageState.USRD.getName() : RedPackageState.UNUSED.getName()
                 )).collect(Collectors.toList());
 
         return new ReadPackageListViewModel(pager.getPages(), (ArrayList<ReadPackageModel>) list);
@@ -197,7 +217,7 @@ public class ReadPackageServiceImpl implements ReadPackageService {
                         en.getIsNew() == 1,
                         DateUtil.format(en.getExpTime(), Constants.DATE_FORMAT),
                         DateUtil.subDateOfDay(now, en.getExpTime()) > 30,
-                        en.isUsed() ? RedPackageState.USRD : (DateUtil.subDateOfDay(now, en.getExpTime()) < 0 ? RedPackageState.EXPIRED : RedPackageState.UNUSED)
+                        en.isUsed() ? RedPackageState.USRD.getName() : RedPackageState.EXPIRED.getName()
                 )).collect(Collectors.toList());
 
         return new RedPackageHistoryViewModel(pager.getPages(), (ArrayList<ReadPackageModel>) list);
@@ -259,7 +279,7 @@ public class ReadPackageServiceImpl implements ReadPackageService {
                         en.getIsNew() == 1,
                         DateUtil.format(en.getExpTime(), Constants.DATE_FORMAT),
                         DateUtil.subDateOfDay(now, en.getExpTime()) > 30,
-                        en.isUsed() ? RedPackageState.USRD : RedPackageState.UNUSED
+                        en.isUsed() ? RedPackageState.USRD.getName() : RedPackageState.UNUSED.getName()
                 )).collect(Collectors.toList());
 
         return new ReadPackageListViewModel(pager.getPages(), (ArrayList<ReadPackageModel>) list);

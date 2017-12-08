@@ -44,7 +44,7 @@ public class ReadPackageGroupModel {
     /**
      * 红包类型
      */
-    private RedPackageGroupType groupType;
+    private String groupType;
 
     /**
      * 预加载数据页码
@@ -120,11 +120,11 @@ public class ReadPackageGroupModel {
         this.preLoadPageIndex = preLoadPageIndex;
     }
 
-    public RedPackageGroupType getGroupType() {
+    public String getGroupType() {
         return groupType;
     }
 
-    public void setGroupType(RedPackageGroupType groupType) {
+    public void setGroupType(String groupType) {
         this.groupType = groupType;
     }
 }

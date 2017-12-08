@@ -11,8 +11,8 @@ public enum RedPackageGroupType {
      */
     OTHER {
         @Override
-        public double getName() {
-            return 0;
+        public String getName() {
+            return "00";
         }
     },
     /**
@@ -20,8 +20,8 @@ public enum RedPackageGroupType {
      */
     TWO {
         @Override
-        public double getName() {
-            return 2;
+        public String getName() {
+            return "01";
         }
     },
     /**
@@ -29,8 +29,8 @@ public enum RedPackageGroupType {
      */
     FIVE {
         @Override
-        public double getName() {
-            return 5;
+        public String getName() {
+            return "02";
         }
     },
     /**
@@ -38,10 +38,10 @@ public enum RedPackageGroupType {
      */
     EIGHT {
         @Override
-        public double getName() {
-            return 8;
+        public String getName() {
+            return "03";
         }
     };
 
-    public abstract double getName();
+    public abstract String getName();
 }

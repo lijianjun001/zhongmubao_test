@@ -47,9 +47,9 @@ public class ReadPackageModel {
     /**
      * 状态(00未使用，01已使用，02已过期)
      */
-    private RedPackageState status;
+    private String status;
 
-    public ReadPackageModel(int id, String price, String remark, String typeStr, boolean whetherNew, String expTime, boolean whetherEarlier, RedPackageState status) {
+    public ReadPackageModel(int id, String price, String remark, String typeStr, boolean whetherNew, String expTime, boolean whetherEarlier, String status) {
         this.id = id;
         this.price = price;
         this.remark = remark;
@@ -119,11 +119,11 @@ public class ReadPackageModel {
         this.whetherEarlier = whetherEarlier;
     }
 
-    public RedPackageState getStatus() {
+    public String getStatus() {
         return status;
     }
 
-    public void setStatus(RedPackageState status) {
+    public void setStatus(String status) {
         this.status = status;
     }
 }

@@ -33,7 +33,8 @@
 //            version:"1.0"
 //        };
         var data = {
-            pageIndex:1,
+            pageIndex: 1,
+//            groupType: "01"
             sortType:"Price"
         };
 
@@ -43,7 +44,7 @@
 
         $.ajax({
             type: "POST",
-            url: "/my/readPackageList",
+            url: "/my/readPackage/group",
             data: JSON.stringify(data),
             contentType: 'application/json;charset=UTF-8',
             dataType: "json",                                     //预期服务器返回类型
