@@ -9,16 +9,4 @@ import com.zhongmubao.api.dto.request.BaseRequest;
 public class PersonalCenterRequestModel extends BaseRequest{
     public PersonalCenterRequestModel() {
     }
-
-    /**
-     * 平台
-     */
-    private String platform;
-    public String getPlatform() {
-        return platform;
-    }
-
-    public void setPlatform(String platform) {
-        this.platform = platform;
-    }
 }
