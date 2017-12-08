@@ -9,7 +9,6 @@ import com.zhongmubao.api.mongo.dao.PlatformTrackingMongoDao;
 import com.zhongmubao.api.mongo.dao.TouTiaoAdvMongoDao;
 import com.zhongmubao.api.mongo.entity.PlatformTrackingMongo;
 import com.zhongmubao.api.mongo.entity.TouTiaoAdvMongo;
-import com.zhongmubao.api.service.BaseService;
 import com.zhongmubao.api.service.SystemService;
 import com.zhongmubao.api.util.*;
 import org.springframework.beans.factory.annotation.Autowired;

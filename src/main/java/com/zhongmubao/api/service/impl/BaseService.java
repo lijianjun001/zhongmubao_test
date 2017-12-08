@@ -1,4 +1,4 @@
-package com.zhongmubao.api.service;
+package com.zhongmubao.api.service.impl;
 
 import com.zhongmubao.api.config.WxTemplate;
 import com.zhongmubao.api.config.enmu.RedPackageType;

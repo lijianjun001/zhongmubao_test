@@ -21,7 +21,6 @@ import com.zhongmubao.api.mongo.dao.CustomerNoticMongoDao;
 import com.zhongmubao.api.mongo.dao.ShareCardMongoDao;
 import com.zhongmubao.api.mongo.entity.*;
 import com.zhongmubao.api.mongo.entity.base.PageModel;
-import com.zhongmubao.api.service.BaseService;
 import com.zhongmubao.api.service.SignService;
 import com.zhongmubao.api.util.*;
 import com.zhongmubao.api.util.redis.RedisLock;
