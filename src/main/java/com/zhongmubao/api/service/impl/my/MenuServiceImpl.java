@@ -14,7 +14,7 @@ import com.zhongmubao.api.entity.Customer;
 import com.zhongmubao.api.entity.CustomerHF;
 import com.zhongmubao.api.entity.CustomerSina;
 import com.zhongmubao.api.exception.ApiException;
-import com.zhongmubao.api.service.BaseService;
+import com.zhongmubao.api.service.impl.BaseService;
 import com.zhongmubao.api.service.my.MenuService;
 import com.zhongmubao.api.util.StringUtil;
 

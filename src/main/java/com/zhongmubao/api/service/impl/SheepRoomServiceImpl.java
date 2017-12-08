@@ -24,7 +24,6 @@ import com.zhongmubao.api.mongo.dao.SheepStageMongoDao;
 import com.zhongmubao.api.mongo.entity.CustomerOrderLogMongo;
 import com.zhongmubao.api.mongo.entity.SheepProgressMongo;
 import com.zhongmubao.api.mongo.entity.SheepStageMongo;
-import com.zhongmubao.api.service.BaseService;
 import com.zhongmubao.api.service.SheepRoomService;
 import com.zhongmubao.api.util.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
