@@ -14,10 +14,12 @@ import com.zhongmubao.api.dto.request.my.readpackage.ReadPackageListRequestModel
 import com.zhongmubao.api.dto.response.my.readpackage.*;
 import com.zhongmubao.api.entity.Customer;
 import com.zhongmubao.api.entity.ExtRedPackage;
+import com.zhongmubao.api.entity.ext.ExtRedPackageGroup;
 import com.zhongmubao.api.exception.ApiException;
 import com.zhongmubao.api.service.my.ReadPackageService;
 import com.zhongmubao.api.util.DateUtil;
 import com.zhongmubao.api.util.DoubleUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -32,6 +34,7 @@ import java.util.stream.Collectors;
 public class ReadPackageServiceImpl implements ReadPackageService {
     public final ExtRedPackageDao extRedPackageDao;
 
+    @Autowired
     public ReadPackageServiceImpl(ExtRedPackageDao extRedPackageDao) {
         this.extRedPackageDao = extRedPackageDao;
     }
@@ -46,44 +49,36 @@ public class ReadPackageServiceImpl implements ReadPackageService {
         }
         ReadPackageGroupViewModel viewModel = new ReadPackageGroupViewModel();
         ArrayList<ReadPackageGroupModel> groupModelList = new ArrayList<>();
-        List<ExtRedPackage> list = extRedPackageDao.getByCustomerIdOrderByType(customer.getId(), model.getSortType().getName());
+        List<ExtRedPackageGroup> list = extRedPackageDao.getByCustomerIdGroupByPrice(customer.getId());
+        boolean isPreLoad = true;
         // 8元红包
-        List<ExtRedPackage> eightGroup = list.stream().filter(en -> en.getPrice() == 8).collect(Collectors.toList());
+        List<ExtRedPackageGroup> eightGroup = list.stream().filter(en -> en.getPrice() == 8).collect(Collectors.toList());
         if (eightGroup != null && eightGroup.size() > 0) {
-            ReadPackageGroupModel radPacket = redPacketGroupCalc(eightGroup);
-            radPacket.setGroupType(RedPackageGroupType.EIGHT);
-            groupModelList.add(radPacket);
+            ReadPackageGroupModel redPacket = redPacketGroupCalc(customer, eightGroup, RedPackageGroupType.EIGHT, isPreLoad);
+            isPreLoad = false;
+            groupModelList.add(redPacket);
             list.removeAll(eightGroup);
         }
         // 5元红包
-        List<ExtRedPackage> fiveGroup = list.stream().filter(en -> en.getPrice() == 5).collect(Collectors.toList());
+        List<ExtRedPackageGroup> fiveGroup = list.stream().filter(en -> en.getPrice() == 5).collect(Collectors.toList());
         if (fiveGroup != null && fiveGroup.size() > 0) {
-            ReadPackageGroupModel radPacket = redPacketGroupCalc(fiveGroup);
-            radPacket.setGroupType(RedPackageGroupType.FIVE);
-            groupModelList.add(radPacket);
+            ReadPackageGroupModel redPacket = redPacketGroupCalc(customer, fiveGroup, RedPackageGroupType.FIVE, isPreLoad);
+            isPreLoad = false;
+
+            groupModelList.add(redPacket);
             list.removeAll(fiveGroup);
         }
         // 2元红包
-        List<ExtRedPackage> twoGroup = list.stream().filter(en -> en.getPrice() == 2).collect(Collectors.toList());
+        List<ExtRedPackageGroup> twoGroup = list.stream().filter(en -> en.getPrice() == 2).collect(Collectors.toList());
         if (twoGroup != null && twoGroup.size() > 0) {
-            ReadPackageGroupModel radPacket = redPacketGroupCalc(twoGroup);
-            radPacket.setGroupType(RedPackageGroupType.TWO);
-            groupModelList.add(radPacket);
+            ReadPackageGroupModel redPacket = redPacketGroupCalc(customer, twoGroup, RedPackageGroupType.TWO, isPreLoad);
+            isPreLoad = false;
+            groupModelList.add(redPacket);
             list.removeAll(twoGroup);
         }
-        // 20元红包
-        List<ExtRedPackage> twentyGroup = list.stream().filter(en -> en.getPrice() == 20).collect(Collectors.toList());
-        if (twentyGroup != null && twentyGroup.size() > 0) {
-            ReadPackageGroupModel radPacket = redPacketGroupCalc(twentyGroup);
-            radPacket.setGroupType(RedPackageGroupType.TWENTY);
-            groupModelList.add(radPacket);
-            list.removeAll(twentyGroup);
-        }
         // 零钱红包
-        if (list != null && list.size() > 0) {
-            ReadPackageGroupModel looseRadPacket = redPacketGroupCalc(list);
-            looseRadPacket.setGroupType(RedPackageGroupType.OTHER);
-            looseRadPacket.setPrice("零钱红包");
+        if (list.size() > 0) {
+            ReadPackageGroupModel looseRadPacket = redPacketGroupCalc(customer, list, RedPackageGroupType.OTHER, isPreLoad);
             groupModelList.add(looseRadPacket);
         }
 
@@ -94,38 +89,60 @@ public class ReadPackageServiceImpl implements ReadPackageService {
     /**
      * 红包分组计算
      *
-     * @param groupRedPacket
+     * @param groupRedPacket 分组列表
+     * @param groupType      红包分组类型
+     * @param isPreLoad      是否预加载
      * @return
      */
-    private ReadPackageGroupModel redPacketGroupCalc(List<ExtRedPackage> groupRedPacket) {
+    private ReadPackageGroupModel redPacketGroupCalc(Customer customer, List<ExtRedPackageGroup> groupRedPacket, RedPackageGroupType groupType, boolean isPreLoad) {
+
         ReadPackageGroupModel groupModel = new ReadPackageGroupModel();
-        groupModel.setCount(groupRedPacket.size());
-        DoubleSummaryStatistics statsTotalPrice = groupRedPacket.stream().mapToDouble((x) -> x.getPrice()).summaryStatistics();
-        groupModel.setTotalPrice(Double.toString(statsTotalPrice.getSum()));
-        groupModel.setNewCount(Integer.parseInt(String.valueOf(groupRedPacket.stream().filter(m -> m.getIsNew() == 1).count())));
+        groupModel.setGroupType(groupType);
+        if (groupType == RedPackageGroupType.OTHER) {
+            IntSummaryStatistics statsTotalCount = groupRedPacket.stream().mapToInt((x) -> x.getTotalCount()).summaryStatistics();
+            groupModel.setCount(Integer.parseInt(String.valueOf(statsTotalCount.getSum())));
 
-        Collections.sort(groupRedPacket, (o1, o2) -> (o1.getExpTime().compareTo(o2.getExpTime())));
-        ExtRedPackage extRedPackage = groupRedPacket.stream().findFirst().get();
-        groupModel.setFirstExpTime(DateUtil.formatDefault(extRedPackage.getExpTime()));
-        groupModel.setPrice(Double.toString(extRedPackage.getPrice()));
-        groupModel.setType(extRedPackage.getType());
+            DoubleSummaryStatistics statsTotalPrice = groupRedPacket.stream().mapToDouble((x) -> x.getPrice()).summaryStatistics();
+            groupModel.setTotalPrice(Double.toString(statsTotalPrice.getSum()));
 
-        Date now = new Date();
-        String remark = "仅可购买120天及以上长期羊使用";
-        List<ReadPackageModel> eightViewGroup = groupRedPacket.stream().map(
-                en -> new ReadPackageModel(
-                        en.getId(),
-                        DoubleUtil.toFixed(en.getPrice(), Constants.Price_FORMAT),
-                        en.getPrice() >= 5 ? remark : "",
-                        Constants.redpackettypestr(en.getType()),
-                        en.getIsNew() == 1,
-                        DateUtil.format(en.getExpTime(), Constants.DATE_FORMAT),
-                        DateUtil.subDateOfDay(now, en.getExpTime()) > 30,
-                        en.isUsed() ? RedPackageState.USRD : RedPackageState.UNUSED
-                )).collect(Collectors.toList());
+            IntSummaryStatistics statsTotalNewCount = groupRedPacket.stream().mapToInt((x) -> x.getNewCount()).summaryStatistics();
+            groupModel.setNewCount(Integer.parseInt(String.valueOf(statsTotalNewCount.getSum())));
 
-        groupModel.setPreLoadList((ArrayList<ReadPackageModel>) eightViewGroup);
-        groupModel.setPreLoadPageIndex(1);
+            Collections.sort(groupRedPacket, (o1, o2) -> (o1.getExpTime().compareTo(o2.getExpTime())));
+            ExtRedPackageGroup redPacket = groupRedPacket.stream().findFirst().get();
+            groupModel.setPrice("零钱红包");
+            groupModel.setType(redPacket.getType());
+            groupModel.setFirstExpTime(DateUtil.format(redPacket.getExpTime(), Constants.DATE_FORMAT));
+        } else {
+            ExtRedPackageGroup redPacket = groupRedPacket.stream().findFirst().get();
+            groupModel.setCount(redPacket.getTotalCount());
+            groupModel.setType(redPacket.getType());
+            groupModel.setNewCount(redPacket.getNewCount());
+            groupModel.setPrice(DoubleUtil.toFixed(redPacket.getPrice(), Constants.Price_FORMAT));
+            groupModel.setFirstExpTime(DateUtil.format(redPacket.getExpTime(), Constants.DATE_FORMAT));
+            groupModel.setTotalPrice(DoubleUtil.toFixed(redPacket.getTotalPrice(), Constants.Price_FORMAT));
+        }
+
+        if (isPreLoad) {
+            PageHelper.startPage(1, 10);
+            Page<ExtRedPackage> pager = extRedPackageDao.pageEffectiveByCustomerIdAndPrice(customer.getId(), groupType.getName());
+            Date now = new Date();
+            String remark = "仅可购买120天及以上长期羊使用";
+            List<ReadPackageModel> eightViewGroup = pager.stream().map(
+                    en -> new ReadPackageModel(
+                            en.getId(),
+                            DoubleUtil.toFixed(en.getPrice(), Constants.Price_FORMAT),
+                            en.getPrice() >= 5 ? remark : "",
+                            Constants.redpackettypestr(en.getType()),
+                            en.getIsNew() == 1,
+                            DateUtil.format(en.getExpTime(), Constants.DATE_FORMAT),
+                            DateUtil.subDateOfDay(now, en.getExpTime()) > 30,
+                            en.isUsed() ? RedPackageState.USRD : RedPackageState.UNUSED
+                    )).collect(Collectors.toList());
+
+            groupModel.setPreLoadList((ArrayList<ReadPackageModel>) eightViewGroup);
+            groupModel.setPreLoadPageIndex(1);
+        }
 
         return groupModel;
     }
@@ -204,7 +221,8 @@ public class ReadPackageServiceImpl implements ReadPackageService {
         if (extRedPackage.getExpTime().getTime() < now.getTime()) {
             redPackageState = RedPackageState.EXPIRED;
         }
-        ReadPackageDetailViewModel detailViewModel = new ReadPackageDetailViewModel(
+
+        return new ReadPackageDetailViewModel(
                 Constants.redpackettypestr(extRedPackage.getType()),
                 DoubleUtil.toFixed(extRedPackage.getPrice(), Constants.Price_FORMAT),
                 DateUtil.format(extRedPackage.getCreated(), Constants.DATE_FORMAT),
@@ -212,7 +230,5 @@ public class ReadPackageServiceImpl implements ReadPackageService {
                 remarks,
                 redPackageState
         );
-
-        return detailViewModel;
     }
 }

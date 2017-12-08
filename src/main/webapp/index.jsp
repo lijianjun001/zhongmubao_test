@@ -34,7 +34,7 @@
 //        };
         var data = {
             pageIndex:1,
-            sortType:"ExpTime"
+            groupType:"EIGHT"
         };
 
 
@@ -43,7 +43,7 @@
 
         $.ajax({
             type: "POST",
-            url: "/my/readPackageGroup",
+            url: "/my/readPackageList",
             data: JSON.stringify(data),
             contentType: 'application/json;charset=UTF-8',
             dataType: "json",                                     //预期服务器返回类型
