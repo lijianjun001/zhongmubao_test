@@ -1,5 +1,7 @@
 package com.zhongmubao.api.dto.response.my.readpackage;
 
+import com.zhongmubao.api.config.enmu.RedPackageGroupType;
+
 import java.util.ArrayList;
 
 /**
@@ -40,14 +42,19 @@ public class ReadPackageGroupModel {
     private String type;
 
     /**
-     * 预加载数据
+     * 红包类型
      */
-    private ArrayList<ReadPackageModel> preLoadList;
+    private RedPackageGroupType groupType;
 
     /**
      * 预加载数据页码
      */
     private int preLoadPageIndex;
+
+    /**
+     * 预加载数据
+     */
+    private ArrayList<ReadPackageModel> preLoadList;
 
     public String getPrice() {
         return price;
@@ -113,4 +120,11 @@ public class ReadPackageGroupModel {
         this.preLoadPageIndex = preLoadPageIndex;
     }
 
+    public RedPackageGroupType getGroupType() {
+        return groupType;
+    }
+
+    public void setGroupType(RedPackageGroupType groupType) {
+        this.groupType = groupType;
+    }
 }

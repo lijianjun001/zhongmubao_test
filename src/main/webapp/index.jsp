@@ -33,7 +33,8 @@
 //            version:"1.0"
 //        };
         var data = {
-            id: 309149
+            pageIndex:1,
+            sortType:"ExpTime"
         };
 
 
@@ -42,7 +43,7 @@
 
         $.ajax({
             type: "POST",
-            url: "/my/readPackageDetail",
+            url: "/my/readPackageGroup",
             data: JSON.stringify(data),
             contentType: 'application/json;charset=UTF-8',
             dataType: "json",                                     //预期服务器返回类型

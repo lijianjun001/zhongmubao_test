@@ -43,7 +43,7 @@ public interface ReadPackageService {
      * @return RedPackageHistoryViewModel
      * @throws Exception
      */
-    RedPackageHistoryViewModel readPackageExpired(Customer customer, ReadPackageGroupRequestModel model) throws Exception;
+    RedPackageHistoryViewModel readPackageHistory(Customer customer, ReadPackageGroupRequestModel model) throws Exception;
 
     /**
      * 红包详情
