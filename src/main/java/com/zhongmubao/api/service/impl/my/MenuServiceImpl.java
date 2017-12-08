@@ -5,11 +5,11 @@ import com.zhongmubao.api.config.enmu.Domain;
 import com.zhongmubao.api.config.enmu.RealNameStatus;
 import com.zhongmubao.api.dao.CustomerHFDao;
 import com.zhongmubao.api.dao.CustomerSinaDao;
-import com.zhongmubao.api.dto.request.my.center.PersonalCenterRequestModel;
+import com.zhongmubao.api.dto.request.my.menu.ListRequestModel;
 import com.zhongmubao.api.dto.request.my.RealNameRequestModel;
-import com.zhongmubao.api.dto.response.my.center.PersonalCenterViewModel;
+import com.zhongmubao.api.dto.response.my.menu.ListViewModel;
 import com.zhongmubao.api.dto.response.my.RealNameViewModel;
-import com.zhongmubao.api.dto.response.my.center.PersonalCenterItemModel;
+import com.zhongmubao.api.dto.response.my.menu.ListItemModel;
 import com.zhongmubao.api.entity.Customer;
 import com.zhongmubao.api.entity.CustomerHF;
 import com.zhongmubao.api.entity.CustomerSina;
@@ -41,7 +41,7 @@ public class MenuServiceImpl extends BaseService implements MenuService {
     }
 
     @Override
-    public PersonalCenterViewModel list(Customer customer, PersonalCenterRequestModel model) throws Exception {
+    public ListViewModel list(Customer customer, ListRequestModel model) throws Exception {
         String url = "";
         if (model == null) {
             throw new ApiException(ResultStatus.PARAMETER_MISSING);
@@ -54,89 +54,89 @@ public class MenuServiceImpl extends BaseService implements MenuService {
                 url = Domain.ANDROID.getDomain();
             }
         }
-        PersonalCenterViewModel personalCenterViewModel = new PersonalCenterViewModel();
-        List<PersonalCenterItemModel> personalCenterItemModels = new ArrayList<>();
+        ListViewModel listViewModel = new ListViewModel();
+        List<ListItemModel> listItemModels = new ArrayList<>();
 
-        PersonalCenterItemModel personalCenterItemModelRemindIndex = new PersonalCenterItemModel();
-        personalCenterItemModelRemindIndex.setIcon("personal-remind.png");
-        personalCenterItemModelRemindIndex.setTitle("购羊提醒");
-        personalCenterItemModelRemindIndex.setUrl("/Sheep/RemindIndex");
-        personalCenterItemModelRemindIndex.setAction("remindindex");
-        personalCenterItemModelRemindIndex.setJumpType("00");
-        personalCenterItemModels.add(personalCenterItemModelRemindIndex);
+        ListItemModel listItemModelRemindIndex = new ListItemModel();
+        listItemModelRemindIndex.setIcon("personal-remind.png");
+        listItemModelRemindIndex.setTitle("购羊提醒");
+        listItemModelRemindIndex.setUrl("/Sheep/RemindIndex");
+        listItemModelRemindIndex.setAction("remindindex");
+        listItemModelRemindIndex.setJumpType("00");
+        listItemModels.add(listItemModelRemindIndex);
 
-        PersonalCenterItemModel personalCenterItemModelWallet = new PersonalCenterItemModel();
-        personalCenterItemModelWallet.setIcon("personal-qianbao.png");
-        personalCenterItemModelWallet.setTitle("我的钱包");
-        personalCenterItemModelWallet.setUrl("/Emubao/WebApp#/Wallet");
-        personalCenterItemModelWallet.setAction("wallet");
-        personalCenterItemModelWallet.setJumpType("00");
-        personalCenterItemModels.add(personalCenterItemModelWallet);
+        ListItemModel listItemModelWallet = new ListItemModel();
+        listItemModelWallet.setIcon("personal-qianbao.png");
+        listItemModelWallet.setTitle("我的钱包");
+        listItemModelWallet.setUrl("/Emubao/WebApp#/Wallet");
+        listItemModelWallet.setAction("wallet");
+        listItemModelWallet.setJumpType("00");
+        listItemModels.add(listItemModelWallet);
 
-        PersonalCenterItemModel personalCenterItemModelHfWallet = new PersonalCenterItemModel();
-        personalCenterItemModelHfWallet.setIcon("personal-qianbao.png");
-        personalCenterItemModelHfWallet.setTitle("汇付钱包");
-        personalCenterItemModelHfWallet.setUrl("/Customer/HfWallet");
-        personalCenterItemModelHfWallet.setAction("hfwallet");
-        personalCenterItemModelHfWallet.setJumpType("00");
-        personalCenterItemModels.add(personalCenterItemModelHfWallet);
+        ListItemModel listItemModelHfWallet = new ListItemModel();
+        listItemModelHfWallet.setIcon("personal-qianbao.png");
+        listItemModelHfWallet.setTitle("汇付钱包");
+        listItemModelHfWallet.setUrl("/Customer/HfWallet");
+        listItemModelHfWallet.setAction("hfwallet");
+        listItemModelHfWallet.setJumpType("00");
+        listItemModels.add(listItemModelHfWallet);
 
-        PersonalCenterItemModel personalCenterItemModelHfCard = new PersonalCenterItemModel();
-        personalCenterItemModelHfCard.setIcon("personal-yinhangka.png");
-        personalCenterItemModelHfCard.setTitle("汇付银行卡");
-        personalCenterItemModelHfCard.setUrl("/Customer/HfCard");
-        personalCenterItemModelHfCard.setAction("hfcard");
-        personalCenterItemModelHfCard.setJumpType("00");
-        personalCenterItemModels.add(personalCenterItemModelHfCard);
+        ListItemModel listItemModelHfCard = new ListItemModel();
+        listItemModelHfCard.setIcon("personal-yinhangka.png");
+        listItemModelHfCard.setTitle("汇付银行卡");
+        listItemModelHfCard.setUrl("/Customer/HfCard");
+        listItemModelHfCard.setAction("hfcard");
+        listItemModelHfCard.setJumpType("00");
+        listItemModels.add(listItemModelHfCard);
 
-        PersonalCenterItemModel personalCenterItemModelBonusList = new PersonalCenterItemModel();
-        personalCenterItemModelBonusList.setIcon("personal-xianjin.png");
-        personalCenterItemModelBonusList.setTitle("现金红包");
-        personalCenterItemModelBonusList.setUrl("/Customer/BonusList");
-        personalCenterItemModelBonusList.setAction("bonuslist");
-        personalCenterItemModelBonusList.setJumpType("00");
-        personalCenterItemModels.add(personalCenterItemModelBonusList);
+        ListItemModel listItemModelBonusList = new ListItemModel();
+        listItemModelBonusList.setIcon("personal-xianjin.png");
+        listItemModelBonusList.setTitle("现金红包");
+        listItemModelBonusList.setUrl("/Customer/BonusList");
+        listItemModelBonusList.setAction("bonuslist");
+        listItemModelBonusList.setJumpType("00");
+        listItemModels.add(listItemModelBonusList);
 
-        PersonalCenterItemModel personalCenterItemModelOrderList = new PersonalCenterItemModel();
-        personalCenterItemModelOrderList.setIcon("personal-dingdan.png");
-        personalCenterItemModelOrderList.setTitle("我的订单");
-        personalCenterItemModelOrderList.setUrl("/Emubao/WebApp#/OrderList");
-        personalCenterItemModelOrderList.setAction("orderlist");
-        personalCenterItemModelOrderList.setJumpType("00");
-        personalCenterItemModels.add(personalCenterItemModelOrderList);
+        ListItemModel listItemModelOrderList = new ListItemModel();
+        listItemModelOrderList.setIcon("personal-dingdan.png");
+        listItemModelOrderList.setTitle("我的订单");
+        listItemModelOrderList.setUrl("/Emubao/WebApp#/OrderList");
+        listItemModelOrderList.setAction("orderlist");
+        listItemModelOrderList.setJumpType("00");
+        listItemModels.add(listItemModelOrderList);
 
-        PersonalCenterItemModel personalCenterItemModelAddressList = new PersonalCenterItemModel();
-        personalCenterItemModelAddressList.setIcon("personal-address.png");
-        personalCenterItemModelAddressList.setTitle("收货地址");
-        personalCenterItemModelAddressList.setUrl("/Emubao/WebApp#/AddressList");
-        personalCenterItemModelAddressList.setAction("addresslist");
-        personalCenterItemModelAddressList.setJumpType("00");
-        personalCenterItemModels.add(personalCenterItemModelAddressList);
+        ListItemModel listItemModelAddressList = new ListItemModel();
+        listItemModelAddressList.setIcon("personal-address.png");
+        listItemModelAddressList.setTitle("收货地址");
+        listItemModelAddressList.setUrl("/Emubao/WebApp#/AddressList");
+        listItemModelAddressList.setAction("addresslist");
+        listItemModelAddressList.setJumpType("00");
+        listItemModels.add(listItemModelAddressList);
 
-        PersonalCenterItemModel personalCenterItemModelInvite = new PersonalCenterItemModel();
-        personalCenterItemModelInvite.setIcon("personal-referee.png");
-        personalCenterItemModelInvite.setTitle("我的推荐人");
-        personalCenterItemModelInvite.setUrl("/Emubao/WebApp#/Invite");
-        personalCenterItemModelInvite.setAction("invite");
-        personalCenterItemModelInvite.setJumpType("01");
-        personalCenterItemModels.add(personalCenterItemModelInvite);
+        ListItemModel listItemModelInvite = new ListItemModel();
+        listItemModelInvite.setIcon("personal-referee.png");
+        listItemModelInvite.setTitle("我的推荐人");
+        listItemModelInvite.setUrl("/Emubao/WebApp#/Invite");
+        listItemModelInvite.setAction("invite");
+        listItemModelInvite.setJumpType("01");
+        listItemModels.add(listItemModelInvite);
 
-        PersonalCenterItemModel personalCenterItemModelSettings = new PersonalCenterItemModel();
-        personalCenterItemModelSettings.setIcon("personal-set.png");
-        personalCenterItemModelSettings.setTitle("设置");
-        personalCenterItemModelSettings.setUrl("/Emubao/WebApp#/Settings");
-        personalCenterItemModelSettings.setAction("settings");
-        personalCenterItemModelSettings.setJumpType("01");
-        personalCenterItemModels.add(personalCenterItemModelSettings);
+        ListItemModel listItemModelSettings = new ListItemModel();
+        listItemModelSettings.setIcon("personal-set.png");
+        listItemModelSettings.setTitle("设置");
+        listItemModelSettings.setUrl("/Emubao/WebApp#/Settings");
+        listItemModelSettings.setAction("settings");
+        listItemModelSettings.setJumpType("01");
+        listItemModels.add(listItemModelSettings);
 
-        for (PersonalCenterItemModel itemModel :
-                personalCenterItemModels) {
+        for (ListItemModel itemModel :
+                listItemModels) {
             itemModel.setUrl(url + itemModel.getUrl());
             itemModel.setIcon(Constants.RESOURES_ADDRESS_IMAGES + itemModel.getIcon());
         }
 
-        personalCenterViewModel.setList(personalCenterItemModels);
-        return personalCenterViewModel;
+        listViewModel.setList(listItemModels);
+        return listViewModel;
     }
 
     @Override
