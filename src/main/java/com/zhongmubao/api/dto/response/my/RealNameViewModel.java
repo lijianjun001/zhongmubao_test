@@ -5,6 +5,25 @@ package com.zhongmubao.api.dto.response.my;
  * @author xy
  */
 public class RealNameViewModel {
+    /**
+     * 是否实名
+     */
+    private String realName;
+
+    /**
+     * 新浪 XL，汇付，HF
+     */
+    private String realNameType;
+
+    /**
+     * 图标
+     */
+    private String realNameImg;
+
+    /**
+     * S 已开户(已实名) F 未开户(未实名) B 未激活
+     */
+    private String realNameSatus;
 
     public String getRealName() {
         return realName;
@@ -37,11 +56,4 @@ public class RealNameViewModel {
     public void setRealNameSatus(String realNameSatus) {
         this.realNameSatus = realNameSatus;
     }
-
-    private String realName;//是否实名
-    private String realNameType;//XL 新浪 HF 汇付
-    private String realNameImg;//图标
-    private String realNameSatus;//S 已开户(已实名) F 未开户(未实名) B 未激活
-
-
 }
