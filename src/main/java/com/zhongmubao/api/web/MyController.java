@@ -176,7 +176,7 @@ public class MyController {
      * @author 米立林
      * @return ReadPackageListViewModel
      */
-    @RequestMapping(value = "/readPackageList", method = RequestMethod.POST, consumes = "application/json")
+    @RequestMapping(value = "/readPackage/List", method = RequestMethod.POST, consumes = "application/json")
     @Authorization
     public ResponseEntity<ReponseModel> readPackageList(@CurrentUser Customer customer, HttpEntity<ReadPackageListRequestModel> model) {
         try {
