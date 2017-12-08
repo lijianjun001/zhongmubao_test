@@ -10,7 +10,7 @@ import com.zhongmubao.api.entity.Customer;
  * 个人中心
  * @author xy
  */
-public interface CenterService {
+public interface MenuService {
 
     /**
      * 个人中心

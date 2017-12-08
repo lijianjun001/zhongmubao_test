@@ -15,7 +15,7 @@ import com.zhongmubao.api.entity.CustomerHF;
 import com.zhongmubao.api.entity.CustomerSina;
 import com.zhongmubao.api.exception.ApiException;
 import com.zhongmubao.api.service.BaseService;
-import com.zhongmubao.api.service.my.CenterService;
+import com.zhongmubao.api.service.my.MenuService;
 import com.zhongmubao.api.util.StringUtil;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,12 +30,12 @@ import java.util.*;
  * @author xy
  */
 @Service
-public class CenterServiceImpl extends BaseService implements CenterService {
+public class MenuServiceImpl extends BaseService implements MenuService {
     private final CustomerHFDao customerHFDao;
     private final CustomerSinaDao customerSinaDao;
 
     @Autowired
-    public CenterServiceImpl(CustomerHFDao customerHFDao, CustomerSinaDao customerSinaDao) {
+    public MenuServiceImpl(CustomerHFDao customerHFDao, CustomerSinaDao customerSinaDao) {
         this.customerHFDao = customerHFDao;
         this.customerSinaDao = customerSinaDao;
     }
