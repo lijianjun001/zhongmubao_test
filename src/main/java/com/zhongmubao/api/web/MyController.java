@@ -54,7 +54,7 @@ public class MyController {
      */
     @RequestMapping(value = "/menu/list", method = RequestMethod.POST, consumes = "application/json")
     @Authorization
-    public ResponseEntity<ReponseModel> personalCenter(@CurrentUser Customer customer, HttpEntity<PersonalCenterRequestModel> model) {
+    public ResponseEntity<ReponseModel> menuList(@CurrentUser Customer customer, HttpEntity<PersonalCenterRequestModel> model) {
         try {
             PersonalCenterViewModel personalCenterViewModel = menuService.list(customer, model.getBody());
             return new ResponseEntity<>(ReponseModel.ok(personalCenterViewModel), HttpStatus.OK);
@@ -64,9 +64,6 @@ public class MyController {
             return new ResponseEntity<>(ReponseModel.error(ex, this.getClass()), HttpStatus.OK);
         }
     }
-    //endregion
-
-    //region 个人中心 实名OR开户
 
     /***
      * 个人中心 实名OR开户
@@ -76,7 +73,7 @@ public class MyController {
      */
     @RequestMapping(value = "/menu/choosePaymentRealName", method = RequestMethod.POST, consumes = "application/json")
     @Authorization
-    public ResponseEntity<ReponseModel> realName(@CurrentUser Customer customer, HttpEntity<RealNameRequestModel> model) {
+    public ResponseEntity<ReponseModel> menuChoosePaymentRealName(@CurrentUser Customer customer, HttpEntity<RealNameRequestModel> model) {
         try {
             RealNameViewModel realNameViewModel = menuService.choosePaymentRealName(customer, model.getBody());
             return new ResponseEntity<>(ReponseModel.ok(realNameViewModel), HttpStatus.OK);
