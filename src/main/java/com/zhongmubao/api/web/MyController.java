@@ -44,15 +44,15 @@ public class MyController {
         this.readPackageService = readPackageService;
     }
 
-    // region 个人中心列表
+    // region 个人中心菜单
 
     /***
-     * 个人中心 列表
+     * 个人中心 菜单
      * @param customer 客户
      * @author xy
      * @return ReponseModel
      */
-    @RequestMapping(value = "/personalCenter", method = RequestMethod.POST, consumes = "application/json")
+    @RequestMapping(value = "/menu/list", method = RequestMethod.POST, consumes = "application/json")
     @Authorization
     public ResponseEntity<ReponseModel> personalCenter(@CurrentUser Customer customer, HttpEntity<PersonalCenterRequestModel> model) {
         try {
@@ -74,7 +74,7 @@ public class MyController {
      * @author xy
      * @return ReponseModel
      */
-    @RequestMapping(value = "/realName", method = RequestMethod.POST, consumes = "application/json")
+    @RequestMapping(value = "/menu/choosePaymentRealName", method = RequestMethod.POST, consumes = "application/json")
     @Authorization
     public ResponseEntity<ReponseModel> realName(@CurrentUser Customer customer, HttpEntity<RealNameRequestModel> model) {
         try {
