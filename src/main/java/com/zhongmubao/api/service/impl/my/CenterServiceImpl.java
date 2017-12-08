@@ -89,6 +89,22 @@ public class CenterServiceImpl extends BaseService implements CenterService {
         personalCenterItemModelWallet.setJumpType("00");
         personalCenterItemModels.add(personalCenterItemModelWallet);
 
+        PersonalCenterItemModel personalCenterItemModelHfWallet = new PersonalCenterItemModel();
+        personalCenterItemModelHfWallet.setIcon("personal-referee.png");
+        personalCenterItemModelHfWallet.setTitle("汇付钱包");
+        personalCenterItemModelHfWallet.setUrl("/Customer/HfWallet");
+        personalCenterItemModelHfWallet.setAction("hfwallet");
+        personalCenterItemModelHfWallet.setJumpType("00");
+        personalCenterItemModels.add(personalCenterItemModelHfWallet);
+
+        PersonalCenterItemModel personalCenterItemModelHfCard = new PersonalCenterItemModel();
+        personalCenterItemModelHfCard.setIcon("personal-referee.png");
+        personalCenterItemModelHfCard.setTitle("汇付银行卡");
+        personalCenterItemModelHfCard.setUrl("/Customer/HfCard");
+        personalCenterItemModelHfCard.setAction("hfcard");
+        personalCenterItemModelHfCard.setJumpType("00");
+        personalCenterItemModels.add(personalCenterItemModelHfCard);
+
         PersonalCenterItemModel personalCenterItemModelBonusList = new PersonalCenterItemModel();
         personalCenterItemModelBonusList.setIcon("personal-xianjin.png");
         personalCenterItemModelBonusList.setTitle("现金红包");
@@ -129,37 +145,13 @@ public class CenterServiceImpl extends BaseService implements CenterService {
         personalCenterItemModelSettings.setJumpType("01");
         personalCenterItemModels.add(personalCenterItemModelSettings);
 
-        PersonalCenterItemModel personalCenterItemModelHfWallet = new PersonalCenterItemModel();
-        personalCenterItemModelHfWallet.setIcon("personal-referee.png");
-        personalCenterItemModelHfWallet.setTitle("汇付钱包");
-        personalCenterItemModelHfWallet.setUrl("/Customer/HfWallet");
-        personalCenterItemModelHfWallet.setAction("hfwallet");
-        personalCenterItemModelHfWallet.setJumpType("00");
-        personalCenterItemModels.add(personalCenterItemModelHfWallet);
-
-        PersonalCenterItemModel personalCenterItemModelHfCard = new PersonalCenterItemModel();
-        personalCenterItemModelHfCard.setIcon("personal-referee.png");
-        personalCenterItemModelHfCard.setTitle("汇付银行卡");
-        personalCenterItemModelHfCard.setUrl("/Customer/HfCard");
-        personalCenterItemModelHfCard.setAction("hfcard");
-        personalCenterItemModelHfCard.setJumpType("00");
-        personalCenterItemModels.add(personalCenterItemModelHfCard);
-
-        PersonalCenterItemModel personalCenterItemModelHfAuth = new PersonalCenterItemModel();
-        personalCenterItemModelHfAuth.setIcon("personal-referee.png");
-        personalCenterItemModelHfAuth.setTitle("汇付开户");
-        personalCenterItemModelHfAuth.setUrl("/Customer/HfAuth");
-        personalCenterItemModelHfAuth.setAction("hfauth");
-        personalCenterItemModelHfAuth.setJumpType("00");
-        personalCenterItemModels.add(personalCenterItemModelHfAuth);
-
-//        PersonalCenterItemModel personalCenterItemModelHfAuthInfo = new PersonalCenterItemModel();
-//        personalCenterItemModelHfAuthInfo.setIcon("personal-referee.png");
-//        personalCenterItemModelHfAuthInfo.setTitle("汇付开户信息");
-//        personalCenterItemModelHfAuthInfo.setUrl("/Customer/HfAuthInfo");
-//        personalCenterItemModelHfAuthInfo.setAction("hfauthinfo");
-//        personalCenterItemModelHfAuthInfo.setJumpType("00");
-//        personalCenterItemModels.add(personalCenterItemModelHfAuthInfo);
+//        PersonalCenterItemModel personalCenterItemModelHfAuth = new PersonalCenterItemModel();
+//        personalCenterItemModelHfAuth.setIcon("personal-referee.png");
+//        personalCenterItemModelHfAuth.setTitle("汇付开户");
+//        personalCenterItemModelHfAuth.setUrl("/Customer/HfAuth");
+//        personalCenterItemModelHfAuth.setAction("hfauth");
+//        personalCenterItemModelHfAuth.setJumpType("00");
+//        personalCenterItemModels.add(personalCenterItemModelHfAuth);
 
 //        List<PersonalCenterItemModel> personalCenterItemModelsRedis = new ArrayList<PersonalCenterItemModel>();
 //        personalCenterItemModelsRedis = personalCenterItemModels;
