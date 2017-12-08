@@ -19,4 +19,17 @@ public class BaseRequest {
     public void setVersion(String version) {
         this.version = version;
     }
+
+    /**
+     * 平台
+     */
+    private String platform;
+
+    public String getPlatform() {
+        return platform;
+    }
+
+    public void setPlatform(String platform) {
+        this.platform = platform;
+    }
 }
