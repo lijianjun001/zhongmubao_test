@@ -54,7 +54,7 @@ public class MyController {
      */
     @RequestMapping(value = "/menu/list", method = RequestMethod.POST, consumes = "application/json")
     @Authorization
-    public ResponseEntity<ReponseModel> personalCenter(@CurrentUser Customer customer, HttpEntity<PersonalCenterRequestModel> model) {
+    public ResponseEntity<ReponseModel> list(@CurrentUser Customer customer, HttpEntity<PersonalCenterRequestModel> model) {
         try {
             PersonalCenterViewModel personalCenterViewModel = menuService.list(customer, model.getBody());
             return new ResponseEntity<>(ReponseModel.ok(personalCenterViewModel), HttpStatus.OK);
@@ -76,7 +76,7 @@ public class MyController {
      */
     @RequestMapping(value = "/menu/choosePaymentRealName", method = RequestMethod.POST, consumes = "application/json")
     @Authorization
-    public ResponseEntity<ReponseModel> realName(@CurrentUser Customer customer, HttpEntity<RealNameRequestModel> model) {
+    public ResponseEntity<ReponseModel> choosePaymentRealName(@CurrentUser Customer customer, HttpEntity<RealNameRequestModel> model) {
         try {
             RealNameViewModel realNameViewModel = menuService.choosePaymentRealName(customer, model.getBody());
             return new ResponseEntity<>(ReponseModel.ok(realNameViewModel), HttpStatus.OK);
