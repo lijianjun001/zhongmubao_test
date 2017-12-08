@@ -1,10 +1,10 @@
-package com.zhongmubao.api.dto.response.my.center;
+package com.zhongmubao.api.dto.response.my.menu;
 
 /**
  * 个人中心 列表单项
  * @author xy
  */
-public class PersonalCenterItemModel {
+public class ListItemModel {
 
     public String getIcon() {
         return icon;

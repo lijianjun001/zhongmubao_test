@@ -1,8 +1,8 @@
 package com.zhongmubao.api.service.my;
 
-import com.zhongmubao.api.dto.request.my.center.PersonalCenterRequestModel;
+import com.zhongmubao.api.dto.request.my.menu.ListRequestModel;
 import com.zhongmubao.api.dto.request.my.RealNameRequestModel;
-import com.zhongmubao.api.dto.response.my.center.PersonalCenterViewModel;
+import com.zhongmubao.api.dto.response.my.menu.ListViewModel;
 import com.zhongmubao.api.dto.response.my.RealNameViewModel;
 import com.zhongmubao.api.entity.Customer;
 
@@ -16,10 +16,10 @@ public interface MenuService {
      * 个人中心
      * @param customer 用户
      * @param model
-     * @return PersonalCenterViewModel
+     * @return ListViewModel
      * @throws Exception
      */
-    PersonalCenterViewModel list(Customer customer, PersonalCenterRequestModel model) throws Exception;
+    ListViewModel list(Customer customer, ListRequestModel model) throws Exception;
 
     /**
      *  实名是否实名(汇付是否开户[激活])

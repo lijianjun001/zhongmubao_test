@@ -3,13 +3,13 @@ package com.zhongmubao.api.web;
 import com.zhongmubao.api.authorization.annotation.Authorization;
 import com.zhongmubao.api.authorization.annotation.CurrentUser;
 import com.zhongmubao.api.dto.request.my.RealNameRequestModel;
-import com.zhongmubao.api.dto.request.my.center.PersonalCenterRequestModel;
+import com.zhongmubao.api.dto.request.my.menu.ListRequestModel;
 import com.zhongmubao.api.dto.request.my.readpackage.ReadPackageDetailRequestModel;
 import com.zhongmubao.api.dto.request.my.readpackage.ReadPackageGroupRequestModel;
 import com.zhongmubao.api.dto.request.my.readpackage.ReadPackageListRequestModel;
 import com.zhongmubao.api.dto.response.ReponseModel;
 import com.zhongmubao.api.dto.response.my.RealNameViewModel;
-import com.zhongmubao.api.dto.response.my.center.PersonalCenterViewModel;
+import com.zhongmubao.api.dto.response.my.menu.ListViewModel;
 import com.zhongmubao.api.dto.response.my.readpackage.ReadPackageDetailViewModel;
 import com.zhongmubao.api.dto.response.my.readpackage.ReadPackageGroupViewModel;
 import com.zhongmubao.api.dto.response.my.readpackage.ReadPackageListViewModel;
@@ -54,10 +54,10 @@ public class MyController {
      */
     @RequestMapping(value = "/menu/list", method = RequestMethod.POST, consumes = "application/json")
     @Authorization
-    public ResponseEntity<ReponseModel> menuList(@CurrentUser Customer customer, HttpEntity<PersonalCenterRequestModel> model) {
+    public ResponseEntity<ReponseModel> menuList(@CurrentUser Customer customer, HttpEntity<ListRequestModel> model) {
         try {
-            PersonalCenterViewModel personalCenterViewModel = menuService.list(customer, model.getBody());
-            return new ResponseEntity<>(ReponseModel.ok(personalCenterViewModel), HttpStatus.OK);
+            ListViewModel listViewModel = menuService.list(customer, model.getBody());
+            return new ResponseEntity<>(ReponseModel.ok(listViewModel), HttpStatus.OK);
         } catch (ApiException ex) {
             return new ResponseEntity<>(ReponseModel.error(ex.getStatus()), HttpStatus.OK);
         } catch (Exception ex) {
