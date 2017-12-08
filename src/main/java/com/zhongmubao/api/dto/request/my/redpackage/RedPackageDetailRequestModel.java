@@ -1,4 +1,4 @@
-package com.zhongmubao.api.dto.request.my.readpackage;
+package com.zhongmubao.api.dto.request.my.redpackage;
 
 import com.zhongmubao.api.dto.request.BaseRequest;
 
@@ -7,7 +7,7 @@ import com.zhongmubao.api.dto.request.BaseRequest;
  *
  * @author 孙阿龙
  */
-public class ReadPackageDetailRequestModel extends BaseRequest {
+public class RedPackageDetailRequestModel extends BaseRequest {
 
     /**
      * 红包id

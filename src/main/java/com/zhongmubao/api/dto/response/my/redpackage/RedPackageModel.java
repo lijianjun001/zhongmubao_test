@@ -1,13 +1,11 @@
-package com.zhongmubao.api.dto.response.my.readpackage;
-
-import com.zhongmubao.api.config.enmu.RedPackageState;
+package com.zhongmubao.api.dto.response.my.redpackage;
 
 /**
  * 我的红包列表Model
  *
  * @author 孙阿龙
  */
-public class ReadPackageModel {
+public class RedPackageModel {
 
     /**
      * 唯一标识
@@ -49,7 +47,7 @@ public class ReadPackageModel {
      */
     private String status;
 
-    public ReadPackageModel(int id, String price, String remark, String typeStr, boolean whetherNew, String expTime, boolean whetherEarlier, String status) {
+    public RedPackageModel(int id, String price, String remark, String typeStr, boolean whetherNew, String expTime, boolean whetherEarlier, String status) {
         this.id = id;
         this.price = price;
         this.remark = remark;
@@ -60,7 +58,7 @@ public class ReadPackageModel {
         this.status = status;
     }
 
-    public ReadPackageModel() {
+    public RedPackageModel() {
     }
 
     public int getId() {

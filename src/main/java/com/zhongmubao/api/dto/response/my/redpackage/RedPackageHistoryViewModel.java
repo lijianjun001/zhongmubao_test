@@ -1,18 +1,18 @@
-package com.zhongmubao.api.dto.response.my.readpackage;
+package com.zhongmubao.api.dto.response.my.redpackage;
 
 import java.util.ArrayList;
 
 /**
- * 红包列表分页
+ * 过期红包列表
  *
- * @author 孙阿龙
+ * @author 米立林
  */
-public class ReadPackageListViewModel {
+public class RedPackageHistoryViewModel {
 
-    public ReadPackageListViewModel() {
+    public RedPackageHistoryViewModel() {
     }
 
-    public ReadPackageListViewModel(int totalPage, ArrayList<ReadPackageModel> list) {
+    public RedPackageHistoryViewModel(int totalPage, ArrayList<RedPackageModel> list) {
         this.totalPage = totalPage;
         this.list = list;
     }
@@ -25,7 +25,7 @@ public class ReadPackageListViewModel {
     /**
      * 红包集合
      */
-    private ArrayList<ReadPackageModel> list;
+    private ArrayList<RedPackageModel> list;
 
     public int getTotalPage() {
         return totalPage;
@@ -36,11 +36,11 @@ public class ReadPackageListViewModel {
     }
 
 
-    public ArrayList<ReadPackageModel> getList() {
+    public ArrayList<RedPackageModel> getList() {
         return list;
     }
 
-    public void setList(ArrayList<ReadPackageModel> list) {
+    public void setList(ArrayList<RedPackageModel> list) {
         this.list = list;
     }
 }
