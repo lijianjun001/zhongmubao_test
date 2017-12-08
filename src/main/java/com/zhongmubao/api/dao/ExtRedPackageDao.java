@@ -114,4 +114,11 @@ public interface ExtRedPackageDao {
      * @return
      */
     Page<ExtRedPackage> pageEffectiveByCustomerIdOrderByType(@Param("customerId") int customerId, @Param("type")String type);
+
+    /**
+     * 红包信息
+     * @param id 红包id
+     * @return
+     */
+    ExtRedPackage getById(@Param("id") int id);
 }

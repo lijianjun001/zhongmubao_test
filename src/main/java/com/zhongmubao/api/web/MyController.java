@@ -10,6 +10,7 @@ import com.zhongmubao.api.dto.request.my.readpackage.ReadPackageListRequestModel
 import com.zhongmubao.api.dto.response.ReponseModel;
 import com.zhongmubao.api.dto.response.my.RealNameViewModel;
 import com.zhongmubao.api.dto.response.my.center.PersonalCenterViewModel;
+import com.zhongmubao.api.dto.response.my.readpackage.ReadPackageDetailViewModel;
 import com.zhongmubao.api.dto.response.my.readpackage.ReadPackageGroupViewModel;
 import com.zhongmubao.api.dto.response.my.readpackage.ReadPackageListViewModel;
 import com.zhongmubao.api.dto.response.my.readpackage.RedPackageExpiredViewModel;
@@ -151,19 +152,6 @@ public class MyController {
     }
 
     /**
-     * 红包列表请求接口
-     *
-     * @param customer 客户
-     * @param model    请求model
-     * @return 结果
-     */
-    @RequestMapping(value = "/readPackageList", method = RequestMethod.POST, consumes = "application/json")
-    @Authorization
-    public ResponseEntity<ReponseModel> readPackageList(@CurrentUser Customer customer, HttpEntity<ReadPackageListRequestModel> model) {
-        return null;
-    }
-
-    /**
      * 红包详情请求接口
      *
      * @param customer 客户
@@ -173,7 +161,14 @@ public class MyController {
     @RequestMapping(value = "/readPackageDetail", method = RequestMethod.POST, consumes = "application/json")
     @Authorization
     public ResponseEntity<ReponseModel> readPackageDetail(@CurrentUser Customer customer, HttpEntity<ReadPackageDetailRequestModel> model) {
-        return null;
+        try {
+            ReadPackageDetailViewModel detailViewModel = readPackageService.readPackageDetail(customer, model.getBody());
+            return new ResponseEntity<>(ReponseModel.ok(detailViewModel), HttpStatus.OK);
+        } catch (ApiException ex) {
+            return new ResponseEntity<>(ReponseModel.error(ex.getStatus()), HttpStatus.OK);
+        } catch (Exception ex) {
+            return new ResponseEntity<>(ReponseModel.error(ex, this.getClass()), HttpStatus.OK);
+        }
     }
     //endregion
 }

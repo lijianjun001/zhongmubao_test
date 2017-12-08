@@ -9,6 +9,18 @@ import java.util.ArrayList;
  */
 public class ReadPackageDetailViewModel {
 
+    public ReadPackageDetailViewModel() {
+    }
+
+    public ReadPackageDetailViewModel(String typeStr, String price, String beginTime, String expTime, ArrayList<String> remarks, String status) {
+        this.typeStr = typeStr;
+        this.price = price;
+        this.beginTime = beginTime;
+        this.expTime = expTime;
+        this.remarks = remarks;
+        this.status = status;
+    }
+
     /**
      * 红包类型中文
      */

@@ -142,7 +142,7 @@
     </select>
 
     <select id="pageEffectiveByCustomerIdOrderByType" resultType="ExtRedPackage">
-        SELECT * from ExtRedPackage WHERE
+        SELECT * FROM ExtRedPackage WHERE
         customerid = #{customerId}
        <![CDATA[ AND expTime<now()]]>
         AND IsUsed = 0
@@ -155,5 +155,10 @@
                 order by price desc
             </otherwise>
         </choose>
+    </select>
+
+    <select id="getById" resultType="ExtRedPackage">
+        SELECT * FROM ExtRedPackage
+        WHERE Id = #{id}
     </select>
 </mapper>

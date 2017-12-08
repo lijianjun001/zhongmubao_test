@@ -4,16 +4,15 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.zhongmubao.api.config.Constants;
 import com.zhongmubao.api.config.ResultStatus;
-import com.zhongmubao.api.config.enmu.RedPackageGroupType;
 import com.zhongmubao.api.config.enmu.RedPackageSortType;
 import com.zhongmubao.api.dao.ExtRedPackageDao;
+import com.zhongmubao.api.dto.request.my.readpackage.ReadPackageDetailRequestModel;
 import com.zhongmubao.api.dto.request.my.readpackage.ReadPackageGroupRequestModel;
 import com.zhongmubao.api.dto.request.my.readpackage.ReadPackageListRequestModel;
 import com.zhongmubao.api.dto.response.my.readpackage.*;
 import com.zhongmubao.api.entity.Customer;
 import com.zhongmubao.api.entity.ExtRedPackage;
 import com.zhongmubao.api.exception.ApiException;
-import com.zhongmubao.api.mongo.entity.base.PageModel;
 import com.zhongmubao.api.service.my.ReadPackageService;
 import com.zhongmubao.api.util.DateUtil;
 import com.zhongmubao.api.util.DoubleUtil;
@@ -167,5 +166,28 @@ public class ReadPackageServiceImpl implements ReadPackageService {
                 )).collect(Collectors.toList());
 
         return new RedPackageExpiredViewModel(pager.getPages(), (ArrayList<ReadPackageModel>) list);
+    }
+
+    @Override
+    public ReadPackageDetailViewModel readPackageDetail(Customer customer, ReadPackageDetailRequestModel model) throws Exception {
+        if (model == null || model.getId() <= 0) {
+            throw new ApiException(ResultStatus.PARAMETER_MISSING);
+        }
+        ExtRedPackage extRedPackage = extRedPackageDao.getById(model.getId());
+
+        ArrayList<String> remarks = new ArrayList<>();
+        remarks.add("每个红包只能使用一次");
+        remarks.add("该红包仅可购买120天及以上长期羊使用");
+
+        ReadPackageDetailViewModel detailViewModel = new ReadPackageDetailViewModel(
+                Constants.redpackettypestr(extRedPackage.getType()),
+                DoubleUtil.toFixed(extRedPackage.getPrice(), Constants.Price_FORMAT),
+                DateUtil.format(extRedPackage.getCreated(), Constants.DATE_FORMAT),
+                DateUtil.format(extRedPackage.getExpTime(), Constants.DATE_FORMAT),
+                remarks,
+                extRedPackage.isUsed() ? "已变现" : "未使用"
+        );
+
+        return detailViewModel;
     }
 }
