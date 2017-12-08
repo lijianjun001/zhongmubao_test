@@ -20,7 +20,6 @@ public class ReadPackageListViewModel {
     /**
      * 总页码
      */
-
     private int totalPage;
 
     /**

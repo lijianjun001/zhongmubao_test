@@ -111,7 +111,7 @@ public class ReadPackageServiceImpl implements ReadPackageService {
 
             groupRedPacket.sort((o1, o2) -> (o1.getExpTime().compareTo(o2.getExpTime())));
             ExtRedPackageGroup redPacket = groupRedPacket.stream().findFirst().get();
-            String title="零钱红包";
+            String title = "零钱红包";
             groupModel.setPrice(title);
             groupModel.setType(redPacket.getType());
             groupModel.setFirstExpTime(DateUtil.format(redPacket.getExpTime(), Constants.DATE_FORMAT));
@@ -150,7 +150,7 @@ public class ReadPackageServiceImpl implements ReadPackageService {
     }
 
     @Override
-    public ReadPackageListViewModel readPackageList(Customer customer, ReadPackageListRequestModel model) throws Exception {
+    public ReadPackageListViewModel readPackageGroupList(Customer customer, ReadPackageListRequestModel model) throws Exception {
         if (model == null || model.getGroupType() == null) {
             throw new ApiException(ResultStatus.PARAMETER_MISSING);
         }
@@ -213,10 +213,12 @@ public class ReadPackageServiceImpl implements ReadPackageService {
             throw new ApiException(ResultStatus.PARAMETER_MISSING);
         }
 
+        String item1 = "每个红包只能使用一次";
+        String item2 = "该红包仅可购买120天及以上长期羊使用";
         ArrayList<String> remarks = new ArrayList<>();
-        remarks.add("每个红包只能使用一次");
+        remarks.add(item1);
         if (extRedPackage.getPrice() >= 5) {
-            remarks.add("该红包仅可购买120天及以上长期羊使用");
+            remarks.add(item2);
         }
         Date now = new Date();
         RedPackageState redPackageState = extRedPackage.isUsed() ? RedPackageState.USRD : RedPackageState.UNUSED;
@@ -232,5 +234,34 @@ public class ReadPackageServiceImpl implements ReadPackageService {
                 remarks,
                 redPackageState
         );
+    }
+
+    @Override
+    public ReadPackageListViewModel readPackageList(Customer customer, ReadPackageListRequestModel model) throws Exception {
+        if (model == null) {
+            throw new ApiException(ResultStatus.PARAMETER_MISSING);
+        }
+        if (model.getSortType() == null) {
+            model.setSortType(RedPackageSortType.ExpTime);
+        }
+
+        PageHelper.startPage(model.getPageIndex(), Constants.PAGE_SIZE);
+        Page<ExtRedPackage> pager = extRedPackageDao.pageEffectiveExtRedPackageByCustomerIdOrderByType(customer.getId(), model.getSortType().getName());
+
+        Date now = new Date();
+        String remark = "仅可购买120天及以上长期羊使用";
+        List<ReadPackageModel> list = pager.stream()
+                .map(en -> new ReadPackageModel(
+                        en.getId(),
+                        DoubleUtil.toFixed(en.getPrice(), Constants.Price_FORMAT),
+                        en.getPrice() >= 5 ? remark : "",
+                        Constants.redpackettypestr(en.getType()),
+                        en.getIsNew() == 1,
+                        DateUtil.format(en.getExpTime(), Constants.DATE_FORMAT),
+                        DateUtil.subDateOfDay(now, en.getExpTime()) > 30,
+                        en.isUsed() ? RedPackageState.USRD : RedPackageState.UNUSED
+                )).collect(Collectors.toList());
+
+        return new ReadPackageListViewModel(pager.getPages(), (ArrayList<ReadPackageModel>) list);
     }
 }

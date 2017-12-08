@@ -118,11 +118,11 @@ public class MyController {
      * @author 米立林
      * @return ReadPackageListViewModel
      */
-    @RequestMapping(value = "/readPackageList", method = RequestMethod.POST, consumes = "application/json")
+    @RequestMapping(value = "/readPackageGroupList", method = RequestMethod.POST, consumes = "application/json")
     @Authorization
-    public ResponseEntity<ReponseModel> readPackageList(@CurrentUser Customer customer, HttpEntity<ReadPackageListRequestModel> model) {
+    public ResponseEntity<ReponseModel> readPackageGroupList(@CurrentUser Customer customer, HttpEntity<ReadPackageListRequestModel> model) {
         try {
-            ReadPackageListViewModel redPackageList = readPackageService.readPackageList(customer, model.getBody());
+            ReadPackageListViewModel redPackageList = readPackageService.readPackageGroupList(customer, model.getBody());
             return new ResponseEntity<>(ReponseModel.ok(redPackageList), HttpStatus.OK);
         } catch (ApiException ex) {
             return new ResponseEntity<>(ReponseModel.error(ex.getStatus()), HttpStatus.OK);
@@ -164,6 +164,27 @@ public class MyController {
         try {
             ReadPackageDetailViewModel detailViewModel = readPackageService.readPackageDetail(customer, model.getBody());
             return new ResponseEntity<>(ReponseModel.ok(detailViewModel), HttpStatus.OK);
+        } catch (ApiException ex) {
+            return new ResponseEntity<>(ReponseModel.error(ex.getStatus()), HttpStatus.OK);
+        } catch (Exception ex) {
+            return new ResponseEntity<>(ReponseModel.error(ex, this.getClass()), HttpStatus.OK);
+        }
+    }
+
+    /**
+     * 排序红包列表
+     *
+     * @param customer 客户
+     * @param model    请求model
+     * @author 米立林
+     * @return ReadPackageListViewModel
+     */
+    @RequestMapping(value = "/readPackageList", method = RequestMethod.POST, consumes = "application/json")
+    @Authorization
+    public ResponseEntity<ReponseModel> readPackageList(@CurrentUser Customer customer, HttpEntity<ReadPackageListRequestModel> model) {
+        try {
+            ReadPackageListViewModel redPackageList = readPackageService.readPackageList(customer, model.getBody());
+            return new ResponseEntity<>(ReponseModel.ok(redPackageList), HttpStatus.OK);
         } catch (ApiException ex) {
             return new ResponseEntity<>(ReponseModel.error(ex.getStatus()), HttpStatus.OK);
         } catch (Exception ex) {

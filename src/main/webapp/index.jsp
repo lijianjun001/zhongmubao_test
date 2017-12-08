@@ -34,7 +34,7 @@
 //        };
         var data = {
             pageIndex:1,
-            groupType:"EIGHT"
+            sortType:"Price"
         };
 
 

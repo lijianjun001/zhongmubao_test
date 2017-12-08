@@ -33,7 +33,7 @@ public interface ReadPackageService {
      * @return ReadPackageListViewModel
      * @throws Exception
      */
-    ReadPackageListViewModel readPackageList(Customer customer, ReadPackageListRequestModel model) throws Exception;
+    ReadPackageListViewModel readPackageGroupList(Customer customer, ReadPackageListRequestModel model) throws Exception;
 
     /**
      * 获取过期红包
@@ -54,5 +54,15 @@ public interface ReadPackageService {
      * @throws Exception
      */
     ReadPackageDetailViewModel readPackageDetail(Customer customer, ReadPackageDetailRequestModel model) throws Exception;
+
+    /**
+     * 排序红包列表
+     *
+     * @param customer 客户
+     * @param model    请求参数
+     * @return ReadPackageListViewModel
+     * @throws Exception
+     */
+    ReadPackageListViewModel readPackageList(Customer customer, ReadPackageListRequestModel model) throws Exception;
 
 }
