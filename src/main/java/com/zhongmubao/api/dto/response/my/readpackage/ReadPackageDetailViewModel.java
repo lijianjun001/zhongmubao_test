@@ -1,5 +1,7 @@
 package com.zhongmubao.api.dto.response.my.readpackage;
 
+import com.zhongmubao.api.config.enmu.RedPackageState;
+
 import java.util.ArrayList;
 
 /**
@@ -12,7 +14,7 @@ public class ReadPackageDetailViewModel {
     public ReadPackageDetailViewModel() {
     }
 
-    public ReadPackageDetailViewModel(String typeStr, String price, String beginTime, String expTime, ArrayList<String> remarks, String status) {
+    public ReadPackageDetailViewModel(String typeStr, String price, String beginTime, String expTime, ArrayList<String> remarks, RedPackageState status) {
         this.typeStr = typeStr;
         this.price = price;
         this.beginTime = beginTime;
@@ -47,9 +49,9 @@ public class ReadPackageDetailViewModel {
     private ArrayList<String> remarks;
 
     /**
-     * 状态
+     * 状态(00未使用，01已使用，02已过期)
      */
-    private String status;
+    private RedPackageState status;
 
     public String getTypeStr() {
         return typeStr;
@@ -91,11 +93,11 @@ public class ReadPackageDetailViewModel {
         this.remarks = remarks;
     }
 
-    public String getStatus() {
+    public RedPackageState getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(RedPackageState status) {
         this.status = status;
     }
 

@@ -138,11 +138,11 @@ public class MyController {
      * @param model    请求model
      * @return 结果
      */
-    @RequestMapping(value = "/readPackageExpired", method = RequestMethod.POST, consumes = "application/json")
+    @RequestMapping(value = "/readPackageHistory", method = RequestMethod.POST, consumes = "application/json")
     @Authorization
-    public ResponseEntity<ReponseModel> readPackageExpired(@CurrentUser Customer customer, HttpEntity<ReadPackageGroupRequestModel> model) {
+    public ResponseEntity<ReponseModel> readPackageHistory(@CurrentUser Customer customer, HttpEntity<ReadPackageGroupRequestModel> model) {
         try {
-            RedPackageHistoryViewModel readPackageExpiredModel = readPackageService.readPackageExpired(customer, model.getBody());
+            RedPackageHistoryViewModel readPackageExpiredModel = readPackageService.readPackageHistory(customer, model.getBody());
             return new ResponseEntity<>(ReponseModel.ok(readPackageExpiredModel), HttpStatus.OK);
         } catch (ApiException ex) {
             return new ResponseEntity<>(ReponseModel.error(ex.getStatus()), HttpStatus.OK);

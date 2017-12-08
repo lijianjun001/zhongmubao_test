@@ -1,5 +1,7 @@
 package com.zhongmubao.api.dto.response.my.readpackage;
 
+import com.zhongmubao.api.config.enmu.RedPackageState;
+
 /**
  * 我的红包列表Model
  *
@@ -37,13 +39,25 @@ public class ReadPackageModel {
      */
     private String expTime;
 
-    public ReadPackageModel(int id, String price, String remark, String typeStr, boolean whetherNew, String expTime) {
+    /**
+     * 是否更早期红包
+     */
+    private boolean whetherEarlier;
+
+    /**
+     * 状态(00未使用，01已使用，02已过期)
+     */
+    private RedPackageState status;
+
+    public ReadPackageModel(int id, String price, String remark, String typeStr, boolean whetherNew, String expTime, boolean whetherEarlier, RedPackageState status) {
         this.id = id;
         this.price = price;
         this.remark = remark;
         this.typeStr = typeStr;
         this.whetherNew = whetherNew;
         this.expTime = expTime;
+        this.whetherEarlier = whetherEarlier;
+        this.status = status;
     }
 
     public ReadPackageModel() {
@@ -95,5 +109,21 @@ public class ReadPackageModel {
 
     public void setExpTime(String expTime) {
         this.expTime = expTime;
+    }
+
+    public boolean isWhetherEarlier() {
+        return whetherEarlier;
+    }
+
+    public void setWhetherEarlier(boolean whetherEarlier) {
+        this.whetherEarlier = whetherEarlier;
+    }
+
+    public RedPackageState getStatus() {
+        return status;
+    }
+
+    public void setStatus(RedPackageState status) {
+        this.status = status;
     }
 }

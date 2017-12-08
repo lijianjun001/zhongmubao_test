@@ -113,7 +113,7 @@ public interface ExtRedPackageDao {
      * @param type 红包金额
      * @return
      */
-    Page<ExtRedPackage> pageEffectiveByCustomerIdOrderByType(@Param("customerId") int customerId, @Param("type")String type);
+    Page<ExtRedPackage> pageEffectiveHistoryByCustomerIdOrderByType(@Param("customerId") int customerId, @Param("type")String type);
 
     /**
      * 红包信息
