@@ -13,7 +13,7 @@ import com.zhongmubao.api.dto.response.my.center.PersonalCenterViewModel;
 import com.zhongmubao.api.dto.response.my.readpackage.ReadPackageDetailViewModel;
 import com.zhongmubao.api.dto.response.my.readpackage.ReadPackageGroupViewModel;
 import com.zhongmubao.api.dto.response.my.readpackage.ReadPackageListViewModel;
-import com.zhongmubao.api.dto.response.my.readpackage.RedPackageExpiredViewModel;
+import com.zhongmubao.api.dto.response.my.readpackage.RedPackageHistoryViewModel;
 import com.zhongmubao.api.entity.Customer;
 import com.zhongmubao.api.exception.ApiException;
 import com.zhongmubao.api.service.my.CenterService;
@@ -142,7 +142,7 @@ public class MyController {
     @Authorization
     public ResponseEntity<ReponseModel> readPackageExpired(@CurrentUser Customer customer, HttpEntity<ReadPackageGroupRequestModel> model) {
         try {
-            RedPackageExpiredViewModel readPackageExpiredModel = readPackageService.readPackageExpired(customer, model.getBody());
+            RedPackageHistoryViewModel readPackageExpiredModel = readPackageService.readPackageExpired(customer, model.getBody());
             return new ResponseEntity<>(ReponseModel.ok(readPackageExpiredModel), HttpStatus.OK);
         } catch (ApiException ex) {
             return new ResponseEntity<>(ReponseModel.error(ex.getStatus()), HttpStatus.OK);

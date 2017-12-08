@@ -144,7 +144,7 @@ public class ReadPackageServiceImpl implements ReadPackageService {
     }
 
     @Override
-    public RedPackageExpiredViewModel readPackageExpired(Customer customer, ReadPackageGroupRequestModel model) throws Exception {
+    public RedPackageHistoryViewModel readPackageExpired(Customer customer, ReadPackageGroupRequestModel model) throws Exception {
         if (model == null) {
             throw new ApiException(ResultStatus.PARAMETER_MISSING);
         }
@@ -165,7 +165,7 @@ public class ReadPackageServiceImpl implements ReadPackageService {
                         DateUtil.format(en.getExpTime(), Constants.DATE_FORMAT)
                 )).collect(Collectors.toList());
 
-        return new RedPackageExpiredViewModel(pager.getPages(), (ArrayList<ReadPackageModel>) list);
+        return new RedPackageHistoryViewModel(pager.getPages(), (ArrayList<ReadPackageModel>) list);
     }
 
     @Override

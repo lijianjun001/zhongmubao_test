@@ -7,12 +7,12 @@ import java.util.ArrayList;
  *
  * @author 米立林
  */
-public class RedPackageExpiredViewModel {
+public class RedPackageHistoryViewModel {
 
-    public RedPackageExpiredViewModel() {
+    public RedPackageHistoryViewModel() {
     }
 
-    public RedPackageExpiredViewModel(int totalPage, ArrayList<ReadPackageModel> list) {
+    public RedPackageHistoryViewModel(int totalPage, ArrayList<ReadPackageModel> list) {
         this.totalPage = totalPage;
         this.list = list;
     }

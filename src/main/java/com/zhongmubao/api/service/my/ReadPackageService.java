@@ -6,7 +6,7 @@ import com.zhongmubao.api.dto.request.my.readpackage.ReadPackageListRequestModel
 import com.zhongmubao.api.dto.response.my.readpackage.ReadPackageDetailViewModel;
 import com.zhongmubao.api.dto.response.my.readpackage.ReadPackageGroupViewModel;
 import com.zhongmubao.api.dto.response.my.readpackage.ReadPackageListViewModel;
-import com.zhongmubao.api.dto.response.my.readpackage.RedPackageExpiredViewModel;
+import com.zhongmubao.api.dto.response.my.readpackage.RedPackageHistoryViewModel;
 import com.zhongmubao.api.entity.Customer;
 
 /**
@@ -40,10 +40,10 @@ public interface ReadPackageService {
      *
      * @param customer 客户
      * @param model    请求参数
-     * @return RedPackageExpiredViewModel
+     * @return RedPackageHistoryViewModel
      * @throws Exception
      */
-    RedPackageExpiredViewModel readPackageExpired(Customer customer, ReadPackageGroupRequestModel model) throws Exception;
+    RedPackageHistoryViewModel readPackageExpired(Customer customer, ReadPackageGroupRequestModel model) throws Exception;
 
     /**
      * 红包详情
