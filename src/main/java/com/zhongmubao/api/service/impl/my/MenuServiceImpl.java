@@ -14,7 +14,7 @@ import com.zhongmubao.api.entity.Customer;
 import com.zhongmubao.api.entity.CustomerHF;
 import com.zhongmubao.api.entity.CustomerSina;
 import com.zhongmubao.api.exception.ApiException;
-import com.zhongmubao.api.service.BaseService;
+import com.zhongmubao.api.service.impl.BaseService;
 import com.zhongmubao.api.service.my.MenuService;
 import com.zhongmubao.api.util.StringUtil;
 
@@ -41,7 +41,7 @@ public class MenuServiceImpl extends BaseService implements MenuService {
     }
 
     @Override
-    public PersonalCenterViewModel personalCenter(Customer customer, PersonalCenterRequestModel model) throws Exception {
+    public PersonalCenterViewModel list(Customer customer, PersonalCenterRequestModel model) throws Exception {
         String url = "";
         if (model == null) {
             throw new ApiException(ResultStatus.PARAMETER_MISSING);
@@ -140,7 +140,7 @@ public class MenuServiceImpl extends BaseService implements MenuService {
     }
 
     @Override
-    public RealNameViewModel realName(Customer customer, RealNameRequestModel model) throws Exception {
+    public RealNameViewModel choosePaymentRealName(Customer customer, RealNameRequestModel model) throws Exception {
 
         RealNameViewModel realNameViewModel = new RealNameViewModel();
         CustomerHF customerHF = customerHFDao.getCustomerHFById(customer.getId());

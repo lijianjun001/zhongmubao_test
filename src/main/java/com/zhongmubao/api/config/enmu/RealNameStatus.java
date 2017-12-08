@@ -1,8 +1,30 @@
 package com.zhongmubao.api.config.enmu;
 
+/**
+ * 实名开户状态
+ * @author xy
+ */
 public enum RealNameStatus {
-    HFS("已开户", "S", "HF"), HFF("未开户", "F", "HF"), HFB("未激活", "B", "HF"),
-    XLS("已实名", "S", "XL"), XLF("未实名", "F", "XL");
+    /**
+     * 已开户
+     */
+    HFS("已开户", "S", "HF"),
+    /**
+     * 未开户
+     */
+    HFF("未开户", "F", "HF"),
+    /**
+     * 未激活
+     */
+    HFB("未激活", "B", "HF"),
+    /**
+     * 已实名
+     */
+    XLS("已实名", "S", "XL"),
+    /**
+     * 未实名
+     */
+    XLF("未实名", "F", "XL");
 
     // 成员变量
     private String name;//S 已开户(已实名) F 未开户(未实名) B 未激活
@@ -10,7 +32,7 @@ public enum RealNameStatus {
     private String img;
     private String type;
     // 构造方法
-    private RealNameStatus(String name, String status, String type) {
+    RealNameStatus(String name, String status, String type) {
         this.name = name;
         this.status = status;
         this.type = type;
