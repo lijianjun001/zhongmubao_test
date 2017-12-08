@@ -54,7 +54,7 @@ public class MyController {
      */
     @RequestMapping(value = "/menu/list", method = RequestMethod.POST, consumes = "application/json")
     @Authorization
-    public ResponseEntity<ReponseModel> list(@CurrentUser Customer customer, HttpEntity<PersonalCenterRequestModel> model) {
+    public ResponseEntity<ReponseModel> menuList(@CurrentUser Customer customer, HttpEntity<PersonalCenterRequestModel> model) {
         try {
             PersonalCenterViewModel personalCenterViewModel = menuService.list(customer, model.getBody());
             return new ResponseEntity<>(ReponseModel.ok(personalCenterViewModel), HttpStatus.OK);
@@ -64,9 +64,6 @@ public class MyController {
             return new ResponseEntity<>(ReponseModel.error(ex, this.getClass()), HttpStatus.OK);
         }
     }
-    //endregion
-
-    //region 个人中心 实名OR开户
 
     /***
      * 个人中心 实名OR开户
@@ -76,7 +73,7 @@ public class MyController {
      */
     @RequestMapping(value = "/menu/choosePaymentRealName", method = RequestMethod.POST, consumes = "application/json")
     @Authorization
-    public ResponseEntity<ReponseModel> choosePaymentRealName(@CurrentUser Customer customer, HttpEntity<RealNameRequestModel> model) {
+    public ResponseEntity<ReponseModel> menuChoosePaymentRealName(@CurrentUser Customer customer, HttpEntity<RealNameRequestModel> model) {
         try {
             RealNameViewModel realNameViewModel = menuService.choosePaymentRealName(customer, model.getBody());
             return new ResponseEntity<>(ReponseModel.ok(realNameViewModel), HttpStatus.OK);
@@ -97,7 +94,7 @@ public class MyController {
      * @author 米立林
      * @return ReadPackageGroupViewModel
      */
-    @RequestMapping(value = "/readPackageGroup", method = RequestMethod.POST, consumes = "application/json")
+    @RequestMapping(value = "/readPackage/Group", method = RequestMethod.POST, consumes = "application/json")
     @Authorization
     public ResponseEntity<ReponseModel> readPackageGroup(@CurrentUser Customer customer, HttpEntity<ReadPackageGroupRequestModel> model) {
         try {
@@ -118,7 +115,7 @@ public class MyController {
      * @author 米立林
      * @return ReadPackageListViewModel
      */
-    @RequestMapping(value = "/readPackageList", method = RequestMethod.POST, consumes = "application/json")
+    @RequestMapping(value = "/readPackage/List", method = RequestMethod.POST, consumes = "application/json")
     @Authorization
     public ResponseEntity<ReponseModel> readPackageList(@CurrentUser Customer customer, HttpEntity<ReadPackageListRequestModel> model) {
         try {
@@ -138,7 +135,7 @@ public class MyController {
      * @param model    请求model
      * @return 结果
      */
-    @RequestMapping(value = "/readPackageHistory", method = RequestMethod.POST, consumes = "application/json")
+    @RequestMapping(value = "/readPackage/History", method = RequestMethod.POST, consumes = "application/json")
     @Authorization
     public ResponseEntity<ReponseModel> readPackageHistory(@CurrentUser Customer customer, HttpEntity<ReadPackageGroupRequestModel> model) {
         try {
@@ -158,7 +155,7 @@ public class MyController {
      * @param model    请求model
      * @return 结果
      */
-    @RequestMapping(value = "/readPackageDetail", method = RequestMethod.POST, consumes = "application/json")
+    @RequestMapping(value = "/readPackage/Detail", method = RequestMethod.POST, consumes = "application/json")
     @Authorization
     public ResponseEntity<ReponseModel> readPackageDetail(@CurrentUser Customer customer, HttpEntity<ReadPackageDetailRequestModel> model) {
         try {
