@@ -1,32 +1,21 @@
 package com.zhongmubao.api.service.impl.my;
-
-import com.zhongmubao.api.cache.RedisCache;
 import com.zhongmubao.api.config.Constants;
 import com.zhongmubao.api.config.ResultStatus;
 import com.zhongmubao.api.config.enmu.Domain;
 import com.zhongmubao.api.config.enmu.RealNameStatus;
-import com.zhongmubao.api.config.enmu.RedPackageSortType;
-import com.zhongmubao.api.dao.CustomerDao;
 import com.zhongmubao.api.dao.CustomerHFDao;
 import com.zhongmubao.api.dao.CustomerSinaDao;
-import com.zhongmubao.api.dao.ExtRedPackageDao;
 import com.zhongmubao.api.dto.request.my.center.PersonalCenterRequestModel;
 import com.zhongmubao.api.dto.request.my.RealNameRequestModel;
-import com.zhongmubao.api.dto.request.my.readpackage.ReadPackageGroupRequestModel;
-import com.zhongmubao.api.dto.request.my.readpackage.ReadPackageListRequestModel;
 import com.zhongmubao.api.dto.response.my.center.PersonalCenterViewModel;
 import com.zhongmubao.api.dto.response.my.RealNameViewModel;
 import com.zhongmubao.api.dto.response.my.center.PersonalCenterItemModel;
-import com.zhongmubao.api.dto.response.my.readpackage.*;
 import com.zhongmubao.api.entity.Customer;
 import com.zhongmubao.api.entity.CustomerHF;
 import com.zhongmubao.api.entity.CustomerSina;
-import com.zhongmubao.api.entity.ExtRedPackage;
 import com.zhongmubao.api.exception.ApiException;
 import com.zhongmubao.api.service.BaseService;
 import com.zhongmubao.api.service.my.CenterService;
-import com.zhongmubao.api.util.DateUtil;
-import com.zhongmubao.api.util.DoubleUtil;
 import com.zhongmubao.api.util.StringUtil;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +23,6 @@ import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * 个人中心
@@ -43,15 +31,11 @@ import java.util.stream.Collectors;
  */
 @Service
 public class CenterServiceImpl extends BaseService implements CenterService {
-    private final CustomerDao customerDao;
-    private final RedisCache redisCache;
     private final CustomerHFDao customerHFDao;
-    public final CustomerSinaDao customerSinaDao;
+    private final CustomerSinaDao customerSinaDao;
 
     @Autowired
-    public CenterServiceImpl(CustomerDao customerDao, RedisCache redisCache, CustomerHFDao customerHFDao, CustomerSinaDao customerSinaDao) {
-        this.customerDao = customerDao;
-        this.redisCache = redisCache;
+    public CenterServiceImpl(CustomerHFDao customerHFDao, CustomerSinaDao customerSinaDao) {
         this.customerHFDao = customerHFDao;
         this.customerSinaDao = customerSinaDao;
     }
@@ -71,7 +55,7 @@ public class CenterServiceImpl extends BaseService implements CenterService {
             }
         }
         PersonalCenterViewModel personalCenterViewModel = new PersonalCenterViewModel();
-        List<PersonalCenterItemModel> personalCenterItemModels = new ArrayList<PersonalCenterItemModel>();
+        List<PersonalCenterItemModel> personalCenterItemModels = new ArrayList<>();
 
         PersonalCenterItemModel personalCenterItemModelRemindIndex = new PersonalCenterItemModel();
         personalCenterItemModelRemindIndex.setIcon("personal-remind.png");
@@ -90,7 +74,7 @@ public class CenterServiceImpl extends BaseService implements CenterService {
         personalCenterItemModels.add(personalCenterItemModelWallet);
 
         PersonalCenterItemModel personalCenterItemModelHfWallet = new PersonalCenterItemModel();
-        personalCenterItemModelHfWallet.setIcon("personal-referee.png");
+        personalCenterItemModelHfWallet.setIcon("personal-qianbao.png");
         personalCenterItemModelHfWallet.setTitle("汇付钱包");
         personalCenterItemModelHfWallet.setUrl("/Customer/HfWallet");
         personalCenterItemModelHfWallet.setAction("hfwallet");
@@ -98,7 +82,7 @@ public class CenterServiceImpl extends BaseService implements CenterService {
         personalCenterItemModels.add(personalCenterItemModelHfWallet);
 
         PersonalCenterItemModel personalCenterItemModelHfCard = new PersonalCenterItemModel();
-        personalCenterItemModelHfCard.setIcon("personal-referee.png");
+        personalCenterItemModelHfCard.setIcon("personal-yinhangka.png");
         personalCenterItemModelHfCard.setTitle("汇付银行卡");
         personalCenterItemModelHfCard.setUrl("/Customer/HfCard");
         personalCenterItemModelHfCard.setAction("hfcard");
@@ -145,30 +129,6 @@ public class CenterServiceImpl extends BaseService implements CenterService {
         personalCenterItemModelSettings.setJumpType("01");
         personalCenterItemModels.add(personalCenterItemModelSettings);
 
-//        PersonalCenterItemModel personalCenterItemModelHfAuth = new PersonalCenterItemModel();
-//        personalCenterItemModelHfAuth.setIcon("personal-referee.png");
-//        personalCenterItemModelHfAuth.setTitle("汇付开户");
-//        personalCenterItemModelHfAuth.setUrl("/Customer/HfAuth");
-//        personalCenterItemModelHfAuth.setAction("hfauth");
-//        personalCenterItemModelHfAuth.setJumpType("00");
-//        personalCenterItemModels.add(personalCenterItemModelHfAuth);
-
-//        List<PersonalCenterItemModel> personalCenterItemModelsRedis = new ArrayList<PersonalCenterItemModel>();
-//        personalCenterItemModelsRedis = personalCenterItemModels;
-//        List obj = (List) redisCache.getPersonalCenter();
-//        if (obj.size()<=0 ) {
-//            for (PersonalCenterItemModel item : personalCenterItemModels) {
-//                redisCache.savePersonalCenter(String.valueOf(item.getAction()), JSON.toJSONString(item));
-//            }
-//        } else {
-//            personalCenterItemModelsRedis = new ArrayList<PersonalCenterItemModel>();
-//          for (String str:
-//            (List<String>) obj) {
-//                personalCenterItemModelsRedis.add(JSON.parseObject(str,PersonalCenterItemModel.class));
-//            }
-//                    ;
-//        }
-
         for (PersonalCenterItemModel itemModel :
                 personalCenterItemModels) {
             itemModel.setUrl(url + itemModel.getUrl());
@@ -187,9 +147,9 @@ public class CenterServiceImpl extends BaseService implements CenterService {
 
         //Redis 获取显示新浪 还是 汇付
         boolean ishf = false;
-        //ishf = redisCache.getRealNameType(customer.getId());
-
-        if (customer.getCreated().getTime() > (new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse("2017-12-01 00:00:00")).getTime()) {
+        String dateFormat ="yyyy-MM-dd HH:mm:ss";
+        String dateStr = "2017-12-01 00:00:00";
+        if (customer.getCreated().getTime() > (new SimpleDateFormat(dateFormat).parse(dateStr)).getTime()) {
             ishf = true;
         }
         if (!ishf && customerHF != null) {
@@ -210,7 +170,7 @@ public class CenterServiceImpl extends BaseService implements CenterService {
                 realNameViewModel.setRealNameSatus(RealNameStatus.HFS.getStatus());
                 realNameViewModel.setRealNameType(RealNameStatus.HFS.getType());
                 realNameViewModel.setRealNameImg(Constants.RESOURES_ADDRESS_IMAGES + RealNameStatus.HFS.getImg());
-            } else if (!StringUtil.isNullOrEmpty(customerHF.getUsrCustId()) && customerHF.getIsBosAcct() == false) {
+            } else if (!StringUtil.isNullOrEmpty(customerHF.getUsrCustId()) && !customerHF.getIsBosAcct()) {
                 realNameViewModel.setRealName(RealNameStatus.HFB.getName());
                 realNameViewModel.setRealNameSatus(RealNameStatus.HFB.getStatus());
                 realNameViewModel.setRealNameType(RealNameStatus.HFB.getType());
