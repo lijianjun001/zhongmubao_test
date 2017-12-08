@@ -32,7 +32,8 @@ import java.util.stream.Collectors;
  */
 @Service
 public class ReadPackageServiceImpl implements ReadPackageService {
-    public final ExtRedPackageDao extRedPackageDao;
+
+    private final ExtRedPackageDao extRedPackageDao;
 
     @Autowired
     public ReadPackageServiceImpl(ExtRedPackageDao extRedPackageDao) {
@@ -92,25 +93,26 @@ public class ReadPackageServiceImpl implements ReadPackageService {
      * @param groupRedPacket 分组列表
      * @param groupType      红包分组类型
      * @param isPreLoad      是否预加载
-     * @return
+     * @return ReadPackageGroupModel
      */
     private ReadPackageGroupModel redPacketGroupCalc(Customer customer, List<ExtRedPackageGroup> groupRedPacket, RedPackageGroupType groupType, boolean isPreLoad) {
 
         ReadPackageGroupModel groupModel = new ReadPackageGroupModel();
         groupModel.setGroupType(groupType);
         if (groupType == RedPackageGroupType.OTHER) {
-            IntSummaryStatistics statsTotalCount = groupRedPacket.stream().mapToInt((x) -> x.getTotalCount()).summaryStatistics();
+            IntSummaryStatistics statsTotalCount = groupRedPacket.stream().mapToInt(ExtRedPackageGroup::getTotalCount).summaryStatistics();
             groupModel.setCount(Integer.parseInt(String.valueOf(statsTotalCount.getSum())));
 
-            DoubleSummaryStatistics statsTotalPrice = groupRedPacket.stream().mapToDouble((x) -> x.getPrice()).summaryStatistics();
+            DoubleSummaryStatistics statsTotalPrice = groupRedPacket.stream().mapToDouble(ExtRedPackageGroup::getPrice).summaryStatistics();
             groupModel.setTotalPrice(Double.toString(statsTotalPrice.getSum()));
 
-            IntSummaryStatistics statsTotalNewCount = groupRedPacket.stream().mapToInt((x) -> x.getNewCount()).summaryStatistics();
+            IntSummaryStatistics statsTotalNewCount = groupRedPacket.stream().mapToInt(ExtRedPackageGroup::getNewCount).summaryStatistics();
             groupModel.setNewCount(Integer.parseInt(String.valueOf(statsTotalNewCount.getSum())));
 
-            Collections.sort(groupRedPacket, (o1, o2) -> (o1.getExpTime().compareTo(o2.getExpTime())));
+            groupRedPacket.sort((o1, o2) -> (o1.getExpTime().compareTo(o2.getExpTime())));
             ExtRedPackageGroup redPacket = groupRedPacket.stream().findFirst().get();
-            groupModel.setPrice("零钱红包");
+            String title="零钱红包";
+            groupModel.setPrice(title);
             groupModel.setType(redPacket.getType());
             groupModel.setFirstExpTime(DateUtil.format(redPacket.getExpTime(), Constants.DATE_FORMAT));
         } else {
