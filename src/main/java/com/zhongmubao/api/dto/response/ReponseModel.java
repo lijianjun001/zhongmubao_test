@@ -5,6 +5,7 @@ import org.apache.log4j.Logger;
 
 /**
  * 封装json对象，所有返回结果都使用它
+ *
  * @author 孙阿龙
  */
 public class ReponseModel {

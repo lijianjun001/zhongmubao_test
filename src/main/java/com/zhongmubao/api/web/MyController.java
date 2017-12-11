@@ -4,16 +4,16 @@ import com.zhongmubao.api.authorization.annotation.Authorization;
 import com.zhongmubao.api.authorization.annotation.CurrentUser;
 import com.zhongmubao.api.dto.request.my.RealNameRequestModel;
 import com.zhongmubao.api.dto.request.my.menu.ListRequestModel;
-import com.zhongmubao.api.dto.request.my.readpackage.ReadPackageDetailRequestModel;
-import com.zhongmubao.api.dto.request.my.readpackage.ReadPackageGroupRequestModel;
-import com.zhongmubao.api.dto.request.my.readpackage.ReadPackageListRequestModel;
+import com.zhongmubao.api.dto.request.my.redpackage.RedPackageDetailRequestModel;
+import com.zhongmubao.api.dto.request.my.redpackage.RedPackageGroupRequestModel;
+import com.zhongmubao.api.dto.request.my.redpackage.RedPackageListRequestModel;
 import com.zhongmubao.api.dto.response.ReponseModel;
 import com.zhongmubao.api.dto.response.my.RealNameViewModel;
 import com.zhongmubao.api.dto.response.my.menu.ListViewModel;
-import com.zhongmubao.api.dto.response.my.readpackage.ReadPackageDetailViewModel;
-import com.zhongmubao.api.dto.response.my.readpackage.ReadPackageGroupViewModel;
-import com.zhongmubao.api.dto.response.my.readpackage.ReadPackageListViewModel;
-import com.zhongmubao.api.dto.response.my.readpackage.RedPackageHistoryViewModel;
+import com.zhongmubao.api.dto.response.my.redpackage.RedPackageDetailViewModel;
+import com.zhongmubao.api.dto.response.my.redpackage.RedPackageGroupViewModel;
+import com.zhongmubao.api.dto.response.my.redpackage.RedPackageListViewModel;
+import com.zhongmubao.api.dto.response.my.redpackage.RedPackageHistoryViewModel;
 import com.zhongmubao.api.entity.Customer;
 import com.zhongmubao.api.exception.ApiException;
 import com.zhongmubao.api.service.my.MenuService;
@@ -75,13 +75,13 @@ public class MyController {
      * @param customer 客户
      * @param model    请求model
      * @author 米立林
-     * @return ReadPackageGroupViewModel
+     * @return RedPackageGroupViewModel
      */
-    @RequestMapping(value = "/readPackage/Group", method = RequestMethod.POST, consumes = "application/json")
+    @RequestMapping(value = "/readPackage/group", method = RequestMethod.POST, consumes = "application/json")
     @Authorization
-    public ResponseEntity<ReponseModel> readPackageGroup(@CurrentUser Customer customer, HttpEntity<ReadPackageGroupRequestModel> model) {
+    public ResponseEntity<ReponseModel> readPackageGroup(@CurrentUser Customer customer, HttpEntity<RedPackageGroupRequestModel> model) {
         try {
-            ReadPackageGroupViewModel redPackageGroupModel = readPackageService.readPackageGroup(customer, model.getBody());
+            RedPackageGroupViewModel redPackageGroupModel = readPackageService.readPackageGroup(customer, model.getBody());
             return new ResponseEntity<>(ReponseModel.ok(redPackageGroupModel), HttpStatus.OK);
         } catch (ApiException ex) {
             return new ResponseEntity<>(ReponseModel.error(ex.getStatus()), HttpStatus.OK);
@@ -96,13 +96,13 @@ public class MyController {
      * @param customer 客户
      * @param model    请求model
      * @author 米立林
-     * @return ReadPackageListViewModel
+     * @return RedPackageListViewModel
      */
-    @RequestMapping(value = "/readPackage/List", method = RequestMethod.POST, consumes = "application/json")
+    @RequestMapping(value = "/readPackage/groupList", method = RequestMethod.POST, consumes = "application/json")
     @Authorization
-    public ResponseEntity<ReponseModel> readPackageList(@CurrentUser Customer customer, HttpEntity<ReadPackageListRequestModel> model) {
+    public ResponseEntity<ReponseModel> readPackageGroupList(@CurrentUser Customer customer, HttpEntity<RedPackageListRequestModel> model) {
         try {
-            ReadPackageListViewModel redPackageList = readPackageService.readPackageList(customer, model.getBody());
+            RedPackageListViewModel redPackageList = readPackageService.readPackageGroupList(customer, model.getBody());
             return new ResponseEntity<>(ReponseModel.ok(redPackageList), HttpStatus.OK);
         } catch (ApiException ex) {
             return new ResponseEntity<>(ReponseModel.error(ex.getStatus()), HttpStatus.OK);
@@ -118,9 +118,9 @@ public class MyController {
      * @param model    请求model
      * @return 结果
      */
-    @RequestMapping(value = "/readPackage/History", method = RequestMethod.POST, consumes = "application/json")
+    @RequestMapping(value = "/readPackage/history", method = RequestMethod.POST, consumes = "application/json")
     @Authorization
-    public ResponseEntity<ReponseModel> readPackageHistory(@CurrentUser Customer customer, HttpEntity<ReadPackageGroupRequestModel> model) {
+    public ResponseEntity<ReponseModel> readPackageHistory(@CurrentUser Customer customer, HttpEntity<RedPackageGroupRequestModel> model) {
         try {
             RedPackageHistoryViewModel readPackageExpiredModel = readPackageService.readPackageHistory(customer, model.getBody());
             return new ResponseEntity<>(ReponseModel.ok(readPackageExpiredModel), HttpStatus.OK);
@@ -138,12 +138,33 @@ public class MyController {
      * @param model    请求model
      * @return 结果
      */
-    @RequestMapping(value = "/readPackage/Detail", method = RequestMethod.POST, consumes = "application/json")
+    @RequestMapping(value = "/readPackage/detail", method = RequestMethod.POST, consumes = "application/json")
     @Authorization
-    public ResponseEntity<ReponseModel> readPackageDetail(@CurrentUser Customer customer, HttpEntity<ReadPackageDetailRequestModel> model) {
+    public ResponseEntity<ReponseModel> readPackageDetail(@CurrentUser Customer customer, HttpEntity<RedPackageDetailRequestModel> model) {
         try {
-            ReadPackageDetailViewModel detailViewModel = readPackageService.readPackageDetail(customer, model.getBody());
+            RedPackageDetailViewModel detailViewModel = readPackageService.readPackageDetail(customer, model.getBody());
             return new ResponseEntity<>(ReponseModel.ok(detailViewModel), HttpStatus.OK);
+        } catch (ApiException ex) {
+            return new ResponseEntity<>(ReponseModel.error(ex.getStatus()), HttpStatus.OK);
+        } catch (Exception ex) {
+            return new ResponseEntity<>(ReponseModel.error(ex, this.getClass()), HttpStatus.OK);
+        }
+    }
+
+    /**
+     * 排序红包列表
+     *
+     * @param customer 客户
+     * @param model    请求model
+     * @author 米立林
+     * @return RedPackageListViewModel
+     */
+    @RequestMapping(value = "/readPackage/list", method = RequestMethod.POST, consumes = "application/json")
+    @Authorization
+    public ResponseEntity<ReponseModel> readPackageList(@CurrentUser Customer customer, HttpEntity<RedPackageListRequestModel> model) {
+        try {
+            RedPackageListViewModel redPackageList = readPackageService.readPackageList(customer, model.getBody());
+            return new ResponseEntity<>(ReponseModel.ok(redPackageList), HttpStatus.OK);
         } catch (ApiException ex) {
             return new ResponseEntity<>(ReponseModel.error(ex.getStatus()), HttpStatus.OK);
         } catch (Exception ex) {

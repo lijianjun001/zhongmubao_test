@@ -1,4 +1,4 @@
-package com.zhongmubao.api.dto.request.my.readpackage;
+package com.zhongmubao.api.dto.request.my.redpackage;
 
 import com.zhongmubao.api.config.enmu.RedPackageSortType;
 import com.zhongmubao.api.dto.request.BaseRequest;
@@ -8,7 +8,7 @@ import com.zhongmubao.api.dto.request.BaseRequest;
  *
  * @author 孙阿龙
  */
-public class ReadPackageGroupRequestModel extends BaseRequest {
+public class RedPackageGroupRequestModel extends BaseRequest {
     /**
      * 当前页码
      */

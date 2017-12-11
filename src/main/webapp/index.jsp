@@ -36,10 +36,6 @@
             platform: "01",
             version: "1.0"
         };
-//        var data = {
-//            pageIndex:1,
-//            groupType:"EIGHT"
-//        };
 
 
         console.info(JSON.stringify(data));

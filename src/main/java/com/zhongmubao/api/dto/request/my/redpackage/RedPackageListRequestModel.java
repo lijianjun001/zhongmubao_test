@@ -1,6 +1,7 @@
-package com.zhongmubao.api.dto.request.my.readpackage;
+package com.zhongmubao.api.dto.request.my.redpackage;
 
 import com.zhongmubao.api.config.enmu.RedPackageGroupType;
+import com.zhongmubao.api.config.enmu.RedPackageSortType;
 import com.zhongmubao.api.dto.request.BaseRequest;
 
 /**
@@ -8,7 +9,7 @@ import com.zhongmubao.api.dto.request.BaseRequest;
  *
  * @author 孙阿龙
  */
-public class ReadPackageListRequestModel extends BaseRequest {
+public class RedPackageListRequestModel extends BaseRequest {
     /**
      * 当前页码
      */
@@ -23,6 +24,11 @@ public class ReadPackageListRequestModel extends BaseRequest {
      */
     private RedPackageGroupType groupType;
 
+    /**
+     * 排序方式
+     */
+    private RedPackageSortType sortType;
+
     public void setPageIndex(int pageIndex) {
         this.pageIndex = pageIndex;
     }
@@ -33,5 +39,13 @@ public class ReadPackageListRequestModel extends BaseRequest {
 
     public void setGroupType(RedPackageGroupType groupType) {
         this.groupType = groupType;
+    }
+
+    public RedPackageSortType getSortType() {
+        return sortType;
+    }
+
+    public void setSortType(RedPackageSortType sortType) {
+        this.sortType = sortType;
     }
 }

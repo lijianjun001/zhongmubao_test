@@ -1,4 +1,4 @@
-package com.zhongmubao.api.dto.response.my.readpackage;
+package com.zhongmubao.api.dto.response.my.redpackage;
 
 import com.zhongmubao.api.config.enmu.RedPackageState;
 
@@ -9,12 +9,12 @@ import java.util.ArrayList;
  *
  * @author 孙阿龙
  */
-public class ReadPackageDetailViewModel {
+public class RedPackageDetailViewModel {
 
-    public ReadPackageDetailViewModel() {
+    public RedPackageDetailViewModel() {
     }
 
-    public ReadPackageDetailViewModel(String typeStr, String price, String beginTime, String expTime, ArrayList<String> remarks, RedPackageState status) {
+    public RedPackageDetailViewModel(String typeStr, String price, String beginTime, String expTime, ArrayList<String> remarks, RedPackageState status) {
         this.typeStr = typeStr;
         this.price = price;
         this.beginTime = beginTime;

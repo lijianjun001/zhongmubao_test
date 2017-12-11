@@ -1,4 +1,4 @@
-package com.zhongmubao.api.dto.response.my.readpackage;
+package com.zhongmubao.api.dto.response.my.redpackage;
 
 import java.util.ArrayList;
 
@@ -12,7 +12,7 @@ public class RedPackageHistoryViewModel {
     public RedPackageHistoryViewModel() {
     }
 
-    public RedPackageHistoryViewModel(int totalPage, ArrayList<ReadPackageModel> list) {
+    public RedPackageHistoryViewModel(int totalPage, ArrayList<RedPackageModel> list) {
         this.totalPage = totalPage;
         this.list = list;
     }
@@ -25,7 +25,7 @@ public class RedPackageHistoryViewModel {
     /**
      * 红包集合
      */
-    private ArrayList<ReadPackageModel> list;
+    private ArrayList<RedPackageModel> list;
 
     public int getTotalPage() {
         return totalPage;
@@ -36,11 +36,11 @@ public class RedPackageHistoryViewModel {
     }
 
 
-    public ArrayList<ReadPackageModel> getList() {
+    public ArrayList<RedPackageModel> getList() {
         return list;
     }
 
-    public void setList(ArrayList<ReadPackageModel> list) {
+    public void setList(ArrayList<RedPackageModel> list) {
         this.list = list;
     }
 }

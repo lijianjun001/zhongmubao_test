@@ -1,4 +1,4 @@
-package com.zhongmubao.api.dto.response.my.readpackage;
+package com.zhongmubao.api.dto.response.my.redpackage;
 
 import java.util.ArrayList;
 
@@ -7,12 +7,12 @@ import java.util.ArrayList;
  *
  * @author 孙阿龙
  */
-public class ReadPackageListViewModel {
+public class RedPackageListViewModel {
 
-    public ReadPackageListViewModel() {
+    public RedPackageListViewModel() {
     }
 
-    public ReadPackageListViewModel(int totalPage, ArrayList<ReadPackageModel> list) {
+    public RedPackageListViewModel(int totalPage, ArrayList<RedPackageModel> list) {
         this.totalPage = totalPage;
         this.list = list;
     }
@@ -20,13 +20,12 @@ public class ReadPackageListViewModel {
     /**
      * 总页码
      */
-
     private int totalPage;
 
     /**
      * 红包集合
      */
-    private ArrayList<ReadPackageModel> list;
+    private ArrayList<RedPackageModel> list;
 
     public int getTotalPage() {
         return totalPage;
@@ -37,11 +36,11 @@ public class ReadPackageListViewModel {
     }
 
 
-    public ArrayList<ReadPackageModel> getList() {
+    public ArrayList<RedPackageModel> getList() {
         return list;
     }
 
-    public void setList(ArrayList<ReadPackageModel> list) {
+    public void setList(ArrayList<RedPackageModel> list) {
         this.list = list;
     }
 }
