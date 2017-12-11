@@ -6,6 +6,31 @@ package com.zhongmubao.api.dto.response.my;
  */
 public class RealNameViewModel {
 
+    /**
+     * 是否实名
+     */
+    private String realName;
+    /**
+     * XL 新浪 HF 汇付
+     */
+    private String realNameType;
+    /**
+     * 图标
+     */
+    private String realNameImg;
+    /**
+     * S 已开户(已实名) F 未开户(未实名) B 未激活
+     */
+    private String realNameSatus;
+    /**
+     * 汇付首页显示
+     */
+    private boolean showIndex;
+    /**
+     * 汇付个人中心显示
+     */
+    private boolean showCenter;
+
     public String getRealName() {
         return realName;
     }
@@ -54,10 +79,4 @@ public class RealNameViewModel {
         this.showCenter = showCenter;
     }
 
-    private String realName;//是否实名
-    private String realNameType;//XL 新浪 HF 汇付
-    private String realNameImg;//图标
-    private String realNameSatus;//S 已开户(已实名) F 未开户(未实名) B 未激活
-    private boolean showIndex;//首页显示
-    private boolean showCenter;//个人中心显示
 }
