@@ -2,14 +2,17 @@ package com.zhongmubao.api.web;
 
 import com.zhongmubao.api.authorization.annotation.Authorization;
 import com.zhongmubao.api.authorization.annotation.CurrentUser;
+import com.zhongmubao.api.dto.request.my.RealNameRequestModel;
 import com.zhongmubao.api.dto.request.sign.*;
 import com.zhongmubao.api.dto.response.ReponseModel;
+import com.zhongmubao.api.dto.response.my.RealNameViewModel;
 import com.zhongmubao.api.dto.response.sign.MyGiftCardModel;
 import com.zhongmubao.api.dto.response.sign.list.PageSignGiftModel;
 import com.zhongmubao.api.dto.response.sign.SignModel;
 import com.zhongmubao.api.dto.response.sign.packagelist.PageSignPackageModel;
 import com.zhongmubao.api.entity.Customer;
 import com.zhongmubao.api.exception.ApiException;
+import com.zhongmubao.api.service.CustomerService;
 import com.zhongmubao.api.service.SignService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,10 +30,34 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/customer")
 public class CustomerController {
     private final SignService signService;
+    private final CustomerService customerService;
     @Autowired
-    public CustomerController(SignService signService) {
+    public CustomerController(SignService signService, CustomerService customerService) {
         this.signService = signService;
+        this.customerService = customerService;
     }
+
+
+    //region 个人中心 新浪OR汇付
+    /***
+     * 个人中心 实名OR开户
+     * @param customer 客户
+     * @author xy
+     * @return ReponseModel
+     */
+    @RequestMapping(value = "/choosePaymentRealName", method = RequestMethod.POST, consumes = "application/json")
+    @Authorization
+    public ResponseEntity<ReponseModel> choosePaymentRealName(@CurrentUser Customer customer, HttpEntity<RealNameRequestModel> model) {
+        try {
+            RealNameViewModel realNameViewModel = customerService.choosePaymentRealName(customer, model.getBody());
+            return new ResponseEntity<>(ReponseModel.ok(realNameViewModel), HttpStatus.OK);
+        } catch (ApiException ex) {
+            return new ResponseEntity<>(ReponseModel.error(ex.getStatus()), HttpStatus.OK);
+        } catch (Exception ex) {
+            return new ResponseEntity<>(ReponseModel.error(ex, this.getClass()), HttpStatus.OK);
+        }
+    }
+    //endregion
 
     //region 签到
 

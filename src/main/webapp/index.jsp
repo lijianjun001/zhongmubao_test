@@ -33,9 +33,13 @@
 //            version:"1.0"
 //        };
         var data = {
-            pageIndex:1,
-            groupType:"EIGHT"
+            platform: "01",
+            version: "1.0"
         };
+//        var data = {
+//            pageIndex:1,
+//            groupType:"EIGHT"
+//        };
 
 
         console.info(JSON.stringify(data));
@@ -43,7 +47,7 @@
 
         $.ajax({
             type: "POST",
-            url: "/my/readPackageList",
+            url: "/customer/choosePaymentRealName",
             data: JSON.stringify(data),
             contentType: 'application/json;charset=UTF-8',
             dataType: "json",                                     //预期服务器返回类型

@@ -65,24 +65,7 @@ public class MyController {
         }
     }
 
-    /***
-     * 个人中心 实名OR开户
-     * @param customer 客户
-     * @author xy
-     * @return ReponseModel
-     */
-    @RequestMapping(value = "/menu/choosePaymentRealName", method = RequestMethod.POST, consumes = "application/json")
-    @Authorization
-    public ResponseEntity<ReponseModel> menuChoosePaymentRealName(@CurrentUser Customer customer, HttpEntity<RealNameRequestModel> model) {
-        try {
-            RealNameViewModel realNameViewModel = menuService.choosePaymentRealName(customer, model.getBody());
-            return new ResponseEntity<>(ReponseModel.ok(realNameViewModel), HttpStatus.OK);
-        } catch (ApiException ex) {
-            return new ResponseEntity<>(ReponseModel.error(ex.getStatus()), HttpStatus.OK);
-        } catch (Exception ex) {
-            return new ResponseEntity<>(ReponseModel.error(ex, this.getClass()), HttpStatus.OK);
-        }
-    }
+
     //endregion
 
     //region 个人中心红包
