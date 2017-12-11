@@ -40,8 +40,8 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
         RealNameViewModel realNameViewModel = new RealNameViewModel();
         CustomerHF customerHF = customerHFDao.getCustomerHFById(customer.getId());
         CustomerSina customerSina = customerSinaDao.getCustomerSinaById(customer.getId());
-        realNameViewModel.setShowIndex(false);
-        realNameViewModel.setShowCenter(false);
+        realNameViewModel.setShowHFIndex(false);
+        realNameViewModel.setShowHFCenter(false);
 
         boolean ishf = false;
         String dateFormat ="yyyy-MM-dd HH:mm:ss";
@@ -50,12 +50,12 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
         //首页显示
         if(null!=customerHFIndexMongoDao.getByCustomerId(customer.getId())){
             if(customerHF==null){
-                realNameViewModel.setShowIndex(true);
-                realNameViewModel.setShowCenter(true);
+                realNameViewModel.setShowHFIndex(true);
+                realNameViewModel.setShowHFCenter(true);
             }else{
               if(!(customerHF.getIsBandCard()&&!StringUtil.isNullOrEmpty(customerHF.getUsrCustId()))){
-                  realNameViewModel.setShowIndex(true);
-                  realNameViewModel.setShowCenter(true);
+                  realNameViewModel.setShowHFIndex(true);
+                  realNameViewModel.setShowHFCenter(true);
               }
             }
         }
@@ -73,8 +73,6 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
         //显示汇付 or 新浪
         if (ishf) {
             if (customerHF == null) {
-
-                realNameViewModel.setShowCenter(true);
                 realNameViewModel.setRealName(RealNameStatus.HFF.getName());
                 realNameViewModel.setRealNameSatus(RealNameStatus.HFF.getStatus());
                 realNameViewModel.setRealNameType(RealNameStatus.HFF.getType());
@@ -87,7 +85,6 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
                 realNameViewModel.setRealNameType(RealNameStatus.HFS.getType());
                 realNameViewModel.setRealNameImg(Constants.RESOURES_ADDRESS_IMAGES + RealNameStatus.HFS.getImg());
             } else {
-                realNameViewModel.setShowCenter(true);
                 realNameViewModel.setRealName(RealNameStatus.HFF.getName());
                 realNameViewModel.setRealNameSatus(RealNameStatus.HFF.getStatus());
                 realNameViewModel.setRealNameType(RealNameStatus.HFF.getType());
@@ -96,21 +93,18 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
         } else {
 
             if (customerSina == null) {
-
                 realNameViewModel.setRealName(RealNameStatus.XLF.getName());
                 realNameViewModel.setRealNameSatus(RealNameStatus.XLF.getStatus());
                 realNameViewModel.setRealNameType(RealNameStatus.XLF.getType());
                 realNameViewModel.setRealNameImg(Constants.RESOURES_ADDRESS_IMAGES + RealNameStatus.XLF.getImg());
                 return realNameViewModel;
             }
-
             if (customerSina.getIsRealName()) {
                 realNameViewModel.setRealName(RealNameStatus.XLS.getName());
                 realNameViewModel.setRealNameSatus(RealNameStatus.XLS.getStatus());
                 realNameViewModel.setRealNameType(RealNameStatus.XLS.getType());
                 realNameViewModel.setRealNameImg(Constants.RESOURES_ADDRESS_IMAGES + RealNameStatus.XLS.getImg());
             } else {
-
                 realNameViewModel.setRealName(RealNameStatus.XLF.getName());
                 realNameViewModel.setRealNameSatus(RealNameStatus.XLF.getStatus());
                 realNameViewModel.setRealNameType(RealNameStatus.XLF.getType());

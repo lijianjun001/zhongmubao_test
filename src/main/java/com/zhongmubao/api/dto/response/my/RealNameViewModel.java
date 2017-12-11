@@ -22,14 +22,15 @@ public class RealNameViewModel {
      * S 已开户(已实名) F 未开户(未实名) B 未激活
      */
     private String realNameSatus;
+
     /**
      * 汇付首页显示
      */
-    private boolean showIndex;
+    private boolean showHFIndex;
     /**
      * 汇付个人中心显示
      */
-    private boolean showCenter;
+    private boolean showHFCenter;
 
     public String getRealName() {
         return realName;
@@ -63,20 +64,21 @@ public class RealNameViewModel {
         this.realNameSatus = realNameSatus;
     }
 
-    public boolean getShowIndex() {
-        return showIndex;
+    public boolean isShowHFIndex() {
+        return showHFIndex;
     }
 
-    public void setShowIndex(boolean showIndex) {
-        this.showIndex = showIndex;
+    public void setShowHFIndex(boolean showHFIndex) {
+        this.showHFIndex = showHFIndex;
     }
 
-    public boolean getShowCenter() {
-        return showCenter;
+    public boolean isShowHFCenter() {
+        return showHFCenter;
     }
 
-    public void setShowCenter(boolean showCenter) {
-        this.showCenter = showCenter;
+    public void setShowHFCenter(boolean showHFCenter) {
+        this.showHFCenter = showHFCenter;
     }
+
 
 }
