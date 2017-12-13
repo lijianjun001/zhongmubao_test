@@ -75,7 +75,9 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
             ishf = true;
         }
         if (!ishf && customerHF != null) {
-            ishf = true;
+            if(!(customerHF.getIsBandCard() && !StringUtil.isNullOrEmpty(customerHF.getUsrCustId()))) {
+                ishf = true;
+            }
         }
 
         //显示汇付 or 新浪
