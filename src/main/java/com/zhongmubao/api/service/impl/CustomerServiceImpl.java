@@ -10,6 +10,7 @@ import com.zhongmubao.api.entity.Customer;
 import com.zhongmubao.api.entity.CustomerHF;
 import com.zhongmubao.api.entity.CustomerSina;
 import com.zhongmubao.api.mongo.dao.CustomerHFIndexMongoDao;
+import com.zhongmubao.api.mongo.entity.CustomerHFIndexMongo;
 import com.zhongmubao.api.service.CustomerService;
 import com.zhongmubao.api.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,7 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
     private final CustomerHFDao customerHFDao;
     private final CustomerSinaDao customerSinaDao;
     private final CustomerHFIndexMongoDao customerHFIndexMongoDao;
+
     @Autowired
     public CustomerServiceImpl(CustomerHFDao customerHFDao, CustomerSinaDao customerSinaDao, CustomerHFIndexMongoDao customerHFIndexMongoDao) {
         this.customerHFDao = customerHFDao;
@@ -40,27 +42,33 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
         RealNameViewModel realNameViewModel = new RealNameViewModel();
         CustomerHF customerHF = customerHFDao.getCustomerHFById(customer.getId());
         CustomerSina customerSina = customerSinaDao.getCustomerSinaById(customer.getId());
-        realNameViewModel.setShowHFIndex(false);
-        realNameViewModel.setShowHFCenter(false);
-
+        realNameViewModel.setCenterShowHFRealName(false);
+        realNameViewModel.setIndexShowHFRealName(false);
+        realNameViewModel.setCenterShowSinaRealName(false);
+        realNameViewModel.setIndexShowSinaRealName(false);
+        realNameViewModel.setCustomerType("L");
         boolean ishf = false;
-        String dateFormat ="yyyy-MM-dd HH:mm:ss";
+        String dateFormat = "yyyy-MM-dd HH:mm:ss";
         String dateStr = "2017-12-01 00:00:00";
 
         //首页显示
-        if(null!=customerHFIndexMongoDao.getByCustomerId(customer.getId())){
-            if(customerHF==null){
-                realNameViewModel.setShowHFIndex(true);
-                realNameViewModel.setShowHFCenter(true);
-            }else{
-              if(!(customerHF.getIsBandCard()&&!StringUtil.isNullOrEmpty(customerHF.getUsrCustId()))){
-                  realNameViewModel.setShowHFIndex(true);
-                  realNameViewModel.setShowHFCenter(true);
-              }
+        CustomerHFIndexMongo customerHFIndexMongo = customerHFIndexMongoDao.getByCustomerId(customer.getId());
+        if (null != customerHFIndexMongo) {
+            if (customerHF == null) {
+                realNameViewModel.setCenterShowHFRealName(true);
+                realNameViewModel.setIndexShowHFRealName(true);
+            } else {
+                if (!(customerHF.getIsBandCard() && !StringUtil.isNullOrEmpty(customerHF.getUsrCustId()))) {
+                    realNameViewModel.setCenterShowHFRealName(true);
+                    realNameViewModel.setIndexShowHFRealName(true);
+                }
             }
+            //不删除恒显示
+            //customerHFIndexMongoDao.delete(customerHFIndexMongo);
         }
 
         if (customer.getCreated().getTime() > (new SimpleDateFormat(dateFormat).parse(dateStr)).getTime()) {
+            realNameViewModel.setCustomerType("X");
             ishf = true;
         }
         if (!ishf && customerSina == null) {
@@ -73,6 +81,8 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
         //显示汇付 or 新浪
         if (ishf) {
             if (customerHF == null) {
+                realNameViewModel.setCenterShowHFRealName(true);
+                realNameViewModel.setIndexShowHFRealName(true);
                 realNameViewModel.setRealName(RealNameStatus.HFF.getName());
                 realNameViewModel.setRealNameSatus(RealNameStatus.HFF.getStatus());
                 realNameViewModel.setRealNameType(RealNameStatus.HFF.getType());
@@ -85,14 +95,19 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
                 realNameViewModel.setRealNameType(RealNameStatus.HFS.getType());
                 realNameViewModel.setRealNameImg(Constants.RESOURES_ADDRESS_IMAGES + RealNameStatus.HFS.getImg());
             } else {
+                realNameViewModel.setCenterShowHFRealName(true);
+                realNameViewModel.setIndexShowHFRealName(true);
                 realNameViewModel.setRealName(RealNameStatus.HFF.getName());
                 realNameViewModel.setRealNameSatus(RealNameStatus.HFF.getStatus());
                 realNameViewModel.setRealNameType(RealNameStatus.HFF.getType());
                 realNameViewModel.setRealNameImg(Constants.RESOURES_ADDRESS_IMAGES + RealNameStatus.HFF.getImg());
             }
+
         } else {
 
             if (customerSina == null) {
+                realNameViewModel.setCenterShowSinaRealName(true);
+                realNameViewModel.setIndexShowSinaRealName(true);
                 realNameViewModel.setRealName(RealNameStatus.XLF.getName());
                 realNameViewModel.setRealNameSatus(RealNameStatus.XLF.getStatus());
                 realNameViewModel.setRealNameType(RealNameStatus.XLF.getType());
@@ -105,6 +120,8 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
                 realNameViewModel.setRealNameType(RealNameStatus.XLS.getType());
                 realNameViewModel.setRealNameImg(Constants.RESOURES_ADDRESS_IMAGES + RealNameStatus.XLS.getImg());
             } else {
+                realNameViewModel.setCenterShowSinaRealName(true);
+                realNameViewModel.setIndexShowSinaRealName(true);
                 realNameViewModel.setRealName(RealNameStatus.XLF.getName());
                 realNameViewModel.setRealNameSatus(RealNameStatus.XLF.getStatus());
                 realNameViewModel.setRealNameType(RealNameStatus.XLF.getType());
