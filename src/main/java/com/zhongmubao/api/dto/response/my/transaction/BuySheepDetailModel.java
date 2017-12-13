@@ -4,11 +4,11 @@ package com.zhongmubao.api.dto.response.my.transaction;
  * 购羊详情
  * @author 米立林
  */
-public class BuySheepDetailViewModel {
-    public BuySheepDetailViewModel() {
+public class BuySheepDetailModel {
+    public BuySheepDetailModel() {
     }
 
-    public BuySheepDetailViewModel(String pastureImage, String pastureName, String transactionAmount, String transactionMethod, String sheepProjectTitle, String sheepCount, String buySheepDate, String orderNo, String balance) {
+    public BuySheepDetailModel(String pastureImage, String pastureName, String transactionAmount, String transactionMethod, String sheepProjectTitle, String sheepCount, String buySheepDate, String orderNo, String balance) {
         this.pastureImage = pastureImage;
         this.pastureName = pastureName;
         this.transactionAmount = transactionAmount;

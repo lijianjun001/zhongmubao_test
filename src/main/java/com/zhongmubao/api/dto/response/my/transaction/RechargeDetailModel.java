@@ -4,11 +4,11 @@ package com.zhongmubao.api.dto.response.my.transaction;
  * 充值详情
  * @author 米立林
  */
-public class RechargeDetailViewModel {
-    public RechargeDetailViewModel() {
+public class RechargeDetailModel {
+    public RechargeDetailModel() {
     }
 
-    public RechargeDetailViewModel(String transactionAmount, String rechargeMethod, String transactionDate, String balance) {
+    public RechargeDetailModel(String transactionAmount, String rechargeMethod, String transactionDate, String balance) {
         this.transactionAmount = transactionAmount;
         this.rechargeMethod = rechargeMethod;
         this.transactionDate = transactionDate;

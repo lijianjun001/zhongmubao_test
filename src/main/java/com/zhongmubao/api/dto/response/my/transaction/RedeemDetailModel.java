@@ -6,7 +6,7 @@ package com.zhongmubao.api.dto.response.my.transaction;
  *
  * @author 米立林
  */
-public class RedeemDetailViewModel {
+public class RedeemDetailModel {
     /**
      * 交易金额
      */

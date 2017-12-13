@@ -4,11 +4,11 @@ package com.zhongmubao.api.dto.response.my.transaction;
  * 提现详情
  * @author 米立林
  */
-public class WithdrawDetailViewModel {
-    public WithdrawDetailViewModel() {
+public class WithdrawDetailModel {
+    public WithdrawDetailModel() {
     }
 
-    public WithdrawDetailViewModel(String backImage, String bankName, String transactionAmount, String rechargeMethod, String transactionDate, String balance) {
+    public WithdrawDetailModel(String backImage, String bankName, String transactionAmount, String rechargeMethod, String transactionDate, String balance) {
         this.backImage = backImage;
         this.bankName = bankName;
         this.transactionAmount = transactionAmount;
