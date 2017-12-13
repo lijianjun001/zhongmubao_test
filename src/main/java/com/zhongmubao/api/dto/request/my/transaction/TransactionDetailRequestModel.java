@@ -1,4 +1,4 @@
-package com.zhongmubao.api.dto.request.transaction;
+package com.zhongmubao.api.dto.request.my.transaction;
 
 /**
  * 交易详情请求参数

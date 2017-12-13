@@ -1,4 +1,4 @@
-package com.zhongmubao.api.dto.response.transaction;
+package com.zhongmubao.api.dto.response.my.transaction;
 
 /**
  * 购羊详情
