@@ -75,7 +75,7 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
             ishf = true;
         }
         if (!ishf && customerHF != null) {
-            if(!(customerHF.getIsBandCard() && !StringUtil.isNullOrEmpty(customerHF.getUsrCustId()))) {
+            if(customerHF.getIsBandCard() && !StringUtil.isNullOrEmpty(customerHF.getUsrCustId())) {
                 ishf = true;
             }
         }
