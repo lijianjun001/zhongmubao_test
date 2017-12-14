@@ -3,6 +3,7 @@ package com.zhongmubao.api.service.impl;
 import com.zhongmubao.api.config.Constants;
 import com.zhongmubao.api.config.ResultStatus;
 import com.zhongmubao.api.config.enmu.RealNameStatus;
+import com.zhongmubao.api.config.enmu.TransactionDetailType;
 import com.zhongmubao.api.dao.CustomerHFDao;
 import com.zhongmubao.api.dao.CustomerSinaDao;
 import com.zhongmubao.api.dao.SheepProjectDao;
@@ -31,8 +32,6 @@ import org.springframework.stereotype.Service;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Customer
@@ -81,15 +80,6 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
                 if (!(customerHF.getIsBandCard() && !StringUtil.isNullOrEmpty(customerHF.getUsrCustId()))) {
                     realNameViewModel.setCenterShowHFRealName(true);
                     realNameViewModel.setIndexShowHFRealName(true);
-                }
-        if (null != customerHFIndexMongoDao.getByCustomerId(customer.getId())) {
-            if (customerHF == null) {
-                realNameViewModel.setShowHFIndex(true);
-                realNameViewModel.setShowHFCenter(true);
-            } else {
-                if (!(customerHF.getIsBandCard() && !StringUtil.isNullOrEmpty(customerHF.getUsrCustId()))) {
-                    realNameViewModel.setShowHFIndex(true);
-                    realNameViewModel.setShowHFCenter(true);
                 }
             }
             //不删除恒显示
@@ -165,15 +155,13 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
 
     //region 交易详情
     @Override
-    public TransactionListViewModel transactionList(Customer customer, TransactionRequestModel model) throws Exception {
+    public TransactionListViewModel transactionList(Customer customer, TransactionRequestModel model) throws
+            Exception {
         if (null == model) {
             throw new ApiException(ResultStatus.PARAMETER_MISSING);
         }
 
         Date date = new Date();
-        if (!StringUtil.isNullOrEmpty(model.getBillDate())) {
-            date = DateUtil.strToDate(model.getBillDate());
-        }
         // 获取当前月的第一天和最后一天
         Date startDate = DateUtil.formatMongo(DateUtil.monthFirstDay(date));
         Date endDate = DateUtil.formatMongo(DateUtil.monthLastDay(date));
@@ -193,15 +181,19 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
             try {
                 if (mongo.getType().equals(TransactionDetailType.RECHARGE.getName())) {
                     RechargeDetailModel rechargeDetail = SerializeUtil.deSerialize(mongo.getTransactionDetail(), RechargeDetailModel.class);
+                    assert rechargeDetail != null;
                     transactionViewModel.setTransactionDate(rechargeDetail.getTransactionDate());
                 } else if (mongo.getType().equals(TransactionDetailType.WITHDRAW.getName())) {
-                    WithdrawDetailModel WithdrawDetail = SerializeUtil.deSerialize(mongo.getTransactionDetail(), WithdrawDetailModel.class);
-                    transactionViewModel.setTransactionDate(WithdrawDetail.getTransactionDate());
+                    WithdrawDetailModel withdrawdetail = SerializeUtil.deSerialize(mongo.getTransactionDetail(), WithdrawDetailModel.class);
+                    assert withdrawdetail != null;
+                    transactionViewModel.setTransactionDate(withdrawdetail.getTransactionDate());
                 } else if (mongo.getType().equals(TransactionDetailType.BUYSHEEP.getName())) {
                     BuySheepDetailModel buySheepDetail = SerializeUtil.deSerialize(mongo.getTransactionDetail(), BuySheepDetailModel.class);
+                    assert buySheepDetail != null;
                     transactionViewModel.setTransactionDate(buySheepDetail.getBuySheepDate());
                 } else if (mongo.getType().equals(TransactionDetailType.REDEEM.getName())) {
                     RedeemDetailModel redeemDetail = SerializeUtil.deSerialize(mongo.getTransactionDetail(), RedeemDetailModel.class);
+                    assert redeemDetail != null;
                     transactionViewModel.setTransactionDate(redeemDetail.getOperationDate());
                 }
                 list.add(transactionViewModel);
@@ -246,7 +238,8 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
     }
 
     @Override
-    public TransactionDetailViewModel transactionDetail(Customer customer, TransactionDetailRequestModel model) throws Exception {
+    public TransactionDetailViewModel transactionDetail(Customer customer, TransactionDetailRequestModel model) throws
+            Exception {
         if (null == model || StringUtil.isNullOrEmpty(model.getId())) {
             throw new ApiException(ResultStatus.PARAMETER_MISSING);
         }
