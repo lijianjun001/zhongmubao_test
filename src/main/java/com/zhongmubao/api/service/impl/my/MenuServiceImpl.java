@@ -68,30 +68,39 @@ public class MenuServiceImpl extends BaseService implements MenuService {
 
         String dateFormat ="yyyy-MM-dd HH:mm:ss";
         String dateStr = "2017-12-01 00:00:00";
-        if (customer.getCreated().getTime() > (new SimpleDateFormat(dateFormat).parse(dateStr)).getTime()) {
-            ListItemModel listItemModelWallet = new ListItemModel();
-            listItemModelWallet.setIcon("personal-qianbao.png");
-            listItemModelWallet.setTitle("我的钱包");
-            listItemModelWallet.setUrl("/Emubao/WebApp#/Wallet");
-            listItemModelWallet.setAction("wallet");
-            listItemModelWallet.setJumpType("00");
-            listItemModels.add(listItemModelWallet);
+        CustomerSina customerSina = customerSinaDao.getCustomerSinaById(customer.getId());
+        CustomerHF customerHF = customerHFDao.getCustomerHFById(customer.getId());
+        if (customer.getCreated().getTime() < (new SimpleDateFormat(dateFormat).parse(dateStr)).getTime()) {
+            if(customerSina!=null) {
+                ListItemModel listItemModelWallet = new ListItemModel();
+                listItemModelWallet.setIcon("personal-qianbao.png");
+                listItemModelWallet.setTitle("我的钱包");
+                listItemModelWallet.setUrl("/Emubao/WebApp#/Wallet");
+                listItemModelWallet.setAction("wallet");
+                listItemModelWallet.setJumpType("00");
+                listItemModels.add(listItemModelWallet);
+            }
         }
-        ListItemModel listItemModelHfWallet = new ListItemModel();
-        listItemModelHfWallet.setIcon("personal-qianbao.png");
-        listItemModelHfWallet.setTitle("汇付钱包");
-        listItemModelHfWallet.setUrl("/Customer/HfWallet");
-        listItemModelHfWallet.setAction("hfwallet");
-        listItemModelHfWallet.setJumpType("00");
-        listItemModels.add(listItemModelHfWallet);
+        if(customerHF!=null) {
+         if(customerHF.getIsBandCard()&&!StringUtil.isNullOrEmpty(customerHF.getUsrCustId())){
+             ListItemModel listItemModelHfWallet = new ListItemModel();
+             listItemModelHfWallet.setIcon("personal-qianbao.png");
+             listItemModelHfWallet.setTitle("汇付钱包");
+             listItemModelHfWallet.setUrl("/Customer/HfWallet");
+             listItemModelHfWallet.setAction("hfwallet");
+             listItemModelHfWallet.setJumpType("00");
+             listItemModels.add(listItemModelHfWallet);
 
-        ListItemModel listItemModelHfCard = new ListItemModel();
-        listItemModelHfCard.setIcon("personal-yinhangka.png");
-        listItemModelHfCard.setTitle("汇付银行卡");
-        listItemModelHfCard.setUrl("/Customer/HfCard");
-        listItemModelHfCard.setAction("hfcard");
-        listItemModelHfCard.setJumpType("00");
-        listItemModels.add(listItemModelHfCard);
+             ListItemModel listItemModelHfCard = new ListItemModel();
+             listItemModelHfCard.setIcon("personal-yinhangka.png");
+             listItemModelHfCard.setTitle("汇付银行卡");
+             listItemModelHfCard.setUrl("/Customer/HfCard");
+             listItemModelHfCard.setAction("hfcard");
+             listItemModelHfCard.setJumpType("00");
+             listItemModels.add(listItemModelHfCard);
+         }
+        }
+
 
         ListItemModel listItemModelBonusList = new ListItemModel();
         listItemModelBonusList.setIcon("personal-xianjin.png");
@@ -132,6 +141,14 @@ public class MenuServiceImpl extends BaseService implements MenuService {
         listItemModelSettings.setAction("settings");
         listItemModelSettings.setJumpType("01");
         listItemModels.add(listItemModelSettings);
+
+//        ListItemModel listItemModelHfAuth = new ListItemModel();
+//        listItemModelHfAuth.setIcon("personal-help.png");
+//        listItemModelHfAuth.setTitle("汇付开户");
+//        listItemModelHfAuth.setUrl("/Customer/HfAuth");
+//        listItemModelHfAuth.setAction("hfauth");
+//        listItemModelHfAuth.setJumpType("00");
+//        listItemModels.add(listItemModelHfAuth);
 
         for (ListItemModel itemModel :
                 listItemModels) {

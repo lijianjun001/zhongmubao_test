@@ -24,14 +24,25 @@ public class RealNameViewModel {
     private String realNameSatus;
 
     /**
-     * 汇付首页显示
+     * 汇付个人中心实名
      */
-    private boolean showHFIndex;
+    private boolean centerShowHFRealName;
     /**
-     * 汇付个人中心显示
+     * 汇付首页实名
      */
-    private boolean showHFCenter;
-
+    private boolean indexShowHFRealName;
+    /**
+     * 新浪个人中心实名
+     */
+    private boolean centerShowSinaRealName;
+    /**
+     * 新浪首页实名
+     */
+    private boolean indexShowSinaRealName;
+    /**
+     * 用户类型（新老用户判断） L 老 X 新
+     */
+    private String customerType;
     public String getRealName() {
         return realName;
     }
@@ -64,20 +75,44 @@ public class RealNameViewModel {
         this.realNameSatus = realNameSatus;
     }
 
-    public boolean isShowHFIndex() {
-        return showHFIndex;
+    public boolean getCenterShowHFRealName() {
+        return centerShowHFRealName;
     }
 
-    public void setShowHFIndex(boolean showHFIndex) {
-        this.showHFIndex = showHFIndex;
+    public void setCenterShowHFRealName(boolean centerShowHFRealName) {
+        this.centerShowHFRealName = centerShowHFRealName;
     }
 
-    public boolean isShowHFCenter() {
-        return showHFCenter;
+    public boolean getIndexShowHFRealName() {
+        return indexShowHFRealName;
     }
 
-    public void setShowHFCenter(boolean showHFCenter) {
-        this.showHFCenter = showHFCenter;
+    public void setIndexShowHFRealName(boolean indexShowHFRealName) {
+        this.indexShowHFRealName = indexShowHFRealName;
+    }
+
+    public boolean getCenterShowSinaRealName() {
+        return centerShowSinaRealName;
+    }
+
+    public void setCenterShowSinaRealName(boolean centerShowSinaRealName) {
+        this.centerShowSinaRealName = centerShowSinaRealName;
+    }
+
+    public boolean getIndexShowSinaRealName() {
+        return indexShowSinaRealName;
+    }
+
+    public void setIndexShowSinaRealName(boolean indexShowSinaRealName) {
+        this.indexShowSinaRealName = indexShowSinaRealName;
+    }
+
+    public String getCustomerType() {
+        return customerType;
+    }
+
+    public void setCustomerType(String customerType) {
+        this.customerType = customerType;
     }
 
 
