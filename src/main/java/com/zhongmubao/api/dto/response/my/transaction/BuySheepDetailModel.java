@@ -12,7 +12,7 @@ public class BuySheepDetailModel {
     public BuySheepDetailModel() {
     }
 
-    public BuySheepDetailModel(String pastureImage, String pastureName, String transactionAmount, String transactionMethod, String sheepProjectTitle, String sheepCount, String buySheepDate, String orderNo, String balance) {
+    public BuySheepDetailModel(String pastureImage, String pastureName, String transactionAmount, String transactionMethod, String sheepProjectTitle, String sheepCount, String buySheepDate, String orderNo) {
         this.pastureImage = pastureImage;
         this.pastureName = pastureName;
         this.transactionAmount = transactionAmount;
@@ -21,7 +21,6 @@ public class BuySheepDetailModel {
         this.sheepCount = sheepCount;
         this.buySheepDate = buySheepDate;
         this.orderNo = orderNo;
-        this.balance = balance;
     }
 
     /**
@@ -71,12 +70,6 @@ public class BuySheepDetailModel {
      */
     @SerializedName("OrderNo")
     private String orderNo;
-
-    /**
-     * 账户余额
-     */
-    @SerializedName("Balance")
-    private String balance;
 
     public String getPastureImage() {
         return pastureImage;
@@ -140,13 +133,5 @@ public class BuySheepDetailModel {
 
     public void setOrderNo(String orderNo) {
         this.orderNo = orderNo;
-    }
-
-    public String getBalance() {
-        return balance;
-    }
-
-    public void setBalance(String balance) {
-        this.balance = balance;
     }
 }

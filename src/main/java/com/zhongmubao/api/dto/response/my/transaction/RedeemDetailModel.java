@@ -52,12 +52,6 @@ public class RedeemDetailModel {
     @SerializedName("OrderNo")
     private String orderNo;
 
-    /**
-     * 账户余额
-     */
-    @SerializedName("Balance")
-    private String balance;
-
     public String getTransactionAmount() {
         return transactionAmount;
     }
@@ -112,13 +106,5 @@ public class RedeemDetailModel {
 
     public void setOrderNo(String orderNo) {
         this.orderNo = orderNo;
-    }
-
-    public String getBalance() {
-        return balance;
-    }
-
-    public void setBalance(String balance) {
-        this.balance = balance;
     }
 }

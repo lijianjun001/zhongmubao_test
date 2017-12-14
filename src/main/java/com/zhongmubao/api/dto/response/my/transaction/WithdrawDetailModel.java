@@ -12,13 +12,12 @@ public class WithdrawDetailModel {
     public WithdrawDetailModel() {
     }
 
-    public WithdrawDetailModel(String bankImage, String bankName, String transactionAmount, String rechargeMethod, String transactionDate, String balance) {
+    public WithdrawDetailModel(String bankImage, String bankName, String transactionAmount, String rechargeMethod, String transactionDate) {
         this.bankImage = bankImage;
         this.bankName = bankName;
         this.transactionAmount = transactionAmount;
         this.rechargeMethod = rechargeMethod;
         this.transactionDate = transactionDate;
-        this.balance = balance;
     }
 
     /**
@@ -50,12 +49,6 @@ public class WithdrawDetailModel {
      */
     @SerializedName("TransactionDate")
     private String transactionDate;
-
-    /**
-     * 账户余额
-     */
-    @SerializedName("Balance")
-    private String balance;
 
     public String getBackImage() {
         return bankImage;
@@ -95,13 +88,5 @@ public class WithdrawDetailModel {
 
     public void setTransactionDate(String transactionDate) {
         this.transactionDate = transactionDate;
-    }
-
-    public String getBalance() {
-        return balance;
-    }
-
-    public void setBalance(String balance) {
-        this.balance = balance;
     }
 }
