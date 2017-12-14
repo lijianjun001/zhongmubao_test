@@ -14,4 +14,13 @@ public interface SheepProjectDao {
      * @return
      */
     SheepProject getSheepProjectById(@Param("id") int id);
+
+    /**
+     * 通过用户和订单编号获取羊标标题
+     *
+     * @param customerId 用户
+     * @param code       订单编号
+     * @return
+     */
+    String getProjectTitleByBustomerIdAndCode(@Param("customerId") int customerId, @Param("code") String code);
 }

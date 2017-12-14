@@ -1,7 +1,11 @@
 package com.zhongmubao.api.dto.response.my.transaction;
 
+import com.google.gson.annotations.SerializedName;
+
+
 /**
  * 充值详情
+ *
  * @author 米立林
  */
 public class RechargeDetailModel {
@@ -18,21 +22,25 @@ public class RechargeDetailModel {
     /**
      * 交易金额
      */
+    @SerializedName("TransactionAmount")
     private String transactionAmount;
 
     /**
      * 充值方式
      */
+    @SerializedName("RechargeMethod")
     private String rechargeMethod;
 
     /**
      * 充值时间
      */
+    @SerializedName("TransactionDate")
     private String transactionDate;
 
     /**
      * 账户余额
      */
+    @SerializedName("Balance")
     private String balance;
 
     public String getTransactionAmount() {

@@ -121,9 +121,9 @@ public class ReadPackageServiceImpl implements ReadPackageService {
             groupModel.setCount(redPacket.getTotalCount());
             groupModel.setType(redPacket.getType());
             groupModel.setNewCount(redPacket.getNewCount());
-            groupModel.setPrice(DoubleUtil.toFixed(redPacket.getPrice(), Constants.Price_FORMAT));
+            groupModel.setPrice(DoubleUtil.toFixed(redPacket.getPrice(), Constants.PRICE_FORMAT));
             groupModel.setFirstExpTime(DateUtil.format(redPacket.getExpTime(), Constants.DATE_FORMAT));
-            groupModel.setTotalPrice(DoubleUtil.toFixed(redPacket.getTotalPrice(), Constants.Price_FORMAT));
+            groupModel.setTotalPrice(DoubleUtil.toFixed(redPacket.getTotalPrice(), Constants.PRICE_FORMAT));
         }
 
         if (isPreLoad) {
@@ -144,7 +144,7 @@ public class ReadPackageServiceImpl implements ReadPackageService {
             List<RedPackageModel> eightViewGroup = pager.stream().map(
                     en -> new RedPackageModel(
                             en.getId(),
-                            DoubleUtil.toFixed(en.getPrice(), Constants.Price_FORMAT),
+                            DoubleUtil.toFixed(en.getPrice(), Constants.PRICE_FORMAT),
                             en.getPrice() >= 5 ? remark : "",
                             Constants.redpackettypestr(en.getType()),
                             en.getIsNew() == 1,
@@ -184,7 +184,7 @@ public class ReadPackageServiceImpl implements ReadPackageService {
         List<RedPackageModel> list = pager.stream()
                 .map(en -> new RedPackageModel(
                         en.getId(),
-                        DoubleUtil.toFixed(en.getPrice(), Constants.Price_FORMAT),
+                        DoubleUtil.toFixed(en.getPrice(), Constants.PRICE_FORMAT),
                         en.getPrice() >= 5 ? remark : "",
                         Constants.redpackettypestr(en.getType()),
                         en.getIsNew() == 1,
@@ -212,7 +212,7 @@ public class ReadPackageServiceImpl implements ReadPackageService {
         List<RedPackageModel> list = pager.stream()
                 .map(en -> new RedPackageModel(
                         en.getId(),
-                        DoubleUtil.toFixed(en.getPrice(), Constants.Price_FORMAT),
+                        DoubleUtil.toFixed(en.getPrice(), Constants.PRICE_FORMAT),
                         en.getPrice() >= 5 ? remark : "",
                         Constants.redpackettypestr(en.getType()),
                         en.getIsNew() == 1,
@@ -249,7 +249,7 @@ public class ReadPackageServiceImpl implements ReadPackageService {
 
         return new RedPackageDetailViewModel(
                 Constants.redpackettypestr(extRedPackage.getType()),
-                DoubleUtil.toFixed(extRedPackage.getPrice(), Constants.Price_FORMAT),
+                DoubleUtil.toFixed(extRedPackage.getPrice(), Constants.PRICE_FORMAT),
                 DateUtil.format(extRedPackage.getCreated(), Constants.DATE_FORMAT),
                 DateUtil.format(extRedPackage.getExpTime(), Constants.DATE_FORMAT),
                 remarks,
@@ -274,7 +274,7 @@ public class ReadPackageServiceImpl implements ReadPackageService {
         List<RedPackageModel> list = pager.stream()
                 .map(en -> new RedPackageModel(
                         en.getId(),
-                        DoubleUtil.toFixed(en.getPrice(), Constants.Price_FORMAT),
+                        DoubleUtil.toFixed(en.getPrice(), Constants.PRICE_FORMAT),
                         en.getPrice() >= 5 ? remark : "",
                         Constants.redpackettypestr(en.getType()),
                         en.getIsNew() == 1,

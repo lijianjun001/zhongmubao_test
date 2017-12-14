@@ -2,20 +2,23 @@ package com.zhongmubao.api.web;
 
 import com.zhongmubao.api.authorization.annotation.Authorization;
 import com.zhongmubao.api.authorization.annotation.CurrentUser;
-import com.zhongmubao.api.dto.request.my.RealNameRequestModel;
 import com.zhongmubao.api.dto.request.my.menu.ListRequestModel;
 import com.zhongmubao.api.dto.request.my.redpackage.RedPackageDetailRequestModel;
 import com.zhongmubao.api.dto.request.my.redpackage.RedPackageGroupRequestModel;
 import com.zhongmubao.api.dto.request.my.redpackage.RedPackageListRequestModel;
+import com.zhongmubao.api.dto.request.my.transaction.TransactionDetailRequestModel;
+import com.zhongmubao.api.dto.request.my.transaction.TransactionRequestModel;
 import com.zhongmubao.api.dto.response.ReponseModel;
-import com.zhongmubao.api.dto.response.my.RealNameViewModel;
 import com.zhongmubao.api.dto.response.my.menu.ListViewModel;
 import com.zhongmubao.api.dto.response.my.redpackage.RedPackageDetailViewModel;
 import com.zhongmubao.api.dto.response.my.redpackage.RedPackageGroupViewModel;
 import com.zhongmubao.api.dto.response.my.redpackage.RedPackageListViewModel;
 import com.zhongmubao.api.dto.response.my.redpackage.RedPackageHistoryViewModel;
+import com.zhongmubao.api.dto.response.my.transaction.TransactionDetailViewModel;
+import com.zhongmubao.api.dto.response.my.transaction.TransactionListViewModel;
 import com.zhongmubao.api.entity.Customer;
 import com.zhongmubao.api.exception.ApiException;
+import com.zhongmubao.api.service.CustomerService;
 import com.zhongmubao.api.service.my.MenuService;
 import com.zhongmubao.api.service.my.ReadPackageService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,11 +40,13 @@ public class MyController {
 
     private final MenuService menuService;
     private final ReadPackageService readPackageService;
+    private final CustomerService customerService;
 
     @Autowired
-    public MyController(MenuService menuService, ReadPackageService readPackageService) {
+    public MyController(MenuService menuService, ReadPackageService readPackageService, CustomerService customerService) {
         this.menuService = menuService;
         this.readPackageService = readPackageService;
+        this.customerService = customerService;
     }
 
     // region 个人中心菜单
@@ -69,13 +74,14 @@ public class MyController {
     //endregion
 
     //region 个人中心红包
+
     /**
      * 我的红包分组
      *
      * @param customer 客户
      * @param model    请求model
-     * @author 米立林
      * @return RedPackageGroupViewModel
+     * @author 米立林
      */
     @RequestMapping(value = "/readPackage/group", method = RequestMethod.POST, consumes = "application/json")
     @Authorization
@@ -95,8 +101,8 @@ public class MyController {
      *
      * @param customer 客户
      * @param model    请求model
-     * @author 米立林
      * @return RedPackageListViewModel
+     * @author 米立林
      */
     @RequestMapping(value = "/readPackage/groupList", method = RequestMethod.POST, consumes = "application/json")
     @Authorization
@@ -156,8 +162,8 @@ public class MyController {
      *
      * @param customer 客户
      * @param model    请求model
-     * @author 米立林
      * @return RedPackageListViewModel
+     * @author 米立林
      */
     @RequestMapping(value = "/readPackage/list", method = RequestMethod.POST, consumes = "application/json")
     @Authorization
@@ -171,5 +177,51 @@ public class MyController {
             return new ResponseEntity<>(ReponseModel.error(ex, this.getClass()), HttpStatus.OK);
         }
     }
+    //endregion
+
+    //region 交易明细
+
+    /**
+     * 列表
+     *
+     * @param customer 客户
+     * @param model    请求model
+     * @return TransactionListViewModel
+     * @author 米立林
+     */
+    @RequestMapping(value = "/transaction/list", method = RequestMethod.POST, consumes = "application/json")
+    @Authorization
+    public ResponseEntity<ReponseModel> transactionList(@CurrentUser Customer customer, HttpEntity<TransactionRequestModel> model) {
+        try {
+            TransactionListViewModel transactionListViewModel = customerService.transactionList(customer, model.getBody());
+            return new ResponseEntity<>(ReponseModel.ok(transactionListViewModel), HttpStatus.OK);
+        } catch (ApiException ex) {
+            return new ResponseEntity<>(ReponseModel.error(ex.getStatus()), HttpStatus.OK);
+        } catch (Exception ex) {
+            return new ResponseEntity<>(ReponseModel.error(ex, this.getClass()), HttpStatus.OK);
+        }
+    }
+
+    /**
+     * 交易记录详情
+     *
+     * @param customer 客户
+     * @param model    请求model
+     * @return TransactionDetailViewModel
+     * @author 米立林
+     */
+    @RequestMapping(value = "/transaction/detail", method = RequestMethod.POST, consumes = "application/json")
+    @Authorization
+    public ResponseEntity<ReponseModel> transactionDetail(@CurrentUser Customer customer, HttpEntity<TransactionDetailRequestModel> model) {
+        try {
+            TransactionDetailViewModel detailViewModel = customerService.transactionDetail(customer, model.getBody());
+            return new ResponseEntity<>(ReponseModel.ok(detailViewModel), HttpStatus.OK);
+        } catch (ApiException ex) {
+            return new ResponseEntity<>(ReponseModel.error(ex.getStatus()), HttpStatus.OK);
+        } catch (Exception ex) {
+            return new ResponseEntity<>(ReponseModel.error(ex, this.getClass()), HttpStatus.OK);
+        }
+    }
+
     //endregion
 }

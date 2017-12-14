@@ -28,7 +28,6 @@ public class DateUtil {
         cale.add(Calendar.MONTH, 0);
         cale.set(Calendar.DAY_OF_MONTH, 1);
         return weeHours(strToDate(format.format(cale.getTime())), 0);
-
     }
 
     /**
@@ -38,6 +37,33 @@ public class DateUtil {
      */
     public static Date monthLastDay() {
         Calendar cale = Calendar.getInstance();
+        SimpleDateFormat format = new SimpleDateFormat(Constants.DATE_TIME_FORMAT);
+        cale.add(Calendar.MONTH, 1);
+        cale.set(Calendar.DAY_OF_MONTH, 0);
+        return weeHours(strToDate(format.format(cale.getTime())), 1);
+    }
+    /**
+     * 指定日期那个月的第一天
+     *
+     * @return 时间
+     */
+    public static Date monthFirstDay(Date date) {
+        Calendar cale = Calendar.getInstance();
+        cale.setTime(date);
+        SimpleDateFormat format = new SimpleDateFormat(Constants.DATE_TIME_FORMAT);
+        cale.add(Calendar.MONTH, 0);
+        cale.set(Calendar.DAY_OF_MONTH, 1);
+        return weeHours(strToDate(format.format(cale.getTime())), 0);
+    }
+
+    /**
+     * 指定日期那个月的最后一天
+     *
+     * @return 时间
+     */
+    public static Date monthLastDay(Date date) {
+        Calendar cale = Calendar.getInstance();
+        cale.setTime(date);
         SimpleDateFormat format = new SimpleDateFormat(Constants.DATE_TIME_FORMAT);
         cale.add(Calendar.MONTH, 1);
         cale.set(Calendar.DAY_OF_MONTH, 0);

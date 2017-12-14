@@ -1,6 +1,5 @@
 package com.zhongmubao.api.dto.request.my.transaction;
 
-import com.zhongmubao.api.config.enmu.TransactionDetailType;
 
 /**
  * 交易明细请求参数
@@ -19,9 +18,9 @@ public class TransactionRequestModel {
     private String billDate;
 
     /**
-     * 账单类型（充值、提现、买羊、赎回）
+     * 账单类型
      */
-    private TransactionDetailType billType;
+    private String billType;
 
     public int getPageIndex() {
         return pageIndex;
@@ -39,11 +38,11 @@ public class TransactionRequestModel {
         this.billDate = billDate;
     }
 
-    public TransactionDetailType getBillType() {
+    public String getBillType() {
         return billType;
     }
 
-    public void setBillType(TransactionDetailType billType) {
+    public void setBillType(String billType) {
         this.billType = billType;
     }
 }

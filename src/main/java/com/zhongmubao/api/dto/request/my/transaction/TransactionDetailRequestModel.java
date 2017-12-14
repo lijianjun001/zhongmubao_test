@@ -9,13 +9,13 @@ public class TransactionDetailRequestModel {
     /**
      * 交易号
      */
-    private String transactionNum;
+    private String id;
 
-    public String getTransactionNum() {
-        return transactionNum;
+    public String getId() {
+        return id;
     }
 
-    public void setTransactionNum(String transactionNum) {
-        this.transactionNum = transactionNum;
+    public void setId(String id) {
+        this.id = id;
     }
 }
