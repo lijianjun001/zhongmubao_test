@@ -13,7 +13,7 @@ public enum TransactionDetailType {
     ALL {
         @Override
         public String getName() {
-            return "all";
+            return "";
         }
     },
     /**
@@ -50,6 +50,15 @@ public enum TransactionDetailType {
         @Override
         public String getName() {
             return "03";
+        }
+    },
+    /**
+     * 赎回红包
+     */
+    REDEEM_RED {
+        @Override
+        public String getName() {
+            return "04";
         }
     };
 

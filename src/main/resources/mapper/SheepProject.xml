@@ -12,4 +12,15 @@
         WHERE
         id = #{id} limit 1
     </select>
+
+    <select id="getProjectTitleByBustomerIdAndCode" resultType="String">
+        SELECT Title FROM SheepProject
+        WHERE Id = (
+        SELECT ProjectId FROM SheepOrder WHERE
+        CustomerId = #{customerId}
+        AND Code = #{code}
+        AND Deleted = 0
+        AND frozened = 0
+        )
+    </select>
 </mapper>

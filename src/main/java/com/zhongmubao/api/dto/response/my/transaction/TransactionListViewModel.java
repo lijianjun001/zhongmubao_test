@@ -21,7 +21,7 @@ public class TransactionListViewModel {
     private int totalPage;
 
     /**
-     * 红包集合
+     * 交易明细集合
      */
     private ArrayList<TransactionViewModel> list;
 
