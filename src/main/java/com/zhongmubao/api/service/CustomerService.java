@@ -26,37 +26,4 @@ public interface CustomerService {
      * @throws Exception
      */
     RealNameViewModel choosePaymentRealName(Customer customer, RealNameRequestModel model) throws Exception;
-
-    /**
-     * 交易明细列表
-     *
-     * @param customer 用户
-     * @param model    请求参数
-     * @return TransactionListViewModel
-     * @throws Exception
-     * @author 米立林
-     */
-    TransactionListViewModel transactionList(Customer customer, TransactionRequestModel model) throws Exception;
-
-    /**
-     * 交易记录详情
-     *
-     * @param customer 客户
-     * @param model    请求model
-     * @return TransactionDetailViewModel
-     * @throws Exception
-     * @author 米立林
-     */
-    TransactionDetailViewModel transactionDetail(Customer customer, TransactionDetailRequestModel model) throws Exception;
-
-    /**
-     * 交易明细--月账单
-     *
-     * @param customer 客户
-     * @param model    请求model
-     * @return TransactionDetailViewModel
-     * @throws Exception
-     * @author 米立林
-     */
-    TransactionMonthlyBillViewModel transactionMonthlyBill(Customer customer, TransactionMonthlyBillRequestModel model) throws Exception;
 }

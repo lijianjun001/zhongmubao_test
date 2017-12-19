@@ -53,6 +53,9 @@ public class CustomerHFBalanceMongo extends BaseModel {
     @Field("TransactionDetail")
     public String transactionDetail;
 
+    @Field("Title")
+    public String title;
+
     public int getCustomerId() {
         return customerId;
     }
@@ -131,5 +134,13 @@ public class CustomerHFBalanceMongo extends BaseModel {
 
     public void setTransactionDetail(String transactionDetail) {
         this.transactionDetail = transactionDetail;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 }
