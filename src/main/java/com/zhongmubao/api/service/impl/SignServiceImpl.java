@@ -79,7 +79,7 @@ public class SignServiceImpl extends BaseService implements SignService {
         SignGiftAddressViewModel signGiftAddressViewModel = null;
         Date monthBegin = DateUtil.monthFirstDay();
         Date monthEnd = DateUtil.monthLastDay();
-        int maxDaySecretGiftCount = 2;
+        int maxDaySecretGiftCount = 3;
 
         RedisLock lock = new RedisLock(redisCache.redisHelper.redisTemplate, Constants.LOCK_SIGN_KEY + customerId, 10000, 20000);
         try {
