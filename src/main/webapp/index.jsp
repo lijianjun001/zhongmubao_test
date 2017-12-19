@@ -33,8 +33,7 @@
 //            version:"1.0"
 //        };
         var data = {
-            platform: "01",
-            version: "1.0"
+            billDate: "2017-06-18 10:12:10"
         };
 
 
@@ -43,13 +42,13 @@
 
         $.ajax({
             type: "POST",
-            url: "/customer/choosePaymentRealName",
+            url: "/my/transaction/monthlyBill",
             data: JSON.stringify(data),
             contentType: 'application/json;charset=UTF-8',
             dataType: "json",                                     //预期服务器返回类型
             headers: {
-                Authorization: "YR3D+mEt8SQSBFNpCoOLiJTh/nZMACMncBFB0C35vJizpU8fOGGITwmfxXeHo1N03WVP4M597rKkNE8bdj1OJOwceaY9IWhYIMeOJN8KO1xrNRUbhU42kVN3OuVe9TD/",
-                Platform: "02"
+                Authorization: "YR3D+mEt8SQSBFNpCoOLiJTh/nZMACMncBFB0C35vJiIZTI+RV+lbw43y5F4I1SP5UN8D3G4tP4Npa+qKsIGbmuUZDVEwT4tq1/0hXztbi6dOSBduscO4cGBBI6l8ms8",
+                Platform: "04"
             },
             success: function (data) {
                 console.log(JSON.stringify(data));

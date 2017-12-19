@@ -9,23 +9,24 @@ public class TransactionViewModel {
     public TransactionViewModel() {
     }
 
-    public TransactionViewModel(String imageIcon, String title, String transactionDate, String transactionAmount, String transactionNum) {
-        this.imageIcon = imageIcon;
+    public TransactionViewModel(String transactionType, String title, String transactionDate, String transactionAmount, String id) {
+        this.transactionType = transactionType;
         this.title = title;
         this.transactionDate = transactionDate;
         this.transactionAmount = transactionAmount;
-        this.transactionNum = transactionNum;
+        this.id = id;
     }
 
     /**
      * 交易号
      */
-    private String transactionNum;
+    private String id;
 
     /**
-     * 图标
+     * 交易类型
+     * 00 充值 01 赎回 02 提现 03 投资/买羊
      */
-    private String imageIcon;
+    private String transactionType;
 
     /**
      * 标题
@@ -38,24 +39,24 @@ public class TransactionViewModel {
     private String transactionDate;
 
     /**
-     * 交易金额（包含-/+）
+     * 交易金额
      */
     private String transactionAmount;
 
-    public String getTransactionNum() {
-        return transactionNum;
+    public String getId() {
+        return id;
     }
 
-    public void setTransactionNum(String transactionNum) {
-        this.transactionNum = transactionNum;
+    public void setId(String id) {
+        this.id = id;
     }
 
-    public String getImageIcon() {
-        return imageIcon;
+    public String getTransactionType() {
+        return transactionType;
     }
 
-    public void setImageIcon(String imageIcon) {
-        this.imageIcon = imageIcon;
+    public void setTransactionType(String transactionType) {
+        this.transactionType = transactionType;
     }
 
     public String getTitle() {

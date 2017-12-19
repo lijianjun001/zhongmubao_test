@@ -1,6 +1,5 @@
 package com.zhongmubao.api.dto.response.my.transaction;
 
-import com.zhongmubao.api.config.enmu.TransactionDetailType;
 
 /**
  * 交易详情记录视图实体
@@ -11,53 +10,46 @@ public class TransactionDetailViewModel {
     public TransactionDetailViewModel() {
     }
 
-    public TransactionDetailViewModel(TransactionDetailType billType, WithdrawDetailModel withdrawDetailModel, BuySheepDetailModel buySheepDetailModel, RechargeDetailModel rechargeDetailModel) {
+    public TransactionDetailViewModel(String billType) {
         this.billType = billType;
-        this.withdrawDetailModel = withdrawDetailModel;
-        this.buySheepDetailModel = buySheepDetailModel;
-        this.rechargeDetailModel = rechargeDetailModel;
     }
 
     /**
      * 账单类型（充值、提现、买羊、赎回）
      */
-    private TransactionDetailType billType;
+    private String billType;
 
-    private WithdrawDetailModel withdrawDetailModel;
+    /**
+     * 交易详情json
+     */
+    private String transactionDetail;
 
-    private BuySheepDetailModel buySheepDetailModel;
+    /**
+     * 账户余额
+     */
+    private String balance;
 
-    private RechargeDetailModel rechargeDetailModel;
-
-    public TransactionDetailType getBillType() {
+    public String getBillType() {
         return billType;
     }
 
-    public void setBillType(TransactionDetailType billType) {
+    public void setBillType(String billType) {
         this.billType = billType;
     }
 
-    public WithdrawDetailModel getWithdrawDetailModel() {
-        return withdrawDetailModel;
+    public String getTransactionDetail() {
+        return transactionDetail;
     }
 
-    public void setWithdrawDetailModel(WithdrawDetailModel withdrawDetailModel) {
-        this.withdrawDetailModel = withdrawDetailModel;
+    public void setTransactionDetail(String transactionDetail) {
+        this.transactionDetail = transactionDetail;
     }
 
-    public BuySheepDetailModel getBuySheepDetailModel() {
-        return buySheepDetailModel;
+    public String getBalance() {
+        return balance;
     }
 
-    public void setBuySheepDetailModel(BuySheepDetailModel buySheepDetailModel) {
-        this.buySheepDetailModel = buySheepDetailModel;
-    }
-
-    public RechargeDetailModel getRechargeDetailModel() {
-        return rechargeDetailModel;
-    }
-
-    public void setRechargeDetailModel(RechargeDetailModel rechargeDetailModel) {
-        this.rechargeDetailModel = rechargeDetailModel;
+    public void setBalance(String balance) {
+        this.balance = balance;
     }
 }

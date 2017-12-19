@@ -2,6 +2,7 @@ package com.zhongmubao.api.service.impl;
 
 import com.zhongmubao.api.config.WxTemplate;
 import com.zhongmubao.api.config.enmu.RedPackageType;
+import com.zhongmubao.api.config.enmu.SheepProjectPeriod;
 import com.zhongmubao.api.config.enmu.SystemPushType;
 import com.zhongmubao.api.dao.ExtRedPackageDao;
 import com.zhongmubao.api.entity.Customer;
@@ -102,6 +103,22 @@ public class BaseService {
             pushMongo.setCreateTime(DateUtil.formatMongo(new Date()));
             systemPushMongoDao.add(pushMongo);
         } catch (Exception ignore) {
+        }
+    }
+
+    /**
+     * 计算羊只利率
+     * @param price 羊只单价
+     * @param rate 比率
+     * @param period 周期
+     * @return
+     * @author 米立林
+     */
+    public double calcProfitEx(double price, double rate, int period) {
+        if (period == SheepProjectPeriod.PERIOD_120.getName() && rate == 13.50) {
+            return Math.ceil(price * rate / 100 * period / 365);
+        } else {
+            return (price * rate / 100 * period / 365);
         }
     }
 }

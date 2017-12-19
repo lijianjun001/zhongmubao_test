@@ -1,6 +1,9 @@
 package com.zhongmubao.api.dto.response.my.transaction;
 
 
+import com.google.gson.annotations.SerializedName;
+
+
 /**
  * 赎回详情
  *
@@ -10,42 +13,44 @@ public class RedeemDetailModel {
     /**
      * 交易金额
      */
+    @SerializedName("TransactionAmount")
     private String transactionAmount;
 
     /**
      * 赎回说明
      */
+    @SerializedName("RedeemDiscription")
     private String redeemDiscription;
 
     /**
      * 羊只说明（羊标标题）
      */
+    @SerializedName("SheepProjectTitle")
     private String sheepProjectTitle;
 
     /**
      * 赎回数量
      */
-    private int sheepCount;
+    @SerializedName("SheepCount")
+    private String sheepCount;
 
     /**
      * 赎回方式
      */
+    @SerializedName("RedeemMethod")
     private String redeemMethod;
 
     /**
      * 操作时间
      */
+    @SerializedName("OperationDate")
     private String operationDate;
 
     /**
      * 订单号
      */
+    @SerializedName("OrderNo")
     private String orderNo;
-
-    /**
-     * 账户余额
-     */
-    private String balance;
 
     public String getTransactionAmount() {
         return transactionAmount;
@@ -71,11 +76,11 @@ public class RedeemDetailModel {
         this.sheepProjectTitle = sheepProjectTitle;
     }
 
-    public int getSheepCount() {
+    public String getSheepCount() {
         return sheepCount;
     }
 
-    public void setSheepCount(int sheepCount) {
+    public void setSheepCount(String sheepCount) {
         this.sheepCount = sheepCount;
     }
 
@@ -101,13 +106,5 @@ public class RedeemDetailModel {
 
     public void setOrderNo(String orderNo) {
         this.orderNo = orderNo;
-    }
-
-    public String getBalance() {
-        return balance;
-    }
-
-    public void setBalance(String balance) {
-        this.balance = balance;
     }
 }

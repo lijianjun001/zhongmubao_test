@@ -7,7 +7,7 @@ package com.zhongmubao.api.config.enmu;
  */
 public enum ProjectType {
     /**
-     * 普通
+     * 普通()羊
      */
     NORMAL {
         @Override
@@ -16,7 +16,7 @@ public enum ProjectType {
         }
     },
     /**
-     * 工厂
+     * 工厂(商铺)
      */
     SLAUGHTER {
         @Override
@@ -25,7 +25,7 @@ public enum ProjectType {
         }
     },
     /**
-     * 新手120天
+     * 新手120天(新手羊)
      */
     NEW_PEOPLE_120 {
         @Override
@@ -34,7 +34,7 @@ public enum ProjectType {
         }
     },
     /**
-     * 新手7天
+     * 新手7天(新手商铺)
      */
     NEW_PEOPLE_7 {
         @Override

@@ -1,58 +1,61 @@
 package com.zhongmubao.api.dto.response.my.transaction;
 
+import com.google.gson.annotations.SerializedName;
+
+
 /**
  * 提现详情
+ *
  * @author 米立林
  */
 public class WithdrawDetailModel {
     public WithdrawDetailModel() {
     }
 
-    public WithdrawDetailModel(String backImage, String bankName, String transactionAmount, String rechargeMethod, String transactionDate, String balance) {
-        this.backImage = backImage;
+    public WithdrawDetailModel(String bankImage, String bankName, String transactionAmount, String rechargeMethod, String transactionDate) {
+        this.bankImage = bankImage;
         this.bankName = bankName;
         this.transactionAmount = transactionAmount;
         this.rechargeMethod = rechargeMethod;
         this.transactionDate = transactionDate;
-        this.balance = balance;
     }
 
     /**
      * 银行图标
      */
-    private String backImage;
+    @SerializedName("BankImage")
+    private String bankImage;
 
     /**
      * 银行名称
      */
+    @SerializedName("BankName")
     private String bankName;
 
     /**
      * 交易金额
      */
+    @SerializedName("TransactionAmount")
     private String transactionAmount;
 
     /**
      * 提现说明
      */
+    @SerializedName("RechargeMethod")
     private String rechargeMethod;
 
     /**
      * 提现时间
      */
+    @SerializedName("TransactionDate")
     private String transactionDate;
 
-    /**
-     * 账户余额
-     */
-    private String balance;
-
     public String getBackImage() {
-        return backImage;
+        return bankImage;
     }
 
-    public void setBackImage(String backImage) {
-        this.backImage = backImage;
+    public void setBackImage(String bankImage) {
+        this.bankImage = bankImage;
     }
 
     public String getBankName() {
@@ -85,13 +88,5 @@ public class WithdrawDetailModel {
 
     public void setTransactionDate(String transactionDate) {
         this.transactionDate = transactionDate;
-    }
-
-    public String getBalance() {
-        return balance;
-    }
-
-    public void setBalance(String balance) {
-        this.balance = balance;
     }
 }

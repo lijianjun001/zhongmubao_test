@@ -201,7 +201,7 @@ public class Constants {
     /**
      * 金额格式（两位小数点）
      */
-    public static final String Price_FORMAT = "0.00";
+    public static final String PRICE_FORMAT = "0.00";
 
     /**
      * 上传路径
