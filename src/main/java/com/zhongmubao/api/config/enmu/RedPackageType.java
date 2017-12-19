@@ -25,7 +25,7 @@ public enum RedPackageType {
         }
     },
     /**
-     * 分享红包
+     * 每日分享
      */
     DAY_SHARE {
         @Override
@@ -34,7 +34,7 @@ public enum RedPackageType {
         }
     },
     /**
-     * 每日分享
+     * 分享红包
      */
     SHARE {
         @Override
