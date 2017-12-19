@@ -59,7 +59,7 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
         this.sheepProjectDao = sheepProjectDao;
         this.sheepOrderDao = sheepOrderDao;
     }
-
+    //region 是否实名
     @Override
     public RealNameViewModel choosePaymentRealName(Customer customer, RealNameRequestModel model) throws Exception {
 
@@ -157,6 +157,7 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
         }
         return realNameViewModel;
     }
+    //endregion
 
     //region 交易详情
     @Override
