@@ -27,7 +27,7 @@ public enum RedPackageType {
     /**
      * 分享红包
      */
-    SHARE {
+    DAY_SHARE {
         @Override
         public String getName() {
             return "02";
@@ -36,7 +36,7 @@ public enum RedPackageType {
     /**
      * 每日分享
      */
-    DAY_SHARE {
+    SHARE {
         @Override
         public String getName() {
             return "03";

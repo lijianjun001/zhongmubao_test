@@ -72,7 +72,7 @@ public class SignServiceImpl extends BaseService implements SignService {
         Date expTime = DateUtil.addDay(now, Constants.DAY_SHARE_REDPACKAGE_EXP_DAY);
         //签到时间分界点
         Date boundaryTime = DateUtil.addHours(dayBegin, 10);
-        String dayShareType = RedPackageType.SHARE.getName();
+        String dayShareType = RedPackageType.DAY_SHARE.getName();
         List<Integer> giftDayList = Arrays.asList(7, 14, 21, 28);
         ShareCardMongo shareCard = null;
         SignGiftViewModel signGiftViewModel = null;
@@ -120,7 +120,7 @@ public class SignServiceImpl extends BaseService implements SignService {
                 }
 
                 //添加红包
-                sendRedPackage(customer, RedPackageType.SHARE, price, expTime, 1);
+                sendRedPackage(customer, RedPackageType.DAY_SHARE, price, expTime, 1);
 
                 //设置今天已分享
                 redisCache.saveCustomerIsShare(customerId);
@@ -162,7 +162,7 @@ public class SignServiceImpl extends BaseService implements SignService {
                         redPackagePrice = MathUtil.random(10, 200) * 0.01;
                         signGiftRedPackageViewModel.setPrice(DoubleUtil.toFixed(redPackagePrice, "0.00"));
                         //添加红包
-                        sendRedPackage(customer, RedPackageType.DAY_SHARE, redPackagePrice, expTime, 1);
+                        sendRedPackage(customer, RedPackageType.SHARE, redPackagePrice, expTime, 1);
                         giftPrice = redPackagePrice;
                     }
 
