@@ -146,7 +146,7 @@ public class SignServiceImpl extends BaseService implements SignService {
                             // 没买羊默认奖励红包
                             signGift = Constants.SIGN_GIFT_LIST.get(0);
                         } else {
-                            // 每天做多产生2份神秘礼物，超出改为红包奖励
+                            // 每天做多产生n份神秘礼物，超出改为红包奖励
                             long count = shareCardMongoDao.getGiftCount(SECRET_GIFT.getName(), DateUtil.formatMongo(DateUtil.dayBegin()));
                             if (count > maxDaySecretGiftCount) {
                                 signGift = Constants.SIGN_GIFT_LIST.get(0);
