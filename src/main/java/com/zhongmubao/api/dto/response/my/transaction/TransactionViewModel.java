@@ -9,10 +9,9 @@ public class TransactionViewModel {
     public TransactionViewModel() {
     }
 
-    public TransactionViewModel(String transactionType, String title, String transactionDate, String transactionAmount, String id) {
+    public TransactionViewModel(String transactionType, String title, String transactionAmount, String id) {
         this.transactionType = transactionType;
         this.title = title;
-        this.transactionDate = transactionDate;
         this.transactionAmount = transactionAmount;
         this.id = id;
     }
