@@ -23,6 +23,7 @@ import com.zhongmubao.api.exception.ApiException;
 import com.zhongmubao.api.service.CustomerService;
 import com.zhongmubao.api.service.my.MenuService;
 import com.zhongmubao.api.service.my.ReadPackageService;
+import com.zhongmubao.api.service.my.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
@@ -43,12 +44,14 @@ public class MyController {
     private final MenuService menuService;
     private final ReadPackageService readPackageService;
     private final CustomerService customerService;
+    private final TransactionService transactionService;
 
     @Autowired
-    public MyController(MenuService menuService, ReadPackageService readPackageService, CustomerService customerService) {
+    public MyController(MenuService menuService, ReadPackageService readPackageService, CustomerService customerService, TransactionService transactionService) {
         this.menuService = menuService;
         this.readPackageService = readPackageService;
         this.customerService = customerService;
+        this.transactionService = transactionService;
     }
 
     // region 个人中心菜单
@@ -195,7 +198,7 @@ public class MyController {
     @Authorization
     public ResponseEntity<ReponseModel> transactionList(@CurrentUser Customer customer, HttpEntity<TransactionRequestModel> model) {
         try {
-            TransactionListViewModel transactionListViewModel = customerService.transactionList(customer, model.getBody());
+            TransactionListViewModel transactionListViewModel = transactionService.transactionList(customer, model.getBody());
             return new ResponseEntity<>(ReponseModel.ok(transactionListViewModel), HttpStatus.OK);
         } catch (ApiException ex) {
             return new ResponseEntity<>(ReponseModel.error(ex.getStatus()), HttpStatus.OK);
@@ -216,7 +219,7 @@ public class MyController {
     @Authorization
     public ResponseEntity<ReponseModel> transactionDetail(@CurrentUser Customer customer, HttpEntity<TransactionDetailRequestModel> model) {
         try {
-            TransactionDetailViewModel detailViewModel = customerService.transactionDetail(customer, model.getBody());
+            TransactionDetailViewModel detailViewModel = transactionService.transactionDetail(customer, model.getBody());
             return new ResponseEntity<>(ReponseModel.ok(detailViewModel), HttpStatus.OK);
         } catch (ApiException ex) {
             return new ResponseEntity<>(ReponseModel.error(ex.getStatus()), HttpStatus.OK);
@@ -237,7 +240,7 @@ public class MyController {
     @Authorization
     public ResponseEntity<ReponseModel> transactionMonthlyBill(@CurrentUser Customer customer, HttpEntity<TransactionMonthlyBillRequestModel> model) {
         try {
-            TransactionMonthlyBillViewModel viewModel = customerService.transactionMonthlyBill(customer, model.getBody());
+            TransactionMonthlyBillViewModel viewModel = transactionService.transactionMonthlyBill(customer, model.getBody());
             return new ResponseEntity<>(ReponseModel.ok(viewModel), HttpStatus.OK);
         } catch (ApiException ex) {
             return new ResponseEntity<>(ReponseModel.error(ex.getStatus()), HttpStatus.OK);
