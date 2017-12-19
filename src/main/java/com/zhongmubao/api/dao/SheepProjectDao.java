@@ -1,7 +1,10 @@
 package com.zhongmubao.api.dao;
 
 import com.zhongmubao.api.entity.SheepProject;
+import com.zhongmubao.api.entity.ext.SheepBillInfo;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
  * @author 米立林
@@ -23,4 +26,14 @@ public interface SheepProjectDao {
      * @return
      */
     String getProjectTitleByBustomerIdAndCode(@Param("customerId") int customerId, @Param("code") String code);
+
+    /**
+     * 购羊账单（有效羊只）
+     *
+     * @param customerId 用户
+     * @param startDate  开始日期
+     * @param endDate  开始日期
+     * @return
+     */
+    List<SheepBillInfo> getBuySheepBillByCustomerId(@Param("customerId") int customerId, @Param("startDate") String startDate, @Param("endDate") String endDate);
 }

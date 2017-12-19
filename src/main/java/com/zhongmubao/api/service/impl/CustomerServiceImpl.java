@@ -2,19 +2,22 @@ package com.zhongmubao.api.service.impl;
 
 import com.zhongmubao.api.config.Constants;
 import com.zhongmubao.api.config.ResultStatus;
-import com.zhongmubao.api.config.enmu.RealNameStatus;
-import com.zhongmubao.api.config.enmu.TransactionDetailType;
+import com.zhongmubao.api.config.enmu.*;
 import com.zhongmubao.api.dao.CustomerHFDao;
 import com.zhongmubao.api.dao.CustomerSinaDao;
+import com.zhongmubao.api.dao.SheepOrderDao;
 import com.zhongmubao.api.dao.SheepProjectDao;
 import com.zhongmubao.api.dto.request.my.RealNameRequestModel;
 import com.zhongmubao.api.dto.request.my.transaction.TransactionDetailRequestModel;
+import com.zhongmubao.api.dto.request.my.transaction.TransactionMonthlyBillRequestModel;
 import com.zhongmubao.api.dto.request.my.transaction.TransactionRequestModel;
 import com.zhongmubao.api.dto.response.my.RealNameViewModel;
 import com.zhongmubao.api.dto.response.my.transaction.*;
 import com.zhongmubao.api.entity.Customer;
 import com.zhongmubao.api.entity.CustomerHF;
 import com.zhongmubao.api.entity.CustomerSina;
+import com.zhongmubao.api.entity.ext.SheepBillInfo;
+import com.zhongmubao.api.entity.ext.SheepOrderInfo;
 import com.zhongmubao.api.exception.ApiException;
 import com.zhongmubao.api.mongo.dao.CustomerHFBalanceMongoDao;
 import com.zhongmubao.api.mongo.dao.CustomerHFIndexMongoDao;
@@ -30,8 +33,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Customer
@@ -45,14 +48,16 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
     private final CustomerHFIndexMongoDao customerHFIndexMongoDao;
     private final CustomerHFBalanceMongoDao customerHFBalanceMongoDao;
     private final SheepProjectDao sheepProjectDao;
+    private final SheepOrderDao sheepOrderDao;
 
     @Autowired
-    public CustomerServiceImpl(CustomerHFDao customerHFDao, CustomerSinaDao customerSinaDao, CustomerHFIndexMongoDao customerHFIndexMongoDao, CustomerHFBalanceMongoDao customerHFBalanceMongoDao, SheepProjectDao sheepProjectDao) {
+    public CustomerServiceImpl(CustomerHFDao customerHFDao, CustomerSinaDao customerSinaDao, CustomerHFIndexMongoDao customerHFIndexMongoDao, CustomerHFBalanceMongoDao customerHFBalanceMongoDao, SheepProjectDao sheepProjectDao, SheepOrderDao sheepOrderDao) {
         this.customerHFDao = customerHFDao;
         this.customerSinaDao = customerSinaDao;
         this.customerHFIndexMongoDao = customerHFIndexMongoDao;
         this.customerHFBalanceMongoDao = customerHFBalanceMongoDao;
         this.sheepProjectDao = sheepProjectDao;
+        this.sheepOrderDao = sheepOrderDao;
     }
 
     @Override
@@ -94,7 +99,7 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
             ishf = true;
         }
         if (!ishf && customerHF != null) {
-            if(customerHF.getIsBandCard() && !StringUtil.isNullOrEmpty(customerHF.getUsrCustId())) {
+            if (customerHF.getIsBandCard() && !StringUtil.isNullOrEmpty(customerHF.getUsrCustId())) {
                 ishf = true;
             }
         }
@@ -238,8 +243,7 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
     }
 
     @Override
-    public TransactionDetailViewModel transactionDetail(Customer customer, TransactionDetailRequestModel model) throws
-            Exception {
+    public TransactionDetailViewModel transactionDetail(Customer customer, TransactionDetailRequestModel model) throws Exception {
         if (null == model || StringUtil.isNullOrEmpty(model.getId())) {
             throw new ApiException(ResultStatus.PARAMETER_MISSING);
         }
@@ -254,5 +258,124 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
 
         return transactionDetailViewModel;
     }
+
+    @Override
+    public TransactionMonthlyBillViewModel transactionMonthlyBill(Customer customer, TransactionMonthlyBillRequestModel model) throws Exception {
+        if (null == model || StringUtil.isNullOrEmpty(model.getBillDate())) {
+            throw new ApiException(ResultStatus.PARAMETER_MISSING);
+        }
+        Date billDate = DateUtil.strToDate(model.getBillDate());
+        TransactionMonthlyBillViewModel viewModel = new TransactionMonthlyBillViewModel();
+        viewModel.setResultType(TransactionBillResultType.NORMAL.getName());
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM");
+        String time = format.format(billDate);
+        viewModel.setYearMonth(time);
+        // 获取当前月的第一天和最后一天
+        Date startDate = DateUtil.monthFirstDay(billDate);
+        Date endDate = DateUtil.monthLastDay(billDate);
+
+        List<SheepBillInfo> sheepBillInfo = sheepProjectDao.getBuySheepBillByCustomerId(customer.getId(), DateUtil.format(startDate, Constants.DATE_TIME_FORMAT), DateUtil.format(endDate, Constants.DATE_TIME_FORMAT));
+        if (null == sheepBillInfo) {
+            sheepBillInfo = new ArrayList<>();
+        }
+        if (sheepBillInfo.size() == 0) {
+            viewModel.setResultType(TransactionBillResultType.NO_BUY_SHEEP.getName());
+        }
+
+        // 总金额
+        DoubleSummaryStatistics stats = sheepBillInfo.stream().mapToDouble(SheepBillInfo::getTotalAmount).summaryStatistics();
+        viewModel.setTotalAmount(DoubleUtil.toFixed(stats.getSum(), Constants.PRICE_FORMAT));
+        List<SheepProjectInfoModel> list = sheepBillInfo.stream().map(
+                en -> new SheepProjectInfoModel(
+                        DoubleUtil.toFixed(en.getTotalAmount(), Constants.PRICE_FORMAT),
+                        getStatisticsTitle(en.getType(), en.getPeriod()),
+                        en.getPeriod() + "天",
+                        en.getTotalCount() + "只"
+                )).collect(Collectors.toList());
+        viewModel.setList(new ArrayList(list));
+        // 总收益
+        List<SheepOrderInfo> sheepOrderInfo = sheepOrderDao.statisticsBuySheepIncome(customer.getId(), DateUtil.format(startDate, Constants.DATE_TIME_FORMAT), DateUtil.format(endDate, Constants.DATE_TIME_FORMAT));
+        double totalIncome = 0;
+        double sheepIncome = 0;
+        double redPacketIncome = 0;
+        for (SheepOrderInfo order : sheepOrderInfo) {
+            double sIncom = order.getCount() * calcProfitEx(order.getPrice(), order.getRate(), order.getPeriod());
+            sheepIncome += sIncom;
+            double rIncome = order.getRedPackageAmount();
+            redPacketIncome += rIncome;
+            totalIncome += (sIncom + rIncome);
+        }
+        viewModel.setTotalIncome("+" + DoubleUtil.toFixed(totalIncome, Constants.PRICE_FORMAT));
+        // 羊只收益
+        viewModel.setSheepIncome("+" + DoubleUtil.toFixed(sheepIncome, Constants.PRICE_FORMAT));
+        // 红包增加收益
+        viewModel.setRedPacketIncome("+" + DoubleUtil.toFixed(redPacketIncome, Constants.PRICE_FORMAT));
+        // 总充值
+        List<CustomerHFBalanceMongo> hfRecharge = customerHFBalanceMongoDao.calcTransactionTotalAmount(customer.getId(), TransactionDetailType.RECHARGE.getName(), DateUtil.formatMongo(startDate), DateUtil.formatMongo(endDate));
+        DoubleSummaryStatistics statsRecharge = hfRecharge.stream().mapToDouble(CustomerHFBalanceMongo::getAddBalance).summaryStatistics();
+        double totalRecharge = statsRecharge.getSum();
+        viewModel.setTotalRecharge("+" + DoubleUtil.toFixed(totalRecharge, Constants.PRICE_FORMAT));
+        // 总提现
+        List<CustomerHFBalanceMongo> hfWithdraw = customerHFBalanceMongoDao.calcTransactionTotalAmount(customer.getId(), TransactionDetailType.WITHDRAW.getName(), DateUtil.formatMongo(startDate), DateUtil.formatMongo(endDate));
+        DoubleSummaryStatistics statsWithdraw = hfWithdraw.stream().mapToDouble(CustomerHFBalanceMongo::getAddBalance).summaryStatistics();
+        double totalWithdraw = statsWithdraw.getSum();
+        viewModel.setTotalWithdraw("-" + DoubleUtil.toFixed(totalWithdraw, Constants.PRICE_FORMAT));
+
+        // 缺醒类型
+        if (TransactionBillResultType.NO_BUY_SHEEP.getName().equals(viewModel.getResultType()) && totalIncome <= 0 && totalRecharge <= 0 && totalWithdraw <= 0) {
+            viewModel.setResultType(TransactionBillResultType.NO_TRANSACTION.getName());
+        }
+
+        return viewModel;
+    }
+
+    /**
+     * 月账单购羊标题
+     *
+     * @param type 羊标类型
+     * @return String
+     */
+    private String getStatisticsTitle(String type, int period) {
+        String title = "新型羊标A";
+        if (ProjectType.NORMAL.getName().equals(type)) {
+            // 00 羊标
+            if (period == SheepProjectPeriod.PERIOD_120.getName()) {
+                title = "购羊标A";
+            } else if (period == SheepProjectPeriod.PERIOD_240.getName()) {
+                title = "购羊标B";
+            } else {
+                title = "购羊标C";
+            }
+        } else if (ProjectType.SLAUGHTER.getName().equals(type)) {
+            // 03 商铺
+            if (period == SheepProjectPeriod.PERIOD_120.getName()) {
+                title = "商铺标A";
+            } else if (period == SheepProjectPeriod.PERIOD_240.getName()) {
+                title = "商铺标B";
+            } else {
+                title = "商铺标C";
+            }
+        } else if (ProjectType.NEW_PEOPLE_7.getName().equals(type)) {
+            // 04 新手商铺
+            if (period == SheepProjectPeriod.PERIOD_120.getName()) {
+                title = "新手商标A";
+            } else if (period == SheepProjectPeriod.PERIOD_240.getName()) {
+                title = "新手商标B";
+            } else {
+                title = "新手商标C";
+            }
+        } else if (ProjectType.NEW_PEOPLE_120.getName().equals(type)) {
+            // 06 新手羊
+            if (period == SheepProjectPeriod.PERIOD_120.getName()) {
+                title = "新手羊标A";
+            } else if (period == SheepProjectPeriod.PERIOD_240.getName()) {
+                title = "新手羊标B";
+            } else {
+                title = "新手羊标C";
+            }
+        }
+        return title;
+    }
+
     //endregion
 }

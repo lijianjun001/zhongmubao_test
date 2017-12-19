@@ -33,7 +33,7 @@
 //            version:"1.0"
 //        };
         var data = {
-            id: "5a31f355ced3b71754b70cd4"
+            billDate: "2017-06-18 10:12:10"
         };
 
 
@@ -42,7 +42,7 @@
 
         $.ajax({
             type: "POST",
-            url: "/my/transaction/detail",
+            url: "/my/transaction/monthlyBill",
             data: JSON.stringify(data),
             contentType: 'application/json;charset=UTF-8',
             dataType: "json",                                     //预期服务器返回类型
