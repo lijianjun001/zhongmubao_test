@@ -2,10 +2,12 @@ package com.zhongmubao.api.service;
 
 import com.zhongmubao.api.dto.request.my.RealNameRequestModel;
 import com.zhongmubao.api.dto.request.my.transaction.TransactionDetailRequestModel;
+import com.zhongmubao.api.dto.request.my.transaction.TransactionMonthlyBillRequestModel;
 import com.zhongmubao.api.dto.request.my.transaction.TransactionRequestModel;
 import com.zhongmubao.api.dto.response.my.RealNameViewModel;
 import com.zhongmubao.api.dto.response.my.transaction.TransactionDetailViewModel;
 import com.zhongmubao.api.dto.response.my.transaction.TransactionListViewModel;
+import com.zhongmubao.api.dto.response.my.transaction.TransactionMonthlyBillViewModel;
 import com.zhongmubao.api.entity.Customer;
 
 /**
@@ -26,7 +28,7 @@ public interface CustomerService {
     RealNameViewModel choosePaymentRealName(Customer customer, RealNameRequestModel model) throws Exception;
 
     /**
-     * 交易详情列表
+     * 交易明细列表
      *
      * @param customer 用户
      * @param model    请求参数
@@ -46,4 +48,15 @@ public interface CustomerService {
      * @author 米立林
      */
     TransactionDetailViewModel transactionDetail(Customer customer, TransactionDetailRequestModel model) throws Exception;
+
+    /**
+     * 交易明细--月账单
+     *
+     * @param customer 客户
+     * @param model    请求model
+     * @return TransactionDetailViewModel
+     * @throws Exception
+     * @author 米立林
+     */
+    TransactionMonthlyBillViewModel transactionMonthlyBill(Customer customer, TransactionMonthlyBillRequestModel model) throws Exception;
 }

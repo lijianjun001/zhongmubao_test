@@ -7,6 +7,7 @@ import com.zhongmubao.api.dto.request.my.redpackage.RedPackageDetailRequestModel
 import com.zhongmubao.api.dto.request.my.redpackage.RedPackageGroupRequestModel;
 import com.zhongmubao.api.dto.request.my.redpackage.RedPackageListRequestModel;
 import com.zhongmubao.api.dto.request.my.transaction.TransactionDetailRequestModel;
+import com.zhongmubao.api.dto.request.my.transaction.TransactionMonthlyBillRequestModel;
 import com.zhongmubao.api.dto.request.my.transaction.TransactionRequestModel;
 import com.zhongmubao.api.dto.response.ReponseModel;
 import com.zhongmubao.api.dto.response.my.menu.ListViewModel;
@@ -16,6 +17,7 @@ import com.zhongmubao.api.dto.response.my.redpackage.RedPackageListViewModel;
 import com.zhongmubao.api.dto.response.my.redpackage.RedPackageHistoryViewModel;
 import com.zhongmubao.api.dto.response.my.transaction.TransactionDetailViewModel;
 import com.zhongmubao.api.dto.response.my.transaction.TransactionListViewModel;
+import com.zhongmubao.api.dto.response.my.transaction.TransactionMonthlyBillViewModel;
 import com.zhongmubao.api.entity.Customer;
 import com.zhongmubao.api.exception.ApiException;
 import com.zhongmubao.api.service.CustomerService;
@@ -216,6 +218,27 @@ public class MyController {
         try {
             TransactionDetailViewModel detailViewModel = customerService.transactionDetail(customer, model.getBody());
             return new ResponseEntity<>(ReponseModel.ok(detailViewModel), HttpStatus.OK);
+        } catch (ApiException ex) {
+            return new ResponseEntity<>(ReponseModel.error(ex.getStatus()), HttpStatus.OK);
+        } catch (Exception ex) {
+            return new ResponseEntity<>(ReponseModel.error(ex, this.getClass()), HttpStatus.OK);
+        }
+    }
+
+    /**
+     * 交易明细 -- 月账单
+     *
+     * @param customer 客户
+     * @param model    请求model
+     * @return TransactionDetailViewModel
+     * @author 米立林
+     */
+    @RequestMapping(value = "/transaction/monthlyBill", method = RequestMethod.POST, consumes = "application/json")
+    @Authorization
+    public ResponseEntity<ReponseModel> transactionMonthlyBill(@CurrentUser Customer customer, HttpEntity<TransactionMonthlyBillRequestModel> model) {
+        try {
+            TransactionMonthlyBillViewModel viewModel = customerService.transactionMonthlyBill(customer, model.getBody());
+            return new ResponseEntity<>(ReponseModel.ok(viewModel), HttpStatus.OK);
         } catch (ApiException ex) {
             return new ResponseEntity<>(ReponseModel.error(ex.getStatus()), HttpStatus.OK);
         } catch (Exception ex) {

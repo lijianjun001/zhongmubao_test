@@ -18,6 +18,7 @@ import com.zhongmubao.api.service.impl.BaseService;
 import com.zhongmubao.api.service.my.MenuService;
 import com.zhongmubao.api.util.StringUtil;
 
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -142,13 +143,15 @@ public class MenuServiceImpl extends BaseService implements MenuService {
         listItemModelSettings.setJumpType("01");
         listItemModels.add(listItemModelSettings);
 
-//        ListItemModel listItemModelHfAuth = new ListItemModel();
-//        listItemModelHfAuth.setIcon("personal-help.png");
-//        listItemModelHfAuth.setTitle("汇付开户");
-//        listItemModelHfAuth.setUrl("/Customer/HfAuth");
-//        listItemModelHfAuth.setAction("hfauth");
-//        listItemModelHfAuth.setJumpType("00");
-//        listItemModels.add(listItemModelHfAuth);
+/*
+ListItemModel listItemModelHfAuth = new ListItemModel();
+listItemModelHfAuth.setIcon("personal-help.png");
+listItemModelHfAuth.setTitle("汇付开户");
+listItemModelHfAuth.setUrl("/Customer/HfAuth");
+listItemModelHfAuth.setAction("hfauth");
+listItemModelHfAuth.setJumpType("00");
+listItemModels.add(listItemModelHfAuth);
+*/
 
         for (ListItemModel itemModel :
                 listItemModels) {

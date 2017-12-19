@@ -68,6 +68,17 @@ public class CustomerHFBalanceMongoDao implements BaseDao<CustomerHFBalanceMongo
         return null;
     }
 
+    /**
+     * 获取交易明细
+     *
+     * @param customerId 用户
+     * @param startDate  开始时间
+     * @param endDate    结束时间
+     * @param type       交易类型
+     * @param page       分页
+     * @return PageModel<CustomerHFBalanceMongo>
+     * @author 米立林 2017-12-11
+     */
     public PageModel<CustomerHFBalanceMongo> pager(int customerId, Date startDate, Date endDate, String type, PageModel<CustomerHFBalanceMongo> page) {
 
         DBObject obj = new BasicDBObject();
@@ -97,6 +108,14 @@ public class CustomerHFBalanceMongoDao implements BaseDao<CustomerHFBalanceMongo
         return page;
     }
 
+    /**
+     * 获取单个交易明细
+     *
+     * @param customerId 用户
+     * @param id         交易主键
+     * @return CustomerHFBalanceMongo
+     * @author 米立林 2017-12-13
+     */
     public CustomerHFBalanceMongo getSingle(int customerId, String id) {
         Query query = new Query();
         query.addCriteria(Criteria.where("_id").is(id));
@@ -104,4 +123,32 @@ public class CustomerHFBalanceMongoDao implements BaseDao<CustomerHFBalanceMongo
         return mongoTemplate.findOne(query, CustomerHFBalanceMongo.class);
     }
 
+    /**
+     * 计算交易总额
+     *
+     * @param customerId 用户
+     * @param type       交易类型
+     * @param startDate  开始时间
+     * @param endDate    结束时间
+     * @return double
+     * @author 米立林 2017-12-15
+     */
+    public List<CustomerHFBalanceMongo> calcTransactionTotalAmount(int customerId, String type, Date startDate, Date endDate) {
+        DBObject obj = new BasicDBObject();
+        DBObject objl = new BasicDBObject();
+        //开始时间查询
+        objl.put("$gte", startDate);
+        obj.put("CreateTime", objl);
+        //结束时间查询
+        objl.put("$lte", endDate);
+        obj.put("CreateTime", objl);
+        Query query = new BasicQuery(obj);
+
+        query.addCriteria(Criteria.where("CustomerId").is(customerId));
+        if (!StringUtil.isNullOrEmpty(type)) {
+            query.addCriteria(Criteria.where("Type").is(type));
+        }
+
+        return mongoTemplate.find(query, CustomerHFBalanceMongo.class);
+    }
 }

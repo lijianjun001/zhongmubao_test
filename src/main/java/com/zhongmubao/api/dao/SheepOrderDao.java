@@ -81,7 +81,17 @@ public interface SheepOrderDao {
      * @param customerId 用户ID
      * @param projectId  羊标ID
      * @param states     订单状态
-     * @return
+     * @return List<SheepOrderInfo>
      */
     List<SheepOrderInfo> getOrderByCustomerIdAndProjectIdAndState(@Param("customerId") int customerId, @Param("projectId") int projectId, @Param("states") List<String> states);
+
+    /**
+     * 统计购羊收益，仅统计已赎回羊只
+     *
+     * @param customerId 用户ID
+     * @param startDate  开始时间
+     * @param endDate    结束时间
+     * @return List<SheepOrderInfo>
+     */
+    List<SheepOrderInfo> statisticsBuySheepIncome(@Param("customerId") int customerId, @Param("startDate") String startDate, @Param("endDate") String endDate);
 }
