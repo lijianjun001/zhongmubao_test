@@ -79,6 +79,7 @@ public class SignServiceImpl extends BaseService implements SignService {
         SignGiftAddressViewModel signGiftAddressViewModel = null;
         Date monthBegin = DateUtil.monthFirstDay();
         Date monthEnd = DateUtil.monthLastDay();
+        int maxDaySecretGiftCount = 2;
 
         RedisLock lock = new RedisLock(redisCache.redisHelper.redisTemplate, Constants.LOCK_SIGN_KEY + customerId, 10000, 20000);
         try {
@@ -147,7 +148,7 @@ public class SignServiceImpl extends BaseService implements SignService {
                         } else {
                             // 每天做多产生2份神秘礼物，超出改为红包奖励
                             long count = shareCardMongoDao.getGiftCount(SECRET_GIFT.getName(), DateUtil.formatMongo(DateUtil.dayBegin()));
-                            if (count >= 2) {
+                            if (count > maxDaySecretGiftCount) {
                                 signGift = Constants.SIGN_GIFT_LIST.get(0);
                             } else {
                                 signGiftAddressViewModel = formartAddress(customerId);
@@ -221,120 +222,6 @@ public class SignServiceImpl extends BaseService implements SignService {
             lock.unlock();
         }
         throw new ApiException(ResultStatus.FAIL);
-    }
-
-
-    @Override
-    public void signActivity1111(Customer customer) throws Exception {
-        //判断活动期间是否送过，送过就不送，Redis里取。
-        Date now = new Date();
-        if (!(now.getTime() > DateUtil.strToDate("2017-11-04 00:00:00").getTime() && now.getTime() < DateUtil.strToDate("2017-11-30 23:59:59").getTime())) {
-            return;
-        }
-
-        if (redisCache.hasSinglesDay(customer.getId())) {
-            return;
-        }
-        //判断有没买过羊
-        if (sheepOrderDao.countSheepOrderByCustomerIdAndState(customer.getId(), Constants.SHEEP_IN_THE_BAR_STATE) <= 0) {
-            return;
-        }
-        //进行送话费
-        String orderId = "SD" + customer.getAccount() + "" + System.currentTimeMillis();
-        Recharge.submit(customer.getAccount(), 2, orderId);
-        //公告添加数据进行弹层
-
-        String str = "" + "<style>\n" +
-                "    body,html{\n" +
-                "        margin:0;\n" +
-                "        padding:0;\n" +
-                "        background:none;\n" +
-                "        width:100%;\n" +
-                "        height:100%;\n" +
-                "    }\n" +
-                "    .active-shuang-cover{\n" +
-                "        width:100%;\n" +
-                "        height:100%;\n" +
-                "        position:fixed;\n" +
-                "        top:0;\n" +
-                "        left:0;\n" +
-                "        background:rgba(0,0,0,0.6);\n" +
-                "        z-index:5;\n" +
-                "    }\n" +
-                "    .active-shuang-cover .active-shuang-div{\n" +
-                "        width:7.40625rem;\n" +
-                "        height:5.28125rem;\n" +
-                "        position:absolute;\n" +
-                "        top:0;\n" +
-                "        left:0;\n" +
-                "        right:0;\n" +
-                "        bottom:0;\n" +
-                "        margin: auto;\n" +
-                "    }\n" +
-                "    .active-shuang-cover .active-shuang-div .active-top{\n" +
-                "        width:100%;\n" +
-                "        height:5.28125rem;\n" +
-                "        background:url(https://s.emubao.com/weixin/images/active-single-cover1.png?1.0) no-repeat;\n" +
-                "        background-size:100% 100%;\n" +
-                "        position:relative;\n" +
-                "    }\n" +
-                "    .active-shuang-cover .active-shuang-div .active-top .active-btn{\n" +
-                "        display:block;\n" +
-                "        width:0.640625rem;\n" +
-                "        height:0.640625rem;\n" +
-                "        position:absolute;\n" +
-                "        top:0.25rem;\n" +
-                "        right:1.4375rem;\n" +
-                "    }\n" +
-                "    .active-shuang-cover .active-shuang-div .active-top .active-gongxi{\n" +
-                "        display:block;\n" +
-                "        width:1.625rem;\n" +
-                "        height:0.5rem;\n" +
-                "        margin:0 auto;\n" +
-                "        padding-top:3.38125rem;\n" +
-                "    }\n" +
-                "    .active-shuang-cover .active-shuang-div .active-top span{\n" +
-                "        display:block;;\n" +
-                "        text-align:center;\n" +
-                "        font-size:0.40625rem;\n" +
-                "        color:white;\n" +
-                "        -webkit-text-shadow:#000 0.017rem 0 0,#000 0 0.017rem 0,#000 -0.017rem 0 0,#000 0 -0.017rem 0;\n" +
-                "        -moz-text-shadow:#000 0.017rem 0 0,#000 0 0.017rem 0,#000 -0.017rem 0 0,#000 0 -0.017rem 0;\n" +
-                "        text-shadow:#000 0.017rem 0 0,#000 0 0.017rem 0,#000 -0.017rem 0 0,#000 0 -0.017rem 0;\n" +
-                "    }\n" +
-                "</style>\n" +
-                "<div class=\"active-shuang-cover\" style=\"display:block;\">\n" +
-                "    <div class=\"active-shuang-div\" >\n" +
-                "        <div class=\"active-top\">\n" +
-                "            <img class=\"active-btn\" src=\"https://s.emubao.com/weixin/images/active-cover-close.png\" alt=\"\"/>\n" +
-                "            <img class=\"active-gongxi\" src=\"https://s.emubao.com/weixin/images/active-cover-img.png\" alt=\"\"/>\n" +
-                "            <span>获得2元话费</span>\n" +
-                "            <span>将在两小时内到账</span>\n" +
-                "        </div>\n" +
-                "    </div>\n" +
-                "</div>\n" +
-                "<script>\n" +
-                "    $(\".active-btn\").click(function(){\n" +
-                "        var platfrom=$(\"#customerNoticPlatform\").val();\n" +
-                "        if(platfrom==='00'){\n" +
-                "            $(\".active-shuang-cover\").hide();\n" +
-                "            $(\".common-gonggao\").hide();\n" +
-                "        }else{\n" +
-                "            location.href='http://closewebview'\n" +
-                "        }\n" +
-                "    })\n" +
-                "</script>";
-
-        CustomerNoticMongo customerNoticMongo = new CustomerNoticMongo();
-        customerNoticMongo.setCustomerId(customer.getId());
-        customerNoticMongo.setContent(str);
-        customerNoticMongo.setTitle("");
-        customerNoticMongo.setBeginTime(DateUtil.formatMongo(DateUtil.strToDate("2017-11-04 00:00:00")));
-        customerNoticMongo.setEndTime(DateUtil.formatMongo(DateUtil.strToDate("2017-11-30 23:59:59")));
-        customerNoticMongo.setCreateTime(DateUtil.formatMongo(new Date()));
-
-        customerNoticMongoDao.save(customerNoticMongo);
-        redisCache.saveSinglesDay(customer.getId());
     }
 
     @Override

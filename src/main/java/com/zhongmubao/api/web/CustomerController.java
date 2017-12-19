@@ -81,25 +81,6 @@ public class CustomerController {
     }
 
     /***
-     * 双11
-     * @param customer 客户
-     * @author 孙阿龙
-     * @return ReponseModel
-     */
-    @RequestMapping(value = "/signActivity1111", method = RequestMethod.POST, consumes = "application/json")
-    @Authorization
-    public ResponseEntity<ReponseModel> signActivity1111(@CurrentUser Customer customer) {
-        try {
-            signService.signActivity1111(customer);
-            return new ResponseEntity<>(ReponseModel.ok(), HttpStatus.OK);
-        } catch (ApiException ex) {
-            return new ResponseEntity<>(ReponseModel.error(ex.getStatus()), HttpStatus.OK);
-        } catch (Exception ex) {
-            return new ResponseEntity<>(ReponseModel.error(ex, this.getClass()), HttpStatus.OK);
-        }
-    }
-
-    /***
      * 礼物分页
      * @param customer 客户
      * @param model 请求实体

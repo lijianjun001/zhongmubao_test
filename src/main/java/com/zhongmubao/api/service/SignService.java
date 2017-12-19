@@ -86,12 +86,4 @@ public interface SignService {
      * @throws Exception 异常
      */
     void receiveRechargeGift(Customer customer, ReceiveRechargeGiftRequestModel model) throws Exception;
-
-    /**
-     * 双11活动
-     *
-     * @param customer
-     * @throws Exception
-     */
-    void signActivity1111(Customer customer) throws Exception;
 }
