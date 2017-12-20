@@ -33,7 +33,9 @@
 //            version:"1.0"
 //        };
         var data = {
-            id: "5a31f355ced3b71754b70cd4"
+            pageIndex: 1,
+            sortType:"ExpTime",
+            whetherEarlier:true
         };
 
 
@@ -42,7 +44,7 @@
 
         $.ajax({
             type: "POST",
-            url: "/customer/sign",
+            url: "/my/readPackage/history",
             data: JSON.stringify(data),
             contentType: 'application/json;charset=UTF-8',
             dataType: "json",                                     //预期服务器返回类型

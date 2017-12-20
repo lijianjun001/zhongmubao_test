@@ -142,9 +142,26 @@
     </select>
 
     <select id="pageEffectiveHistoryByCustomerIdOrderByType" resultType="ExtRedPackage">
-        SELECT * FROM ExtRedPackage WHERE
-        customerid = #{customerId}
-       <![CDATA[ AND (expTime<now() OR IsUsed = 1)]]>
+        <!-- 历史红包（近一个月） -->
+        SELECT * FROM ExtRedPackage
+        WHERE customerid = #{customerId}
+        AND Created > #{created} AND ((isused=0 and ExpTime &lt; #{expTime}) OR (IsUsed = 1 AND Created > #{created}))
+        AND IsLock = 0
+        <choose>
+            <when test="type == 'ExpTime'">
+                order by expTime desc
+            </when>
+            <otherwise>
+                order by price desc
+            </otherwise>
+        </choose>
+    </select>
+
+    <select id="pageEffectiveEarlierHistoryByCustomerIdOrderByType" resultType="ExtRedPackage">
+        <!-- 历史红包（一个月更早） -->
+        SELECT * FROM ExtRedPackage
+        WHERE customerid = #{customerId}
+        AND Created &lt; #{created} AND ((isused=0 AND ExpTime &lt; #{expTime}) OR (IsUsed = 1 AND Created &lt; #{created}))
         AND IsLock = 0
         <choose>
             <when test="type == 'ExpTime'">

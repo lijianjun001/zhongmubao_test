@@ -10,6 +10,7 @@ import com.zhongmubao.api.config.enmu.RedPackageState;
 import com.zhongmubao.api.dao.ExtRedPackageDao;
 import com.zhongmubao.api.dto.request.my.redpackage.RedPackageDetailRequestModel;
 import com.zhongmubao.api.dto.request.my.redpackage.RedPackageGroupRequestModel;
+import com.zhongmubao.api.dto.request.my.redpackage.RedPackageHistoryRequestModel;
 import com.zhongmubao.api.dto.request.my.redpackage.RedPackageListRequestModel;
 import com.zhongmubao.api.dto.response.my.redpackage.RedPackageModel;
 import com.zhongmubao.api.dto.response.my.redpackage.*;
@@ -131,11 +132,11 @@ public class ReadPackageServiceImpl implements ReadPackageService {
             double price = 0;
             if (groupType == RedPackageGroupType.OTHER) {
                 price = 0;
-            }else if (groupType == RedPackageGroupType.TWO) {
+            } else if (groupType == RedPackageGroupType.TWO) {
                 price = 2;
-            }else if (groupType == RedPackageGroupType.FIVE) {
+            } else if (groupType == RedPackageGroupType.FIVE) {
                 price = 5;
-            }else if (groupType == RedPackageGroupType.EIGHT) {
+            } else if (groupType == RedPackageGroupType.EIGHT) {
                 price = 8;
             }
             Page<ExtRedPackage> pager = extRedPackageDao.pageEffectiveByCustomerIdAndPrice(customer.getId(), price);
@@ -170,14 +171,14 @@ public class ReadPackageServiceImpl implements ReadPackageService {
         double price = 0;
         if (model.getGroupType() == RedPackageGroupType.OTHER) {
             price = 0;
-        }else if (model.getGroupType() == RedPackageGroupType.TWO) {
+        } else if (model.getGroupType() == RedPackageGroupType.TWO) {
             price = 2;
-        }else if (model.getGroupType() == RedPackageGroupType.FIVE) {
+        } else if (model.getGroupType() == RedPackageGroupType.FIVE) {
             price = 5;
-        }else if (model.getGroupType() == RedPackageGroupType.EIGHT) {
+        } else if (model.getGroupType() == RedPackageGroupType.EIGHT) {
             price = 8;
         }
-        Page<ExtRedPackage> pager = extRedPackageDao.pageEffectiveByCustomerIdAndPrice(customer.getId(),price);
+        Page<ExtRedPackage> pager = extRedPackageDao.pageEffectiveByCustomerIdAndPrice(customer.getId(), price);
 
         Date now = new Date();
         String remark = "仅可购买120天及以上长期羊使用";
@@ -197,16 +198,24 @@ public class ReadPackageServiceImpl implements ReadPackageService {
     }
 
     @Override
-    public RedPackageHistoryViewModel readPackageHistory(Customer customer, RedPackageGroupRequestModel model) throws Exception {
+    public RedPackageHistoryViewModel readPackageHistory(Customer customer, RedPackageHistoryRequestModel model) throws Exception {
         if (model == null) {
             throw new ApiException(ResultStatus.PARAMETER_MISSING);
         }
         if (model.getSortType() == null) {
             model.setSortType(RedPackageSortType.ExpTime);
         }
+
         Date now = new Date();
         PageHelper.startPage(model.getPageIndex(), Constants.PAGE_SIZE);
-        Page<ExtRedPackage> pager = extRedPackageDao.pageEffectiveHistoryByCustomerIdOrderByType(customer.getId(), model.getSortType().getName());
+        String created = DateUtil.format(DateUtil.addDay(now, -30), Constants.DATE_TIME_FORMAT);
+        String expTime = DateUtil.format(now, Constants.DATE_TIME_FORMAT);
+        Page<ExtRedPackage> pager;
+        if (model.isWhetherEarlier()) {
+            pager = extRedPackageDao.pageEffectiveEarlierHistoryByCustomerIdOrderByType(customer.getId(), created, expTime, model.getSortType().getName());
+        } else {
+            pager = extRedPackageDao.pageEffectiveHistoryByCustomerIdOrderByType(customer.getId(), created, expTime, model.getSortType().getName());
+        }
 
         String remark = "仅可购买120天及以上长期羊使用";
         List<RedPackageModel> list = pager.stream()
