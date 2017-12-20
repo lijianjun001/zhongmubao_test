@@ -164,7 +164,7 @@ public class MyController {
     }
 
     /**
-     * 排序红包列表
+     * 红包列表（过期时间排序）
      *
      * @param customer 客户
      * @param model    请求model

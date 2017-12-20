@@ -58,7 +58,9 @@ public class ReadPackageServiceImpl implements ReadPackageService {
         List<ExtRedPackageGroup> eightGroup = list.stream().filter(en -> en.getPrice() == 8).collect(Collectors.toList());
         if (eightGroup != null && eightGroup.size() > 0) {
             RedPackageGroupModel redPacket = redPacketGroupCalc(customer, eightGroup, RedPackageGroupType.EIGHT, isPreLoad);
-            isPreLoad = false;
+            if (redPacket.getPreLoadList().size() > 1) {
+                isPreLoad = false;
+            }
             groupModelList.add(redPacket);
             list.removeAll(eightGroup);
         }
@@ -66,8 +68,9 @@ public class ReadPackageServiceImpl implements ReadPackageService {
         List<ExtRedPackageGroup> fiveGroup = list.stream().filter(en -> en.getPrice() == 5).collect(Collectors.toList());
         if (fiveGroup != null && fiveGroup.size() > 0) {
             RedPackageGroupModel redPacket = redPacketGroupCalc(customer, fiveGroup, RedPackageGroupType.FIVE, isPreLoad);
-            isPreLoad = false;
-
+            if (redPacket.getPreLoadList().size() > 1) {
+                isPreLoad = false;
+            }
             groupModelList.add(redPacket);
             list.removeAll(fiveGroup);
         }
@@ -75,7 +78,9 @@ public class ReadPackageServiceImpl implements ReadPackageService {
         List<ExtRedPackageGroup> twoGroup = list.stream().filter(en -> en.getPrice() == 2).collect(Collectors.toList());
         if (twoGroup != null && twoGroup.size() > 0) {
             RedPackageGroupModel redPacket = redPacketGroupCalc(customer, twoGroup, RedPackageGroupType.TWO, isPreLoad);
-            isPreLoad = false;
+            if (redPacket.getPreLoadList().size() > 1) {
+                isPreLoad = false;
+            }
             groupModelList.add(redPacket);
             list.removeAll(twoGroup);
         }
@@ -99,6 +104,7 @@ public class ReadPackageServiceImpl implements ReadPackageService {
      */
     private RedPackageGroupModel redPacketGroupCalc(Customer customer, List<ExtRedPackageGroup> groupRedPacket, RedPackageGroupType groupType, boolean isPreLoad) {
 
+        String remark = "仅可购买120天及以上长期羊使用";
         RedPackageGroupModel groupModel = new RedPackageGroupModel();
         groupModel.setGroupType(groupType.getName());
         if (groupType == RedPackageGroupType.OTHER) {
@@ -106,7 +112,7 @@ public class ReadPackageServiceImpl implements ReadPackageService {
             groupModel.setCount(Integer.parseInt(String.valueOf(statsTotalCount.getSum())));
 
             DoubleSummaryStatistics statsTotalPrice = groupRedPacket.stream().mapToDouble(ExtRedPackageGroup::getPrice).summaryStatistics();
-            groupModel.setTotalPrice(Double.toString(statsTotalPrice.getSum()));
+            groupModel.setTotalPrice(DoubleUtil.toFixed(statsTotalPrice.getSum(), Constants.PRICE_FORMAT));
 
             IntSummaryStatistics statsTotalNewCount = groupRedPacket.stream().mapToInt(ExtRedPackageGroup::getNewCount).summaryStatistics();
             groupModel.setNewCount(Integer.parseInt(String.valueOf(statsTotalNewCount.getSum())));
@@ -125,6 +131,9 @@ public class ReadPackageServiceImpl implements ReadPackageService {
             groupModel.setPrice(DoubleUtil.toFixed(redPacket.getPrice(), Constants.PRICE_FORMAT));
             groupModel.setFirstExpTime(DateUtil.format(redPacket.getExpTime(), Constants.DATE_FORMAT));
             groupModel.setTotalPrice(DoubleUtil.toFixed(redPacket.getTotalPrice(), Constants.PRICE_FORMAT));
+            if (groupType == RedPackageGroupType.EIGHT || groupType == RedPackageGroupType.FIVE) {
+                groupModel.setRemark(remark);
+            }
         }
 
         if (isPreLoad) {
@@ -141,7 +150,6 @@ public class ReadPackageServiceImpl implements ReadPackageService {
             }
             Page<ExtRedPackage> pager = extRedPackageDao.pageEffectiveByCustomerIdAndPrice(customer.getId(), price);
             Date now = new Date();
-            String remark = "仅可购买120天及以上长期羊使用";
             List<RedPackageModel> eightViewGroup = pager.stream().map(
                     en -> new RedPackageModel(
                             en.getId(),
@@ -154,7 +162,11 @@ public class ReadPackageServiceImpl implements ReadPackageService {
                             en.isUsed() ? RedPackageState.USRD.getName() : RedPackageState.UNUSED.getName()
                     )).collect(Collectors.toList());
 
-            groupModel.setPreLoadList((ArrayList<RedPackageModel>) eightViewGroup);
+            if (eightViewGroup.size() > 1) {
+                groupModel.setPreLoadList((ArrayList<RedPackageModel>) eightViewGroup);
+            } else if (eightViewGroup.size() == 1) {
+                groupModel.setRedPackageModel(eightViewGroup.get(0));
+            }
             groupModel.setPreLoadPageIndex(1);
         }
 

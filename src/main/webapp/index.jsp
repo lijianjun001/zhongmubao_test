@@ -34,8 +34,7 @@
 //        };
         var data = {
             pageIndex: 1,
-            sortType:"ExpTime",
-            whetherEarlier:true
+            sortType:"Price"
         };
 
 
@@ -44,7 +43,7 @@
 
         $.ajax({
             type: "POST",
-            url: "/my/readPackage/history",
+            url: "/my/readPackage/group",
             data: JSON.stringify(data),
             contentType: 'application/json;charset=UTF-8',
             dataType: "json",                                     //预期服务器返回类型
