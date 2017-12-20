@@ -226,7 +226,7 @@ public class ReadPackageServiceImpl implements ReadPackageService {
                         Constants.redpackettypestr(en.getType()),
                         en.getIsNew() == 1,
                         DateUtil.format(en.getExpTime(), Constants.DATE_FORMAT),
-                        DateUtil.subDateOfDay(now, en.getExpTime()) > 30,
+                        model.isWhetherEarlier(),
                         en.isUsed() ? RedPackageState.USRD.getName() : RedPackageState.EXPIRED.getName()
                 )).collect(Collectors.toList());
 
