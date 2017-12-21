@@ -364,6 +364,12 @@ public class SignServiceImpl extends BaseService implements SignService {
 
     @Override
     public void receiveRechargeGift(Customer customer, ReceiveRechargeGiftRequestModel model) throws Exception {
+        //运营商维护
+        if (true) {
+            throw new ApiException(ResultStatus.YUNYING_PHONE_ERROR);
+        }
+
+
         if (null == model) {
             throw new ApiException(ResultStatus.PARAMETER_MISSING);
         }
@@ -377,6 +383,7 @@ public class SignServiceImpl extends BaseService implements SignService {
         if (!RegExpMatcher.matcherMobile(model.getPhone())) {
             throw new ApiException(ResultStatus.INVALID_PHONE_ERROR);
         }
+
 
         // 1、充值话费（先充值再修改领取状态和添加领取记录，客户至上）
         Recharge.submit(model.getPhone(), shareCard.getCount(), model.getGiftId());

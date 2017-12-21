@@ -23,6 +23,7 @@ public enum ResultStatus {
     MAX_MONTH_SHAY(-1009, "本月分享达到最大分享数,请下月再来"),
     DEVICE_OFFLINE(-1010, "设备已离线"),
     DATA_QUERY_FAILED (-2000, "未查到该数据"),
+    YUNYING_PHONE_ERROR(-6, "由于运营商维护系统将于2018年1月1日恢复充值"),
     TOUTIAO_CALL_FAILED(-3001, "回传失败");
 
     /**
