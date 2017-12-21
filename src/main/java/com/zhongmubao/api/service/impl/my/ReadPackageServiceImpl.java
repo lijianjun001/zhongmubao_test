@@ -68,7 +68,7 @@ public class ReadPackageServiceImpl implements ReadPackageService {
         List<ExtRedPackageGroup> fiveGroup = list.stream().filter(en -> en.getPrice() == 5).collect(Collectors.toList());
         if (fiveGroup != null && fiveGroup.size() > 0) {
             RedPackageGroupModel redPacket = redPacketGroupCalc(customer, fiveGroup, RedPackageGroupType.FIVE, isPreLoad);
-            if (redPacket.getPreLoadList().size() > 1) {
+            if (isPreLoad && redPacket.getPreLoadList() != null && redPacket.getPreLoadList().size() > 1) {
                 isPreLoad = false;
             }
             groupModelList.add(redPacket);
@@ -78,7 +78,7 @@ public class ReadPackageServiceImpl implements ReadPackageService {
         List<ExtRedPackageGroup> twoGroup = list.stream().filter(en -> en.getPrice() == 2).collect(Collectors.toList());
         if (twoGroup != null && twoGroup.size() > 0) {
             RedPackageGroupModel redPacket = redPacketGroupCalc(customer, twoGroup, RedPackageGroupType.TWO, isPreLoad);
-            if (redPacket.getPreLoadList().size() > 1) {
+            if (isPreLoad && redPacket.getPreLoadList() != null && redPacket.getPreLoadList().size() > 1) {
                 isPreLoad = false;
             }
             groupModelList.add(redPacket);
@@ -136,7 +136,7 @@ public class ReadPackageServiceImpl implements ReadPackageService {
             }
         }
 
-        if (isPreLoad) {
+        if (isPreLoad || groupModel.getCount() == 1) {
             PageHelper.startPage(1, 10);
             double price = 0;
             if (groupType == RedPackageGroupType.OTHER) {
@@ -150,7 +150,7 @@ public class ReadPackageServiceImpl implements ReadPackageService {
             }
             Page<ExtRedPackage> pager = extRedPackageDao.pageEffectiveByCustomerIdAndPrice(customer.getId(), price);
             Date now = new Date();
-            List<RedPackageModel> eightViewGroup = pager.stream().map(
+            List<RedPackageModel> packageModels = pager.stream().map(
                     en -> new RedPackageModel(
                             en.getId(),
                             DoubleUtil.toFixed(en.getPrice(), Constants.PRICE_FORMAT),
@@ -162,12 +162,12 @@ public class ReadPackageServiceImpl implements ReadPackageService {
                             en.isUsed() ? RedPackageState.USRD.getName() : RedPackageState.UNUSED.getName()
                     )).collect(Collectors.toList());
 
-            if (eightViewGroup.size() > 1) {
-                groupModel.setPreLoadList((ArrayList<RedPackageModel>) eightViewGroup);
-            } else if (eightViewGroup.size() == 1) {
-                groupModel.setRedPackageModel(eightViewGroup.get(0));
+            if (packageModels.size() == 1) {
+                groupModel.setRedPackageModel(packageModels.get(0));
+            } else {
+                groupModel.setPreLoadPageIndex(1);
+                groupModel.setPreLoadList((ArrayList<RedPackageModel>) packageModels);
             }
-            groupModel.setPreLoadPageIndex(1);
         }
 
         return groupModel;
