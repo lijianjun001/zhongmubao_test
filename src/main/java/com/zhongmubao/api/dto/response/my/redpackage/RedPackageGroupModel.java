@@ -40,9 +40,19 @@ public class RedPackageGroupModel {
     private String type;
 
     /**
-     * 红包类型
+     * 红包组类型
      */
     private String groupType;
+
+    /**
+     * 备注
+     */
+    private String remark;
+
+    /**
+     * 单个红包
+     */
+    private RedPackageModel redPackageModel;
 
     /**
      * 预加载数据页码
@@ -124,5 +134,21 @@ public class RedPackageGroupModel {
 
     public void setGroupType(String groupType) {
         this.groupType = groupType;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
+    }
+
+    public RedPackageModel getRedPackageModel() {
+        return redPackageModel;
+    }
+
+    public void setRedPackageModel(RedPackageModel redPackageModel) {
+        this.redPackageModel = redPackageModel;
     }
 }

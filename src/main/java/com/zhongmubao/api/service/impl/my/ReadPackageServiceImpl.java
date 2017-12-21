@@ -10,6 +10,7 @@ import com.zhongmubao.api.config.enmu.RedPackageState;
 import com.zhongmubao.api.dao.ExtRedPackageDao;
 import com.zhongmubao.api.dto.request.my.redpackage.RedPackageDetailRequestModel;
 import com.zhongmubao.api.dto.request.my.redpackage.RedPackageGroupRequestModel;
+import com.zhongmubao.api.dto.request.my.redpackage.RedPackageHistoryRequestModel;
 import com.zhongmubao.api.dto.request.my.redpackage.RedPackageListRequestModel;
 import com.zhongmubao.api.dto.response.my.redpackage.RedPackageModel;
 import com.zhongmubao.api.dto.response.my.redpackage.*;
@@ -57,7 +58,9 @@ public class ReadPackageServiceImpl implements ReadPackageService {
         List<ExtRedPackageGroup> eightGroup = list.stream().filter(en -> en.getPrice() == 8).collect(Collectors.toList());
         if (eightGroup != null && eightGroup.size() > 0) {
             RedPackageGroupModel redPacket = redPacketGroupCalc(customer, eightGroup, RedPackageGroupType.EIGHT, isPreLoad);
-            isPreLoad = false;
+            if (redPacket.getPreLoadList().size() > 1) {
+                isPreLoad = false;
+            }
             groupModelList.add(redPacket);
             list.removeAll(eightGroup);
         }
@@ -65,8 +68,9 @@ public class ReadPackageServiceImpl implements ReadPackageService {
         List<ExtRedPackageGroup> fiveGroup = list.stream().filter(en -> en.getPrice() == 5).collect(Collectors.toList());
         if (fiveGroup != null && fiveGroup.size() > 0) {
             RedPackageGroupModel redPacket = redPacketGroupCalc(customer, fiveGroup, RedPackageGroupType.FIVE, isPreLoad);
-            isPreLoad = false;
-
+            if (redPacket.getPreLoadList().size() > 1) {
+                isPreLoad = false;
+            }
             groupModelList.add(redPacket);
             list.removeAll(fiveGroup);
         }
@@ -74,7 +78,9 @@ public class ReadPackageServiceImpl implements ReadPackageService {
         List<ExtRedPackageGroup> twoGroup = list.stream().filter(en -> en.getPrice() == 2).collect(Collectors.toList());
         if (twoGroup != null && twoGroup.size() > 0) {
             RedPackageGroupModel redPacket = redPacketGroupCalc(customer, twoGroup, RedPackageGroupType.TWO, isPreLoad);
-            isPreLoad = false;
+            if (redPacket.getPreLoadList().size() > 1) {
+                isPreLoad = false;
+            }
             groupModelList.add(redPacket);
             list.removeAll(twoGroup);
         }
@@ -98,6 +104,7 @@ public class ReadPackageServiceImpl implements ReadPackageService {
      */
     private RedPackageGroupModel redPacketGroupCalc(Customer customer, List<ExtRedPackageGroup> groupRedPacket, RedPackageGroupType groupType, boolean isPreLoad) {
 
+        String remark = "仅可购买120天及以上长期羊使用";
         RedPackageGroupModel groupModel = new RedPackageGroupModel();
         groupModel.setGroupType(groupType.getName());
         if (groupType == RedPackageGroupType.OTHER) {
@@ -105,7 +112,7 @@ public class ReadPackageServiceImpl implements ReadPackageService {
             groupModel.setCount(Integer.parseInt(String.valueOf(statsTotalCount.getSum())));
 
             DoubleSummaryStatistics statsTotalPrice = groupRedPacket.stream().mapToDouble(ExtRedPackageGroup::getPrice).summaryStatistics();
-            groupModel.setTotalPrice(Double.toString(statsTotalPrice.getSum()));
+            groupModel.setTotalPrice(DoubleUtil.toFixed(statsTotalPrice.getSum(), Constants.PRICE_FORMAT));
 
             IntSummaryStatistics statsTotalNewCount = groupRedPacket.stream().mapToInt(ExtRedPackageGroup::getNewCount).summaryStatistics();
             groupModel.setNewCount(Integer.parseInt(String.valueOf(statsTotalNewCount.getSum())));
@@ -124,6 +131,9 @@ public class ReadPackageServiceImpl implements ReadPackageService {
             groupModel.setPrice(DoubleUtil.toFixed(redPacket.getPrice(), Constants.PRICE_FORMAT));
             groupModel.setFirstExpTime(DateUtil.format(redPacket.getExpTime(), Constants.DATE_FORMAT));
             groupModel.setTotalPrice(DoubleUtil.toFixed(redPacket.getTotalPrice(), Constants.PRICE_FORMAT));
+            if (groupType == RedPackageGroupType.EIGHT || groupType == RedPackageGroupType.FIVE) {
+                groupModel.setRemark(remark);
+            }
         }
 
         if (isPreLoad) {
@@ -131,16 +141,15 @@ public class ReadPackageServiceImpl implements ReadPackageService {
             double price = 0;
             if (groupType == RedPackageGroupType.OTHER) {
                 price = 0;
-            }else if (groupType == RedPackageGroupType.TWO) {
+            } else if (groupType == RedPackageGroupType.TWO) {
                 price = 2;
-            }else if (groupType == RedPackageGroupType.FIVE) {
+            } else if (groupType == RedPackageGroupType.FIVE) {
                 price = 5;
-            }else if (groupType == RedPackageGroupType.EIGHT) {
+            } else if (groupType == RedPackageGroupType.EIGHT) {
                 price = 8;
             }
             Page<ExtRedPackage> pager = extRedPackageDao.pageEffectiveByCustomerIdAndPrice(customer.getId(), price);
             Date now = new Date();
-            String remark = "仅可购买120天及以上长期羊使用";
             List<RedPackageModel> eightViewGroup = pager.stream().map(
                     en -> new RedPackageModel(
                             en.getId(),
@@ -153,7 +162,11 @@ public class ReadPackageServiceImpl implements ReadPackageService {
                             en.isUsed() ? RedPackageState.USRD.getName() : RedPackageState.UNUSED.getName()
                     )).collect(Collectors.toList());
 
-            groupModel.setPreLoadList((ArrayList<RedPackageModel>) eightViewGroup);
+            if (eightViewGroup.size() > 1) {
+                groupModel.setPreLoadList((ArrayList<RedPackageModel>) eightViewGroup);
+            } else if (eightViewGroup.size() == 1) {
+                groupModel.setRedPackageModel(eightViewGroup.get(0));
+            }
             groupModel.setPreLoadPageIndex(1);
         }
 
@@ -170,14 +183,14 @@ public class ReadPackageServiceImpl implements ReadPackageService {
         double price = 0;
         if (model.getGroupType() == RedPackageGroupType.OTHER) {
             price = 0;
-        }else if (model.getGroupType() == RedPackageGroupType.TWO) {
+        } else if (model.getGroupType() == RedPackageGroupType.TWO) {
             price = 2;
-        }else if (model.getGroupType() == RedPackageGroupType.FIVE) {
+        } else if (model.getGroupType() == RedPackageGroupType.FIVE) {
             price = 5;
-        }else if (model.getGroupType() == RedPackageGroupType.EIGHT) {
+        } else if (model.getGroupType() == RedPackageGroupType.EIGHT) {
             price = 8;
         }
-        Page<ExtRedPackage> pager = extRedPackageDao.pageEffectiveByCustomerIdAndPrice(customer.getId(),price);
+        Page<ExtRedPackage> pager = extRedPackageDao.pageEffectiveByCustomerIdAndPrice(customer.getId(), price);
 
         Date now = new Date();
         String remark = "仅可购买120天及以上长期羊使用";
@@ -197,16 +210,24 @@ public class ReadPackageServiceImpl implements ReadPackageService {
     }
 
     @Override
-    public RedPackageHistoryViewModel readPackageHistory(Customer customer, RedPackageGroupRequestModel model) throws Exception {
+    public RedPackageHistoryViewModel readPackageHistory(Customer customer, RedPackageHistoryRequestModel model) throws Exception {
         if (model == null) {
             throw new ApiException(ResultStatus.PARAMETER_MISSING);
         }
         if (model.getSortType() == null) {
             model.setSortType(RedPackageSortType.ExpTime);
         }
+
         Date now = new Date();
         PageHelper.startPage(model.getPageIndex(), Constants.PAGE_SIZE);
-        Page<ExtRedPackage> pager = extRedPackageDao.pageEffectiveHistoryByCustomerIdOrderByType(customer.getId(), model.getSortType().getName());
+        String created = DateUtil.format(DateUtil.addDay(now, -30), Constants.DATE_TIME_FORMAT);
+        String expTime = DateUtil.format(now, Constants.DATE_TIME_FORMAT);
+        Page<ExtRedPackage> pager;
+        if (model.isWhetherEarlier()) {
+            pager = extRedPackageDao.pageEffectiveEarlierHistoryByCustomerIdOrderByType(customer.getId(), created, expTime, model.getSortType().getName());
+        } else {
+            pager = extRedPackageDao.pageEffectiveHistoryByCustomerIdOrderByType(customer.getId(), created, expTime, model.getSortType().getName());
+        }
 
         String remark = "仅可购买120天及以上长期羊使用";
         List<RedPackageModel> list = pager.stream()
@@ -217,7 +238,7 @@ public class ReadPackageServiceImpl implements ReadPackageService {
                         Constants.redpackettypestr(en.getType()),
                         en.getIsNew() == 1,
                         DateUtil.format(en.getExpTime(), Constants.DATE_FORMAT),
-                        DateUtil.subDateOfDay(now, en.getExpTime()) > 30,
+                        model.isWhetherEarlier(),
                         en.isUsed() ? RedPackageState.USRD.getName() : RedPackageState.EXPIRED.getName()
                 )).collect(Collectors.toList());
 

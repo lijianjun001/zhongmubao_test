@@ -2,6 +2,7 @@ package com.zhongmubao.api.service.my;
 
 import com.zhongmubao.api.dto.request.my.redpackage.RedPackageDetailRequestModel;
 import com.zhongmubao.api.dto.request.my.redpackage.RedPackageGroupRequestModel;
+import com.zhongmubao.api.dto.request.my.redpackage.RedPackageHistoryRequestModel;
 import com.zhongmubao.api.dto.request.my.redpackage.RedPackageListRequestModel;
 import com.zhongmubao.api.dto.response.my.redpackage.RedPackageDetailViewModel;
 import com.zhongmubao.api.dto.response.my.redpackage.RedPackageGroupViewModel;
@@ -36,17 +37,17 @@ public interface ReadPackageService {
     RedPackageListViewModel readPackageGroupList(Customer customer, RedPackageListRequestModel model) throws Exception;
 
     /**
-     * 获取过期红包
+     * 获取历史红包
      *
      * @param customer 客户
      * @param model    请求参数
      * @return RedPackageHistoryViewModel
      * @throws Exception
      */
-    RedPackageHistoryViewModel readPackageHistory(Customer customer, RedPackageGroupRequestModel model) throws Exception;
+    RedPackageHistoryViewModel readPackageHistory(Customer customer, RedPackageHistoryRequestModel model) throws Exception;
 
     /**
-     * 红包详情
+     * 红包详情readPackageEarlierHistory
      *
      * @param customer 客户
      * @param model    请求参数

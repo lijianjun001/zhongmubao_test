@@ -5,6 +5,7 @@ import com.zhongmubao.api.authorization.annotation.CurrentUser;
 import com.zhongmubao.api.dto.request.my.menu.ListRequestModel;
 import com.zhongmubao.api.dto.request.my.redpackage.RedPackageDetailRequestModel;
 import com.zhongmubao.api.dto.request.my.redpackage.RedPackageGroupRequestModel;
+import com.zhongmubao.api.dto.request.my.redpackage.RedPackageHistoryRequestModel;
 import com.zhongmubao.api.dto.request.my.redpackage.RedPackageListRequestModel;
 import com.zhongmubao.api.dto.request.my.transaction.TransactionDetailRequestModel;
 import com.zhongmubao.api.dto.request.my.transaction.TransactionMonthlyBillRequestModel;
@@ -123,7 +124,7 @@ public class MyController {
     }
 
     /**
-     * 已过期红包
+     * 历史红包
      *
      * @param customer 客户
      * @param model    请求model
@@ -131,7 +132,7 @@ public class MyController {
      */
     @RequestMapping(value = "/readPackage/history", method = RequestMethod.POST, consumes = "application/json")
     @Authorization
-    public ResponseEntity<ReponseModel> readPackageHistory(@CurrentUser Customer customer, HttpEntity<RedPackageGroupRequestModel> model) {
+    public ResponseEntity<ReponseModel> readPackageHistory(@CurrentUser Customer customer, HttpEntity<RedPackageHistoryRequestModel> model) {
         try {
             RedPackageHistoryViewModel readPackageExpiredModel = readPackageService.readPackageHistory(customer, model.getBody());
             return new ResponseEntity<>(ReponseModel.ok(readPackageExpiredModel), HttpStatus.OK);
@@ -163,7 +164,7 @@ public class MyController {
     }
 
     /**
-     * 排序红包列表
+     * 红包列表（过期时间排序）
      *
      * @param customer 客户
      * @param model    请求model
