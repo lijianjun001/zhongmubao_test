@@ -137,7 +137,7 @@ public class ReadPackageServiceImpl implements ReadPackageService {
         }
 
         if (isPreLoad || groupModel.getCount() == 1) {
-            PageHelper.startPage(1, 10);
+            PageHelper.startPage(1, Constants.PAGE_SIZE);
             double price = 0;
             if (groupType == RedPackageGroupType.OTHER) {
                 price = 0;
@@ -290,7 +290,8 @@ public class ReadPackageServiceImpl implements ReadPackageService {
                         en.getIsNew() == 1,
                         DateUtil.format(en.getExpTime(), Constants.DATE_FORMAT_DOT),
                         DateUtil.subDateOfDay(now, en.getExpTime()) > 30,
-                        en.isUsed() ? RedPackageState.USRD.getName() : RedPackageState.UNUSED.getName()
+                        en.isUsed() ? RedPackageState.USRD.getName() :
+                                (DateUtil.subDateOfDay(now, en.getExpTime()) >= 0 ? RedPackageState.EXPIRED.getName() : RedPackageState.UNUSED.getName())
                 )).collect(Collectors.toList());
     }
 }
