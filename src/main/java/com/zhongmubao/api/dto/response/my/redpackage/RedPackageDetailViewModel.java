@@ -14,7 +14,8 @@ public class RedPackageDetailViewModel {
     public RedPackageDetailViewModel() {
     }
 
-    public RedPackageDetailViewModel(String typeStr, String price, String beginTime, String expTime, ArrayList<String> remarks, String status) {
+    public RedPackageDetailViewModel(String type, String typeStr, String price, String beginTime, String expTime, ArrayList<String> remarks, String status) {
+        this.type = type;
         this.typeStr = typeStr;
         this.price = price;
         this.beginTime = beginTime;
@@ -22,6 +23,11 @@ public class RedPackageDetailViewModel {
         this.remarks = remarks;
         this.status = status;
     }
+
+    /**
+     * 红包类型
+     */
+    private String type;
 
     /**
      * 红包类型中文

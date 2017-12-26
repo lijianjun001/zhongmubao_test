@@ -51,7 +51,7 @@ public class TransactionServiceImpl extends BaseService implements TransactionSe
         this.sheepOrderDao = sheepOrderDao;
     }
 
-    //region 交易详情
+    //region 交易明细列表
     @Override
     public TransactionListViewModel transactionList(Customer customer, TransactionRequestModel model) throws
             Exception {
@@ -59,7 +59,10 @@ public class TransactionServiceImpl extends BaseService implements TransactionSe
             throw new ApiException(ResultStatus.PARAMETER_MISSING);
         }
 
-        Date date = new Date();
+        Date date = DateUtil.strToDate(model.getBillDate());
+        if (date == null) {
+            throw new ApiException(ResultStatus.PARAMETER_MISSING);
+        }
         // 获取当前月的第一天和最后一天
         Date startDate = DateUtil.formatMongo(DateUtil.monthFirstDay(date));
         Date endDate = DateUtil.formatMongo(DateUtil.monthLastDay(date));
@@ -92,6 +95,10 @@ public class TransactionServiceImpl extends BaseService implements TransactionSe
                     RedeemDetailModel redeemDetail = SerializeUtil.deSerialize(mongo.getTransactionDetail(), RedeemDetailModel.class);
                     assert redeemDetail != null;
                     transactionViewModel.setTransactionDate(redeemDetail.getOperationDate());
+                }else if (mongo.getType().equals(TransactionDetailType.REDEEM_RED.getName())) {
+                    RedeemRedDetailModel redeemRedDetail = SerializeUtil.deSerialize(mongo.getTransactionDetail(), RedeemRedDetailModel.class);
+                    assert redeemRedDetail != null;
+                    transactionViewModel.setTransactionDate(redeemRedDetail.getOperationDate());
                 }
                 list.add(transactionViewModel);
             } catch (Exception ex) {

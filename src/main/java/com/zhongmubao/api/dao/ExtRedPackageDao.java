@@ -119,7 +119,7 @@ public interface ExtRedPackageDao {
     Page<ExtRedPackage> pageEffectiveByCustomerIdAndPrice(@Param("customerId") int customerId, @Param("price") double price);
 
     /**
-     * 历史红包列表（近一个月）
+     * 历史红包（近一个月）
      *
      * @param customerId 用户id
      * @param created    创建时间
@@ -130,7 +130,7 @@ public interface ExtRedPackageDao {
     Page<ExtRedPackage> pageEffectiveHistoryByCustomerIdOrderByType(@Param("customerId") int customerId, @Param("created") String created, @Param("expTime") String expTime, @Param("type") String type);
 
     /**
-     * 历史红包列表（更早）
+     * 历史红包（更早）
      *
      * @param customerId 用户id
      * @param created    创建时间
@@ -155,4 +155,14 @@ public interface ExtRedPackageDao {
      * @return List<ExtRedPackageGroup>
      */
     List<ExtRedPackageGroup> getByCustomerIdGroupByPrice(@Param("customerId") int customerId);
+
+
+    /**
+     * 历史红包（分页）
+     *
+     * @param customerId 用户id
+     * @param expTime    过期时间
+     * @return Page<ExtRedPackage>
+     */
+    Page<ExtRedPackage> pageEffectiveHistoryByCustomerIdOrderByPrice(@Param("customerId") int customerId, @Param("expTime") String expTime);
 }

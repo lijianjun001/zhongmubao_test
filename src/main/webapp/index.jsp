@@ -34,7 +34,8 @@
 //        };
         var data = {
             pageIndex: 1,
-            sortType: "Price"
+            billDate: "2017-12-12 12:12:12",
+            billType:""
         };
 
 
@@ -48,7 +49,7 @@
             contentType: 'application/json;charset=UTF-8',
             dataType: "json",                                     //预期服务器返回类型
             headers: {
-                Authorization: "YR3D+mEt8SQSBFNpCoOLiJTh/nZMACMncBFB0C35vJiIZTI+RV+lbw43y5F4I1SP5UN8D3G4tP4Npa+qKsIGbmuUZDVEwT4tq1/0hXztbi6dOSBduscO4cGBBI6l8ms8",
+                Authorization: "d7bUgUc7JdP9zDexjNNg7RAfbnhe5L/VQ4KiVMF6kteOJIX3Hjd3+Nm5MWbFkNCskdEt38zloi0dyJMfk4DJJFCjV7gIDwhbsYQGwA+Vmd5wY/L5VWH+N5yq+EH8ayWP",
                 Platform: "04"
             },
             success: function (data) {
