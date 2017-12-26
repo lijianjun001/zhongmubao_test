@@ -194,9 +194,19 @@ public class Constants {
     public static final String DATE_FORMAT = "yyyy-MM-dd";
 
     /**
+     * 日期格式
+     */
+    public static final String DATE_FORMAT_DOT = "yyyy.MM.dd";
+
+    /**
      * 日期时分秒格式
      */
     public static final String DATE_TIME_FORMAT = "yyyy-MM-dd HH:mm:ss";
+
+    /**
+     * 日期时分秒格式
+     */
+    public static final String DATE_TIME_FORMAT_DOT = "yyyy.MM.dd HH:mm:ss";
 
     /**
      * 金额格式（两位小数点）

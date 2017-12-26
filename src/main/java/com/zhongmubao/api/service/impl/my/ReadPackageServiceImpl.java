@@ -122,14 +122,14 @@ public class ReadPackageServiceImpl implements ReadPackageService {
             String title = "零钱红包";
             groupModel.setPrice(title);
             groupModel.setType(redPacket.getType());
-            groupModel.setFirstExpTime(DateUtil.format(redPacket.getExpTime(), Constants.DATE_FORMAT));
+            groupModel.setFirstExpTime(DateUtil.format(redPacket.getExpTime(), Constants.DATE_FORMAT_DOT));
         } else {
             ExtRedPackageGroup redPacket = groupRedPacket.stream().findFirst().get();
             groupModel.setCount(redPacket.getTotalCount());
             groupModel.setType(redPacket.getType());
             groupModel.setNewCount(redPacket.getNewCount());
             groupModel.setPrice(DoubleUtil.toFixed(redPacket.getPrice(), Constants.PRICE_FORMAT));
-            groupModel.setFirstExpTime(DateUtil.format(redPacket.getExpTime(), Constants.DATE_FORMAT));
+            groupModel.setFirstExpTime(DateUtil.format(redPacket.getExpTime(), Constants.DATE_FORMAT_DOT));
             groupModel.setTotalPrice(DoubleUtil.toFixed(redPacket.getTotalPrice(), Constants.PRICE_FORMAT));
             if (groupType == RedPackageGroupType.EIGHT || groupType == RedPackageGroupType.FIVE) {
                 groupModel.setRemark(remark);
@@ -157,7 +157,7 @@ public class ReadPackageServiceImpl implements ReadPackageService {
                             en.getPrice() >= 5 ? remark : "",
                             Constants.redpackettypestr(en.getType()),
                             en.getIsNew() == 1,
-                            DateUtil.format(en.getExpTime(), Constants.DATE_FORMAT),
+                            DateUtil.format(en.getExpTime(), Constants.DATE_FORMAT_DOT),
                             DateUtil.subDateOfDay(now, en.getExpTime()) > 30,
                             en.isUsed() ? RedPackageState.USRD.getName() : RedPackageState.UNUSED.getName()
                     )).collect(Collectors.toList());
@@ -165,7 +165,7 @@ public class ReadPackageServiceImpl implements ReadPackageService {
             if (packageModels.size() == 1) {
                 groupModel.setRedPackageModel(packageModels.get(0));
             } else {
-                groupModel.setPreLoadPageIndex(1);
+                groupModel.setPreLoadPageIndex(pager.getPages());
                 groupModel.setPreLoadList((ArrayList<RedPackageModel>) packageModels);
             }
         }
@@ -201,7 +201,7 @@ public class ReadPackageServiceImpl implements ReadPackageService {
                         en.getPrice() >= 5 ? remark : "",
                         Constants.redpackettypestr(en.getType()),
                         en.getIsNew() == 1,
-                        DateUtil.format(en.getExpTime(), Constants.DATE_FORMAT),
+                        DateUtil.format(en.getExpTime(), Constants.DATE_FORMAT_DOT),
                         DateUtil.subDateOfDay(now, en.getExpTime()) > 30,
                         en.isUsed() ? RedPackageState.USRD.getName() : RedPackageState.UNUSED.getName()
                 )).collect(Collectors.toList());
@@ -237,7 +237,7 @@ public class ReadPackageServiceImpl implements ReadPackageService {
                         en.getPrice() >= 5 ? remark : "",
                         Constants.redpackettypestr(en.getType()),
                         en.getIsNew() == 1,
-                        DateUtil.format(en.getExpTime(), Constants.DATE_FORMAT),
+                        DateUtil.format(en.getExpTime(), Constants.DATE_FORMAT_DOT),
                         model.isWhetherEarlier(),
                         en.isUsed() ? RedPackageState.USRD.getName() : RedPackageState.EXPIRED.getName()
                 )).collect(Collectors.toList());
@@ -271,10 +271,10 @@ public class ReadPackageServiceImpl implements ReadPackageService {
         return new RedPackageDetailViewModel(
                 Constants.redpackettypestr(extRedPackage.getType()),
                 DoubleUtil.toFixed(extRedPackage.getPrice(), Constants.PRICE_FORMAT),
-                DateUtil.format(extRedPackage.getCreated(), Constants.DATE_FORMAT),
-                DateUtil.format(extRedPackage.getExpTime(), Constants.DATE_FORMAT),
+                DateUtil.format(extRedPackage.getCreated(), Constants.DATE_FORMAT_DOT),
+                DateUtil.format(extRedPackage.getExpTime(), Constants.DATE_FORMAT_DOT),
                 remarks,
-                redPackageState
+                redPackageState.getName()
         );
     }
 
@@ -299,7 +299,7 @@ public class ReadPackageServiceImpl implements ReadPackageService {
                         en.getPrice() >= 5 ? remark : "",
                         Constants.redpackettypestr(en.getType()),
                         en.getIsNew() == 1,
-                        DateUtil.format(en.getExpTime(), Constants.DATE_FORMAT),
+                        DateUtil.format(en.getExpTime(), Constants.DATE_FORMAT_DOT),
                         DateUtil.subDateOfDay(now, en.getExpTime()) > 30,
                         en.isUsed() ? RedPackageState.USRD.getName() : RedPackageState.UNUSED.getName()
                 )).collect(Collectors.toList());
