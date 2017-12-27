@@ -14,7 +14,8 @@ public class RedPackageDetailViewModel {
     public RedPackageDetailViewModel() {
     }
 
-    public RedPackageDetailViewModel(String typeStr, String price, String beginTime, String expTime, ArrayList<String> remarks, RedPackageState status) {
+    public RedPackageDetailViewModel(String type, String typeStr, String price, String beginTime, String expTime, ArrayList<String> remarks, String status) {
+        this.type = type;
         this.typeStr = typeStr;
         this.price = price;
         this.beginTime = beginTime;
@@ -22,6 +23,11 @@ public class RedPackageDetailViewModel {
         this.remarks = remarks;
         this.status = status;
     }
+
+    /**
+     * 红包类型
+     */
+    private String type;
 
     /**
      * 红包类型中文
@@ -51,7 +57,7 @@ public class RedPackageDetailViewModel {
     /**
      * 状态(00未使用，01已使用，02已过期)
      */
-    private RedPackageState status;
+    private String status;
 
     public String getTypeStr() {
         return typeStr;
@@ -93,11 +99,11 @@ public class RedPackageDetailViewModel {
         this.remarks = remarks;
     }
 
-    public RedPackageState getStatus() {
+    public String getStatus() {
         return status;
     }
 
-    public void setStatus(RedPackageState status) {
+    public void setStatus(String status) {
         this.status = status;
     }
 

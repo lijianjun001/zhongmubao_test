@@ -38,7 +38,7 @@
 
         console.info(JSON.stringify(data));
 //        var saveData ={"USER_ID":leader,"Users":users};
-// /customer/sign/todayIsShare
+
         $.ajax({
             type: "POST",
             url: "/customer/sign/shareInfo",

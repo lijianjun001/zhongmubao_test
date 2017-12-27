@@ -57,7 +57,7 @@ public class RedPackageGroupModel {
     /**
      * 预加载数据页码
      */
-    private int preLoadPageIndex;
+    private int preLoadTotalPage;
 
     /**
      * 预加载数据
@@ -120,12 +120,12 @@ public class RedPackageGroupModel {
         this.preLoadList = preLoadList;
     }
 
-    public int getPreLoadPageIndex() {
-        return preLoadPageIndex;
+    public int getPreLoadTotalPage() {
+        return preLoadTotalPage;
     }
 
-    public void setPreLoadPageIndex(int preLoadPageIndex) {
-        this.preLoadPageIndex = preLoadPageIndex;
+    public void setPreLoadTotalPage(int preLoadTotalPage) {
+        this.preLoadTotalPage = preLoadTotalPage;
     }
 
     public String getGroupType() {

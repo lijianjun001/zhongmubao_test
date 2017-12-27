@@ -106,7 +106,7 @@ public enum RedPackageType {
         }
     },
     /**
-     * 成功推荐3为好友并买羊
+     * 成功推荐3位好友并买羊
      */
     RECOMMEND_3 {
         @Override

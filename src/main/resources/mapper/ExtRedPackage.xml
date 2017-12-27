@@ -133,7 +133,7 @@
         AND IsLock = 0
         <choose>
             <when test="price == 0">
-                <![CDATA[ AND price<>8 AND price<>5 AND price<>2 AND price<>20 ]]>
+                <![CDATA[ AND price<>8 AND price<>5 AND price<>2 ]]>
             </when>
             <otherwise>
                 AND price = #{price}
@@ -185,5 +185,14 @@
         AND IsUsed = 0
         AND IsLock = 0
         GROUP BY Price
+    </select>
+
+    <select id="pageEffectiveHistoryByCustomerIdOrderByPrice" resultType="ExtRedPackage">
+        <!-- 历史红包（按金额排序） -->
+        SELECT * FROM ExtRedPackage
+        WHERE customerid = #{customerId}
+        AND IsLock = 0
+        AND (ExpTime &lt;= #{expTime} or IsUsed = 1)
+        ORDER BY Price DESC
     </select>
 </mapper>

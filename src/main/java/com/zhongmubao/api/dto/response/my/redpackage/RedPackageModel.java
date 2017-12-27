@@ -25,6 +25,11 @@ public class RedPackageModel {
     /**
      * 红包类型中文
      */
+    private String type;
+
+    /**
+     * 红包类型中文
+     */
     private String typeStr;
 
     /**
@@ -47,10 +52,11 @@ public class RedPackageModel {
      */
     private String status;
 
-    public RedPackageModel(int id, String price, String remark, String typeStr, boolean whetherNew, String expTime, boolean whetherEarlier, String status) {
+    public RedPackageModel(int id, String price, String remark, String type, String typeStr, boolean whetherNew, String expTime, boolean whetherEarlier, String status) {
         this.id = id;
         this.price = price;
         this.remark = remark;
+        this.type = type;
         this.typeStr = typeStr;
         this.whetherNew = whetherNew;
         this.expTime = expTime;
@@ -123,5 +129,13 @@ public class RedPackageModel {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 }
