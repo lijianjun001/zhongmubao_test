@@ -7,6 +7,8 @@ import com.zhongmubao.api.dto.request.sign.*;
 import com.zhongmubao.api.dto.response.ReponseModel;
 import com.zhongmubao.api.dto.response.my.RealNameViewModel;
 import com.zhongmubao.api.dto.response.sign.MyGiftCardModel;
+import com.zhongmubao.api.dto.response.sign.SignShareInfoModel;
+import com.zhongmubao.api.dto.response.sign.SignTodayIsShareModel;
 import com.zhongmubao.api.dto.response.sign.list.PageSignGiftModel;
 import com.zhongmubao.api.dto.response.sign.SignModel;
 import com.zhongmubao.api.dto.response.sign.packagelist.PageSignPackageModel;
@@ -218,6 +220,29 @@ public class CustomerController {
             return new ResponseEntity<>(ReponseModel.error(ex, this.getClass()), HttpStatus.OK);
         }
     }
-
+    @RequestMapping(value = "/sign/todayIsShare", method = RequestMethod.POST, consumes = "application/json")
+    @Authorization
+    public ResponseEntity<ReponseModel> todayIsShare(@CurrentUser Customer customer) {
+        try {
+            SignTodayIsShareModel signTodayIsShareModel = signService.todayIsShare(customer.getId());
+            return new ResponseEntity<>(ReponseModel.ok(signTodayIsShareModel), HttpStatus.OK);
+        } catch (ApiException ex) {
+            return new ResponseEntity<>(ReponseModel.error(ex.getStatus()), HttpStatus.OK);
+        } catch (Exception ex) {
+            return new ResponseEntity<>(ReponseModel.error(ex, this.getClass()), HttpStatus.OK);
+        }
+    }
+    @RequestMapping(value = "/sign/shareInfo", method = RequestMethod.POST, consumes = "application/json")
+    @Authorization
+    public ResponseEntity<ReponseModel> shareInfo(@CurrentUser Customer customer) {
+        try {
+            SignShareInfoModel signShareInfoModel = signService.shareInfo(customer.getId());
+            return new ResponseEntity<>(ReponseModel.ok(signShareInfoModel), HttpStatus.OK);
+        } catch (ApiException ex) {
+            return new ResponseEntity<>(ReponseModel.error(ex.getStatus()), HttpStatus.OK);
+        } catch (Exception ex) {
+            return new ResponseEntity<>(ReponseModel.error(ex, this.getClass()), HttpStatus.OK);
+        }
+    }
     //endregion
 }

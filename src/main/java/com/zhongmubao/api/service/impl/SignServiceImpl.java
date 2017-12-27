@@ -408,6 +408,30 @@ public class SignServiceImpl extends BaseService implements SignService {
         activityRecordDao.insertExtActivityRecord(activityRecord);
     }
 
+    @Override
+    public SignTodayIsShareModel todayIsShare(int customerId) {
+        //region 验证
+        boolean todayIsShare = redisCache.getCustomerIsShare(customerId);
+        SignTodayIsShareModel signTodayIsShareModel = new SignTodayIsShareModel();
+        signTodayIsShareModel.setTodayIsShare(todayIsShare);
+        return signTodayIsShareModel;
+    }
+
+    @Override
+    public SignShareInfoModel shareInfo(int customerId) {
+        //region 验证
+        RedPackageType dayShare = RedPackageType.DAY_SHARE;
+        String dayShareType = dayShare.getName();
+        Date monthBegin = DateUtil.monthFirstDay();
+        Date monthEnd = DateUtil.monthLastDay();
+        int shareDayCount = extRedPackageDao.countExtRedPackageByCustomerIdAndBeginTimeAndEndTimeAndType(customerId, monthBegin, monthEnd, dayShareType);
+        boolean todayIsShare = redisCache.getCustomerIsShare(customerId);
+        SignShareInfoModel signShareInfoModel = new SignShareInfoModel();
+        signShareInfoModel.setTodayIsShare(todayIsShare);
+        signShareInfoModel.setMonthShareCount(shareDayCount);
+        return signShareInfoModel;
+    }
+
     private String formatGiftTitle(SignGiftType type, int count, double price) {
         switch (type) {
             case RED_PACKAGE:

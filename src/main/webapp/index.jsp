@@ -40,10 +40,10 @@
 
         console.info(JSON.stringify(data));
 //        var saveData ={"USER_ID":leader,"Users":users};
-
+// /customer/sign/todayIsShare
         $.ajax({
             type: "POST",
-            url: "/my/readPackage/group",
+            url: "/customer/sign/shareInfo",
             data: JSON.stringify(data),
             contentType: 'application/json;charset=UTF-8',
             dataType: "json",                                     //预期服务器返回类型
