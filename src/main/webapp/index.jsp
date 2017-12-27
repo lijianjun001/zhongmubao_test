@@ -33,8 +33,6 @@
 //            version:"1.0"
 //        };
         var data = {
-            pageIndex: 1,
-            sortType:"Price"
         };
 
 
