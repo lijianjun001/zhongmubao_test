@@ -53,8 +53,7 @@ public class TransactionServiceImpl extends BaseService implements TransactionSe
 
     //region 交易明细列表
     @Override
-    public TransactionListViewModel transactionList(Customer customer, TransactionRequestModel model) throws
-            Exception {
+    public TransactionListViewModel transactionList(Customer customer, TransactionRequestModel model) throws Exception {
         if (null == model) {
             throw new ApiException(ResultStatus.PARAMETER_MISSING);
         }
@@ -198,7 +197,7 @@ public class TransactionServiceImpl extends BaseService implements TransactionSe
         List<CustomerHFBalanceMongo> hfWithdraw = customerHFBalanceMongoDao.calcTransactionTotalAmount(customer.getId(), TransactionDetailType.WITHDRAW.getName(), DateUtil.formatMongo(startDate), DateUtil.formatMongo(endDate));
         DoubleSummaryStatistics statsWithdraw = hfWithdraw.stream().mapToDouble(CustomerHFBalanceMongo::getAddBalance).summaryStatistics();
         double totalWithdraw = statsWithdraw.getSum();
-        viewModel.setTotalWithdraw("-" + DoubleUtil.toFixed(totalWithdraw, Constants.PRICE_FORMAT));
+        viewModel.setTotalWithdraw(DoubleUtil.toFixed(totalWithdraw, Constants.PRICE_FORMAT));
 
         // 缺醒类型
         if (TransactionBillResultType.NO_BUY_SHEEP.getName().equals(viewModel.getResultType()) && totalIncome <= 0 && totalRecharge <= 0 && totalWithdraw <= 0) {

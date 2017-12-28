@@ -156,7 +156,6 @@ public interface ExtRedPackageDao {
      */
     List<ExtRedPackageGroup> getByCustomerIdGroupByPrice(@Param("customerId") int customerId);
 
-
     /**
      * 历史红包（分页）
      *

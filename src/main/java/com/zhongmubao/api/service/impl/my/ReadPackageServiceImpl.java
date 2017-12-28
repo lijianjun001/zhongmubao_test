@@ -58,9 +58,9 @@ public class ReadPackageServiceImpl implements ReadPackageService {
         List<ExtRedPackageGroup> eightGroup = list.stream().filter(en -> en.getPrice() == 8).collect(Collectors.toList());
         if (eightGroup != null && eightGroup.size() > 0) {
             RedPackageGroupModel redPacket = redPacketGroupCalc(customer, eightGroup, RedPackageGroupType.EIGHT, isPreLoad);
-            if (redPacket.getPreLoadList().size() > 1) {
-                isPreLoad = false;
-            }
+//            if (redPacket.getPreLoadList().size() > 1) {
+//                isPreLoad = false;
+//            }
             groupModelList.add(redPacket);
             list.removeAll(eightGroup);
         }
@@ -68,9 +68,9 @@ public class ReadPackageServiceImpl implements ReadPackageService {
         List<ExtRedPackageGroup> fiveGroup = list.stream().filter(en -> en.getPrice() == 5).collect(Collectors.toList());
         if (fiveGroup != null && fiveGroup.size() > 0) {
             RedPackageGroupModel redPacket = redPacketGroupCalc(customer, fiveGroup, RedPackageGroupType.FIVE, isPreLoad);
-            if (isPreLoad && redPacket.getPreLoadList() != null && redPacket.getPreLoadList().size() > 1) {
-                isPreLoad = false;
-            }
+//            if (isPreLoad && redPacket.getPreLoadList() != null && redPacket.getPreLoadList().size() > 1) {
+//                isPreLoad = false;
+//            }
             groupModelList.add(redPacket);
             list.removeAll(fiveGroup);
         }
@@ -78,9 +78,9 @@ public class ReadPackageServiceImpl implements ReadPackageService {
         List<ExtRedPackageGroup> twoGroup = list.stream().filter(en -> en.getPrice() == 2).collect(Collectors.toList());
         if (twoGroup != null && twoGroup.size() > 0) {
             RedPackageGroupModel redPacket = redPacketGroupCalc(customer, twoGroup, RedPackageGroupType.TWO, isPreLoad);
-            if (isPreLoad && redPacket.getPreLoadList() != null && redPacket.getPreLoadList().size() > 1) {
-                isPreLoad = false;
-            }
+//            if (isPreLoad && redPacket.getPreLoadList() != null && redPacket.getPreLoadList().size() > 1) {
+//                isPreLoad = false;
+//            }
             groupModelList.add(redPacket);
             list.removeAll(twoGroup);
         }
@@ -109,7 +109,7 @@ public class ReadPackageServiceImpl implements ReadPackageService {
         groupModel.setGroupType(groupType.getName());
         if (groupType == RedPackageGroupType.OTHER) {
             IntSummaryStatistics statsTotalCount = groupRedPacket.stream().mapToInt(ExtRedPackageGroup::getTotalCount).summaryStatistics();
-            groupModel.setCount(Integer.parseInt(String.valueOf(statsTotalCount.getCount())));
+            groupModel.setCount(Integer.parseInt(String.valueOf(statsTotalCount.getSum())));
 
             DoubleSummaryStatistics statsTotalPrice = groupRedPacket.stream().mapToDouble(ExtRedPackageGroup::getTotalPrice).summaryStatistics();
             groupModel.setTotalPrice(DoubleUtil.toFixed(statsTotalPrice.getSum(), Constants.PRICE_FORMAT));
@@ -154,10 +154,9 @@ public class ReadPackageServiceImpl implements ReadPackageService {
 
             if (packageModels.size() == 1) {
                 groupModel.setRedPackageModel(packageModels.get(0));
-            } else {
-                groupModel.setPreLoadTotalPage(pager.getPages());
-                groupModel.setPreLoadList((ArrayList<RedPackageModel>) packageModels);
             }
+            groupModel.setPreLoadTotalPage(pager.getPages());
+            groupModel.setPreLoadList((ArrayList<RedPackageModel>) packageModels);
         }
 
         return groupModel;
@@ -240,7 +239,7 @@ public class ReadPackageServiceImpl implements ReadPackageService {
         }
         Date now = new Date();
         RedPackageState redPackageState = extRedPackage.isUsed() ? RedPackageState.USRD : RedPackageState.UNUSED;
-        if (extRedPackage.getExpTime().getTime() < now.getTime()) {
+        if (redPackageState == RedPackageState.UNUSED && extRedPackage.getExpTime().getTime() < now.getTime()) {
             redPackageState = RedPackageState.EXPIRED;
         }
 
@@ -289,7 +288,6 @@ public class ReadPackageServiceImpl implements ReadPackageService {
                         Constants.redpackettypestr(en.getType()),
                         en.getIsNew() == 1,
                         DateUtil.format(en.getExpTime(), Constants.DATE_FORMAT_DOT),
-                        DateUtil.subDateOfDay(now, en.getExpTime()) > 30,
                         en.isUsed() ? RedPackageState.USRD.getName() :
                                 (DateUtil.subDateOfDay(now, en.getExpTime()) >= 0 ? RedPackageState.EXPIRED.getName() : RedPackageState.UNUSED.getName())
                 )).collect(Collectors.toList());

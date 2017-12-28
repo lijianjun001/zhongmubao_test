@@ -43,16 +43,11 @@ public class RedPackageModel {
     private String expTime;
 
     /**
-     * 是否更早期红包
-     */
-    private boolean whetherEarlier;
-
-    /**
      * 状态(00未使用，01已使用，02已过期)
      */
     private String status;
 
-    public RedPackageModel(int id, String price, String remark, String type, String typeStr, boolean whetherNew, String expTime, boolean whetherEarlier, String status) {
+    public RedPackageModel(int id, String price, String remark, String type, String typeStr, boolean whetherNew, String expTime, String status) {
         this.id = id;
         this.price = price;
         this.remark = remark;
@@ -60,7 +55,6 @@ public class RedPackageModel {
         this.typeStr = typeStr;
         this.whetherNew = whetherNew;
         this.expTime = expTime;
-        this.whetherEarlier = whetherEarlier;
         this.status = status;
     }
 
@@ -113,14 +107,6 @@ public class RedPackageModel {
 
     public void setExpTime(String expTime) {
         this.expTime = expTime;
-    }
-
-    public boolean isWhetherEarlier() {
-        return whetherEarlier;
-    }
-
-    public void setWhetherEarlier(boolean whetherEarlier) {
-        this.whetherEarlier = whetherEarlier;
     }
 
     public String getStatus() {
