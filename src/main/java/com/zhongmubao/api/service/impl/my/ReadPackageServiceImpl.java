@@ -21,6 +21,7 @@ import com.zhongmubao.api.exception.ApiException;
 import com.zhongmubao.api.service.my.ReadPackageService;
 import com.zhongmubao.api.util.DateUtil;
 import com.zhongmubao.api.util.DoubleUtil;
+import com.zhongmubao.api.util.RegExpMatcher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -112,7 +113,7 @@ public class ReadPackageServiceImpl implements ReadPackageService {
             groupModel.setCount(Integer.parseInt(String.valueOf(statsTotalCount.getSum())));
 
             DoubleSummaryStatistics statsTotalPrice = groupRedPacket.stream().mapToDouble(ExtRedPackageGroup::getTotalPrice).summaryStatistics();
-            groupModel.setTotalPrice(DoubleUtil.toFixed(statsTotalPrice.getSum(), Constants.PRICE_FORMAT));
+            groupModel.setTotalPrice(RegExpMatcher.matcherPrice(DoubleUtil.toFixed(statsTotalPrice.getSum(), Constants.PRICE_FORMAT)));
 
             IntSummaryStatistics statsTotalNewCount = groupRedPacket.stream().mapToInt(ExtRedPackageGroup::getNewCount).summaryStatistics();
             groupModel.setNewCount(Integer.parseInt(String.valueOf(statsTotalNewCount.getSum())));
@@ -130,7 +131,7 @@ public class ReadPackageServiceImpl implements ReadPackageService {
             groupModel.setNewCount(redPacket.getNewCount());
             groupModel.setPrice(DoubleUtil.toFixed(redPacket.getPrice(), Constants.PRICE_FORMAT));
             groupModel.setFirstExpTime(DateUtil.format(redPacket.getExpTime(), Constants.DATE_FORMAT_DOT));
-            groupModel.setTotalPrice(DoubleUtil.toFixed(redPacket.getTotalPrice(), Constants.PRICE_FORMAT));
+            groupModel.setTotalPrice(RegExpMatcher.matcherPrice(DoubleUtil.toFixed(redPacket.getTotalPrice(), Constants.PRICE_FORMAT)));
             if (groupType == RedPackageGroupType.EIGHT || groupType == RedPackageGroupType.FIVE) {
                 groupModel.setRemark(remark);
             }
