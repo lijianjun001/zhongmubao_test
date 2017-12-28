@@ -2,11 +2,9 @@ package com.zhongmubao.api.mongo.dao;
 
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
-import com.zhongmubao.api.config.Constants;
 import com.zhongmubao.api.config.enmu.TransactionDetailType;
 import com.zhongmubao.api.mongo.dao.base.BaseDao;
 import com.zhongmubao.api.mongo.entity.CustomerHFBalanceMongo;
-import com.zhongmubao.api.mongo.entity.ShareCardMongo;
 import com.zhongmubao.api.mongo.entity.base.PageModel;
 import com.zhongmubao.api.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +15,6 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
 
-import java.beans.Expression;
 import java.util.Date;
 import java.util.List;
 
