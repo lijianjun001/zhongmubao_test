@@ -91,13 +91,14 @@ public interface SignService {
     /**
      * 今日是否分享
      * @param customerId 客户id
-     * @return
+     * @return SignTodayIsShareModel
      */
     SignTodayIsShareModel todayIsShare(int customerId);
+
     /**
      * 分享信息
      * @param customerId 客户id
-     * @return
+     * @return SignShareInfoModel
      */
     SignShareInfoModel shareInfo(int customerId);
 }
