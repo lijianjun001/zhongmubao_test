@@ -2,9 +2,9 @@ package com.zhongmubao.api.mongo.dao;
 
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
+import com.zhongmubao.api.config.enmu.TransactionDetailType;
 import com.zhongmubao.api.mongo.dao.base.BaseDao;
 import com.zhongmubao.api.mongo.entity.CustomerHFBalanceMongo;
-import com.zhongmubao.api.mongo.entity.ShareCardMongo;
 import com.zhongmubao.api.mongo.entity.base.PageModel;
 import com.zhongmubao.api.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -93,7 +93,13 @@ public class CustomerHFBalanceMongoDao implements BaseDao<CustomerHFBalanceMongo
 
         query.addCriteria(Criteria.where("CustomerId").is(customerId));
         if (!StringUtil.isNullOrEmpty(type)) {
-            query.addCriteria(Criteria.where("Type").is(type));
+            if(TransactionDetailType.REDEEM.getName().equals(type)){
+                Criteria criteria = new Criteria();
+                criteria.orOperator(Criteria.where("Type").is(TransactionDetailType.REDEEM.getName()),Criteria.where("Type").is(TransactionDetailType.REDEEM_RED.getName()));
+                query.addCriteria(criteria);
+            }else {
+                query.addCriteria(Criteria.where("Type").is(type));
+            }
         }
 
         //查询总数
