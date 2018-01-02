@@ -364,12 +364,6 @@ public class SignServiceImpl extends BaseService implements SignService {
 
     @Override
     public void receiveRechargeGift(Customer customer, ReceiveRechargeGiftRequestModel model) throws Exception {
-        //运营商维护
-        if (true) {
-            throw new ApiException(ResultStatus.YUNYING_PHONE_ERROR);
-        }
-
-
         if (null == model) {
             throw new ApiException(ResultStatus.PARAMETER_MISSING);
         }
