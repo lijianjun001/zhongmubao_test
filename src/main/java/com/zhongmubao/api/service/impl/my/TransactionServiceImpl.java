@@ -58,7 +58,7 @@ public class TransactionServiceImpl extends BaseService implements TransactionSe
             throw new ApiException(ResultStatus.PARAMETER_MISSING);
         }
 
-        Date date = DateUtil.strToDate(model.getBillDate());
+        Date date = DateUtil.strToShortDate(model.getBillDate());
         if (date == null) {
             throw new ApiException(ResultStatus.PARAMETER_MISSING);
         }
@@ -142,7 +142,7 @@ public class TransactionServiceImpl extends BaseService implements TransactionSe
         if (null == model || StringUtil.isNullOrEmpty(model.getBillDate())) {
             throw new ApiException(ResultStatus.PARAMETER_MISSING);
         }
-        Date billDate = DateUtil.strToDate(model.getBillDate());
+        Date billDate = DateUtil.strToShortDate(model.getBillDate());
         TransactionMonthlyBillViewModel viewModel = new TransactionMonthlyBillViewModel();
         viewModel.setResultType(TransactionBillResultType.NORMAL.getName());
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM");

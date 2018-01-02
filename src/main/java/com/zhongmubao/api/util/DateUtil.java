@@ -219,6 +219,18 @@ public class DateUtil {
     }
 
     /**
+     * 字符串格式化时间
+     *
+     * @param strDate 时间字符串
+     * @return 日期
+     */
+    public static Date strToShortDate(String strDate) {
+        SimpleDateFormat formatter = new SimpleDateFormat(Constants.DATE_FORMAT);
+        ParsePosition pos = new ParsePosition(0);
+        return formatter.parse(strDate, pos);
+    }
+
+    /**
      * 某个日期对应小时
      *
      * @param date 日期

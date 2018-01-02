@@ -33,7 +33,9 @@
 //            version:"1.0"
 //        };
         var data = {
-            billDate:"2017-5-12 12:12:12"
+            pageIndex:"1",
+            billDate: "2017-12-12",
+            billType: "01,00"
         };
 
 
@@ -47,7 +49,7 @@
             contentType: 'application/json;charset=UTF-8',
             dataType: "json",                                     //预期服务器返回类型
             headers: {
-                Authorization: "YR3D+mEt8SQSBFNpCoOLiJTh/nZMACMncBFB0C35vJiIZTI+RV+lbw43y5F4I1SP5UN8D3G4tP4Npa+qKsIGbmuUZDVEwT4tq1/0hXztbi6dOSBduscO4cGBBI6l8ms8",
+                Authorization: "YR3D+mEt8SQSBFNpCoOLiJTh/nZMACMncBFB0C35vJjqFv1gVrk2g3uVvIwSPqSoDnnOWSIzPywvYiswNAOmuqyhymtVphmdBnYRvx0H0ricp6x4a49ak7cdo/WWz72h",
                 Platform: "04"
             },
             success: function (data) {

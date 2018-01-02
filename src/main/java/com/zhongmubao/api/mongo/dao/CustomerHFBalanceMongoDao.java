@@ -15,6 +15,8 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -93,12 +95,21 @@ public class CustomerHFBalanceMongoDao implements BaseDao<CustomerHFBalanceMongo
 
         query.addCriteria(Criteria.where("CustomerId").is(customerId));
         if (!StringUtil.isNullOrEmpty(type)) {
-            if(TransactionDetailType.REDEEM.getName().equals(type)){
-                Criteria criteria = new Criteria();
-                criteria.orOperator(Criteria.where("Type").is(TransactionDetailType.REDEEM.getName()),Criteria.where("Type").is(TransactionDetailType.REDEEM_RED.getName()));
-                query.addCriteria(criteria);
-            }else {
-                query.addCriteria(Criteria.where("Type").is(type));
+            String[] ts = type.split(",");
+            if (ts.length > 1) {
+                ArrayList<String> arrayList = new ArrayList<String>(Arrays.asList(ts));
+                if (arrayList.contains(TransactionDetailType.REDEEM.getName())) {
+                    arrayList.add("04");
+                }
+                query.addCriteria(Criteria.where("Type").in(arrayList));
+            } else {
+                if (TransactionDetailType.REDEEM.getName().equals(type)) {
+                    Criteria criteria = new Criteria();
+                    criteria.orOperator(Criteria.where("Type").is(TransactionDetailType.REDEEM.getName()), Criteria.where("Type").is(TransactionDetailType.REDEEM_RED.getName()));
+                    query.addCriteria(criteria);
+                } else {
+                    query.addCriteria(Criteria.where("Type").is(type));
+                }
             }
         }
 
