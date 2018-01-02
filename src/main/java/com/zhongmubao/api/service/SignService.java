@@ -2,6 +2,7 @@ package com.zhongmubao.api.service;
 
 import com.zhongmubao.api.dto.request.sign.*;
 import com.zhongmubao.api.dto.response.sign.MyGiftCardModel;
+import com.zhongmubao.api.dto.response.sign.*;
 import com.zhongmubao.api.dto.response.sign.list.PageSignGiftModel;
 import com.zhongmubao.api.dto.response.sign.SignModel;
 import com.zhongmubao.api.dto.response.sign.packagelist.PageSignPackageModel;
@@ -86,4 +87,18 @@ public interface SignService {
      * @throws Exception 异常
      */
     void receiveRechargeGift(Customer customer, ReceiveRechargeGiftRequestModel model) throws Exception;
+
+    /**
+     * 今日是否分享
+     * @param customerId 客户id
+     * @return SignTodayIsShareModel
+     */
+    SignTodayIsShareModel todayIsShare(int customerId);
+
+    /**
+     * 分享信息
+     * @param customerId 客户id
+     * @return SignShareInfoModel
+     */
+    SignShareInfoModel shareInfo(int customerId);
 }
