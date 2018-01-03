@@ -33,9 +33,8 @@
 //            version:"1.0"
 //        };
         var data = {
-            pageIndex:"1",
-            billDate: "2017-12-12",
-            billType: "01,00"
+            pageIndex:1,
+            groupType:"02"
         };
 
 
@@ -44,10 +43,11 @@
 
         $.ajax({
             type: "POST",
-            url: "/my/transaction/list",
+            url: "/my/readPackage/groupList",
             data: JSON.stringify(data),
             contentType: 'application/json;charset=UTF-8',
             dataType: "json",                                     //预期服务器返回类型
+
             headers: {
                 Authorization: "YR3D+mEt8SQSBFNpCoOLiJTh/nZMACMncBFB0C35vJjqFv1gVrk2g3uVvIwSPqSoDnnOWSIzPywvYiswNAOmuqyhymtVphmdBnYRvx0H0ricp6x4a49ak7cdo/WWz72h",
                 Platform: "04"

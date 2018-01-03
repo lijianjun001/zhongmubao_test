@@ -164,4 +164,14 @@ public interface ExtRedPackageDao {
      * @return Page<ExtRedPackage>
      */
     Page<ExtRedPackage> pageEffectiveHistoryByCustomerIdOrderByPrice(@Param("customerId") int customerId, @Param("expTime") String expTime);
+
+    /**
+     * 更新红包是否为最新
+     *
+     * @param customerId 客户id
+     * @param id         红包id
+     * @param isNew      是否最新红包
+     * @return int 0 1
+     */
+    int updateIsNewByCustomerIdAndId(@Param("customerId") int customerId, @Param("id") int id, @Param("isNew") int isNew);
 }

@@ -22,6 +22,7 @@ import com.zhongmubao.api.service.my.ReadPackageService;
 import com.zhongmubao.api.util.DateUtil;
 import com.zhongmubao.api.util.DoubleUtil;
 import com.zhongmubao.api.util.RegExpMatcher;
+import com.zhongmubao.api.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -151,7 +152,7 @@ public class ReadPackageServiceImpl implements ReadPackageService {
             }
             Page<ExtRedPackage> pager = extRedPackageDao.pageEffectiveByCustomerIdAndPrice(customer.getId(), price);
             Date now = new Date();
-            List<RedPackageModel> packageModels = formatredpackagemodel(pager);
+            List<RedPackageModel> packageModels = formatRedpackageModel(pager);
 
             if (packageModels.size() == 1) {
                 groupModel.setRedPackageModel(packageModels.get(0));
@@ -182,9 +183,15 @@ public class ReadPackageServiceImpl implements ReadPackageService {
         }
         Page<ExtRedPackage> pager = extRedPackageDao.pageEffectiveByCustomerIdAndPrice(customer.getId(), price);
 
-        Date now = new Date();
-        String remark = "仅可购买120天及以上长期羊使用";
-        List<RedPackageModel> list = formatredpackagemodel(pager);
+        List<RedPackageModel> list = formatRedpackageModel(pager);
+
+        // 更新是否最新红包
+        for (int i = 0; i < list.size(); i++) {
+            RedPackageModel item = list.get(i);
+            if (null != item && item.isWhetherNew()) {
+                extRedPackageDao.updateIsNewByCustomerIdAndId(customer.getId(), item.getId(), 0);
+            }
+        }
 
         return new RedPackageListViewModel(pager.getPages(), (ArrayList<RedPackageModel>) list);
     }
@@ -215,7 +222,7 @@ public class ReadPackageServiceImpl implements ReadPackageService {
         }
 
         String remark = "仅可购买120天及以上长期羊使用";
-        List<RedPackageModel> list = formatredpackagemodel(pager);
+        List<RedPackageModel> list = formatRedpackageModel(pager);
 
         return new RedPackageHistoryViewModel(pager.getPages(), (ArrayList<RedPackageModel>) list);
     }
@@ -235,7 +242,7 @@ public class ReadPackageServiceImpl implements ReadPackageService {
         ArrayList<String> remarks = new ArrayList<>();
         remarks.add(item1);
         int value = 5;
-        if (extRedPackage.getPrice() >= value) {
+        if (extRedPackage.getPrice() > value) {
             remarks.add(item2);
         }
         Date now = new Date();
@@ -243,8 +250,7 @@ public class ReadPackageServiceImpl implements ReadPackageService {
         if (redPackageState == RedPackageState.UNUSED && extRedPackage.getExpTime().getTime() < now.getTime()) {
             redPackageState = RedPackageState.EXPIRED;
         }
-
-        return new RedPackageDetailViewModel(
+        RedPackageDetailViewModel viewModel = new RedPackageDetailViewModel(
                 extRedPackage.getType(),
                 Constants.redpackettypestr(extRedPackage.getType()),
                 DoubleUtil.toFixed(extRedPackage.getPrice(), Constants.PRICE_FORMAT),
@@ -253,6 +259,11 @@ public class ReadPackageServiceImpl implements ReadPackageService {
                 remarks,
                 redPackageState.getName()
         );
+
+        if (extRedPackage.getIsNew() == 1) {
+            extRedPackageDao.updateIsNewByCustomerIdAndId(customer.getId(), extRedPackage.getId(), 0);
+        }
+        return viewModel;
     }
 
     @Override
@@ -266,7 +277,7 @@ public class ReadPackageServiceImpl implements ReadPackageService {
 
         PageHelper.startPage(model.getPageIndex(), Constants.PAGE_SIZE);
         Page<ExtRedPackage> pager = extRedPackageDao.pageEffectiveExtRedPackageByCustomerIdOrderByType(customer.getId(), model.getSortType().getName());
-        List<RedPackageModel> list = formatredpackagemodel(pager);
+        List<RedPackageModel> list = formatRedpackageModel(pager);
 
         return new RedPackageListViewModel(pager.getPages(), (ArrayList<RedPackageModel>) list);
     }
@@ -277,14 +288,14 @@ public class ReadPackageServiceImpl implements ReadPackageService {
      * @param pager extRedPackage数据
      * @return List<RedPackageModel>
      */
-    private List<RedPackageModel> formatredpackagemodel(Page<ExtRedPackage> pager) {
+    private List<RedPackageModel> formatRedpackageModel(Page<ExtRedPackage> pager) {
         Date now = new Date();
         String remark = "仅可购买120天及以上长期羊使用";
         return pager.stream()
                 .map(en -> new RedPackageModel(
                         en.getId(),
                         DoubleUtil.toFixed(en.getPrice(), Constants.PRICE_FORMAT),
-                        en.getPrice() >= 5 ? remark : "",
+                        en.getPrice() > 5 ? remark : "",
                         en.getType(),
                         Constants.redpackettypestr(en.getType()),
                         en.getIsNew() == 1,

@@ -195,4 +195,12 @@
         AND (ExpTime &lt;= #{expTime} or IsUsed = 1)
         ORDER BY Price DESC
     </select>
+
+    <update id="updateIsNewByCustomerIdAndId">
+        <!-- 取消最新标志 -->
+        update ExtRedPackage
+        set IsNew =#{isNew}
+        where id=#{id}
+        and customerid = #{customerId}
+    </update>
 </mapper>
