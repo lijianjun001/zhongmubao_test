@@ -154,7 +154,7 @@ public interface ExtRedPackageDao {
      * @param customerId 用户id
      * @return List<ExtRedPackageGroup>
      */
-    List<ExtRedPackageGroup> getByCustomerIdGroupByPrice(@Param("customerId") int customerId);
+    List<ExtRedPackageGroup> getByCustomerIdGroupByPrice(@Param("customerId") int customerId, @Param("type") String type);
 
     /**
      * 历史红包（分页）

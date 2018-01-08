@@ -49,17 +49,17 @@ public class ReadPackageServiceImpl implements ReadPackageService {
         if (model == null) {
             throw new ApiException(ResultStatus.PARAMETER_MISSING);
         }
-        if (model.getSortType() == null) {
-            model.setSortType(RedPackageSortType.Price);
-        }
+        // 分组只按金额排序
+        model.setSortType(RedPackageSortType.Price);
+
         RedPackageGroupViewModel viewModel = new RedPackageGroupViewModel();
         ArrayList<RedPackageGroupModel> groupModelList = new ArrayList<>();
-        List<ExtRedPackageGroup> list = extRedPackageDao.getByCustomerIdGroupByPrice(customer.getId());
+        List<ExtRedPackageGroup> list = extRedPackageDao.getByCustomerIdGroupByPrice(customer.getId(), model.getSortType().getName());
         boolean isPreLoad = true;
         // 8元红包
         List<ExtRedPackageGroup> eightGroup = list.stream().filter(en -> en.getPrice() == 8).collect(Collectors.toList());
         if (eightGroup != null && eightGroup.size() > 0) {
-            RedPackageGroupModel redPacket = redPacketGroupCalc(customer, eightGroup, RedPackageGroupType.EIGHT, isPreLoad);
+            RedPackageGroupModel redPacket = redPacketGroupCalc(customer, eightGroup, RedPackageGroupType.EIGHT, isPreLoad, model.getSortType());
 //            if (redPacket.getPreLoadList().size() > 1) {
 //                isPreLoad = false;
 //            }
@@ -69,7 +69,7 @@ public class ReadPackageServiceImpl implements ReadPackageService {
         // 5元红包
         List<ExtRedPackageGroup> fiveGroup = list.stream().filter(en -> en.getPrice() == 5).collect(Collectors.toList());
         if (fiveGroup != null && fiveGroup.size() > 0) {
-            RedPackageGroupModel redPacket = redPacketGroupCalc(customer, fiveGroup, RedPackageGroupType.FIVE, isPreLoad);
+            RedPackageGroupModel redPacket = redPacketGroupCalc(customer, fiveGroup, RedPackageGroupType.FIVE, isPreLoad, model.getSortType());
 //            if (isPreLoad && redPacket.getPreLoadList() != null && redPacket.getPreLoadList().size() > 1) {
 //                isPreLoad = false;
 //            }
@@ -79,7 +79,7 @@ public class ReadPackageServiceImpl implements ReadPackageService {
         // 2元红包
         List<ExtRedPackageGroup> twoGroup = list.stream().filter(en -> en.getPrice() == 2).collect(Collectors.toList());
         if (twoGroup != null && twoGroup.size() > 0) {
-            RedPackageGroupModel redPacket = redPacketGroupCalc(customer, twoGroup, RedPackageGroupType.TWO, isPreLoad);
+            RedPackageGroupModel redPacket = redPacketGroupCalc(customer, twoGroup, RedPackageGroupType.TWO, isPreLoad, model.getSortType());
 //            if (isPreLoad && redPacket.getPreLoadList() != null && redPacket.getPreLoadList().size() > 1) {
 //                isPreLoad = false;
 //            }
@@ -88,7 +88,7 @@ public class ReadPackageServiceImpl implements ReadPackageService {
         }
         // 零钱红包
         if (list.size() > 0) {
-            RedPackageGroupModel looseRadPacket = redPacketGroupCalc(customer, list, RedPackageGroupType.OTHER, isPreLoad);
+            RedPackageGroupModel looseRadPacket = redPacketGroupCalc(customer, list, RedPackageGroupType.OTHER, isPreLoad, model.getSortType());
             groupModelList.add(looseRadPacket);
         }
 
@@ -104,7 +104,7 @@ public class ReadPackageServiceImpl implements ReadPackageService {
      * @param isPreLoad      是否预加载
      * @return RedPackageGroupModel
      */
-    private RedPackageGroupModel redPacketGroupCalc(Customer customer, List<ExtRedPackageGroup> groupRedPacket, RedPackageGroupType groupType, boolean isPreLoad) {
+    private RedPackageGroupModel redPacketGroupCalc(Customer customer, List<ExtRedPackageGroup> groupRedPacket, RedPackageGroupType groupType, boolean isPreLoad, RedPackageSortType sotType) {
 
         String remark = "仅可购买120天及以上长期羊使用";
         RedPackageGroupModel groupModel = new RedPackageGroupModel();
@@ -168,6 +168,9 @@ public class ReadPackageServiceImpl implements ReadPackageService {
     public RedPackageListViewModel readPackageGroupList(Customer customer, RedPackageListRequestModel model) throws Exception {
         if (model == null || model.getGroupType() == null) {
             throw new ApiException(ResultStatus.PARAMETER_MISSING);
+        }
+        if (model.getSortType() == null) {
+            model.setSortType(RedPackageSortType.ExpTime);
         }
 
         PageHelper.startPage(model.getPageIndex(), Constants.PAGE_SIZE);

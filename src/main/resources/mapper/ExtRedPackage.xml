@@ -100,11 +100,11 @@
         and isused = 0
         AND IsLock = 0
         <choose>
-            <when test="type == '03'">
-                order by expTime asc
+            <when test="type == 'ExpTime'">
+                order by expTime ASC
             </when>
             <otherwise>
-                order by price desc
+                order by price DESC
             </otherwise>
         </choose>
     </select>
@@ -139,6 +139,7 @@
                 AND price = #{price}
             </otherwise>
         </choose>
+        order by price desc
     </select>
 
     <select id="pageEffectiveHistoryByCustomerIdOrderByType" resultType="ExtRedPackage">
@@ -161,7 +162,8 @@
         <!-- 历史红包（一个月更早） -->
         SELECT * FROM ExtRedPackage
         WHERE customerid = #{customerId}
-        AND Created &lt; #{created} AND ((isused=0 AND ExpTime &lt; #{expTime}) OR (IsUsed = 1 AND Created &lt; #{created}))
+        AND Created &lt; #{created} AND ((isused=0 AND ExpTime &lt; #{expTime}) OR (IsUsed = 1 AND Created &lt;
+        #{created}))
         AND IsLock = 0
         <choose>
             <when test="type == 'ExpTime'">
@@ -185,6 +187,7 @@
         AND IsUsed = 0
         AND IsLock = 0
         GROUP BY Price
+        ORDER BY Price DESC
     </select>
 
     <select id="pageEffectiveHistoryByCustomerIdOrderByPrice" resultType="ExtRedPackage">
