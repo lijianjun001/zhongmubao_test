@@ -218,6 +218,10 @@ public class ReadPackageServiceImpl implements ReadPackageService {
                 pager = extRedPackageDao.pageEffectiveEarlierHistoryByCustomerIdOrderByType(customer.getId(), created, expTime, model.getSortType().getName());
             } else {
                 pager = extRedPackageDao.pageEffectiveHistoryByCustomerIdOrderByType(customer.getId(), created, expTime, model.getSortType().getName());
+                if (pager.getTotal() <= 0) {
+                    // 如果没有近期历史红包，则加载更久的红包
+                    pager = extRedPackageDao.pageEffectiveEarlierHistoryByCustomerIdOrderByType(customer.getId(), created, expTime, model.getSortType().getName());
+                }
             }
         } else {
             pager = extRedPackageDao.pageEffectiveHistoryByCustomerIdOrderByPrice(customer.getId(), expTime);
