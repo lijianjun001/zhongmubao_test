@@ -230,6 +230,8 @@ public class ReadPackageServiceImpl implements ReadPackageService {
         String remark = "仅可购买120天及以上长期羊使用";
         List<RedPackageModel> list = formatRedpackageModel(pager);
 
+        PageHelper.clearPage();
+
         return new RedPackageHistoryViewModel(pager.getPages(), (ArrayList<RedPackageModel>) list);
     }
 
