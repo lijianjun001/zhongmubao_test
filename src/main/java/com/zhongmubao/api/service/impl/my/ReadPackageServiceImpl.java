@@ -22,7 +22,6 @@ import com.zhongmubao.api.service.my.ReadPackageService;
 import com.zhongmubao.api.util.DateUtil;
 import com.zhongmubao.api.util.DoubleUtil;
 import com.zhongmubao.api.util.RegExpMatcher;
-import com.zhongmubao.api.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -191,7 +190,7 @@ public class ReadPackageServiceImpl implements ReadPackageService {
         // 更新是否最新红包
         for (int i = 0; i < list.size(); i++) {
             RedPackageModel item = list.get(i);
-            if (null != item && item.isWhetherNew()) {
+            if (null != item && item.isNew()) {
                 extRedPackageDao.updateIsNewByCustomerIdAndId(customer.getId(), item.getId(), 0);
             }
         }

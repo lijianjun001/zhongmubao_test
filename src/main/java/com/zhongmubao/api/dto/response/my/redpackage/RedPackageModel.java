@@ -1,5 +1,7 @@
 package com.zhongmubao.api.dto.response.my.redpackage;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 /**
  * 我的红包列表Model
  *
@@ -35,7 +37,7 @@ public class RedPackageModel {
     /**
      * 是否新
      */
-    private boolean whetherNew;
+    private boolean isNew;
 
     /**
      * 有效期
@@ -47,13 +49,13 @@ public class RedPackageModel {
      */
     private String status;
 
-    public RedPackageModel(int id, String price, String remark, String type, String typeStr, boolean whetherNew, String expTime, String status) {
+    public RedPackageModel(int id, String price, String remark, String type, String typeStr, boolean isNew, String expTime, String status) {
         this.id = id;
         this.price = price;
         this.remark = remark;
         this.type = type;
         this.typeStr = typeStr;
-        this.whetherNew = whetherNew;
+        this.isNew = isNew;
         this.expTime = expTime;
         this.status = status;
     }
@@ -93,14 +95,6 @@ public class RedPackageModel {
         this.typeStr = typeStr;
     }
 
-    public boolean isWhetherNew() {
-        return whetherNew;
-    }
-
-    public void setWhetherNew(boolean whetherNew) {
-        this.whetherNew = whetherNew;
-    }
-
     public String getExpTime() {
         return expTime;
     }
@@ -124,4 +118,14 @@ public class RedPackageModel {
     public void setType(String type) {
         this.type = type;
     }
+
+    @JsonProperty(value = "isNew")
+    public boolean isNew() {
+        return isNew;
+    }
+
+    public void setNew(boolean aNew) {
+        isNew = aNew;
+    }
+
 }
