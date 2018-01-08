@@ -13,14 +13,20 @@ public class RedPackageHistoryRequestModel {
      */
     private int pageIndex;
 
-    public int getPageIndex() {
-        return pageIndex;
-    }
-
     /**
      * 排序方式
      */
     private RedPackageSortType sortType;
+
+    /**
+     * 获取更早历史红包
+     */
+    private boolean loadEarlier;
+
+
+    public int getPageIndex() {
+        return pageIndex;
+    }
 
     public RedPackageSortType getSortType() {
         return sortType;
@@ -30,10 +36,9 @@ public class RedPackageHistoryRequestModel {
         this.sortType = sortType;
     }
 
-    /**
-     * 是否获取更早历史红包
-     */
-    private boolean loadEarlier;
+    public void setPageIndex(int pageIndex) {
+        this.pageIndex = pageIndex;
+    }
 
     public boolean isLoadEarlier() {
         return loadEarlier;
@@ -42,4 +47,5 @@ public class RedPackageHistoryRequestModel {
     public void setLoadEarlier(boolean loadEarlier) {
         this.loadEarlier = loadEarlier;
     }
+
 }
