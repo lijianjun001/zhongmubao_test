@@ -33,13 +33,13 @@ public class RedPackageHistoryRequestModel {
     /**
      * 是否获取更早历史红包
      */
-    private boolean whetherEarlier;
+    private boolean loadEarlier;
 
-    public boolean isWhetherEarlier() {
-        return whetherEarlier;
+    public boolean isLoadEarlier() {
+        return loadEarlier;
     }
 
-    public void setWhetherEarlier(boolean whetherEarlier) {
-        this.whetherEarlier = whetherEarlier;
+    public void setLoadEarlier(boolean loadEarlier) {
+        this.loadEarlier = loadEarlier;
     }
 }
