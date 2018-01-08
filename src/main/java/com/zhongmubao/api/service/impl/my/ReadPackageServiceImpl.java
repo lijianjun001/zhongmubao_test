@@ -157,6 +157,8 @@ public class ReadPackageServiceImpl implements ReadPackageService {
                 groupModel.setRedPackageModel(packageModels.get(0));
             }
             groupModel.setPreLoadTotalPage(pager.getPages());
+
+            PageHelper.clearPage();
             groupModel.setPreLoadList((ArrayList<RedPackageModel>) packageModels);
         }
 
@@ -194,8 +196,10 @@ public class ReadPackageServiceImpl implements ReadPackageService {
                 extRedPackageDao.updateIsNewByCustomerIdAndId(customer.getId(), item.getId(), 0);
             }
         }
+        int totalPages = pager.getPages();
+        PageHelper.clearPage();
 
-        return new RedPackageListViewModel(pager.getPages(), (ArrayList<RedPackageModel>) list);
+        return new RedPackageListViewModel(totalPages, (ArrayList<RedPackageModel>) list);
     }
 
     @Override
@@ -227,7 +231,6 @@ public class ReadPackageServiceImpl implements ReadPackageService {
         List<RedPackageModel> list = formatRedpackageModel(pager);
 
         PageHelper.clearPage();
-
         return new RedPackageHistoryViewModel(pager.getPages(), (ArrayList<RedPackageModel>) list);
     }
 
@@ -283,6 +286,7 @@ public class ReadPackageServiceImpl implements ReadPackageService {
         Page<ExtRedPackage> pager = extRedPackageDao.pageEffectiveExtRedPackageByCustomerIdOrderByType(customer.getId(), model.getSortType().getName());
         List<RedPackageModel> list = formatRedpackageModel(pager);
 
+        PageHelper.clearPage();
         return new RedPackageListViewModel(pager.getPages(), (ArrayList<RedPackageModel>) list);
     }
 
