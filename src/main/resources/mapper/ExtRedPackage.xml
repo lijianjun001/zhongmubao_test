@@ -9,6 +9,7 @@
 		customerid = #{customerId}
 		and id =#{id}
 		and expTime>now()
+		and SheepOrderId>=0
 		and isused = 0 limit 1
 	</select>
 
@@ -48,6 +49,7 @@
 		type = #{type}
 		and created &gt;=#{beginTime}
 		and created &lt;=#{endTime} and customerid =#{customerId}
+		and SheepOrderId>=0
 	</select>
 
     <select id="countExtRedPackageByBeginTimeAndEndTimeAndType" resultType="int">
@@ -55,6 +57,7 @@
 		type = #{type}
 		and created >=#{beginTime}
 		and created &lt;=#{endTime}
+		and SheepOrderId>=0
 	</select>
 
     <select id="countLtPriceExtRedPackageByBeginTimeAndEndTimeAndType" resultType="int">
@@ -63,6 +66,7 @@
 		and created &gt;=#{beginTime}
 		and price &lt;=#{price}
 		and created &lt;=#{endTime}
+		and SheepOrderId>=0
 	</select>
 
     <update id="updateExtRedPackageExpTimeByCustomerIdAndId">
@@ -75,7 +79,8 @@
         select * from ExtRedPackage where customerid = #{customerId}
         and expTime>now()
         and isused = 0
-        AND IsLock = 0
+        and IsLock = 0
+        and SheepOrderId>=0
         and id in
         <foreach collection="ids" item="item" index="index" open="(" close=")" separator=",">
             #{item}
@@ -86,7 +91,7 @@
     <update id="updateExtRedPackageIsUsedByCustomerIdAndIds">
         UPDATE ExtRedPackage set IsUsed =1 ,SheepOrderId = -1 where customerid = #{customerId}
         and isused = 0
-        AND IsLock = 0
+        and IsLock = 0
         and id in
         <foreach collection="ids" item="item" index="index" open="(" close=")" separator=",">
             #{item}
@@ -98,7 +103,8 @@
         customerid = #{customerId}
         and expTime>now()
         and isused = 0
-        AND IsLock = 0
+        and SheepOrderId>=0
+        and IsLock = 0
         <choose>
             <when test="type == 'ExpTime'">
                 order by expTime ASC
@@ -115,6 +121,7 @@
         AND expTime>now()
         AND isused = 0
         AND IsLock = 0
+        AND SheepOrderId>=0
         <choose>
             <when test="type == 'ExpTime'">
                 order by expTime asc
@@ -131,6 +138,7 @@
         AND expTime>now()
         AND IsUsed = 0
         AND IsLock = 0
+        AND SheepOrderId>=0
         <choose>
             <when test="price == 0">
                 <![CDATA[ AND price<>8 AND price<>5 AND price<>2 ]]>
@@ -148,6 +156,7 @@
         WHERE customerid = #{customerId}
         AND Created > #{created} AND ((isused=0 and ExpTime &lt; #{expTime}) OR (IsUsed = 1 AND Created > #{created}))
         AND IsLock = 0
+        AND SheepOrderId>=0
         <choose>
             <when test="type == 'ExpTime'">
                 order by expTime desc
@@ -165,6 +174,7 @@
         AND Created &lt; #{created} AND ((isused=0 AND ExpTime &lt; #{expTime}) OR (IsUsed = 1 AND Created &lt;
         #{created}))
         AND IsLock = 0
+        AND SheepOrderId>=0
         <choose>
             <when test="type == 'ExpTime'">
                 order by expTime desc
@@ -186,6 +196,7 @@
         AND expTime>now()
         AND IsUsed = 0
         AND IsLock = 0
+        AND SheepOrderId>=0
         GROUP BY Price
         ORDER BY Price DESC
     </select>
@@ -195,6 +206,7 @@
         SELECT * FROM ExtRedPackage
         WHERE customerid = #{customerId}
         AND IsLock = 0
+        AND SheepOrderId>=0
         AND (ExpTime &lt;= #{expTime} or IsUsed = 1)
         ORDER BY Price DESC
     </select>
