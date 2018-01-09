@@ -132,7 +132,7 @@ public class ReadPackageServiceImpl implements ReadPackageService {
             groupModel.setPrice(DoubleUtil.toFixed(redPacket.getPrice(), Constants.PRICE_FORMAT));
             groupModel.setFirstExpTime(DateUtil.format(redPacket.getExpTime(), Constants.DATE_FORMAT_DOT));
             groupModel.setTotalPrice(RegExpMatcher.matcherPrice(DoubleUtil.toFixed(redPacket.getTotalPrice(), Constants.PRICE_FORMAT)));
-            if (groupType == RedPackageGroupType.EIGHT || groupType == RedPackageGroupType.FIVE) {
+            if (groupType == RedPackageGroupType.EIGHT) {
                 groupModel.setRemark(remark);
             }
         }
