@@ -54,7 +54,7 @@ public class ReadPackageServiceImpl implements ReadPackageService {
         RedPackageGroupViewModel viewModel = new RedPackageGroupViewModel();
         ArrayList<RedPackageGroupModel> groupModelList = new ArrayList<>();
         List<ExtRedPackageGroup> list = extRedPackageDao.getByCustomerIdGroupByPrice(customer.getId(), model.getSortType().getName());
-        boolean isPreLoad = true;
+        boolean isPreLoad = false;
         // 8元红包
         List<ExtRedPackageGroup> eightGroup = list.stream().filter(en -> en.getPrice() == 8).collect(Collectors.toList());
         if (eightGroup != null && eightGroup.size() > 0) {
