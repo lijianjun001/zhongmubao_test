@@ -13,7 +13,7 @@
         id = #{id} limit 1
     </select>
 
-    <select id="getProjectTitleByBustomerIdAndCode" resultType="String">
+    <select id="getProjectTitleByBustomerIdAndCode" resultType="java.lang.String">
         SELECT Title FROM SheepProject
         WHERE Id = (
         SELECT ProjectId FROM SheepOrder WHERE
