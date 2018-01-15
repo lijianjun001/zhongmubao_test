@@ -10,11 +10,12 @@ public class SheepProjectInfoModel {
     public SheepProjectInfoModel() {
     }
 
-    public SheepProjectInfoModel(String amount, String title, String period, String count) {
+    public SheepProjectInfoModel(String amount, String title, String period, String count, String color) {
         this.amount = amount;
         this.title = title;
         this.period = period;
         this.count = count;
+        this.color = color;
     }
 
     /**
@@ -36,6 +37,16 @@ public class SheepProjectInfoModel {
      * 购羊数量
      */
     private String count;
+
+    public String getColor() {
+        return color;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
+    }
+
+    private String color;
 
     public String getAmount() {
         return amount;
