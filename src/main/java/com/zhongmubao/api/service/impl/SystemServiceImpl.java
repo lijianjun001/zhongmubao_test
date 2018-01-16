@@ -60,6 +60,7 @@ public class SystemServiceImpl extends BaseService implements SystemService {
         }
         String convTime = String.valueOf(System.currentTimeMillis());
 
+        touTiaoAdvMongo.setStatus("01");
         touTiaoAdvMongoDao.update(touTiaoAdvMongo);
 
         //回传
