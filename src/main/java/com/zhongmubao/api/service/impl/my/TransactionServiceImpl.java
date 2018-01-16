@@ -94,7 +94,7 @@ public class TransactionServiceImpl extends BaseService implements TransactionSe
                     RedeemDetailModel redeemDetail = SerializeUtil.deSerialize(mongo.getTransactionDetail(), RedeemDetailModel.class);
                     assert redeemDetail != null;
                     transactionViewModel.setTransactionDate(redeemDetail.getOperationDate());
-                }else if (mongo.getType().equals(TransactionDetailType.REDEEM_RED.getName())) {
+                } else if (mongo.getType().equals(TransactionDetailType.REDEEM_RED.getName())) {
                     RedeemRedDetailModel redeemRedDetail = SerializeUtil.deSerialize(mongo.getTransactionDetail(), RedeemRedDetailModel.class);
                     assert redeemRedDetail != null;
                     transactionViewModel.setTransactionDate(redeemRedDetail.getOperationDate());
@@ -166,9 +166,10 @@ public class TransactionServiceImpl extends BaseService implements TransactionSe
         List<SheepProjectInfoModel> list = sheepBillInfo.stream().map(
                 en -> new SheepProjectInfoModel(
                         DoubleUtil.toFixed(en.getTotalAmount(), Constants.PRICE_FORMAT),
-                        getStatisticsTitle(en.getType(), en.getPeriod()),
-                        en.getPeriod() + "天",
-                        en.getTotalCount() + "只"
+                        getStatisticsTitle(en.getType(), en.getPeriod()) + "（" + en.getPeriod() + "天）",
+                        en.getPeriod() + "",
+                        en.getTotalCount() + "",
+                        getPieColor(en.getType(), en.getPeriod())
                 )).collect(Collectors.toList());
         viewModel.setList(new ArrayList(list));
         // 总收益
@@ -214,46 +215,69 @@ public class TransactionServiceImpl extends BaseService implements TransactionSe
      * @return String
      */
     private String getStatisticsTitle(String type, int period) {
-        String title = "新型羊标A";
+        String title = "新型羊标";
         if (ProjectType.NORMAL.getName().equals(type)) {
             // 00 羊标
-            if (period == SheepProjectPeriod.PERIOD_120.getName()) {
-                title = "购羊标A";
-            } else if (period == SheepProjectPeriod.PERIOD_240.getName()) {
-                title = "购羊标B";
-            } else {
-                title = "购羊标C";
-            }
+            title = "购羊标";
         } else if (ProjectType.SLAUGHTER.getName().equals(type)) {
             // 03 商铺
-            if (period == SheepProjectPeriod.PERIOD_120.getName()) {
-                title = "商铺标A";
-            } else if (period == SheepProjectPeriod.PERIOD_240.getName()) {
-                title = "商铺标B";
-            } else {
-                title = "商铺标C";
-            }
+            title = "商铺标";
         } else if (ProjectType.NEW_PEOPLE_7.getName().equals(type)) {
             // 04 新手商铺
-            if (period == SheepProjectPeriod.PERIOD_120.getName()) {
-                title = "新手商标A";
-            } else if (period == SheepProjectPeriod.PERIOD_240.getName()) {
-                title = "新手商标B";
-            } else {
-                title = "新手商标C";
-            }
+            title = "新手商标";
         } else if (ProjectType.NEW_PEOPLE_120.getName().equals(type)) {
             // 06 新手羊
-            if (period == SheepProjectPeriod.PERIOD_120.getName()) {
-                title = "新手羊标A";
-            } else if (period == SheepProjectPeriod.PERIOD_240.getName()) {
-                title = "新手羊标B";
-            } else {
-                title = "新手羊标C";
-            }
+            title = "新手羊标";
         }
         return title;
     }
 
+    /**
+     * 月账单购羊标主题颜色
+     *
+     * @param type 羊标类型
+     * @return String
+     */
+    private String getPieColor(String type, int period) {
+        String color = "#FE0000";
+        if (ProjectType.NORMAL.getName().equals(type)) {
+            // 00 羊标
+            if (period == SheepProjectPeriod.PERIOD_120.getName()) {
+                color = "#7EFF00";
+            } else if (period == SheepProjectPeriod.PERIOD_240.getName()) {
+                color = "#00FF01";
+            } else {
+                color = "#00FF7F";
+            }
+        } else if (ProjectType.SLAUGHTER.getName().equals(type)) {
+            // 03 商铺
+            if (period == SheepProjectPeriod.PERIOD_120.getName()) {
+                color = "#01FFFF";
+            } else if (period == SheepProjectPeriod.PERIOD_240.getName()) {
+                color = "#027FFF";
+            } else {
+                color = "#0000FE";
+            }
+        } else if (ProjectType.NEW_PEOPLE_7.getName().equals(type)) {
+            // 04 新手商铺
+            if (period == SheepProjectPeriod.PERIOD_120.getName()) {
+                color = "#7F00FF";
+            } else if (period == SheepProjectPeriod.PERIOD_240.getName()) {
+                color = "#FF00FE";
+            } else {
+                color = "#FF0080";
+            }
+        } else if (ProjectType.NEW_PEOPLE_120.getName().equals(type)) {
+            // 06 新手羊
+            if (period == SheepProjectPeriod.PERIOD_120.getName()) {
+                color = "#FE0000";
+            } else if (period == SheepProjectPeriod.PERIOD_240.getName()) {
+                color = "#FF7F00";
+            } else {
+                color = "#FFFF01";
+            }
+        }
+        return color;
+    }
     //endregion
 }
