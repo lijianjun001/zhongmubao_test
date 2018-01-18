@@ -116,7 +116,7 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
                 realNameViewModel.setRealNameType(RealNameStatus.HFS.getType());
                 realNameViewModel.setRealNameImg(Constants.RESOURES_ADDRESS_IMAGES + RealNameStatus.HFS.getImg());
             } else {
-                if(!customerHF.getIsBosAcct()){
+                if(!StringUtil.isNullOrEmpty(customerHF.getUsrCustId())&&!customerHF.getIsBosAcct()){
                     //未激活
                     realNameViewModel.setCenterShowHFRealName(true);
                     realNameViewModel.setIndexShowHFRealName(true);
