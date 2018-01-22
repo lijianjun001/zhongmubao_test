@@ -83,7 +83,7 @@ public class MenuServiceImpl extends BaseService implements MenuService {
             }
         }
         if(customerHF!=null) {
-         if(customerHF.getIsBandCard()&&!StringUtil.isNullOrEmpty(customerHF.getUsrCustId())){
+         if(customerHF.getIsBandCard()&&customerHF.getIsBosAcct()&&!StringUtil.isNullOrEmpty(customerHF.getUsrCustId())){
              ListItemModel listItemModelHfWallet = new ListItemModel();
              listItemModelHfWallet.setIcon("personal-qianbao.png");
              listItemModelHfWallet.setTitle("汇付钱包");
