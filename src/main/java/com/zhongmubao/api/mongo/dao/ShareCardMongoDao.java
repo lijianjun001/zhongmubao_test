@@ -125,4 +125,13 @@ public class ShareCardMongoDao implements BaseDao<ShareCardMongo> {
         query.addCriteria(Criteria.where("Exceed").gte(expired));
         return (int) mongoTemplate.count(query, ShareCardMongo.class);
     }
+
+    public ShareCardMongo getByCustomerIdAndTypeAndExpired(int customerId, String type, Date expired) {
+        Query query = new Query();
+        query.addCriteria(Criteria.where("CustomerId").is(customerId));
+        query.addCriteria(Criteria.where("Type").is(type));
+        query.addCriteria(Criteria.where("Delete").is(false));
+        query.addCriteria(Criteria.where("Exceed").gte(expired));
+        return mongoTemplate.findOne(query, ShareCardMongo.class);
+    }
 }

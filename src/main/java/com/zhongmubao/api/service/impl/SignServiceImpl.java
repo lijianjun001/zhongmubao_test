@@ -248,8 +248,7 @@ public class SignServiceImpl extends BaseService implements SignService {
 
     @Override
     public MyGiftCardModel myGiftCard(int customerId) throws Exception {
-        Date now = new Date();
-        Date expired = DateUtil.formatMongo(now);
+        Date expired = DateUtil.formatMongo(new Date());
         int delayedCardCount = shareCardMongoDao.countByCustomerIdAndTypeAndExpired(customerId, SignGiftType.DELAYED_CARD.getName(), expired);
         int mergeCardCount = shareCardMongoDao.countByCustomerIdAndTypeAndExpired(customerId, SignGiftType.MERGE_CARD.getName(), expired);
         return new MyGiftCardModel(delayedCardCount, mergeCardCount);
@@ -266,7 +265,8 @@ public class SignServiceImpl extends BaseService implements SignService {
         if (null == ids || ids.size() != packageCount) {
             throw new ApiException(ResultStatus.RED_PACKAGE_NOT_EXIT);
         }
-        ShareCardMongo shareCardMongo = shareCardMongoDao.getByCustomerIdAndType(customerId, SignGiftType.MERGE_CARD.getName());
+        Date expired = DateUtil.formatMongo(new Date());
+        ShareCardMongo shareCardMongo = shareCardMongoDao.getByCustomerIdAndTypeAndExpired(customerId, SignGiftType.MERGE_CARD.getName(),expired);
         if (null == shareCardMongo) {
             throw new ApiException(ResultStatus.MERGE_CARD_NOT_EXIT);
         }
@@ -289,8 +289,9 @@ public class SignServiceImpl extends BaseService implements SignService {
         if (null == model) {
             throw new ApiException(ResultStatus.PARAMETER_MISSING);
         }
+        Date expired = DateUtil.formatMongo(new Date());
         int packageId = model.getPackageId();
-        ShareCardMongo shareCardMongo = shareCardMongoDao.getByCustomerIdAndType(customerId, SignGiftType.DELAYED_CARD.getName());
+        ShareCardMongo shareCardMongo = shareCardMongoDao.getByCustomerIdAndTypeAndExpired(customerId, SignGiftType.DELAYED_CARD.getName(),expired);
         if (null == shareCardMongo) {
             throw new ApiException(ResultStatus.DELAYED_CARD_NOT_EXIT);
         }
@@ -319,8 +320,7 @@ public class SignServiceImpl extends BaseService implements SignService {
                 .collect(Collectors.toList());
         PageHelper.clearPage();
 
-        Date now = new Date();
-        Date expired = DateUtil.formatMongo(now);
+        Date expired = DateUtil.formatMongo(new Date());
         int cardCount = model.getPageIndex() <= 1 ? shareCardMongoDao.countByCustomerIdAndTypeAndExpired(customerId, model.getType(), expired) : 0;
         return new PageSignPackageModel(pages, cardCount, list);
     }
