@@ -1,6 +1,5 @@
 package com.zhongmubao.api.util;
 
-import com.github.kevinsawicki.http.HttpRequest;
 import org.apache.commons.io.IOUtils;
 
 import java.io.IOException;
