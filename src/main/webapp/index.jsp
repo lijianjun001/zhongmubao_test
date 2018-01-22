@@ -33,8 +33,11 @@
 //            version:"1.0"
 //        };
         var data = {
-            pageIndex:1,
-            groupType:"02"
+            mac:"02:00:00:00:00:00",
+            imei:"3D638F10-7D1C-4223-8A17-B1D81E1CA419",
+            ip:"",
+            os:"1",
+            deviceid:""
         };
 
 
@@ -43,7 +46,7 @@
 
         $.ajax({
             type: "POST",
-            url: "/my/readPackage/list",
+            url: "/system/touTiaoAdv",
             data: JSON.stringify(data),
             contentType: 'application/json;charset=UTF-8',
             dataType: "json",                                     //预期服务器返回类型

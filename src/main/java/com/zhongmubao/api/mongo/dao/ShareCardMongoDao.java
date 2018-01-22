@@ -48,6 +48,7 @@ public class ShareCardMongoDao implements BaseDao<ShareCardMongo> {
     public ShareCardMongo get(Query query) throws Exception {
         return null;
     }
+
     @Override
     public List<ShareCardMongo> getList(Query query) throws Exception {
 
@@ -114,5 +115,14 @@ public class ShareCardMongoDao implements BaseDao<ShareCardMongo> {
         query.addCriteria(Criteria.where("Created").gt(date));
         query.addCriteria(Criteria.where("Delete").is(false));
         return mongoTemplate.count(query, ShareCardMongo.class);
+    }
+
+    public int countByCustomerIdAndTypeAndExpired(int customerId, String type, Date expired) {
+        Query query = new Query();
+        query.addCriteria(Criteria.where("CustomerId").is(customerId));
+        query.addCriteria(Criteria.where("Type").is(type));
+        query.addCriteria(Criteria.where("Delete").is(false));
+        query.addCriteria(Criteria.where("Exceed").gte(expired));
+        return (int) mongoTemplate.count(query, ShareCardMongo.class);
     }
 }

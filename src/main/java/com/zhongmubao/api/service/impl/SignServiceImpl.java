@@ -248,8 +248,10 @@ public class SignServiceImpl extends BaseService implements SignService {
 
     @Override
     public MyGiftCardModel myGiftCard(int customerId) throws Exception {
-        int delayedCardCount = shareCardMongoDao.countByCustomerIdAndType(customerId, SignGiftType.DELAYED_CARD.getName());
-        int mergeCardCount = shareCardMongoDao.countByCustomerIdAndType(customerId, SignGiftType.MERGE_CARD.getName());
+        Date now = new Date();
+        Date expired = DateUtil.formatMongo(now);
+        int delayedCardCount = shareCardMongoDao.countByCustomerIdAndTypeAndExpired(customerId, SignGiftType.DELAYED_CARD.getName(), expired);
+        int mergeCardCount = shareCardMongoDao.countByCustomerIdAndTypeAndExpired(customerId, SignGiftType.MERGE_CARD.getName(), expired);
         return new MyGiftCardModel(delayedCardCount, mergeCardCount);
     }
 
@@ -316,7 +318,10 @@ public class SignServiceImpl extends BaseService implements SignService {
                         DateUtil.subDateOfDay(en.getExpTime(), new Date()) < 0 ? 0 : DateUtil.subDateOfDay(en.getExpTime(), new Date())))
                 .collect(Collectors.toList());
         PageHelper.clearPage();
-        int cardCount = model.getPageIndex() <= 1 ? shareCardMongoDao.countByCustomerIdAndType(customerId, model.getType()) : 0;
+
+        Date now = new Date();
+        Date expired = DateUtil.formatMongo(now);
+        int cardCount = model.getPageIndex() <= 1 ? shareCardMongoDao.countByCustomerIdAndTypeAndExpired(customerId, model.getType(), expired) : 0;
         return new PageSignPackageModel(pages, cardCount, list);
     }
 

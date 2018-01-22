@@ -1,5 +1,6 @@
 package com.zhongmubao.api.util;
 
+import com.github.kevinsawicki.http.HttpRequest;
 import org.apache.commons.io.IOUtils;
 
 import java.io.IOException;
@@ -16,7 +17,8 @@ import java.net.URLConnection;
 public class HttpUtil {
     /**
      * GET请求
-     * @param url URL
+     *
+     * @param url     URL
      * @param charset 响应Body编码
      * @return 响应内容
      * @throws IOException io异常
@@ -64,6 +66,7 @@ public class HttpUtil {
 
     /**
      * post方式提交字节数组
+     *
      * @param url       URL
      * @param byteArray 请求Body字节数组
      * @param charset   响应Body编码
@@ -124,7 +127,7 @@ public class HttpUtil {
      *
      * @param url        URL
      * @param postString 提交的字符串
-     *  @param c 类
+     * @param c          类
      * @return web返回内容
      * @throws IOException io异常
      * @author XXG
