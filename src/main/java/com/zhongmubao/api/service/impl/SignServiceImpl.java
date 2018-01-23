@@ -194,7 +194,7 @@ public class SignServiceImpl extends BaseService implements SignService {
                         shareCard.setType(signGift.getType().getName());
                         shareCard.setCount(signGift.getType().equals(TELEPHONE_CARD) ? telephoneMoney : 1);
                         shareCard.setCreated(mongoNow);
-                        shareCard.setExceed(DateUtil.addDay(mongoNow, 30));
+                        shareCard.setExceed(DateUtil.addDay(mongoNow, 60));
                         shareCard.setStatus(status);
                         shareCard.setDelete(false);
                         shareCardMongoDao.add(shareCard);
