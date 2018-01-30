@@ -42,7 +42,7 @@ public class BaseService {
                     false,
                     null,
                     120,
-                    expTime,
+                    DateUtil.dayEnd(expTime),
                     now,
                     now,
                     1,
@@ -108,8 +108,9 @@ public class BaseService {
 
     /**
      * 计算羊只利率
-     * @param price 羊只单价
-     * @param rate 比率
+     *
+     * @param price  羊只单价
+     * @param rate   比率
      * @param period 周期
      * @return
      * @author 米立林

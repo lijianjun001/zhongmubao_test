@@ -42,6 +42,7 @@ public class DateUtil {
         cale.set(Calendar.DAY_OF_MONTH, 0);
         return weeHours(strToDate(format.format(cale.getTime())), 1);
     }
+
     /**
      * 指定日期那个月的第一天
      *
@@ -136,6 +137,17 @@ public class DateUtil {
      */
     public static Date dayEnd() throws ParseException {
         return weeHours(new Date(), 1);
+    }
+
+    /**
+     * 取一个时间23：59：59
+     */
+    public static Date dayEnd(Date date) {
+        try {
+            return weeHours(date, 1);
+        } catch (Exception ex) {
+            return date;
+        }
     }
 
     /**
