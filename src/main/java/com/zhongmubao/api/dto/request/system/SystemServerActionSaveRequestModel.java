@@ -11,6 +11,7 @@ public class SystemServerActionSaveRequestModel extends BaseRequest {
 
     private String objectId;
     private String name;
+    private String chinaName;
     private String parentObjectId;
 
     public String getName() {
@@ -35,6 +36,14 @@ public class SystemServerActionSaveRequestModel extends BaseRequest {
 
     public void setObjectId(String objectId) {
         this.objectId = objectId;
+    }
+
+    public String getChinaName() {
+        return chinaName;
+    }
+
+    public void setChinaName(String chinaName) {
+        this.chinaName = chinaName;
     }
 
 }

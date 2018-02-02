@@ -101,6 +101,7 @@ public class SystemServiceImpl extends BaseService implements SystemService {
         if (StringUtil.isNullOrEmpty(model.getObjectId())) {
             SystemServerActionMongo systemServerActionMongo = new SystemServerActionMongo();
             systemServerActionMongo.setName(model.getName());
+            systemServerActionMongo.setChinaName(model.getChinaName());
             systemServerActionMongo.setParentObjectId(model.getParentObjectId());
             systemServerActionMongoDao.add(systemServerActionMongo);
         } else {
@@ -109,6 +110,7 @@ public class SystemServiceImpl extends BaseService implements SystemService {
                 throw new ApiException("数据不存在");
             }
             systemServerActionMongo.setName(model.getName());
+            systemServerActionMongo.getChinaName(model.getChinaName());
             if (!StringUtil.isNullOrEmpty(model.getParentObjectId())) {
                 systemServerActionMongo.setName(model.getParentObjectId());
             }

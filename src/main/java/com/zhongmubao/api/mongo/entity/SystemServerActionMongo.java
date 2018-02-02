@@ -14,6 +14,9 @@ public class SystemServerActionMongo extends BaseModel {
     @Field("Name")
     private String name;
 
+    @Field("ChinaName")
+    private String chinaName;
+
     @Field("ParentObjectId")
     private String parentObjectId;
 
@@ -32,4 +35,13 @@ public class SystemServerActionMongo extends BaseModel {
     public void setParentObjectId(String parentObjectId) {
         this.parentObjectId = parentObjectId;
     }
+
+    public String getChinaName() {
+        return chinaName;
+    }
+
+    public void setChinaName(String chinaName) {
+        this.chinaName = chinaName;
+    }
+
 }
