@@ -55,7 +55,7 @@ public class SystemServerActionMongoDao implements BaseDao<SystemServerActionMon
 
     @Override
     public List<SystemServerActionMongo> getList(Query query) throws Exception {
-        return null;
+        return mongoTemplate.find(query, SystemServerActionMongo.class);
     }
 
     @Override
@@ -87,5 +87,21 @@ public class SystemServerActionMongoDao implements BaseDao<SystemServerActionMon
         List<SystemServerActionMongo> list = mongoTemplate.find(query, SystemServerActionMongo.class);
         page.setDatas(list);
         return page;
+    }
+
+    /**
+     * 获取所有server
+     *
+     * @return
+     * @throws Exception
+     */
+    public List<SystemServerActionMongo> getListByParentObjectId(String parentObjectId) throws Exception {
+        Query query = new Query();
+        if (StringUtil.isNullOrEmpty(parentObjectId)) {
+            query.addCriteria(Criteria.where("ParentObjectId").ne("").ne(null));
+        } else {
+            query.addCriteria(Criteria.where("ParentObjectId").is(parentObjectId));
+        }
+        return this.getList(query);
     }
 }

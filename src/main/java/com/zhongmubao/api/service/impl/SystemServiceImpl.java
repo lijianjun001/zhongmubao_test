@@ -1,12 +1,10 @@
 package com.zhongmubao.api.service.impl;
 
 import com.zhongmubao.api.config.ResultStatus;
-import com.zhongmubao.api.dto.request.system.PlatformTrackingRequestModel;
-import com.zhongmubao.api.dto.request.system.SystemServerActionPagerRequestModel;
-import com.zhongmubao.api.dto.request.system.SystemServerActionSaveRequestModel;
-import com.zhongmubao.api.dto.request.system.TouTiaoAdvRequestModel;
-import com.zhongmubao.api.dto.response.system.PageSystemServerActionModel;
-import com.zhongmubao.api.dto.response.system.SystemServerActionViewModel;
+import com.zhongmubao.api.dto.request.system.*;
+import com.zhongmubao.api.dto.response.system.PageSystemServerActionViewModel;
+import com.zhongmubao.api.dto.response.system.SystemServerActionListViewModel;
+import com.zhongmubao.api.dto.response.system.SystemServerActionModel;
 import com.zhongmubao.api.entity.Customer;
 import com.zhongmubao.api.exception.ApiException;
 import com.zhongmubao.api.mongo.dao.PlatformTrackingMongoDao;
@@ -119,23 +117,42 @@ public class SystemServiceImpl extends BaseService implements SystemService {
     }
 
     @Override
-    public PageSystemServerActionModel pagerServerAction(SystemServerActionPagerRequestModel model) throws Exception {
-        PageSystemServerActionModel resultModel = new PageSystemServerActionModel();
+    public PageSystemServerActionViewModel pagerServerAction(SystemServerActionPagerRequestModel model) throws Exception {
+        PageSystemServerActionViewModel resultModel = new PageSystemServerActionViewModel();
 
         PageModel<SystemServerActionMongo> pager = new PageModel<>();
         pager.setPageNo(model.getPageIndex());
         pager = systemServerActionMongoDao.pager(model.getName(), false, pager);
 
-        List<SystemServerActionViewModel> list = new ArrayList<>();
+        List<SystemServerActionModel> list = new ArrayList<>();
         for (SystemServerActionMongo systemServerActionMongo : pager.getDatas()) {
-            SystemServerActionViewModel viewModel = new SystemServerActionViewModel();
+            SystemServerActionModel viewModel = new SystemServerActionModel();
             viewModel.setServer(systemServerActionMongo.getName());
             viewModel.setAction(systemServerActionMongoDao.get(systemServerActionMongo.getParentObjectId()).getName());
+            viewModel.setObjectId(systemServerActionMongo.id);
             list.add(viewModel);
 
         }
         resultModel.setPageCount(pager.getTotalPages());
         resultModel.setList(list);
         return resultModel;
+    }
+
+    @Override
+    public SystemServerActionListViewModel serverActionList(SystemServerActionListRequestModel model) throws Exception {
+        SystemServerActionListViewModel result = new SystemServerActionListViewModel();
+
+        List<SystemServerActionMongo> systemServerActionMongoList = systemServerActionMongoDao.getListByParentObjectId(model.getParentObjectId());
+
+        List<SystemServerActionModel> list = new ArrayList<>();
+        for (SystemServerActionMongo systemServerActionMongo : systemServerActionMongoList) {
+            SystemServerActionModel viewModel = new SystemServerActionModel();
+            viewModel.setServer(systemServerActionMongo.getName());
+            viewModel.setAction(systemServerActionMongoDao.get(systemServerActionMongo.getParentObjectId()).getName());
+            viewModel.setObjectId(systemServerActionMongo.id);
+            list.add(viewModel);
+        }
+        result.setList(list);
+        return result;
     }
 }

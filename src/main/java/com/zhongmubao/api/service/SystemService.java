@@ -1,11 +1,11 @@
 package com.zhongmubao.api.service;
 
-import com.zhongmubao.api.dto.request.system.PlatformTrackingRequestModel;
-import com.zhongmubao.api.dto.request.system.SystemServerActionPagerRequestModel;
-import com.zhongmubao.api.dto.request.system.SystemServerActionSaveRequestModel;
-import com.zhongmubao.api.dto.request.system.TouTiaoAdvRequestModel;
-import com.zhongmubao.api.dto.response.system.PageSystemServerActionModel;
+import com.zhongmubao.api.dto.request.system.*;
+import com.zhongmubao.api.dto.response.system.PageSystemServerActionViewModel;
+import com.zhongmubao.api.dto.response.system.SystemServerActionListViewModel;
 import com.zhongmubao.api.entity.Customer;
+
+import java.util.ArrayList;
 
 /**
  * 系统服务
@@ -44,7 +44,16 @@ public interface SystemService {
      * 分页
      * @param model 请求实体
      * @throws Exception 异常
-     * @return PageSystemServerActionModel
+     * @return PageSystemServerActionViewModel
      */
-    PageSystemServerActionModel pagerServerAction(SystemServerActionPagerRequestModel model) throws Exception;
+    PageSystemServerActionViewModel pagerServerAction(SystemServerActionPagerRequestModel model) throws Exception;
+
+    /**
+     * 获取server或者action
+     *
+     * @param model
+     * @return
+     * @throws Exception
+     */
+    SystemServerActionListViewModel serverActionList(SystemServerActionListRequestModel model) throws Exception;
 }

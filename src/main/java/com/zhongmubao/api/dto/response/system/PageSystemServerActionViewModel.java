@@ -3,11 +3,11 @@ package com.zhongmubao.api.dto.response.system;
 import java.util.List;
 
 /**
- * PageSystemServerActionModel
+ * PageSystemServerActionViewModel
  *
  * @author 孙阿龙
  */
-public class PageSystemServerActionModel {
+public class PageSystemServerActionViewModel {
     private int pageCount;
 
     public int getPageCount() {
@@ -18,13 +18,13 @@ public class PageSystemServerActionModel {
         this.pageCount = pageCount;
     }
 
-    public List<SystemServerActionViewModel> getList() {
+    public List<SystemServerActionModel> getList() {
         return list;
     }
 
-    public void setList(List<SystemServerActionViewModel> list) {
+    public void setList(List<SystemServerActionModel> list) {
         this.list = list;
     }
 
-    private List<SystemServerActionViewModel> list;
+    private List<SystemServerActionModel> list;
 }

@@ -1,11 +1,13 @@
 package com.zhongmubao.api.dto.response.system;
 
 /**
- * SystemServerActionViewModel 实体
+ * SystemServerActionModel 实体
  *
  * @author 孙阿龙
  */
-public class SystemServerActionViewModel {
+public class SystemServerActionModel {
+
+    private String objectId;
     private String server;
     private String action;
 
@@ -25,4 +27,11 @@ public class SystemServerActionViewModel {
         this.action = action;
     }
 
+    public String getObjectId() {
+        return objectId;
+    }
+
+    public void setObjectId(String objectId) {
+        this.objectId = objectId;
+    }
 }
