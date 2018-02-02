@@ -2,20 +2,29 @@ package com.zhongmubao.api.service.impl;
 
 import com.zhongmubao.api.config.ResultStatus;
 import com.zhongmubao.api.dto.request.system.PlatformTrackingRequestModel;
+import com.zhongmubao.api.dto.request.system.SystemServerActionPagerRequestModel;
+import com.zhongmubao.api.dto.request.system.SystemServerActionSaveRequestModel;
 import com.zhongmubao.api.dto.request.system.TouTiaoAdvRequestModel;
+import com.zhongmubao.api.dto.response.system.PageSystemServerActionModel;
+import com.zhongmubao.api.dto.response.system.SystemServerActionViewModel;
 import com.zhongmubao.api.entity.Customer;
 import com.zhongmubao.api.exception.ApiException;
 import com.zhongmubao.api.mongo.dao.PlatformTrackingMongoDao;
+import com.zhongmubao.api.mongo.dao.SystemServerActionMongoDao;
 import com.zhongmubao.api.mongo.dao.TouTiaoAdvMongoDao;
 import com.zhongmubao.api.mongo.entity.PlatformTrackingMongo;
+import com.zhongmubao.api.mongo.entity.SystemServerActionMongo;
 import com.zhongmubao.api.mongo.entity.TouTiaoAdvMongo;
+import com.zhongmubao.api.mongo.entity.base.PageModel;
 import com.zhongmubao.api.service.SystemService;
 import com.zhongmubao.api.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 系统服务实现
@@ -27,11 +36,13 @@ public class SystemServiceImpl extends BaseService implements SystemService {
 
     private final TouTiaoAdvMongoDao touTiaoAdvMongoDao;
     private final PlatformTrackingMongoDao platformTrackingMongoDao;
+    private final SystemServerActionMongoDao systemServerActionMongoDao;
 
     @Autowired
-    public SystemServiceImpl(TouTiaoAdvMongoDao touTiaoAdvMongoDao, PlatformTrackingMongoDao platformTrackingMongoDao) {
+    public SystemServiceImpl(TouTiaoAdvMongoDao touTiaoAdvMongoDao, PlatformTrackingMongoDao platformTrackingMongoDao, SystemServerActionMongoDao systemServerActionMongoDao) {
         this.touTiaoAdvMongoDao = touTiaoAdvMongoDao;
         this.platformTrackingMongoDao = platformTrackingMongoDao;
+        this.systemServerActionMongoDao = systemServerActionMongoDao;
     }
 
     @Override
@@ -81,5 +92,50 @@ public class SystemServiceImpl extends BaseService implements SystemService {
         platformTrackingMongo.setPlatform(model.getPlatform());
         platformTrackingMongo.setVersion(model.getVersion());
         platformTrackingMongoDao.add(platformTrackingMongo);
+    }
+
+    @Override
+    public void saveServerAction(SystemServerActionSaveRequestModel model) throws Exception {
+        if (StringUtil.isNullOrEmpty(model.getName())) {
+            throw new ApiException("名称不能为空");
+        }
+
+        if (StringUtil.isNullOrEmpty(model.getObjectId())) {
+            SystemServerActionMongo systemServerActionMongo = new SystemServerActionMongo();
+            systemServerActionMongo.setName(model.getName());
+            systemServerActionMongo.setParentObjectId(model.getParentObjectId());
+            systemServerActionMongoDao.add(systemServerActionMongo);
+        } else {
+            SystemServerActionMongo systemServerActionMongo = systemServerActionMongoDao.get(model.getObjectId());
+            if (systemServerActionMongo == null) {
+                throw new ApiException("数据不存在");
+            }
+            systemServerActionMongo.setName(model.getName());
+            if (!StringUtil.isNullOrEmpty(model.getParentObjectId())) {
+                systemServerActionMongo.setName(model.getParentObjectId());
+            }
+            systemServerActionMongoDao.save(systemServerActionMongo);
+        }
+    }
+
+    @Override
+    public PageSystemServerActionModel pagerServerAction(SystemServerActionPagerRequestModel model) throws Exception {
+        PageSystemServerActionModel resultModel = new PageSystemServerActionModel();
+
+        PageModel<SystemServerActionMongo> pager = new PageModel<>();
+        pager.setPageNo(model.getPageIndex());
+        pager = systemServerActionMongoDao.pager(model.getName(), false, pager);
+
+        List<SystemServerActionViewModel> list = new ArrayList<>();
+        for (SystemServerActionMongo systemServerActionMongo : pager.getDatas()) {
+            SystemServerActionViewModel viewModel = new SystemServerActionViewModel();
+            viewModel.setServer(systemServerActionMongo.getName());
+            viewModel.setAction(systemServerActionMongoDao.get(systemServerActionMongo.getParentObjectId()).getName());
+            list.add(viewModel);
+
+        }
+        resultModel.setPageCount(pager.getTotalPages());
+        resultModel.setList(list);
+        return resultModel;
     }
 }
