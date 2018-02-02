@@ -1,7 +1,6 @@
 package com.zhongmubao.api.mongo.dao;
 
 import com.zhongmubao.api.mongo.dao.base.BaseDao;
-import com.zhongmubao.api.mongo.entity.ShareCardMongo;
 import com.zhongmubao.api.mongo.entity.SystemServerActionMongo;
 import com.zhongmubao.api.mongo.entity.base.PageModel;
 import com.zhongmubao.api.util.StringUtil;
