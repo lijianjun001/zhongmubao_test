@@ -2,10 +2,7 @@ package com.zhongmubao.api.web;
 
 import com.zhongmubao.api.authorization.annotation.Authorization;
 import com.zhongmubao.api.authorization.annotation.CurrentUser;
-import com.zhongmubao.api.dto.request.system.PlatformTrackingRequestModel;
-import com.zhongmubao.api.dto.request.system.SystemServerActionPagerRequestModel;
-import com.zhongmubao.api.dto.request.system.SystemServerActionSaveRequestModel;
-import com.zhongmubao.api.dto.request.system.TouTiaoAdvRequestModel;
+import com.zhongmubao.api.dto.request.system.*;
 import com.zhongmubao.api.dto.response.ReponseModel;
 import com.zhongmubao.api.entity.Customer;
 import com.zhongmubao.api.exception.ApiException;
@@ -104,6 +101,25 @@ public class SystemController {
     public ResponseEntity<ReponseModel> pagerServerAction(@CurrentUser Customer customer, HttpEntity<SystemServerActionPagerRequestModel> model) {
         try {
             return new ResponseEntity<>(ReponseModel.ok(systemService.pagerServerAction(model.getBody())), HttpStatus.OK);
+        } catch (ApiException ex) {
+            return new ResponseEntity<>(ReponseModel.error(ex.getStatus()), HttpStatus.OK);
+        } catch (Exception ex) {
+            return new ResponseEntity<>(ReponseModel.error(ex, this.getClass()), HttpStatus.OK);
+        }
+    }
+
+    /**
+     * 分页ServerAction
+     *
+     * @param model 请求实体
+     * @return TouTiaoAdvRequestModel
+     * @author 孙阿龙
+     */
+    @Authorization
+    @RequestMapping(value = "/serverActionList", method = RequestMethod.POST, consumes = "application/json")
+    public ResponseEntity<ReponseModel> serverActionList(@CurrentUser Customer customer, HttpEntity<SystemServerActionListRequestModel> model) {
+        try {
+            return new ResponseEntity<>(ReponseModel.ok(systemService.serverActionList(model.getBody())), HttpStatus.OK);
         } catch (ApiException ex) {
             return new ResponseEntity<>(ReponseModel.error(ex.getStatus()), HttpStatus.OK);
         } catch (Exception ex) {

@@ -43,7 +43,7 @@
 
         $.ajax({
             type: "POST",
-            url: "/system/pagerServerAction",
+            url: "/system/serverActionList",
             data: JSON.stringify(data),
             contentType: 'application/json;charset=UTF-8',
             dataType: "json",                                     //预期服务器返回类型
