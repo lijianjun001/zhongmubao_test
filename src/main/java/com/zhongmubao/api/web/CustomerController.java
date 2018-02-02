@@ -220,6 +220,7 @@ public class CustomerController {
             return new ResponseEntity<>(ReponseModel.error(ex, this.getClass()), HttpStatus.OK);
         }
     }
+
     @RequestMapping(value = "/sign/todayIsShare", method = RequestMethod.POST, consumes = "application/json")
     @Authorization
     public ResponseEntity<ReponseModel> todayIsShare(@CurrentUser Customer customer) {
@@ -232,6 +233,7 @@ public class CustomerController {
             return new ResponseEntity<>(ReponseModel.error(ex, this.getClass()), HttpStatus.OK);
         }
     }
+
     @RequestMapping(value = "/sign/shareInfo", method = RequestMethod.POST, consumes = "application/json")
     @Authorization
     public ResponseEntity<ReponseModel> shareInfo(@CurrentUser Customer customer) {
