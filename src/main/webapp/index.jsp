@@ -33,8 +33,7 @@
 //            version:"1.0"
 //        };
         var data = {
-            name: "SheepService222",
-            parentObjectId: null
+            pageIndex: 1
         };
 
 
