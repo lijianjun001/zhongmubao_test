@@ -110,7 +110,7 @@ public class SystemServiceImpl extends BaseService implements SystemService {
                 throw new ApiException("数据不存在");
             }
             systemServerActionMongo.setName(model.getName());
-            systemServerActionMongo.getChinaName(model.getChinaName());
+            systemServerActionMongo.setChinaName(model.getChinaName());
             if (!StringUtil.isNullOrEmpty(model.getParentObjectId())) {
                 systemServerActionMongo.setName(model.getParentObjectId());
             }
