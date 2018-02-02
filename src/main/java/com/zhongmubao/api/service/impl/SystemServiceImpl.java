@@ -128,12 +128,7 @@ public class SystemServiceImpl extends BaseService implements SystemService {
 
         List<SystemServerActionModel> list = new ArrayList<>();
         for (SystemServerActionMongo systemServerActionMongo : pager.getDatas()) {
-            SystemServerActionModel viewModel = new SystemServerActionModel();
-            viewModel.setServer(systemServerActionMongo.getName());
-            viewModel.setAction(systemServerActionMongoDao.get(systemServerActionMongo.getParentObjectId()).getName());
-            viewModel.setObjectId(systemServerActionMongo.id);
-            list.add(viewModel);
-
+            list.add(formartSystemServerActionModel(systemServerActionMongo));
         }
         resultModel.setPageCount(pager.getTotalPages());
         resultModel.setList(list);
@@ -148,11 +143,7 @@ public class SystemServiceImpl extends BaseService implements SystemService {
 
         List<SystemServerActionModel> list = new ArrayList<>();
         for (SystemServerActionMongo systemServerActionMongo : systemServerActionMongoList) {
-            SystemServerActionModel viewModel = new SystemServerActionModel();
-            viewModel.setServer(systemServerActionMongo.getName());
-            viewModel.setAction(systemServerActionMongoDao.get(systemServerActionMongo.getParentObjectId()).getName());
-            viewModel.setObjectId(systemServerActionMongo.id);
-            list.add(viewModel);
+            list.add(formartSystemServerActionModel(systemServerActionMongo));
         }
         result.setList(list);
         return result;
@@ -165,5 +156,17 @@ public class SystemServiceImpl extends BaseService implements SystemService {
             throw new Exception("数据不存在");
         }
         systemServerActionMongoDao.delete(systemServerActionMongo);
+    }
+
+    private SystemServerActionModel formartSystemServerActionModel(SystemServerActionMongo systemServerActionMongo) throws Exception {
+        SystemServerActionModel viewModel = new SystemServerActionModel();
+        viewModel.setServer(systemServerActionMongo.getName());
+        if (!StringUtil.isNullOrEmpty(systemServerActionMongo.getParentObjectId())) {
+            SystemServerActionMongo systemServerActionMongo1 = systemServerActionMongoDao.get(systemServerActionMongo.getParentObjectId());
+            viewModel.setAction(systemServerActionMongo1 != null ? systemServerActionMongo1.getName() : "");
+        }
+
+        viewModel.setObjectId(systemServerActionMongo.id);
+        return viewModel;
     }
 }

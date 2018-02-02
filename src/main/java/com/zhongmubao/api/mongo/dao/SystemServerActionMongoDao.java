@@ -98,7 +98,7 @@ public class SystemServerActionMongoDao implements BaseDao<SystemServerActionMon
     public List<SystemServerActionMongo> getListByParentObjectId(String parentObjectId) throws Exception {
         Query query = new Query();
         if (StringUtil.isNullOrEmpty(parentObjectId)) {
-            query.addCriteria(Criteria.where("ParentObjectId").ne("").ne(null));
+            query.addCriteria(Criteria.where("ParentObjectId").is(null));
         } else {
             query.addCriteria(Criteria.where("ParentObjectId").is(parentObjectId));
         }
