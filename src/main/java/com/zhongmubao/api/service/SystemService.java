@@ -51,9 +51,17 @@ public interface SystemService {
     /**
      * 获取server或者action
      *
-     * @param model
-     * @return
-     * @throws Exception
+     * @param model 请求实体
+     * @return SystemServerActionListViewModel
+     * @throws Exception 异常
      */
     SystemServerActionListViewModel serverActionList(SystemServerActionListRequestModel model) throws Exception;
+
+    /**
+     * 删除SystemServerAction
+     *
+     * @param model 请求实体
+     * @throws Exception 异常
+     */
+    void DelSystemServerAction(SystemServerActionDelRequestModel model) throws Exception;
 }

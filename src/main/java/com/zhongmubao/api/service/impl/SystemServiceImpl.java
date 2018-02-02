@@ -157,4 +157,13 @@ public class SystemServiceImpl extends BaseService implements SystemService {
         result.setList(list);
         return result;
     }
+
+    @Override
+    public void DelSystemServerAction(SystemServerActionDelRequestModel model) throws Exception {
+        SystemServerActionMongo systemServerActionMongo = systemServerActionMongoDao.get(model.getObjectId());
+        if (systemServerActionMongo == null) {
+            throw new Exception("数据不存在");
+        }
+        systemServerActionMongoDao.delete(systemServerActionMongo);
+    }
 }
