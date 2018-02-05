@@ -2,9 +2,6 @@ package com.zhongmubao.api.service.impl;
 
 import com.zhongmubao.api.config.ResultStatus;
 import com.zhongmubao.api.dto.request.system.*;
-import com.zhongmubao.api.dto.response.system.PageSystemServerActionViewModel;
-import com.zhongmubao.api.dto.response.system.SystemServerActionListViewModel;
-import com.zhongmubao.api.dto.response.system.SystemServerActionModel;
 import com.zhongmubao.api.entity.Customer;
 import com.zhongmubao.api.exception.ApiException;
 import com.zhongmubao.api.mongo.dao.PlatformTrackingMongoDao;
@@ -90,83 +87,5 @@ public class SystemServiceImpl extends BaseService implements SystemService {
         platformTrackingMongo.setPlatform(model.getPlatform());
         platformTrackingMongo.setVersion(model.getVersion());
         platformTrackingMongoDao.add(platformTrackingMongo);
-    }
-
-    @Override
-    public void saveServerAction(SystemServerActionSaveRequestModel model) throws Exception {
-        if (StringUtil.isNullOrEmpty(model.getName())) {
-            throw new ApiException("名称不能为空");
-        }
-
-        if (StringUtil.isNullOrEmpty(model.getObjectId())) {
-            SystemServerActionMongo systemServerActionMongo = new SystemServerActionMongo();
-            systemServerActionMongo.setName(model.getName());
-            systemServerActionMongo.setChinaName(model.getChinaName());
-            systemServerActionMongo.setParentObjectId(model.getParentObjectId());
-            systemServerActionMongoDao.add(systemServerActionMongo);
-        } else {
-            SystemServerActionMongo systemServerActionMongo = systemServerActionMongoDao.get(model.getObjectId());
-            if (systemServerActionMongo == null) {
-                throw new ApiException("数据不存在");
-            }
-            systemServerActionMongo.setName(model.getName());
-            systemServerActionMongo.setChinaName(model.getChinaName());
-            if (!StringUtil.isNullOrEmpty(model.getParentObjectId())) {
-                systemServerActionMongo.setName(model.getParentObjectId());
-            }
-            systemServerActionMongoDao.save(systemServerActionMongo);
-        }
-    }
-
-    @Override
-    public PageSystemServerActionViewModel pagerServerAction(SystemServerActionPagerRequestModel model) throws Exception {
-        PageSystemServerActionViewModel resultModel = new PageSystemServerActionViewModel();
-
-        PageModel<SystemServerActionMongo> pager = new PageModel<>();
-        pager.setPageNo(model.getPageIndex());
-        pager = systemServerActionMongoDao.pager(model.getName(), false, pager);
-
-        List<SystemServerActionModel> list = new ArrayList<>();
-        for (SystemServerActionMongo systemServerActionMongo : pager.getDatas()) {
-            list.add(formartSystemServerActionModel(systemServerActionMongo));
-        }
-        resultModel.setPageCount(pager.getTotalPages());
-        resultModel.setList(list);
-        return resultModel;
-    }
-
-    @Override
-    public SystemServerActionListViewModel serverActionList(SystemServerActionListRequestModel model) throws Exception {
-        SystemServerActionListViewModel result = new SystemServerActionListViewModel();
-
-        List<SystemServerActionMongo> systemServerActionMongoList = systemServerActionMongoDao.getListByParentObjectId(model.getParentObjectId());
-
-        List<SystemServerActionModel> list = new ArrayList<>();
-        for (SystemServerActionMongo systemServerActionMongo : systemServerActionMongoList) {
-            list.add(formartSystemServerActionModel(systemServerActionMongo));
-        }
-        result.setList(list);
-        return result;
-    }
-
-    @Override
-    public void DelSystemServerAction(SystemServerActionDelRequestModel model) throws Exception {
-        SystemServerActionMongo systemServerActionMongo = systemServerActionMongoDao.get(model.getObjectId());
-        if (systemServerActionMongo == null) {
-            throw new Exception("数据不存在");
-        }
-        systemServerActionMongoDao.delete(systemServerActionMongo);
-    }
-
-    private SystemServerActionModel formartSystemServerActionModel(SystemServerActionMongo systemServerActionMongo) throws Exception {
-        SystemServerActionModel viewModel = new SystemServerActionModel();
-        viewModel.setServer(systemServerActionMongo.getName());
-        if (!StringUtil.isNullOrEmpty(systemServerActionMongo.getParentObjectId())) {
-            SystemServerActionMongo systemServerActionMongo1 = systemServerActionMongoDao.get(systemServerActionMongo.getParentObjectId());
-            viewModel.setAction(systemServerActionMongo1 != null ? systemServerActionMongo1.getName() : "");
-        }
-
-        viewModel.setObjectId(systemServerActionMongo.id);
-        return viewModel;
     }
 }
