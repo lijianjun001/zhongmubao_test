@@ -1,5 +1,6 @@
 package com.zhongmubao.api.service;
 
+import com.zhongmubao.api.dto.request.BaseRequest;
 import com.zhongmubao.api.dto.request.sign.*;
 import com.zhongmubao.api.dto.response.sign.MyGiftCardModel;
 import com.zhongmubao.api.dto.response.sign.*;
@@ -22,7 +23,7 @@ public interface SignService {
      * @return SignModel
      * @throws Exception 异常
      */
-    SignModel sign(Customer customer) throws Exception;
+    SignModel sign(Customer customer, BaseRequest request) throws Exception;
 
     /**
      * 礼物分页

@@ -2,6 +2,7 @@ package com.zhongmubao.api.web;
 
 import com.zhongmubao.api.authorization.annotation.Authorization;
 import com.zhongmubao.api.authorization.annotation.CurrentUser;
+import com.zhongmubao.api.dto.request.BaseRequest;
 import com.zhongmubao.api.dto.request.my.RealNameRequestModel;
 import com.zhongmubao.api.dto.request.sign.*;
 import com.zhongmubao.api.dto.response.ReponseModel;
@@ -33,6 +34,7 @@ import org.springframework.web.bind.annotation.*;
 public class CustomerController {
     private final SignService signService;
     private final CustomerService customerService;
+
     @Autowired
     public CustomerController(SignService signService, CustomerService customerService) {
         this.signService = signService;
@@ -41,6 +43,7 @@ public class CustomerController {
 
 
     //region 个人中心 新浪OR汇付
+
     /***
      * 个人中心 实名OR开户
      * @param customer 客户
@@ -71,9 +74,9 @@ public class CustomerController {
      */
     @RequestMapping(value = "/sign", method = RequestMethod.POST, consumes = "application/json")
     @Authorization
-    public ResponseEntity<ReponseModel> sign(@CurrentUser Customer customer) {
+    public ResponseEntity<ReponseModel> sign(@CurrentUser Customer customer, HttpEntity<BaseRequest> model) {
         try {
-            SignModel signModel = signService.sign(customer);
+            SignModel signModel = signService.sign(customer, model.getBody());
             return new ResponseEntity<>(ReponseModel.ok(signModel), HttpStatus.OK);
         } catch (ApiException ex) {
             return new ResponseEntity<>(ReponseModel.error(ex.getStatus()), HttpStatus.OK);

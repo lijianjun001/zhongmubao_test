@@ -8,6 +8,7 @@ import com.zhongmubao.api.config.Constants;
 import com.zhongmubao.api.config.ResultStatus;
 import com.zhongmubao.api.config.enmu.*;
 import com.zhongmubao.api.dao.*;
+import com.zhongmubao.api.dto.request.BaseRequest;
 import com.zhongmubao.api.dto.request.sign.*;
 import com.zhongmubao.api.dto.response.sign.*;
 import com.zhongmubao.api.dto.response.sign.list.PageSignGiftModel;
@@ -62,7 +63,7 @@ public class SignServiceImpl extends BaseService implements SignService {
     //region 签到相关
 
     @Override
-    public SignModel sign(Customer customer) throws Exception {
+    public SignModel sign(Customer customer, BaseRequest request) throws Exception {
         int customerId = customer.getId();
         String signInfo;
         Date now = new Date();
@@ -81,6 +82,7 @@ public class SignServiceImpl extends BaseService implements SignService {
         Date monthBegin = DateUtil.monthFirstDay();
         Date monthEnd = DateUtil.monthLastDay();
         int maxDaySecretGiftCount = 3;
+        String platform = request.getPlatform();
 
         RedisLock lock = new RedisLock(redisCache.redisHelper.redisTemplate, Constants.LOCK_SIGN_KEY + customerId, 10000, 20000);
         try {
@@ -266,7 +268,7 @@ public class SignServiceImpl extends BaseService implements SignService {
             throw new ApiException(ResultStatus.RED_PACKAGE_NOT_EXIT);
         }
         Date expired = DateUtil.formatMongo(new Date());
-        ShareCardMongo shareCardMongo = shareCardMongoDao.getByCustomerIdAndTypeAndExpired(customerId, SignGiftType.MERGE_CARD.getName(),expired);
+        ShareCardMongo shareCardMongo = shareCardMongoDao.getByCustomerIdAndTypeAndExpired(customerId, SignGiftType.MERGE_CARD.getName(), expired);
         if (null == shareCardMongo) {
             throw new ApiException(ResultStatus.MERGE_CARD_NOT_EXIT);
         }
@@ -291,7 +293,7 @@ public class SignServiceImpl extends BaseService implements SignService {
         }
         Date expired = DateUtil.formatMongo(new Date());
         int packageId = model.getPackageId();
-        ShareCardMongo shareCardMongo = shareCardMongoDao.getByCustomerIdAndTypeAndExpired(customerId, SignGiftType.DELAYED_CARD.getName(),expired);
+        ShareCardMongo shareCardMongo = shareCardMongoDao.getByCustomerIdAndTypeAndExpired(customerId, SignGiftType.DELAYED_CARD.getName(), expired);
         if (null == shareCardMongo) {
             throw new ApiException(ResultStatus.DELAYED_CARD_NOT_EXIT);
         }
