@@ -129,6 +129,8 @@ public class SignServiceImpl extends BaseService implements SignService {
 
                 //设置今天已分享
                 redisCache.saveCustomerIsShare(customerId);
+
+                //添加到数据库
                 CustomerShare customerShare=new CustomerShare();
                 customerShare.setCustomerId(customerId);
                 customerShare.setPlatform(platform);
