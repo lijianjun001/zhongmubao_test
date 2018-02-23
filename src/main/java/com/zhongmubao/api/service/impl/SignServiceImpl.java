@@ -48,9 +48,10 @@ public class SignServiceImpl extends BaseService implements SignService {
     private final SheepOrderDao sheepOrderDao;
     private final ExtActivityRecordDao activityRecordDao;
     private final CustomerNoticMongoDao customerNoticMongoDao;
+    private final CustomerShareDao customerShareDao;
 
     @Autowired
-    public SignServiceImpl(ExtRedPackageDao extRedPackageDao, ShareCardMongoDao shareCardMongoDao, CustomerAddressDao customerAddressDao, RedisCache redisCache, SheepOrderDao sheepOrderDao, ExtActivityRecordDao activityRecordDao, CustomerNoticMongoDao customerNoticMongoDao) {
+    public SignServiceImpl(ExtRedPackageDao extRedPackageDao, ShareCardMongoDao shareCardMongoDao, CustomerAddressDao customerAddressDao, RedisCache redisCache, SheepOrderDao sheepOrderDao, ExtActivityRecordDao activityRecordDao, CustomerNoticMongoDao customerNoticMongoDao, CustomerShareDao customerShareDao) {
         this.extRedPackageDao = extRedPackageDao;
         this.shareCardMongoDao = shareCardMongoDao;
         this.customerAddressDao = customerAddressDao;
@@ -58,6 +59,7 @@ public class SignServiceImpl extends BaseService implements SignService {
         this.sheepOrderDao = sheepOrderDao;
         this.activityRecordDao = activityRecordDao;
         this.customerNoticMongoDao = customerNoticMongoDao;
+        this.customerShareDao = customerShareDao;
     }
 
     //region 签到相关
@@ -127,6 +129,12 @@ public class SignServiceImpl extends BaseService implements SignService {
 
                 //设置今天已分享
                 redisCache.saveCustomerIsShare(customerId);
+                CustomerShare customerShare=new CustomerShare();
+                customerShare.setCustomerId(customerId);
+                customerShare.setPlatform(platform);
+                customerShare.setCreateTime(now);
+                customerShareDao.insertCustomerShare(customerShare);
+
                 //endregion
 
                 //region 礼物
