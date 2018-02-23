@@ -2,6 +2,7 @@ package com.zhongmubao.api.web;
 
 import com.zhongmubao.api.authorization.annotation.Authorization;
 import com.zhongmubao.api.authorization.annotation.CurrentUser;
+import com.zhongmubao.api.config.Constants;
 import com.zhongmubao.api.dto.request.BaseRequest;
 import com.zhongmubao.api.dto.request.my.RealNameRequestModel;
 import com.zhongmubao.api.dto.request.sign.*;
@@ -23,6 +24,10 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * 客户控制器
@@ -54,6 +59,7 @@ public class CustomerController {
     @Authorization
     public ResponseEntity<ReponseModel> choosePaymentRealName(@CurrentUser Customer customer, HttpEntity<RealNameRequestModel> model) {
         try {
+
             RealNameViewModel realNameViewModel = customerService.choosePaymentRealName(customer, model.getBody());
             return new ResponseEntity<>(ReponseModel.ok(realNameViewModel), HttpStatus.OK);
         } catch (ApiException ex) {
@@ -76,7 +82,13 @@ public class CustomerController {
     @Authorization
     public ResponseEntity<ReponseModel> sign(@CurrentUser Customer customer, HttpEntity<BaseRequest> model) {
         try {
-            SignModel signModel = signService.sign(customer, model.getBody());
+            //暂时这样处理request，等以后app更新就不需要这要操作
+            HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+            BaseRequest baseRequestModel = model.getBody();
+            baseRequestModel.setPlatform(request.getHeader(Constants.PLATFORM));
+
+            SignModel signModel = signService.sign(customer, baseRequestModel);
+
             return new ResponseEntity<>(ReponseModel.ok(signModel), HttpStatus.OK);
         } catch (ApiException ex) {
             return new ResponseEntity<>(ReponseModel.error(ex.getStatus()), HttpStatus.OK);

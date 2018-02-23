@@ -27,4 +27,8 @@
         <param-value>classpath:log4j.properties</param-value>
     </context-param>
 
+    <!-- 在controller中获取httprequest -->
+    <listener>
+        <listener-class>org.springframework.web.context.request.RequestContextListener</listener-class>
+    </listener>
 </web-app>
