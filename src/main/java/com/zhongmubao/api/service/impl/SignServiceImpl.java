@@ -135,6 +135,7 @@ public class SignServiceImpl extends BaseService implements SignService {
                 customerShare.setCustomerId(customerId);
                 customerShare.setPlatform(platform);
                 customerShare.setCreateTime(now);
+                customerShare.setPrice(price);
                 customerShareDao.insertCustomerShare(customerShare);
 
                 //endregion

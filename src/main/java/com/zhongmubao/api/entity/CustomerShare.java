@@ -11,6 +11,7 @@ public class CustomerShare {
     private int id;
     private int customerId;
     private String platform;
+    private double price;
     private Date createTime;
 
     public int getId() {
@@ -35,6 +36,14 @@ public class CustomerShare {
 
     public void setPlatform(String platform) {
         this.platform = platform;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
     }
 
     public Date getCreateTime() {

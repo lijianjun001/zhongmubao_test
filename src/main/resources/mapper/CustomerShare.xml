@@ -7,11 +7,13 @@
         INSERT ignore INTO CustomerShare (
         CustomerId,
         Platform,
+        Price,
         CreateTime
         )
         VALUES (
         #{customerId},
         #{platform},
+        #{price},
         #{createTime}
         )
     </insert>
