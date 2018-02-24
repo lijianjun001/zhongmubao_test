@@ -4,7 +4,7 @@ package com.zhongmubao.api.dto.response.my.menu;
  * 个人中心 列表单项
  * @author xy
  */
-public class ListItemModel {
+public class MenuItemModel {
 
     public String getIcon() {
         return icon;

@@ -8,13 +8,13 @@ import java.util.List;
  */
 public class ListViewModel {
 
-    public List<ListItemModel> getList() {
+    public List<MenuItemModel> getList() {
         return list;
     }
 
-    public void setList(List<ListItemModel> list) {
+    public void setList(List<MenuItemModel> list) {
         this.list = list;
     }
 
-    private List<ListItemModel> list;
+    private List<MenuItemModel> list;
 }
