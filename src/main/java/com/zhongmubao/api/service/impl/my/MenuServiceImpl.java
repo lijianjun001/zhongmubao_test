@@ -140,16 +140,6 @@ public class MenuServiceImpl extends BaseService implements MenuService {
         menuItemModelSettings.setJumpType("01");
         menuItemModels.add(menuItemModelSettings);
 
-/*
-MenuItemModel listItemModelHfAuth = new MenuItemModel();
-listItemModelHfAuth.setIcon("personal-help.png");
-listItemModelHfAuth.setTitle("汇付开户");
-listItemModelHfAuth.setUrl("/Customer/HfAuth");
-listItemModelHfAuth.setAction("hfauth");
-listItemModelHfAuth.setJumpType("00");
-menuItemModels.add(listItemModelHfAuth);
-*/
-
         for (MenuItemModel menuItemModel :
                 menuItemModels) {
             menuItemModel.setUrl(url + menuItemModel.getUrl());
