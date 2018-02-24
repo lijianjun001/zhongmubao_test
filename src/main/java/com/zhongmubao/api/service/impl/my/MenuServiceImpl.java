@@ -1,4 +1,5 @@
 package com.zhongmubao.api.service.impl.my;
+
 import com.zhongmubao.api.config.Constants;
 import com.zhongmubao.api.config.ResultStatus;
 import com.zhongmubao.api.config.enmu.Domain;
@@ -67,12 +68,12 @@ public class MenuServiceImpl extends BaseService implements MenuService {
         listItemModels.add(listItemModelRemindIndex);
 
 
-        String dateFormat ="yyyy-MM-dd HH:mm:ss";
+        String dateFormat = "yyyy-MM-dd HH:mm:ss";
         String dateStr = "2017-12-01 00:00:00";
         CustomerSina customerSina = customerSinaDao.getCustomerSinaById(customer.getId());
         CustomerHF customerHF = customerHFDao.getCustomerHFById(customer.getId());
         if (customer.getCreated().getTime() < (new SimpleDateFormat(dateFormat).parse(dateStr)).getTime()) {
-            if(customerSina!=null) {
+            if (customerSina != null) {
                 ListItemModel listItemModelWallet = new ListItemModel();
                 listItemModelWallet.setIcon("personal-qianbao.png");
                 listItemModelWallet.setTitle("我的钱包");
@@ -82,24 +83,24 @@ public class MenuServiceImpl extends BaseService implements MenuService {
                 listItemModels.add(listItemModelWallet);
             }
         }
-        if(customerHF!=null) {
-         if(customerHF.getIsBandCard()&&customerHF.getIsBosAcct()&&!StringUtil.isNullOrEmpty(customerHF.getUsrCustId())){
-             ListItemModel listItemModelHfWallet = new ListItemModel();
-             listItemModelHfWallet.setIcon("personal-qianbao.png");
-             listItemModelHfWallet.setTitle("汇付钱包");
-             listItemModelHfWallet.setUrl("/Customer/HfWallet");
-             listItemModelHfWallet.setAction("hfwallet");
-             listItemModelHfWallet.setJumpType("00");
-             listItemModels.add(listItemModelHfWallet);
+        if (customerHF != null) {
+            if (customerHF.getIsBandCard() && customerHF.getIsBosAcct() && !StringUtil.isNullOrEmpty(customerHF.getUsrCustId())) {
+                ListItemModel listItemModelHfWallet = new ListItemModel();
+                listItemModelHfWallet.setIcon("personal-qianbao.png");
+                listItemModelHfWallet.setTitle("汇付钱包");
+                listItemModelHfWallet.setUrl("/Customer/HfWallet");
+                listItemModelHfWallet.setAction("hfwallet");
+                listItemModelHfWallet.setJumpType("00");
+                listItemModels.add(listItemModelHfWallet);
 
-             ListItemModel listItemModelHfCard = new ListItemModel();
-             listItemModelHfCard.setIcon("personal-yinhangka.png");
-             listItemModelHfCard.setTitle("汇付银行卡");
-             listItemModelHfCard.setUrl("/Customer/HfCard");
-             listItemModelHfCard.setAction("hfcard");
-             listItemModelHfCard.setJumpType("00");
-             listItemModels.add(listItemModelHfCard);
-         }
+                ListItemModel listItemModelHfCard = new ListItemModel();
+                listItemModelHfCard.setIcon("personal-yinhangka.png");
+                listItemModelHfCard.setTitle("汇付银行卡");
+                listItemModelHfCard.setUrl("/Customer/HfCard");
+                listItemModelHfCard.setAction("hfcard");
+                listItemModelHfCard.setJumpType("00");
+                listItemModels.add(listItemModelHfCard);
+            }
         }
 
 
