@@ -112,10 +112,10 @@ public class BaseService {
      * @param price  羊只单价
      * @param rate   比率
      * @param period 周期
-     * @return
+     * @return 收益
      * @author 米立林
      */
-    public double calcProfitEx(double price, double rate, int period) {
+    protected double calcProfitEx(double price, double rate, int period) {
         if (period == SheepProjectPeriod.PERIOD_120.getName() && rate == 13.50) {
             return Math.ceil(price * rate / 100 * period / 365);
         } else {
