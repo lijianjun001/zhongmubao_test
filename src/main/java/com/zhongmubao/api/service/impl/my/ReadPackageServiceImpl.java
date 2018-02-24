@@ -119,7 +119,7 @@ public class ReadPackageServiceImpl implements ReadPackageService {
             groupModel.setNewCount(Integer.parseInt(String.valueOf(statsTotalNewCount.getSum())));
 
             groupRedPacket.sort((o1, o2) -> (o1.getExpTime().compareTo(o2.getExpTime())));
-            ExtRedPackageGroup redPacket = groupRedPacket.stream().findFirst().get();
+            ExtRedPackageGroup redPacket = groupRedPacket.stream().findFirst().isPresent() ? groupRedPacket.stream().findFirst().get() : new ExtRedPackageGroup();
             String title = "零钱红包";
             groupModel.setPrice(title);
             groupModel.setType(redPacket.getType());
@@ -190,8 +190,7 @@ public class ReadPackageServiceImpl implements ReadPackageService {
         List<RedPackageModel> list = formatRedpackageModel(pager);
 
         // 更新是否最新红包
-        for (int i = 0; i < list.size(); i++) {
-            RedPackageModel item = list.get(i);
+        for (RedPackageModel item : list) {
             if (null != item && item.isNew()) {
                 extRedPackageDao.updateIsNewByCustomerIdAndId(customer.getId(), item.getId(), 0);
             }
