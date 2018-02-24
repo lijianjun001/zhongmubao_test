@@ -140,8 +140,7 @@ public class MenuServiceImpl extends BaseService implements MenuService {
         menuItemModelSettings.setJumpType("01");
         menuItemModels.add(menuItemModelSettings);
 
-        for (MenuItemModel menuItemModel :
-                menuItemModels) {
+        for (MenuItemModel menuItemModel : menuItemModels) {
             menuItemModel.setUrl(url + menuItemModel.getUrl());
             menuItemModel.setIcon(Constants.RESOURES_ADDRESS_IMAGES + menuItemModel.getIcon());
         }
