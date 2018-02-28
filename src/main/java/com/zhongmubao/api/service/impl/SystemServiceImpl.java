@@ -1,25 +1,29 @@
 package com.zhongmubao.api.service.impl;
 
+import com.zhongmubao.api.config.Constants;
 import com.zhongmubao.api.config.ResultStatus;
+import com.zhongmubao.api.config.enmu.Activity;
+import com.zhongmubao.api.config.enmu.Domain;
+import com.zhongmubao.api.config.enmu.Platform;
+import com.zhongmubao.api.config.enmu.ShareSuccessType;
 import com.zhongmubao.api.dto.request.system.*;
+import com.zhongmubao.api.dto.response.system.ShareInfoViewModel;
 import com.zhongmubao.api.entity.Customer;
 import com.zhongmubao.api.exception.ApiException;
 import com.zhongmubao.api.mongo.dao.PlatformTrackingMongoDao;
+import com.zhongmubao.api.mongo.dao.ShareContentMongoDao;
 import com.zhongmubao.api.mongo.dao.SystemServerActionMongoDao;
 import com.zhongmubao.api.mongo.dao.TouTiaoAdvMongoDao;
 import com.zhongmubao.api.mongo.entity.PlatformTrackingMongo;
-import com.zhongmubao.api.mongo.entity.SystemServerActionMongo;
+import com.zhongmubao.api.mongo.entity.ShareContentMongo;
 import com.zhongmubao.api.mongo.entity.TouTiaoAdvMongo;
-import com.zhongmubao.api.mongo.entity.base.PageModel;
 import com.zhongmubao.api.service.SystemService;
 import com.zhongmubao.api.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.net.URLEncoder;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 /**
  * 系统服务实现
@@ -32,12 +36,14 @@ public class SystemServiceImpl extends BaseService implements SystemService {
     private final TouTiaoAdvMongoDao touTiaoAdvMongoDao;
     private final PlatformTrackingMongoDao platformTrackingMongoDao;
     private final SystemServerActionMongoDao systemServerActionMongoDao;
+    private final ShareContentMongoDao shareContentMongoDao;
 
     @Autowired
-    public SystemServiceImpl(TouTiaoAdvMongoDao touTiaoAdvMongoDao, PlatformTrackingMongoDao platformTrackingMongoDao, SystemServerActionMongoDao systemServerActionMongoDao) {
+    public SystemServiceImpl(TouTiaoAdvMongoDao touTiaoAdvMongoDao, PlatformTrackingMongoDao platformTrackingMongoDao, SystemServerActionMongoDao systemServerActionMongoDao, ShareContentMongoDao shareContentMongoDao) {
         this.touTiaoAdvMongoDao = touTiaoAdvMongoDao;
         this.platformTrackingMongoDao = platformTrackingMongoDao;
         this.systemServerActionMongoDao = systemServerActionMongoDao;
+        this.shareContentMongoDao = shareContentMongoDao;
     }
 
     @Override
@@ -87,5 +93,56 @@ public class SystemServiceImpl extends BaseService implements SystemService {
         platformTrackingMongo.setPlatform(model.getPlatform());
         platformTrackingMongo.setVersion(model.getVersion());
         platformTrackingMongoDao.add(platformTrackingMongo);
+    }
+
+    @Override
+    public ShareInfoViewModel shareInfo(Customer customer, ShareInfoRequestModel model) throws Exception {
+        if (null == model || StringUtil.isNullOrEmpty(model.getName())) {
+            throw new ApiException(ResultStatus.PARAMETER_MISSING);
+        }
+        if (null == customer) {
+            throw new ApiException(ResultStatus.PARAMETER_MISSING);
+        }
+        String shareName = model.getName();
+        if (shareName.contains(Constants.BACKSLASH)) {
+            shareName = shareName.replaceAll(Constants.BACKSLASH, Constants.EMPTY_STRING);
+        }
+        ShareInfoViewModel viewModel = new ShareInfoViewModel();
+        ShareContentMongo shareContent = shareContentMongoDao.getByType(shareName);
+        if (null == shareContent) {
+            throw new ApiException(ResultStatus.DATA_QUERY_FAILED);
+        }
+        viewModel.setType(shareContent.getType());
+        viewModel.setShareTo(shareContent.getShareTo());
+        String shareLink = "";
+        String platform = model.getPlatform();
+        if (Platform.IOS.getName().equals(platform)) {
+            shareContent.getShareSuccessLink().replace(Constants.DOMAIN_PLACEHOLDER, Domain.IOS.getDomain());
+        } else if (Platform.ANDROID.getName().equals(platform)) {
+            shareContent.getShareSuccessLink().replace(Constants.DOMAIN_PLACEHOLDER, Domain.ANDROID.getDomain());
+        } else if (Platform.WEIXIN.getName().equals(platform)) {
+            shareContent.getShareSuccessLink().replace(Constants.DOMAIN_PLACEHOLDER, Domain.WEIXIN.getDomain());
+        } else if (Platform.WAP.getName().equals(platform)) {
+            shareContent.getShareSuccessLink().replace(Constants.DOMAIN_PLACEHOLDER, Domain.WAP.getDomain());
+        }
+        viewModel.setShareSuccessLink(shareLink);
+        if (Platform.IOS.getName().equals(platform) || Platform.ANDROID.getName().equals(platform)) {
+            shareContent.setShareSuccessType(ShareSuccessType.FREEDOM.getName());
+        } else {
+            shareContent.setShareSuccessType(ShareSuccessType.REDIRECT.getName());
+        }
+        viewModel.setShareSuccessType(shareContent.getShareSuccessType());
+        viewModel.setShareSuccessMessage(shareContent.getShareSuccessMessage());
+        String name = customer.getName();
+        if (StringUtil.isNullOrEmpty(name)) {
+            // 优先使用真实姓名，为空则使用昵称
+            name = customer.getNickName();
+        }
+        viewModel.setShareTitle(shareContent.getTitle().replace(Constants.TITLE_PLACEHOLDER, name));
+        viewModel.setShareContent(shareContent.getContent());
+        viewModel.setShareIcon(shareContent.getIcon());
+        viewModel.setShareUrl(shareContent.getUrl().replaceAll(Constants.SIGN_PLACEHOLDER, customer.getSign()));
+
+        return viewModel;
     }
 }

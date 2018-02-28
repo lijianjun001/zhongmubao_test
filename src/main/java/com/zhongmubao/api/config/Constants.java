@@ -229,6 +229,7 @@ public class Constants {
 
     /**
      * 红包类型中文名
+     *
      * @param type 红包类型
      * @return
      */
@@ -281,4 +282,29 @@ public class Constants {
 
         return typeStr;
     }
+
+    /**
+     * domain占位符
+     */
+    public static final String DOMAIN_PLACEHOLDER = "{domain}";
+
+    /**
+     * sign占位符
+     */
+    public static final String SIGN_PLACEHOLDER = "{sign}";
+
+    /**
+     * name占位符
+     */
+    public static final String TITLE_PLACEHOLDER = "{name}";
+
+    /**
+     * 反斜杠
+     */
+    public static final String BACKSLASH = "/";
+
+    /**
+     * 空字符串
+     */
+    public static final String EMPTY_STRING = "";
 }

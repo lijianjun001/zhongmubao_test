@@ -1,6 +1,7 @@
 package com.zhongmubao.api.service;
 
 import com.zhongmubao.api.dto.request.system.*;
+import com.zhongmubao.api.dto.response.system.ShareInfoViewModel;
 import com.zhongmubao.api.entity.Customer;
 
 /**
@@ -12,9 +13,10 @@ public interface SystemService {
 
     /**
      * 头条广告
-     * @author xy
+     *
      * @param model 请求model
      * @throws Exception 错误信息
+     * @author xy
      */
     void touTiaoAdv(TouTiaoAdvRequestModel model) throws Exception;
 
@@ -27,4 +29,15 @@ public interface SystemService {
      * @author 孙阿龙
      */
     void platformTracking(Customer customer, PlatformTrackingRequestModel model) throws Exception;
+
+    /**
+     * 分享信息
+     *
+     * @param customer 客户
+     * @param model    请求model
+     * @return ShareInfoViewModel
+     * @throws Exception 异常
+     * @author 米立林
+     */
+    ShareInfoViewModel shareInfo(Customer customer, ShareInfoRequestModel model) throws Exception;
 }

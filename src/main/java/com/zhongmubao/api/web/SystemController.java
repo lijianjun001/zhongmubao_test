@@ -4,6 +4,7 @@ import com.zhongmubao.api.authorization.annotation.Authorization;
 import com.zhongmubao.api.authorization.annotation.CurrentUser;
 import com.zhongmubao.api.dto.request.system.*;
 import com.zhongmubao.api.dto.response.ReponseModel;
+import com.zhongmubao.api.dto.response.system.ShareInfoViewModel;
 import com.zhongmubao.api.entity.Customer;
 import com.zhongmubao.api.exception.ApiException;
 import com.zhongmubao.api.service.SystemService;
@@ -61,6 +62,26 @@ public class SystemController {
     public ResponseEntity<ReponseModel> platformTracking(@CurrentUser Customer customer, HttpEntity<PlatformTrackingRequestModel> model) {
         try {
             systemService.platformTracking(customer, model.getBody());
+            return new ResponseEntity<>(ReponseModel.ok(), HttpStatus.OK);
+        } catch (ApiException ex) {
+            return new ResponseEntity<>(ReponseModel.error(ex.getStatus()), HttpStatus.OK);
+        } catch (Exception ex) {
+            return new ResponseEntity<>(ReponseModel.error(ex, this.getClass()), HttpStatus.OK);
+        }
+    }
+
+    /**
+     * 分享
+     *
+     * @param model 请求实体
+     * @return ShareInfoViewModel
+     * @author 米立林
+     */
+    @RequestMapping(value = "/shareInfo", method = RequestMethod.POST, consumes = "application/json")
+    @Authorization(onlyGetCustomer = true)
+    public ResponseEntity<ReponseModel> shareInfo(@CurrentUser Customer customer,HttpEntity<ShareInfoRequestModel> model) {
+        try {
+            ShareInfoViewModel viewModel = systemService.shareInfo(customer,model.getBody());
             return new ResponseEntity<>(ReponseModel.ok(), HttpStatus.OK);
         } catch (ApiException ex) {
             return new ResponseEntity<>(ReponseModel.error(ex.getStatus()), HttpStatus.OK);
