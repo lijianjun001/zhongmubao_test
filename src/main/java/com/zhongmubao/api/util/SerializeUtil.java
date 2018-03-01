@@ -54,6 +54,5 @@ public class SerializeUtil {
 
         String value = je.getAsJsonObject().has(key) ? je.getAsJsonObject().get(key).toString() : null;
         return value == null ? null : value.replace("\"", "");
-
     }
 }
