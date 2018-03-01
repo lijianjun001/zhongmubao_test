@@ -9,7 +9,7 @@ import com.zhongmubao.api.dto.request.BaseRequest;
  */
 public class ShareInfoRequestModel extends BaseRequest {
     private String name;
-    private String imageUrl;
+    private String param;
 
     public String getName() {
         return name;
@@ -19,11 +19,11 @@ public class ShareInfoRequestModel extends BaseRequest {
         this.name = name;
     }
 
-    public String getImageUrl() {
-        return imageUrl;
+    public String getParam() {
+        return param;
     }
 
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
+    public void setParam(String param) {
+        this.param = param;
     }
 }

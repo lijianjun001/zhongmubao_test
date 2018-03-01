@@ -3,7 +3,6 @@ package com.zhongmubao.api.service.impl;
 import com.zhongmubao.api.config.Constants;
 import com.zhongmubao.api.config.ResultStatus;
 import com.zhongmubao.api.config.enmu.Domain;
-import com.zhongmubao.api.config.enmu.Platform;
 import com.zhongmubao.api.dto.request.system.*;
 import com.zhongmubao.api.dto.response.system.ShareInfoViewModel;
 import com.zhongmubao.api.entity.Customer;
@@ -125,7 +124,7 @@ public class SystemServiceImpl extends BaseService implements SystemService {
         String shareLink = shareContent.getShareSuccessLink().replace(Constants.DOMAIN_PLACEHOLDER, domain);
         String url = shareContent.getUrl().replace(Constants.SIGN_PLACEHOLDER, sign).replace(Constants.DOMAIN_PLACEHOLDER, domain);
         String title = shareContent.getTitle().replace(Constants.TITLE_PLACEHOLDER, name);
-        String imageUrl = SerializeUtil.getJsonStringValueByKey(model.getImageUrl(), "imageUrl");
+        String imageUrl = SerializeUtil.getJsonStringValueByKey(model.getParam(), "imageUrl");
         imageUrl = StringUtil.isNullOrEmpty(imageUrl) ? shareContent.getImg() : imageUrl;
 
         ShareInfoViewModel viewModel = new ShareInfoViewModel();
