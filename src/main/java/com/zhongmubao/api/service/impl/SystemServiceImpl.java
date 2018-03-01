@@ -109,6 +109,9 @@ public class SystemServiceImpl extends BaseService implements SystemService {
         String sign = Constants.EMPTY_STRING;
         String photo = shareContent.getIcon();
 
+        String shareName = model.getName().replace(Constants.BACKSLASH, Constants.EMPTY_STRING).toLowerCase();
+
+        ShareContentMongo shareContent = shareContentMongoDao.getByType(shareName);
         if (null == shareContent) {
             throw new ApiException(ResultStatus.DATA_QUERY_FAILED);
         }
@@ -135,6 +138,7 @@ public class SystemServiceImpl extends BaseService implements SystemService {
         viewModel.setShareSuccessLink(shareLink);
         viewModel.setShareSuccessType(shareContent.getShareSuccessType());
         viewModel.setShareSuccessMessage(shareContent.getShareSuccessMessage());
+        viewModel.setShareIcon(shareContent.getIcon());
         viewModel.setShareTitle(title);
         viewModel.setShareUrl(url);
         viewModel.setShareIcon(photo);
