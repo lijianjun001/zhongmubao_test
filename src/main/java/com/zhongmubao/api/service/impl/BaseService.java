@@ -1,9 +1,7 @@
 package com.zhongmubao.api.service.impl;
 
 import com.zhongmubao.api.config.WxTemplate;
-import com.zhongmubao.api.config.enmu.RedPackageType;
-import com.zhongmubao.api.config.enmu.SheepProjectPeriod;
-import com.zhongmubao.api.config.enmu.SystemPushType;
+import com.zhongmubao.api.config.enmu.*;
 import com.zhongmubao.api.dao.ExtRedPackageDao;
 import com.zhongmubao.api.entity.Customer;
 import com.zhongmubao.api.entity.ExtRedPackage;
@@ -121,5 +119,24 @@ public class BaseService {
         } else {
             return (price * rate / 100 * period / 365);
         }
+    }
+
+    /**
+     * 通过平台获取平台域名
+     *
+     * @param platform 平台
+     * @return
+     */
+    protected String getDomainByPlatform(String platform) {
+        if (Platform.IOS.getName().equals(platform)) {
+            return Domain.IOS.getDomain();
+        } else if (Platform.ANDROID.getName().equals(platform)) {
+            return Domain.ANDROID.getDomain();
+        } else if (Platform.WEIXIN.getName().equals(platform)) {
+            return Domain.WEIXIN.getDomain();
+        } else if (Platform.WAP.getName().equals(platform)) {
+            return Domain.WAP.getDomain();
+        }
+        return "";
     }
 }

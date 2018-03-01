@@ -15,7 +15,7 @@ import java.lang.reflect.Method;
 
 /**
  * 自定义拦截器，判断此次请求是否有权限
- *
+ * @author 孙阿龙
  * @see com.zhongmubao.api.authorization.annotation.Authorization
  */
 @Component

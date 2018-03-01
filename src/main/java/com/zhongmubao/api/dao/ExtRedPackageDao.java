@@ -3,6 +3,7 @@ package com.zhongmubao.api.dao;
 import com.github.pagehelper.Page;
 import com.zhongmubao.api.entity.ExtRedPackage;
 import com.zhongmubao.api.entity.ext.ExtRedPackageGroup;
+import com.zhongmubao.api.util.datasource.DataSource;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.Date;
@@ -152,6 +153,7 @@ public interface ExtRedPackageDao {
      * 红包分组（金额分组）
      *
      * @param customerId 用户id
+     * @param  type 类型
      * @return List<ExtRedPackageGroup>
      */
     List<ExtRedPackageGroup> getByCustomerIdGroupByPrice(@Param("customerId") int customerId, @Param("type") String type);

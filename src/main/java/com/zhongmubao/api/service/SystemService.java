@@ -40,4 +40,6 @@ public interface SystemService {
      * @author 米立林
      */
     ShareInfoViewModel shareInfo(Customer customer, ShareInfoRequestModel model) throws Exception;
+
+//    void testTransaction();
 }

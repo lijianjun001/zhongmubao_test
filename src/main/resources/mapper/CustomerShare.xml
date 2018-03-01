@@ -3,8 +3,8 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.zhongmubao.api.dao.CustomerShareDao">
-    <insert id="insertCustomerShare">
-        INSERT ignore INTO CustomerShare (
+    <insert id="insertCustomerShare" parameterType="CustomerShare" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO CustomerShare (
         CustomerId,
         Platform,
         Price,

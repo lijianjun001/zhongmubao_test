@@ -6,7 +6,7 @@ import org.apache.ibatis.annotations.Param;
 /**
  * 新浪客户数据
  *
- * author xy
+ * @author xy
  */
 public interface CustomerSinaDao {
 

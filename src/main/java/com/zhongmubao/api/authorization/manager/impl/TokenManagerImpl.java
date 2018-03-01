@@ -5,6 +5,7 @@ import com.zhongmubao.api.authorization.model.TokenModel;
 import com.zhongmubao.api.util.DateUtil;
 import com.zhongmubao.api.mongo.dao.SystemTokenMongoDao;
 import com.zhongmubao.api.mongo.entity.SystemTokenMongo;
+import com.zhongmubao.api.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -55,6 +56,10 @@ public class TokenManagerImpl implements TokenManager {
     public TokenModel getToken(String authentication,String platform) {
 
         try {
+            if (StringUtil.isNullOrEmpty(authentication) || StringUtil.isNullOrEmpty(platform)) {
+                return null;
+            }
+
             SystemTokenMongo systemToken = systemTokenMongoDao.getByTokenAndPlatform(authentication,platform);
             if(systemToken==null) {
                 return null;

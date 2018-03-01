@@ -6,7 +6,7 @@ import org.apache.ibatis.annotations.Param;
 /**
  * 汇付客户数据
  *
- * author xy
+ * @author xy
  */
 public interface CustomerHFDao {
     /**

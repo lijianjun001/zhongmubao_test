@@ -89,4 +89,16 @@ public class SystemController {
             return new ResponseEntity<>(ReponseModel.error(ex, this.getClass()), HttpStatus.OK);
         }
     }
+
+    @RequestMapping(value = "/testTransaction", method = RequestMethod.POST, consumes = "application/json")
+    public ResponseEntity<ReponseModel> testTransaction() {
+        try {
+            systemService.testTransaction();
+            return new ResponseEntity<>(ReponseModel.ok(), HttpStatus.OK);
+        } catch (ApiException ex) {
+            return new ResponseEntity<>(ReponseModel.error(ex.getStatus()), HttpStatus.OK);
+        } catch (Exception ex) {
+            return new ResponseEntity<>(ReponseModel.error(ex, this.getClass()), HttpStatus.OK);
+        }
+    }
 }

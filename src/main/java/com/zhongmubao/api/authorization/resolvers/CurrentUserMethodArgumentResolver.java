@@ -12,10 +12,10 @@ import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
-import org.springframework.web.multipart.support.MissingServletRequestPartException;
 
 /**
  * 增加方法注入，将含有CurrentUser注解的方法参数注入当前登录用户
+ * @author 孙阿龙
  * @see CurrentUser
  */
 @Component

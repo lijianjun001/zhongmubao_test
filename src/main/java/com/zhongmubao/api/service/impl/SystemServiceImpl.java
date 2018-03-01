@@ -2,10 +2,8 @@ package com.zhongmubao.api.service.impl;
 
 import com.zhongmubao.api.config.Constants;
 import com.zhongmubao.api.config.ResultStatus;
-import com.zhongmubao.api.config.enmu.Activity;
 import com.zhongmubao.api.config.enmu.Domain;
 import com.zhongmubao.api.config.enmu.Platform;
-import com.zhongmubao.api.config.enmu.ShareSuccessType;
 import com.zhongmubao.api.dto.request.system.*;
 import com.zhongmubao.api.dto.response.system.ShareInfoViewModel;
 import com.zhongmubao.api.entity.Customer;
@@ -97,15 +95,20 @@ public class SystemServiceImpl extends BaseService implements SystemService {
 
     @Override
     public ShareInfoViewModel shareInfo(Customer customer, ShareInfoRequestModel model) throws Exception {
+        //region 验证数据
         if (null == model || StringUtil.isNullOrEmpty(model.getName())) {
             throw new ApiException(ResultStatus.PARAMETER_MISSING);
         }
-        ShareInfoViewModel viewModel = new ShareInfoViewModel();
-        String shareName = model.getName();
-        if (shareName.contains(Constants.BACKSLASH)) {
-            // 去掉请求时多带过来的"/"
-            shareName = shareName.replaceAll(Constants.BACKSLASH, Constants.EMPTY_STRING);
-        }
+
+        //endregion
+
+        String domain = getDomainByPlatform(model.getPlatform());
+        String name = Constants.EMPTY_STRING;
+        String sign = Constants.EMPTY_STRING;
+        String photo = Constants.EMPTY_STRING;
+        /*replace处理掉多余的反斜杠*/
+        String shareName = model.getName().replace(Constants.BACKSLASH, Constants.EMPTY_STRING);
+
         ShareContentMongo shareContent = shareContentMongoDao.getByType(shareName);
         if (null == shareContent) {
             throw new ApiException(ResultStatus.DATA_QUERY_FAILED);
@@ -114,49 +117,46 @@ public class SystemServiceImpl extends BaseService implements SystemService {
             if (null == customer) {
                 throw new ApiException(ResultStatus.PARAMETER_MISSING);
             }
+            name = customer.getName();
+            name = StringUtil.isNullOrEmpty(name) ? customer.getNickName() : name;
+            sign = customer.getSign();
+            photo = customer.getPhoto().toLowerCase().startsWith(Constants.HTTP) ? customer.getPhoto() : Domain.WEIXIN.getDomain() + customer.getPhoto();
         }
+
+        String shareLink = shareContent.getShareSuccessLink().replace(Constants.DOMAIN_PLACEHOLDER, domain);
+        String url = shareContent.getUrl().replace(Constants.SIGN_PLACEHOLDER, sign).replace(Constants.DOMAIN_PLACEHOLDER, domain);
+        String imageUrl = StringUtil.isNullOrEmpty(model.getImageUrl()) ? shareContent.getImg() : model.getImageUrl();
+        String title = shareContent.getTitle().replace(Constants.TITLE_PLACEHOLDER, name);
+
+        ShareInfoViewModel viewModel = new ShareInfoViewModel();
         viewModel.setType(shareContent.getType());
         viewModel.setShareTo(shareContent.getShareTo());
-        String shareLink;
-        String platform = model.getPlatform();
-        String domain = Constants.EMPTY_STRING;
-        if (Platform.IOS.getName().equals(platform)) {
-            domain = Domain.IOS.getDomain();
-        } else if (Platform.ANDROID.getName().equals(platform)) {
-            domain = Domain.ANDROID.getDomain();
-        } else if (Platform.WEIXIN.getName().equals(platform)) {
-            domain = Domain.WEIXIN.getDomain();
-        } else if (Platform.WAP.getName().equals(platform)) {
-            domain = Domain.WAP.getDomain();
-        }
-        shareLink = shareContent.getShareSuccessLink().replace(Constants.DOMAIN_PLACEHOLDER, domain);
         viewModel.setShareSuccessLink(shareLink);
-        shareContent.setShareSuccessType(shareContent.getShareSuccessType());
         viewModel.setShareSuccessType(shareContent.getShareSuccessType());
         viewModel.setShareSuccessMessage(shareContent.getShareSuccessMessage());
         viewModel.setShareIcon(shareContent.getIcon());
-        if (shareContent.getMustLogin()) {
-            String name = customer.getName();
-            if (StringUtil.isNullOrEmpty(name)) {
-                // 优先使用真实姓名，为空则使用昵称
-                name = customer.getNickName();
-            }
-            viewModel.setShareTitle(shareContent.getTitle().replace(Constants.TITLE_PLACEHOLDER, name));
-            String url = shareContent.getUrl().replace(Constants.SIGN_PLACEHOLDER, customer.getSign()).replace(Constants.DOMAIN_PLACEHOLDER, domain);
-            viewModel.setShareUrl(url);
-            if (customer.getPhoto().toLowerCase().startsWith(Constants.HTTP)) {
-                viewModel.setShareIcon(customer.getPhoto());
-            } else {
-                viewModel.setShareIcon(Domain.WEIXIN.getDomain() + customer.getPhoto());
-            }
-        }
+        viewModel.setShareTitle(title);
+        viewModel.setShareUrl(url);
+        viewModel.setShareIcon(photo);
         viewModel.setShareContent(shareContent.getContent());
-        if (StringUtil.isNullOrEmpty(model.getImageUrl())) {
-            viewModel.setImg(shareContent.getImg());
-        } else {
-            viewModel.setImg(model.getImageUrl());
-        }
+        viewModel.setImg(imageUrl);
 
         return viewModel;
     }
+
+//    @Override
+//    @Transactional(timeout=1000, isolation= Isolation.DEFAULT, propagation= Propagation.REQUIRED,rollbackFor = ApiException.class)
+//    public void testTransaction() {
+//        CustomerShare share = new CustomerShare();
+//        share.setPrice(0.1);
+//        share.setCustomerId(4194);
+//        share.setCreateTime(new Date());
+//        share.setPlatform("00");
+//        customerShareDao.insertCustomerShare(share);
+//
+//        int id = share.getId();
+//        System.out.println(id);
+//        //异常抛出后事务就会回滚
+//        throw new ApiException("sss");
+//    }
 }

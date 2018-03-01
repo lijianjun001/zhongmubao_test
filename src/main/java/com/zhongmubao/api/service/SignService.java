@@ -8,6 +8,7 @@ import com.zhongmubao.api.dto.response.sign.list.PageSignGiftModel;
 import com.zhongmubao.api.dto.response.sign.SignModel;
 import com.zhongmubao.api.dto.response.sign.packagelist.PageSignPackageModel;
 import com.zhongmubao.api.entity.Customer;
+import com.zhongmubao.api.util.datasource.DataSource;
 
 /**
  * 客户服务
@@ -20,6 +21,7 @@ public interface SignService {
      * 签到
      * @author 孙阿龙
      * @param customer 客户
+     * @param request  请求参数
      * @return SignModel
      * @throws Exception 异常
      */
