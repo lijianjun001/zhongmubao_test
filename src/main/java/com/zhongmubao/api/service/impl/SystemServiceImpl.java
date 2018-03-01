@@ -99,7 +99,6 @@ public class SystemServiceImpl extends BaseService implements SystemService {
         if (null == model || StringUtil.isNullOrEmpty(model.getName())) {
             throw new ApiException(ResultStatus.PARAMETER_MISSING);
         }
-
         //endregion
 
         String domain = getDomainByPlatform(model.getPlatform());
