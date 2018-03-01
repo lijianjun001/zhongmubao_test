@@ -105,10 +105,10 @@ public class SystemServiceImpl extends BaseService implements SystemService {
         String name = Constants.EMPTY_STRING;
         String sign = Constants.EMPTY_STRING;
         String photo = Constants.EMPTY_STRING;
-        /*replace处理掉多余的反斜杠*/
+        /* replace处理掉多余的反斜杠 */
         String shareName = model.getName().replace(Constants.BACKSLASH, Constants.EMPTY_STRING);
 
-        ShareContentMongo shareContent = shareContentMongoDao.getByType(shareName);
+        ShareContentMongo shareContent = shareContentMongoDao.getByType(shareName.toLowerCase());
         if (null == shareContent) {
             throw new ApiException(ResultStatus.DATA_QUERY_FAILED);
         }

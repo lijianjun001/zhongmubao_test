@@ -14,6 +14,8 @@ import java.util.Date;
 public class ShareContentMongo extends BaseModel {
     @Field("Name")
     private String name;
+    @Field("Remark")
+    private String remark;
     @Field("Type")
     private String type;
     @Field("Title")
