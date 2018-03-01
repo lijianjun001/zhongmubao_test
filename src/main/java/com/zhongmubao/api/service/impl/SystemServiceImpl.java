@@ -100,17 +100,19 @@ public class SystemServiceImpl extends BaseService implements SystemService {
         }
         //endregion
 
+        /* replace处理掉多余的反斜杠 */
+        String shareName = model.getName().replace(Constants.BACKSLASH, Constants.EMPTY_STRING);
+        ShareContentMongo shareContent = shareContentMongoDao.getByType(shareName.toLowerCase());
+
         String domain = getDomainByPlatform(model.getPlatform());
         String name = Constants.EMPTY_STRING;
         String sign = Constants.EMPTY_STRING;
-        String photo = Constants.EMPTY_STRING;
-        /* replace处理掉多余的反斜杠 */
-        String shareName = model.getName().replace(Constants.BACKSLASH, Constants.EMPTY_STRING);
+        String photo = shareContent.getIcon();
 
-        ShareContentMongo shareContent = shareContentMongoDao.getByType(shareName.toLowerCase());
         if (null == shareContent) {
             throw new ApiException(ResultStatus.DATA_QUERY_FAILED);
         }
+
         if (shareContent.getMustLogin()) {
             if (null == customer) {
                 throw new ApiException(ResultStatus.PARAMETER_MISSING);
@@ -133,7 +135,6 @@ public class SystemServiceImpl extends BaseService implements SystemService {
         viewModel.setShareSuccessLink(shareLink);
         viewModel.setShareSuccessType(shareContent.getShareSuccessType());
         viewModel.setShareSuccessMessage(shareContent.getShareSuccessMessage());
-        viewModel.setShareIcon(shareContent.getIcon());
         viewModel.setShareTitle(title);
         viewModel.setShareUrl(url);
         viewModel.setShareIcon(photo);
