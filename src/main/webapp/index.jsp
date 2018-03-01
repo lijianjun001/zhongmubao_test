@@ -35,7 +35,7 @@
         var data = {
             platform:"01",
             name: "toyear",
-            param: "http://192.168.31.210:46018//user/2017-03-16/20170316102610.png"
+            param: "{\"imgUrl\":\"http://s.emubao.com/upload/sheeptype/sheep.jpg\"}"
         };
 
         $.ajax({

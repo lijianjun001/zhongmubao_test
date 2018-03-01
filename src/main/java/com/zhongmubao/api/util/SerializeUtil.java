@@ -51,6 +51,9 @@ public class SerializeUtil {
             return null;
         }
         JsonElement je = new JsonParser().parse(json);
-        return je.getAsJsonObject().has(key) ? je.getAsJsonObject().get(key).toString() : null;
+
+        String value = je.getAsJsonObject().has(key) ? je.getAsJsonObject().get(key).toString() : null;
+        return value == null ? null : value.replace("\"", "");
+
     }
 }

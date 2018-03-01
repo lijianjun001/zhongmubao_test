@@ -124,7 +124,7 @@ public class SystemServiceImpl extends BaseService implements SystemService {
         String shareLink = shareContent.getShareSuccessLink().replace(Constants.DOMAIN_PLACEHOLDER, domain);
         String url = shareContent.getUrl().replace(Constants.SIGN_PLACEHOLDER, sign).replace(Constants.DOMAIN_PLACEHOLDER, domain);
         String title = shareContent.getTitle().replace(Constants.TITLE_PLACEHOLDER, name);
-        String imageUrl = SerializeUtil.getJsonStringValueByKey(model.getParam(), "imageUrl");
+        String imageUrl = SerializeUtil.getJsonStringValueByKey(model.getParam(), "imgUrl");
         imageUrl = StringUtil.isNullOrEmpty(imageUrl) ? shareContent.getImg() : imageUrl;
 
         ShareInfoViewModel viewModel = new ShareInfoViewModel();
