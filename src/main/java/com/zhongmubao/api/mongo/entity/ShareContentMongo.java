@@ -29,7 +29,7 @@ public class ShareContentMongo extends BaseModel {
     @Field("ShareTo")
     private String shareTo;
     @Field("MustLogin")
-    private String mustLogin;
+    private Boolean mustLogin;
     @Field("ShareSuccessType")
     private String shareSuccessType;
     @Field("ShareSuccessMessage")
@@ -135,11 +135,11 @@ public class ShareContentMongo extends BaseModel {
         this.name = name;
     }
 
-    public String getMustLogin() {
+    public boolean getMustLogin() {
         return mustLogin;
     }
 
-    public void setMustLogin(String mustLogin) {
+    public void setMustLogin(boolean mustLogin) {
         this.mustLogin = mustLogin;
     }
 }

@@ -82,7 +82,7 @@ public class SystemController {
     public ResponseEntity<ReponseModel> shareInfo(@CurrentUser Customer customer,HttpEntity<ShareInfoRequestModel> model) {
         try {
             ShareInfoViewModel viewModel = systemService.shareInfo(customer,model.getBody());
-            return new ResponseEntity<>(ReponseModel.ok(), HttpStatus.OK);
+            return new ResponseEntity<>(ReponseModel.ok(viewModel), HttpStatus.OK);
         } catch (ApiException ex) {
             return new ResponseEntity<>(ReponseModel.error(ex.getStatus()), HttpStatus.OK);
         } catch (Exception ex) {

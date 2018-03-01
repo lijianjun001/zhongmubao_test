@@ -30,6 +30,7 @@ public class ShareInfoViewModel {
     private String shareContent;
     private String shareIcon;
     private String shareUrl;
+    private String img;
 
     public String getType() {
         return type;
@@ -101,5 +102,13 @@ public class ShareInfoViewModel {
 
     public void setShareUrl(String shareUrl) {
         this.shareUrl = shareUrl;
+    }
+
+    public String getImg() {
+        return img;
+    }
+
+    public void setImg(String img) {
+        this.img = img;
     }
 }

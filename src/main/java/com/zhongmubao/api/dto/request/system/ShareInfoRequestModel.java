@@ -8,16 +8,8 @@ import com.zhongmubao.api.dto.request.BaseRequest;
  * @author 米立林
  */
 public class ShareInfoRequestModel extends BaseRequest {
-    private String toType;
     private String name;
-
-    public String getToType() {
-        return toType;
-    }
-
-    public void setToType(String toType) {
-        this.toType = toType;
-    }
+    private String imageUrl;
 
     public String getName() {
         return name;
@@ -25,5 +17,13 @@ public class ShareInfoRequestModel extends BaseRequest {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 }

@@ -100,48 +100,62 @@ public class SystemServiceImpl extends BaseService implements SystemService {
         if (null == model || StringUtil.isNullOrEmpty(model.getName())) {
             throw new ApiException(ResultStatus.PARAMETER_MISSING);
         }
-        if (null == customer) {
-            throw new ApiException(ResultStatus.PARAMETER_MISSING);
-        }
+        ShareInfoViewModel viewModel = new ShareInfoViewModel();
         String shareName = model.getName();
         if (shareName.contains(Constants.BACKSLASH)) {
+            // 去掉请求时多带过来的"/"
             shareName = shareName.replaceAll(Constants.BACKSLASH, Constants.EMPTY_STRING);
         }
-        ShareInfoViewModel viewModel = new ShareInfoViewModel();
         ShareContentMongo shareContent = shareContentMongoDao.getByType(shareName);
         if (null == shareContent) {
             throw new ApiException(ResultStatus.DATA_QUERY_FAILED);
         }
+        if (shareContent.getMustLogin()) {
+            if (null == customer) {
+                throw new ApiException(ResultStatus.PARAMETER_MISSING);
+            }
+        }
         viewModel.setType(shareContent.getType());
         viewModel.setShareTo(shareContent.getShareTo());
-        String shareLink = "";
+        String shareLink;
         String platform = model.getPlatform();
+        String domain = Constants.EMPTY_STRING;
         if (Platform.IOS.getName().equals(platform)) {
-            shareContent.getShareSuccessLink().replace(Constants.DOMAIN_PLACEHOLDER, Domain.IOS.getDomain());
+            domain = Domain.IOS.getDomain();
         } else if (Platform.ANDROID.getName().equals(platform)) {
-            shareContent.getShareSuccessLink().replace(Constants.DOMAIN_PLACEHOLDER, Domain.ANDROID.getDomain());
+            domain = Domain.ANDROID.getDomain();
         } else if (Platform.WEIXIN.getName().equals(platform)) {
-            shareContent.getShareSuccessLink().replace(Constants.DOMAIN_PLACEHOLDER, Domain.WEIXIN.getDomain());
+            domain = Domain.WEIXIN.getDomain();
         } else if (Platform.WAP.getName().equals(platform)) {
-            shareContent.getShareSuccessLink().replace(Constants.DOMAIN_PLACEHOLDER, Domain.WAP.getDomain());
+            domain = Domain.WAP.getDomain();
         }
+        shareLink = shareContent.getShareSuccessLink().replace(Constants.DOMAIN_PLACEHOLDER, domain);
         viewModel.setShareSuccessLink(shareLink);
-        if (Platform.IOS.getName().equals(platform) || Platform.ANDROID.getName().equals(platform)) {
-            shareContent.setShareSuccessType(ShareSuccessType.FREEDOM.getName());
-        } else {
-            shareContent.setShareSuccessType(ShareSuccessType.REDIRECT.getName());
-        }
+        shareContent.setShareSuccessType(shareContent.getShareSuccessType());
         viewModel.setShareSuccessType(shareContent.getShareSuccessType());
         viewModel.setShareSuccessMessage(shareContent.getShareSuccessMessage());
-        String name = customer.getName();
-        if (StringUtil.isNullOrEmpty(name)) {
-            // 优先使用真实姓名，为空则使用昵称
-            name = customer.getNickName();
-        }
-        viewModel.setShareTitle(shareContent.getTitle().replace(Constants.TITLE_PLACEHOLDER, name));
-        viewModel.setShareContent(shareContent.getContent());
         viewModel.setShareIcon(shareContent.getIcon());
-        viewModel.setShareUrl(shareContent.getUrl().replaceAll(Constants.SIGN_PLACEHOLDER, customer.getSign()));
+        if (shareContent.getMustLogin()) {
+            String name = customer.getName();
+            if (StringUtil.isNullOrEmpty(name)) {
+                // 优先使用真实姓名，为空则使用昵称
+                name = customer.getNickName();
+            }
+            viewModel.setShareTitle(shareContent.getTitle().replace(Constants.TITLE_PLACEHOLDER, name));
+            String url = shareContent.getUrl().replace(Constants.SIGN_PLACEHOLDER, customer.getSign()).replace(Constants.DOMAIN_PLACEHOLDER, domain);
+            viewModel.setShareUrl(url);
+            if (customer.getPhoto().toLowerCase().startsWith(Constants.HTTP)) {
+                viewModel.setShareIcon(customer.getPhoto());
+            } else {
+                viewModel.setShareIcon(Domain.WEIXIN.getDomain() + customer.getPhoto());
+            }
+        }
+        viewModel.setShareContent(shareContent.getContent());
+        if (StringUtil.isNullOrEmpty(model.getImageUrl())) {
+            viewModel.setImg(shareContent.getImg());
+        } else {
+            viewModel.setImg(model.getImageUrl());
+        }
 
         return viewModel;
     }
