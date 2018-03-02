@@ -112,7 +112,6 @@ public class SystemServiceImpl extends BaseService implements SystemService {
         String sign = Constants.EMPTY_STRING;
         String photo = shareContent.getIcon();
 
-
         if (shareContent.getMustLogin()) {
             if (null == customer) {
                 throw new ApiException(ResultStatus.PARAMETER_MISSING);
