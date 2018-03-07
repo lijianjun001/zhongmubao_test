@@ -21,9 +21,9 @@ public class Constants {
     public static final String DEFAULT_PHOTO = "http://www.emubao.com/images/emubao-logo.png";
 
     /**
-     * 新手活动Id
+     * 上传地址
      */
-    public static final String UPLOAD_URL = "//s.emubao.com/upload/";
+    public static final String UPLOAD_URL = "https://s.emubao.com/upload/";
 
     /**
      * 每页显示条数

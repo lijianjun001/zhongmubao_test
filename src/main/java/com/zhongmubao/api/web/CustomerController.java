@@ -4,12 +4,12 @@ import com.zhongmubao.api.authorization.annotation.Authorization;
 import com.zhongmubao.api.authorization.annotation.CurrentUser;
 import com.zhongmubao.api.config.Constants;
 import com.zhongmubao.api.dto.request.BaseRequest;
-import com.zhongmubao.api.dto.request.customer.CustomerRequestModel;
+import com.zhongmubao.api.dto.request.customer.RecommendInfoRequestModel;
 import com.zhongmubao.api.dto.request.customer.RegisterRequestModel;
 import com.zhongmubao.api.dto.request.my.RealNameRequestModel;
 import com.zhongmubao.api.dto.request.sign.*;
 import com.zhongmubao.api.dto.response.ReponseModel;
-import com.zhongmubao.api.dto.response.customer.CustomerInfoViewModel;
+import com.zhongmubao.api.dto.response.customer.RecommendInfoViewModel;
 import com.zhongmubao.api.dto.response.my.RealNameViewModel;
 import com.zhongmubao.api.dto.response.sign.MyGiftCardModel;
 import com.zhongmubao.api.dto.response.sign.SignShareInfoModel;
@@ -289,10 +289,10 @@ public class CustomerController {
      * @param model 请求参数
      * @return
      */
-    @RequestMapping(value = "/info/byCode", method = RequestMethod.POST, consumes = "application/json")
-    public ResponseEntity<ReponseModel> infoByCode(HttpEntity<CustomerRequestModel> model) {
+    @RequestMapping(value = "recommendInfo", method = RequestMethod.POST, consumes = "application/json")
+    public ResponseEntity<ReponseModel> recommendInfo(HttpEntity<RecommendInfoRequestModel> model) {
         try {
-            CustomerInfoViewModel viewModel = customerService.infoByCode(model.getBody());
+            RecommendInfoViewModel viewModel = customerService.recommendInfo(model.getBody());
             return new ResponseEntity<>(ReponseModel.ok(viewModel), HttpStatus.OK);
         } catch (ApiException ex) {
             return new ResponseEntity<>(ReponseModel.error(ex.getStatus()), HttpStatus.OK);

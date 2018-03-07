@@ -203,4 +203,14 @@ public class BaseService {
             return 0;
         }
     }
+
+    /**
+     * 格式化用户头像
+     *
+     * @param photo
+     * @return
+     */
+    protected static String formartPhoto(String photo) {
+        return StringUtil.isNullOrEmpty(photo) ? Constants.DEFAULT_PHOTO : photo.toLowerCase().startsWith(Constants.HTTP) ? photo : Domain.RESOURCES.getDomain() + photo;
+    }
 }
