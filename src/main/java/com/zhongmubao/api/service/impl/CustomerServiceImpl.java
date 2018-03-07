@@ -181,7 +181,7 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
         if (!RegExpMatcher.matcherMobile(account)) {
             throw new ApiException(ResultStatus.INVALID_PHONE_ERROR);
         }
-        if (StringUtil.isNullOrEmpty(register.getSmsCode())) {
+        if (register.getSmsCode() <= 0) {
             throw new ApiException(ResultStatus.PARAMETER_CODE_ERROR);
         }
         if (password.length() < passwordMinLength || password.length() > passwordMaxLength) {
@@ -199,7 +199,7 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
             refrenceId = 0;
         }
         SystemSmsLogMongo systemSms = systemSmsLogMongoDao.getFirstOrderByCreatedDesc(account, SmsType.VERIFICATION.getName());
-        if (systemSms == null || !register.getSmsCode().equals(systemSms.getCode())) {
+        if (systemSms == null || register.getSmsCode() != systemSms.getCode()) {
             throw new ApiException(ResultStatus.PARAMETER_CODE_ERROR);
         }
         if (systemSms.getExpired().getTime() < now.getTime()) {
@@ -224,7 +224,7 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
         customer.setModified(now);
         customer.setIsSetPassword(true);
         customerDao.insert(customer);
-
+        // 新手红包
         sendRedPackage(customer, RedPackageType.REGISTER, 8, DateUtil.addDay(now, 2), 2);
         sendRedPackage(customer, RedPackageType.REGISTER, 5, DateUtil.addDay(now, 7), 6);
         sendRedPackage(customer, RedPackageType.REGISTER, 2, DateUtil.addDay(now, 30), 17);

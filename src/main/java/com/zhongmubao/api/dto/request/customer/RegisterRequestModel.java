@@ -10,7 +10,7 @@ public class RegisterRequestModel extends BaseRequest {
     private String account;
     private String password;
     private String referenceCode;
-    private String smsCode;
+    private int smsCode;
 
     public String getAccount() {
         return account;
@@ -36,11 +36,11 @@ public class RegisterRequestModel extends BaseRequest {
         this.referenceCode = referenceCode;
     }
 
-    public String getSmsCode() {
+    public int getSmsCode() {
         return smsCode;
     }
 
-    public void setSmsCode(String smsCode) {
+    public void setSmsCode(int smsCode) {
         this.smsCode = smsCode;
     }
 }
