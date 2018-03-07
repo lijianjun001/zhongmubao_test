@@ -163,7 +163,7 @@ public class SystemServiceImpl extends BaseService implements SystemService {
         SystemSmsLogMongo smsLog = new SystemSmsLogMongo();
         smsLog.setType(SmsType.VERIFICATION.getName());
         smsLog.setPhone(model.getPhone());
-        smsLog.setCode(Integer.toString(code));
+        smsLog.setCode(code);
         smsLog.setMessage(content);
         smsLog.setExpired(DateUtil.formatMongo(DateUtil.addMinute(now, 30)));
         smsLog.setCreated(DateUtil.formatMongo(now));

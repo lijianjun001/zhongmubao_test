@@ -210,6 +210,7 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
 
         // Sign 生成规则，手机号 md5 16位
         String sign = SecurityUtil.encrypt16(account);
+
         Customer customer = new Customer();
         customer.setAccount(account);
         customer.setPassword(password);
@@ -223,6 +224,10 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
         customer.setModified(now);
         customer.setIsSetPassword(true);
         customerDao.insert(customer);
+
+        sendRedPackage(customer, RedPackageType.REGISTER, 8, DateUtil.addDay(now, 2), 2);
+        sendRedPackage(customer, RedPackageType.REGISTER, 5, DateUtil.addDay(now, 7), 6);
+        sendRedPackage(customer, RedPackageType.REGISTER, 2, DateUtil.addDay(now, 30), 17);
     }
 
     @Override

@@ -70,7 +70,6 @@ public class SystemSmsLogMongoDao implements BaseDao<SystemSmsLogMongo> {
         Query query = new Query();
         query.addCriteria(Criteria.where("Phone").is(phone));
         query.addCriteria(Criteria.where("Type").is(type));
-        query.with(new Sort(Sort.Direction.DESC, "Created"));
-        return this.get(query);
+        return mongoTemplate.findOne(query, SystemSmsLogMongo.class);
     }
 }

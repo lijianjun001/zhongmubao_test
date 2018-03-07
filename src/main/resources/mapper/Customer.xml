@@ -3,7 +3,7 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.zhongmubao.api.dao.CustomerDao">
-    <insert id="insert">
+    <insert id="insert" keyProperty="id">
         INSERT INTO Customer(
         Account,
         Password,

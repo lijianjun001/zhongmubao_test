@@ -20,7 +20,7 @@ public class SystemSmsLogMongo extends BaseModel {
     @Field("Phone")
     private String phone;
     @Field("Code")
-    private String code;
+    private int code;
     @Field("Message")
     private String message;
     @Field("Expired")
@@ -54,11 +54,11 @@ public class SystemSmsLogMongo extends BaseModel {
         this.phone = phone;
     }
 
-    public String getCode() {
+    public int getCode() {
         return code;
     }
 
-    public void setCode(String code) {
+    public void setCode(int code) {
         this.code = code;
     }
 
