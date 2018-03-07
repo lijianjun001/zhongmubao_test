@@ -3,6 +3,10 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.zhongmubao.api.dao.CustomerDao">
+    <insert id="insert">
+        INSERT INTO Customer(Account,Password,Sign,Phone,ReferenceId)
+        VALUES(#{Account},#{Password},#{Sign},#{Account},#{ReferenceId});
+    </insert>
     <select id="getCustomerById" resultType="Customer">
         SELECT
         *

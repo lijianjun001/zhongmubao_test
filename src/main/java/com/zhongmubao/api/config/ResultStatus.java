@@ -10,6 +10,7 @@ public enum ResultStatus {
     PARAMETER_MISSING(-2, "参数不完整"),
     PARAMETER_ERROR(-3, "参数错误"),
     PARAMETER_CODE_ERROR(-4, "验证码错误"),
+    PARAMETER_CODE_INVALID(-4, "验证码已失效"),
     REDEEM_PASSWORD_ERROR(-5, "赎回密码错误"),
     INVALID_PHONE_ERROR(-6, "不是有效的手机号"),
     USERNAME_OR_PASSWORD_ERROR(-1001, "用户名或密码错误"),

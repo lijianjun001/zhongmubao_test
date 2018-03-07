@@ -3,38 +3,29 @@ package com.zhongmubao.api.service.impl;
 import com.zhongmubao.api.config.Constants;
 import com.zhongmubao.api.config.ResultStatus;
 import com.zhongmubao.api.config.enmu.*;
-import com.zhongmubao.api.dao.CustomerHFDao;
-import com.zhongmubao.api.dao.CustomerSinaDao;
-import com.zhongmubao.api.dao.SheepOrderDao;
-import com.zhongmubao.api.dao.SheepProjectDao;
+import com.zhongmubao.api.dao.*;
+import com.zhongmubao.api.dto.request.customer.CustomerRequestModel;
+import com.zhongmubao.api.dto.request.customer.RegisterRequestModel;
 import com.zhongmubao.api.dto.request.my.RealNameRequestModel;
-import com.zhongmubao.api.dto.request.my.transaction.TransactionDetailRequestModel;
-import com.zhongmubao.api.dto.request.my.transaction.TransactionMonthlyBillRequestModel;
-import com.zhongmubao.api.dto.request.my.transaction.TransactionRequestModel;
+import com.zhongmubao.api.dto.response.customer.CustomerInfoViewModel;
 import com.zhongmubao.api.dto.response.my.RealNameViewModel;
-import com.zhongmubao.api.dto.response.my.transaction.*;
 import com.zhongmubao.api.entity.Customer;
 import com.zhongmubao.api.entity.CustomerHF;
 import com.zhongmubao.api.entity.CustomerSina;
-import com.zhongmubao.api.entity.ext.SheepBillInfo;
-import com.zhongmubao.api.entity.ext.SheepOrderInfo;
 import com.zhongmubao.api.exception.ApiException;
-import com.zhongmubao.api.mongo.dao.CustomerHFBalanceMongoDao;
 import com.zhongmubao.api.mongo.dao.CustomerHFIndexMongoDao;
+import com.zhongmubao.api.mongo.dao.SystemSmsLogMongoDao;
 import com.zhongmubao.api.mongo.entity.CustomerHFIndexMongo;
-import com.zhongmubao.api.mongo.entity.CustomerHFBalanceMongo;
-import com.zhongmubao.api.mongo.entity.base.PageModel;
+import com.zhongmubao.api.mongo.entity.SystemSmsLogMongo;
 import com.zhongmubao.api.service.CustomerService;
 import com.zhongmubao.api.util.DateUtil;
-import com.zhongmubao.api.util.DoubleUtil;
-import com.zhongmubao.api.util.SerializeUtil;
+import com.zhongmubao.api.util.SecurityUtil;
 import com.zhongmubao.api.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.Date;
 
 /**
  * Customer
@@ -46,12 +37,16 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
     private final CustomerHFDao customerHFDao;
     private final CustomerSinaDao customerSinaDao;
     private final CustomerHFIndexMongoDao customerHFIndexMongoDao;
+    private final CustomerDao customerDao;
+    private final SystemSmsLogMongoDao systemSmsLogMongoDao;
 
     @Autowired
-    public CustomerServiceImpl(CustomerHFDao customerHFDao, CustomerSinaDao customerSinaDao, CustomerHFIndexMongoDao customerHFIndexMongoDao) {
+    public CustomerServiceImpl(CustomerHFDao customerHFDao, CustomerSinaDao customerSinaDao, CustomerHFIndexMongoDao customerHFIndexMongoDao, CustomerDao customerDao, SystemSmsLogMongoDao systemSmsLogMongoDao) {
         this.customerHFDao = customerHFDao;
         this.customerSinaDao = customerSinaDao;
         this.customerHFIndexMongoDao = customerHFIndexMongoDao;
+        this.customerDao = customerDao;
+        this.systemSmsLogMongoDao = systemSmsLogMongoDao;
     }
 
     //region 是否实名
@@ -116,7 +111,7 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
                 realNameViewModel.setRealNameType(RealNameStatus.HFS.getType());
                 realNameViewModel.setRealNameImg(Constants.RESOURES_ADDRESS_IMAGES + RealNameStatus.HFS.getImg());
             } else {
-                if(!StringUtil.isNullOrEmpty(customerHF.getUsrCustId())&&!customerHF.getIsBosAcct()){
+                if (!StringUtil.isNullOrEmpty(customerHF.getUsrCustId()) && !customerHF.getIsBosAcct()) {
                     //未激活
                     realNameViewModel.setCenterShowHFRealName(true);
                     realNameViewModel.setIndexShowHFRealName(true);
@@ -124,7 +119,8 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
                     realNameViewModel.setRealNameSatus(RealNameStatus.HFB.getStatus());
                     realNameViewModel.setRealNameType(RealNameStatus.HFB.getType());
                     realNameViewModel.setRealNameImg(Constants.RESOURES_ADDRESS_IMAGES + RealNameStatus.HFB.getImg());
-                }else{}
+                } else {
+                }
                 realNameViewModel.setCenterShowHFRealName(true);
                 realNameViewModel.setIndexShowHFRealName(true);
                 realNameViewModel.setRealName(RealNameStatus.HFF.getName());
@@ -162,4 +158,60 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
         return realNameViewModel;
     }
     //endregion
+
+
+    @Override
+    public void register(RegisterRequestModel register) throws Exception {
+        //region verification
+        if (register == null) {
+            throw new ApiException(ResultStatus.PARAMETER_MISSING);
+        }
+        if (StringUtil.isNullOrEmpty(register.getAccount()) || StringUtil.isNullOrEmpty(register.getPassword()) || StringUtil.isNullOrEmpty(register.getReferenceCode())) {
+            throw new ApiException(ResultStatus.PARAMETER_MISSING);
+        }
+        if (StringUtil.isNullOrEmpty(register.getSmsCode())) {
+            throw new ApiException(ResultStatus.PARAMETER_CODE_ERROR);
+        }
+        //endregion
+        Date now = new Date();
+        int refrenceId = dInviteCode(register.getReferenceCode());
+        Customer refCustomer = customerDao.getCustomerById(refrenceId);
+        if (refCustomer == null) {
+            throw new ApiException(ResultStatus.PARAMETER_ERROR);
+        }
+        SystemSmsLogMongo systemSms = systemSmsLogMongoDao.getNewest(register.getAccount(), SmsType.VERIFICATION.getName());
+        if (systemSms == null || !register.getSmsCode().equals(systemSms.getCode())) {
+            throw new ApiException(ResultStatus.PARAMETER_CODE_ERROR);
+        }
+        if( DateUtil.subDateOfSecond(systemSms.getExpired(), now) <= 0){
+            throw new ApiException(ResultStatus.PARAMETER_CODE_INVALID);
+        }
+        systemSms.setExpired(now);
+        systemSmsLogMongoDao.update(systemSms);
+
+        // Sign 生成规则，手机号 md5 16位
+        String sign = SecurityUtil.encrypt16(register.getAccount());
+        customerDao.insert(register.getAccount(), register.getPassword(), sign, refCustomer.getId());
+    }
+
+    @Override
+    public CustomerInfoViewModel infoByCode(CustomerRequestModel register) throws Exception {
+        if (register == null || StringUtil.isNullOrEmpty(register.getCode())) {
+            throw new ApiException(ResultStatus.PARAMETER_MISSING);
+        }
+        int id = dInviteCode(register.getCode());
+        Customer customer = customerDao.getCustomerById(id);
+        if (null == customer) {
+            throw new ApiException(ResultStatus.PARAMETER_ERROR);
+        }
+
+        String photo = customer.getPhone();
+        photo = StringUtil.isNullOrEmpty(photo) ? Constants.DEFAULT_PHOTO : photo.toLowerCase().startsWith(Constants.HTTP) ? photo : Domain.WEIXIN.getDomain() + photo;
+
+        CustomerInfoViewModel viewModel = new CustomerInfoViewModel();
+        viewModel.setNickName(customer.getNickName());
+        viewModel.setPhone(photo);
+
+        return viewModel;
+    }
 }

@@ -3,16 +3,15 @@ package com.zhongmubao.api.service.impl;
 import com.zhongmubao.api.config.Constants;
 import com.zhongmubao.api.config.ResultStatus;
 import com.zhongmubao.api.config.enmu.Domain;
+import com.zhongmubao.api.config.enmu.SmsType;
 import com.zhongmubao.api.dto.request.system.*;
 import com.zhongmubao.api.dto.response.system.ShareInfoViewModel;
 import com.zhongmubao.api.entity.Customer;
 import com.zhongmubao.api.exception.ApiException;
-import com.zhongmubao.api.mongo.dao.PlatformTrackingMongoDao;
-import com.zhongmubao.api.mongo.dao.ShareContentMongoDao;
-import com.zhongmubao.api.mongo.dao.SystemServerActionMongoDao;
-import com.zhongmubao.api.mongo.dao.TouTiaoAdvMongoDao;
+import com.zhongmubao.api.mongo.dao.*;
 import com.zhongmubao.api.mongo.entity.PlatformTrackingMongo;
 import com.zhongmubao.api.mongo.entity.ShareContentMongo;
+import com.zhongmubao.api.mongo.entity.SystemSmsLogMongo;
 import com.zhongmubao.api.mongo.entity.TouTiaoAdvMongo;
 import com.zhongmubao.api.service.SystemService;
 import com.zhongmubao.api.util.*;
@@ -34,13 +33,15 @@ public class SystemServiceImpl extends BaseService implements SystemService {
     private final PlatformTrackingMongoDao platformTrackingMongoDao;
     private final SystemServerActionMongoDao systemServerActionMongoDao;
     private final ShareContentMongoDao shareContentMongoDao;
+    private final SystemSmsLogMongoDao systemSmsLogMongoDao;
 
     @Autowired
-    public SystemServiceImpl(TouTiaoAdvMongoDao touTiaoAdvMongoDao, PlatformTrackingMongoDao platformTrackingMongoDao, SystemServerActionMongoDao systemServerActionMongoDao, ShareContentMongoDao shareContentMongoDao) {
+    public SystemServiceImpl(TouTiaoAdvMongoDao touTiaoAdvMongoDao, PlatformTrackingMongoDao platformTrackingMongoDao, SystemServerActionMongoDao systemServerActionMongoDao, ShareContentMongoDao shareContentMongoDao, SystemSmsLogMongoDao systemSmsLogMongoDao) {
         this.touTiaoAdvMongoDao = touTiaoAdvMongoDao;
         this.platformTrackingMongoDao = platformTrackingMongoDao;
         this.systemServerActionMongoDao = systemServerActionMongoDao;
         this.shareContentMongoDao = shareContentMongoDao;
+        this.systemSmsLogMongoDao = systemSmsLogMongoDao;
     }
 
     @Override
@@ -119,7 +120,8 @@ public class SystemServiceImpl extends BaseService implements SystemService {
             name = customer.getName();
             name = StringUtil.isNullOrEmpty(name) ? customer.getNickName() : name;
             sign = customer.getSign();
-            photo = customer.getPhoto().toLowerCase().startsWith(Constants.HTTP) ? customer.getPhoto() : Domain.WEIXIN.getDomain() + customer.getPhoto();
+            photo = customer.getPhoto();
+            photo = StringUtil.isNullOrEmpty(photo) ? Constants.DEFAULT_PHOTO : photo.toLowerCase().startsWith(Constants.HTTP) ? photo : Domain.WEIXIN.getDomain() + photo;
         }
 
         String shareLink = shareContent.getShareSuccessLink().replace(Constants.DOMAIN_PLACEHOLDER, domain);
@@ -144,7 +146,33 @@ public class SystemServiceImpl extends BaseService implements SystemService {
         return viewModel;
     }
 
-//    @Override
+    @Override
+    public void sendSms(Customer customer, SendSmsRequestModel model) throws Exception {
+        if (null == model || StringUtil.isNullOrEmpty(model.getPhone())) {
+            throw new ApiException(ResultStatus.PARAMETER_MISSING);
+        }
+        if(!RegExpMatcher.matcherMobile(model.getPhone())){
+            throw new ApiException(ResultStatus.INVALID_PHONE_ERROR);
+        }
+        Date now = new Date();
+        String title = "验证短信校验码";
+        int code = MathUtil.random(100000, 999999);
+        String content = "验证码:" + code + ",有效期为30分钟，为保证您的账户安全，请勿将此验证短信转发他人.【众牧宝】";
+        sendSms(model.getPhone(), title, content);
+        // 保存记录
+        SystemSmsLogMongo smsLog = new SystemSmsLogMongo();
+        smsLog.setType(SmsType.VERIFICATION.getName());
+        smsLog.setPhone(model.getPhone());
+        smsLog.setCode(Integer.toString(code));
+        smsLog.setMessage(content);
+        smsLog.setExpired(DateUtil.formatMongo(DateUtil.addMinute(now, 30)));
+        smsLog.setCreated(DateUtil.formatMongo(now));
+        smsLog.setAsyncType(0);
+        systemSmsLogMongoDao.save(smsLog);
+
+    }
+
+    //    @Override
 //    @Transactional(timeout=1000, isolation= Isolation.DEFAULT, propagation= Propagation.REQUIRED,rollbackFor = ApiException.class)
 //    public void testTransaction() {
 //        CustomerShare share = new CustomerShare();

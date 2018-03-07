@@ -4,9 +4,12 @@ import com.zhongmubao.api.authorization.annotation.Authorization;
 import com.zhongmubao.api.authorization.annotation.CurrentUser;
 import com.zhongmubao.api.config.Constants;
 import com.zhongmubao.api.dto.request.BaseRequest;
+import com.zhongmubao.api.dto.request.customer.CustomerRequestModel;
+import com.zhongmubao.api.dto.request.customer.RegisterRequestModel;
 import com.zhongmubao.api.dto.request.my.RealNameRequestModel;
 import com.zhongmubao.api.dto.request.sign.*;
 import com.zhongmubao.api.dto.response.ReponseModel;
+import com.zhongmubao.api.dto.response.customer.CustomerInfoViewModel;
 import com.zhongmubao.api.dto.response.my.RealNameViewModel;
 import com.zhongmubao.api.dto.response.sign.MyGiftCardModel;
 import com.zhongmubao.api.dto.response.sign.SignShareInfoModel;
@@ -261,5 +264,42 @@ public class CustomerController {
             return new ResponseEntity<>(ReponseModel.error(ex, this.getClass()), HttpStatus.OK);
         }
     }
+
+    /**
+     * 用户注册
+     *
+     * @param model 请求参数
+     * @return
+     */
+    @RequestMapping(value = "/register", method = RequestMethod.POST, consumes = "application/json")
+    public ResponseEntity<ReponseModel> register(HttpEntity<RegisterRequestModel> model) {
+        try {
+            customerService.register(model.getBody());
+            return new ResponseEntity<>(ReponseModel.ok(), HttpStatus.OK);
+        } catch (ApiException ex) {
+            return new ResponseEntity<>(ReponseModel.error(ex.getStatus()), HttpStatus.OK);
+        } catch (Exception ex) {
+            return new ResponseEntity<>(ReponseModel.error(ex, this.getClass()), HttpStatus.OK);
+        }
+    }
+
+    /**
+     * 通过Code获取信息
+     *
+     * @param model 请求参数
+     * @return
+     */
+    @RequestMapping(value = "/info/byCode", method = RequestMethod.POST, consumes = "application/json")
+    public ResponseEntity<ReponseModel> infoByCode(HttpEntity<CustomerRequestModel> model) {
+        try {
+            CustomerInfoViewModel viewModel = customerService.infoByCode(model.getBody());
+            return new ResponseEntity<>(ReponseModel.ok(viewModel), HttpStatus.OK);
+        } catch (ApiException ex) {
+            return new ResponseEntity<>(ReponseModel.error(ex.getStatus()), HttpStatus.OK);
+        } catch (Exception ex) {
+            return new ResponseEntity<>(ReponseModel.error(ex, this.getClass()), HttpStatus.OK);
+        }
+    }
+
     //endregion
 }

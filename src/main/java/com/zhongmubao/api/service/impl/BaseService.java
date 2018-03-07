@@ -1,5 +1,6 @@
 package com.zhongmubao.api.service.impl;
 
+import com.zhongmubao.api.config.Constants;
 import com.zhongmubao.api.config.WxTemplate;
 import com.zhongmubao.api.config.enmu.*;
 import com.zhongmubao.api.dao.ExtRedPackageDao;
@@ -105,6 +106,29 @@ public class BaseService {
     }
 
     /**
+     * 发送短信统一调用
+     *
+     * @param phone   手机号
+     * @param title   标题
+     * @param content 内容
+     * @author 米立林
+     */
+    protected void sendSms(String phone, String title, String content) {
+        try {
+            SystemPushMongo pushMongo = new SystemPushMongo();
+            pushMongo.setPhone(phone);
+            pushMongo.setTitle(title);
+            pushMongo.setContent(content);
+            /* 未推送 */
+            pushMongo.setStatus("01");
+            pushMongo.setType(SystemPushType.SMS.getName());
+            pushMongo.setCreateTime(DateUtil.formatMongo(new Date()));
+            systemPushMongoDao.add(pushMongo);
+        } catch (Exception ignore) {
+        }
+    }
+
+    /**
      * 计算羊只利率
      *
      * @param price  羊只单价
@@ -138,5 +162,45 @@ public class BaseService {
             return Domain.WAP.getDomain();
         }
         return "";
+    }
+
+
+    /**
+     * 生成Code
+     *
+     * @param customerId 客户id
+     * @return code
+     * @author 米立林
+     */
+    protected static String inviteCode(int customerId) {
+        int maxLength = 6;
+        String str = Integer.toString(customerId + 88888);
+
+        int length = maxLength - str.length();
+        if (length <= 0) {
+            return str;
+        }
+        StringBuffer buffer = new StringBuffer();
+        for (int j = 0; j <= maxLength - str.length(); j++) {
+            buffer.append("Y" + str);
+        }
+        str = buffer.toString();
+        return str;
+    }
+
+    /**
+     * code解码
+     *
+     * @param code 客户code
+     * @return 客户id
+     * @author 米立林
+     */
+    protected static int dInviteCode(String code) {
+        try {
+            String str = code.trim().toLowerCase().replace("y", Constants.EMPTY_STRING);
+            return Integer.parseInt(str) - 88888;
+        } catch (Exception ex) {
+            return 0;
+        }
     }
 }

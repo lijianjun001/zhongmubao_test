@@ -16,6 +16,8 @@ public class SystemPushMongo extends BaseModel {
 
     @Field("CustomerId")
     private int customerId;
+    @Field("Phone")
+    private String phone;
     @Field("Title")
     private String title;
     @Field("Content")
@@ -33,6 +35,14 @@ public class SystemPushMongo extends BaseModel {
 
     public void setCustomerId(int customerId) {
         this.customerId = customerId;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
     public String getTitle() {

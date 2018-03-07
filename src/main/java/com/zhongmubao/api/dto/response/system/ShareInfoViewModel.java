@@ -6,11 +6,11 @@ package com.zhongmubao.api.dto.response.system;
  */
 public class ShareInfoViewModel {
     /**
-     * 图片形式 00链接 01图片
+     * 图片形式 00链接 01图片 02图片+链接
      */
     private String type;
     /**
-     * 00朋友 01朋友圈 02 好友+朋友圈 03 微博 04 朋友+微博 05 朋友圈+微博   其他全部（空字符串全部）
+     * 00朋友 01朋友圈 02 好友+朋友圈 03 微博 04 朋友+微博 05 朋友圈+微博   06 其他全部（空字符串全部）
      */
     private String shareTo;
     /**

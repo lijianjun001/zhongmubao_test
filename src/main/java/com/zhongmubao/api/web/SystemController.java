@@ -90,6 +90,26 @@ public class SystemController {
         }
     }
 
+    /**
+     * 发送验证码
+     *
+     * @param model 请求实体
+     * @return ShareInfoViewModel
+     * @author 米立林
+     */
+    @RequestMapping(value = "/sendSms", method = RequestMethod.POST, consumes = "application/json")
+    @Authorization(onlyGetCustomer = true)
+    public ResponseEntity<ReponseModel> sendSms(@CurrentUser Customer customer,HttpEntity<SendSmsRequestModel> model) {
+        try {
+            systemService.sendSms(customer,model.getBody());
+            return new ResponseEntity<>(ReponseModel.ok(), HttpStatus.OK);
+        } catch (ApiException ex) {
+            return new ResponseEntity<>(ReponseModel.error(ex.getStatus()), HttpStatus.OK);
+        } catch (Exception ex) {
+            return new ResponseEntity<>(ReponseModel.error(ex, this.getClass()), HttpStatus.OK);
+        }
+    }
+
 //    @RequestMapping(value = "/testTransaction", method = RequestMethod.POST, consumes = "application/json")
 //    public ResponseEntity<ReponseModel> testTransaction() {
 //        try {

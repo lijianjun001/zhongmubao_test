@@ -41,5 +41,16 @@ public interface SystemService {
      */
     ShareInfoViewModel shareInfo(Customer customer, ShareInfoRequestModel model) throws Exception;
 
+    /**
+     * 发送短信验证码
+     *
+     * @param customer 客户
+     * @param model    请求model
+     * @return true or false
+     * @throws Exception 异常
+     * @author 米立林
+     */
+    void sendSms(Customer customer, SendSmsRequestModel model) throws Exception;
+
 //    void testTransaction();
 }

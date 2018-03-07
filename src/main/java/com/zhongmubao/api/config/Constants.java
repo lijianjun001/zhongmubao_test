@@ -16,6 +16,11 @@ import java.util.List;
 public class Constants {
 
     /**
+     * 客户默认头像
+     */
+    public static final String DEFAULT_PHOTO = "http://www.emubao.com/images/emubao-logo.png";
+
+    /**
      * 新手活动Id
      */
     public static final String UPLOAD_URL = "//s.emubao.com/upload/";
