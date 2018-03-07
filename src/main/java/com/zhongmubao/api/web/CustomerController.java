@@ -290,7 +290,7 @@ public class CustomerController {
      * @return
      */
     @RequestMapping(value = "recommendInfo", method = RequestMethod.POST, consumes = "application/json")
-    public ResponseEntity<ReponseModel> infoByCode(HttpEntity<RecommendInfoRequestModel> model) {
+    public ResponseEntity<ReponseModel> recommendInfo(HttpEntity<RecommendInfoRequestModel> model) {
         try {
             RecommendInfoViewModel viewModel = customerService.recommendInfo(model.getBody());
             return new ResponseEntity<>(ReponseModel.ok(viewModel), HttpStatus.OK);
