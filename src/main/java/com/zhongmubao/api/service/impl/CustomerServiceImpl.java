@@ -162,6 +162,7 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
 
     @Override
     public void register(RegisterRequestModel register) throws Exception {
+        Date now = new Date();
         //region verification
         if (register == null) {
             throw new ApiException(ResultStatus.PARAMETER_MISSING);
@@ -192,7 +193,7 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
             throw new ApiException(ResultStatus.USER_EXISTS_ERROR);
         }
         //endregion
-        Date now = new Date();
+
         int refrenceId = ApiUtil.dInviteCode(register.getReferenceCode());
         Customer refCustomer = customerDao.getCustomerById(refrenceId);
         if (refCustomer == null) {
@@ -205,7 +206,8 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
         if (systemSms.getExpired().getTime() < now.getTime()) {
             throw new ApiException(ResultStatus.PARAMETER_CODE_INVALID);
         }
-        systemSms.setExpired(now);
+
+        systemSms.setExpired(DateUtil.addDay(now, -365));
         systemSmsLogMongoDao.update(systemSms);
 
         // Sign 生成规则，手机号 md5 16位
