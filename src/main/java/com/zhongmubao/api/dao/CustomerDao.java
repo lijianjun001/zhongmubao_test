@@ -20,12 +20,17 @@ public interface CustomerDao {
     Customer getCustomerById(@Param("id") int id);
 
     /**
+     * 根据id获取用户
+     *
+     * @param account 注册手机号
+     * @return 客户
+     */
+    Customer getCustomerByAccount(@Param("account") String account);
+
+    /**
      * 注册客户
      *
-     * @param account     账号
-     * @param password    密码
-     * @param sign        sign签名
-     * @param referenceId 推荐人ID
+     * @param customer 推荐人ID
      */
-    void insert(@Param("account") String account, @Param("password") String password, @Param("sing") String sign, @Param("referenceId") int referenceId);
+    void insert(Customer customer);
 }

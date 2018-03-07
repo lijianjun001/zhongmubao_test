@@ -23,6 +23,8 @@ public enum ResultStatus {
     TELEPHONE_CARD_NOT_EXIT(-1008, "充值卡不存在或已使用"),
     MAX_MONTH_SHAY(-1009, "本月分享达到最大分享数,请下月再来"),
     DEVICE_OFFLINE(-1010, "设备已离线"),
+    USER_EXISTS_ERROR(-1011, "用户已存在"),
+    USER_PASSWORD_LENGTH_ERROR(-1012, "密码长度应设置在6-16位之间"),
     DATA_QUERY_FAILED (-2000, "未查到该数据"),
     YUNYING_PHONE_ERROR(-6, "由于运营商维护系统将于2018年1月1日恢复充值"),
     TOUTIAO_CALL_FAILED(-3001, "回传失败");

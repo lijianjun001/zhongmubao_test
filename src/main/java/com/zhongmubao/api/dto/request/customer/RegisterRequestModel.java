@@ -1,10 +1,12 @@
 package com.zhongmubao.api.dto.request.customer;
 
+import com.zhongmubao.api.dto.request.BaseRequest;
+
 /**
  * 用户注册
  * @author 米立林
  */
-public class RegisterRequestModel {
+public class RegisterRequestModel extends BaseRequest {
     private String account;
     private String password;
     private String referenceCode;

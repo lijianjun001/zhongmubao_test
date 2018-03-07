@@ -4,8 +4,60 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.zhongmubao.api.dao.CustomerDao">
     <insert id="insert">
-        INSERT INTO Customer(Account,Password,Sign,Phone,ReferenceId)
-        VALUES(#{Account},#{Password},#{Sign},#{Account},#{ReferenceId});
+        INSERT INTO Customer(
+        Account,
+        Password,
+        Sign,
+        NickName,
+        Name,
+        Phone,
+        Email,
+        OpenId,
+        CardType,
+        CardNo,
+        Photo,
+        ReferenceId,
+        IsGrantLibrary,
+        Count,
+        Platform,
+        RegisterIP,
+        RegisterAddredss,
+        Deleted,
+        Created,
+        Modified,
+        RedeemPassword,
+        EnabledFingerprint,
+        HadaCount,
+        IsAutoRedeem,
+        IsSetPassword
+        )
+        VALUES(
+        #{Account},
+        #{Password},
+        #{Sign},
+        #{NickName},
+        #{Name},
+        #{Phone},
+        #{Email},
+        #{OpenId},
+        #{CardType},
+        #{CardNo},
+        #{Photo},
+        #{ReferenceId},
+        #{IsGrantLibrary},
+        #{Count},
+        #{Platform},
+        #{RegisterIP},
+        #{RegisterAddredss},
+        #{Deleted},
+        #{Created},
+        #{Modified},
+        #{RedeemPassword},
+        #{EnabledFingerprint},
+        #{HadaCount},
+        #{IsAutoRedeem},
+        #{IsSetPassword}
+        );
     </insert>
     <select id="getCustomerById" resultType="Customer">
         SELECT
@@ -14,5 +66,13 @@
         Customer
         WHERE
         id = #{id} limit 1
+    </select>
+    <select id="getCustomerByAccount" resultType="com.zhongmubao.api.entity.Customer">
+        SELECT
+        *
+        FROM
+        Customer
+        WHERE
+        Account = #{account} limit 1
     </select>
 </mapper>

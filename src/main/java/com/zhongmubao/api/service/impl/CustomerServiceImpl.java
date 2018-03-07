@@ -19,6 +19,7 @@ import com.zhongmubao.api.mongo.entity.CustomerHFIndexMongo;
 import com.zhongmubao.api.mongo.entity.SystemSmsLogMongo;
 import com.zhongmubao.api.service.CustomerService;
 import com.zhongmubao.api.util.DateUtil;
+import com.zhongmubao.api.util.RegExpMatcher;
 import com.zhongmubao.api.util.SecurityUtil;
 import com.zhongmubao.api.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -172,18 +173,28 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
         if (StringUtil.isNullOrEmpty(register.getSmsCode())) {
             throw new ApiException(ResultStatus.PARAMETER_CODE_ERROR);
         }
+        if (!RegExpMatcher.matcherMobile(register.getAccount())) {
+            throw new ApiException(ResultStatus.PARAMETER_MISSING);
+        }
+        if (register.getPassword().length() < 6 || register.getPassword().length() > 16) {
+            throw new ApiException(ResultStatus.USER_PASSWORD_LENGTH_ERROR);
+        }
+        Customer regCustomer = customerDao.getCustomerByAccount(register.getAccount());
+        if (null != regCustomer || regCustomer.getId() > 0) {
+            throw new ApiException(ResultStatus.USER_EXISTS_ERROR);
+        }
         //endregion
         Date now = new Date();
         int refrenceId = dInviteCode(register.getReferenceCode());
         Customer refCustomer = customerDao.getCustomerById(refrenceId);
         if (refCustomer == null) {
-            throw new ApiException(ResultStatus.PARAMETER_ERROR);
+            refrenceId = 0;
         }
         SystemSmsLogMongo systemSms = systemSmsLogMongoDao.getFirstOrderByCreatedDesc(register.getAccount(), SmsType.VERIFICATION.getName());
         if (systemSms == null || !register.getSmsCode().equals(systemSms.getCode())) {
             throw new ApiException(ResultStatus.PARAMETER_CODE_ERROR);
         }
-        if( DateUtil.subDateOfSecond(systemSms.getExpired(), now) <= 0){
+        if (DateUtil.subDateOfSecond(systemSms.getExpired(), now) <= 0) {
             throw new ApiException(ResultStatus.PARAMETER_CODE_INVALID);
         }
         systemSms.setExpired(now);
@@ -191,7 +202,33 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
 
         // Sign 生成规则，手机号 md5 16位
         String sign = SecurityUtil.encrypt16(register.getAccount());
-        customerDao.insert(register.getAccount(), register.getPassword(), sign, refCustomer.getId());
+        Customer customer = new Customer();
+        customer.setAccount(register.getAccount());
+        customer.setPassword(register.getPassword());
+        customer.setSign(sign);
+        customer.setNickName(Constants.EMPTY_STRING);
+        customer.setName(Constants.EMPTY_STRING);
+        customer.setPhone(register.getAccount());
+        customer.setEmail(Constants.EMPTY_STRING);
+        customer.setOpenId(Constants.EMPTY_STRING);
+        customer.setCardType(Constants.EMPTY_STRING);
+        customer.setCardNo(Constants.EMPTY_STRING);
+        customer.setPhone(Constants.DEFAULT_PHOTO);
+        customer.setReferenceId(refrenceId);
+        customer.setIsGrantLibrary(false);
+        customer.setCount(0);
+        customer.setPlatform(register.getPlatform());
+        customer.setRegisterIP(Constants.EMPTY_STRING);
+        customer.setRegisterAddredss(Constants.EMPTY_STRING);
+        customer.setDeleted(false);
+        customer.setCreated(now);
+        customer.setModified(now);
+        customer.setRedeemPassword(Constants.EMPTY_STRING);
+        customer.setEnabledFingerprint(false);
+        customer.setHadaCount(0);
+        customer.setIsAutoRedeem(false);
+        customer.setIsSetPassword(true);
+        customerDao.insert(customer);
     }
 
     @Override
