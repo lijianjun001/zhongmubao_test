@@ -108,7 +108,7 @@ public class SystemServiceImpl extends BaseService implements SystemService {
             throw new ApiException(ResultStatus.DATA_QUERY_FAILED);
         }
 
-        String domain = getDomainByPlatform(model.getPlatform());
+        String domain = ApiUtil.getDomainByPlatform(model.getPlatform());
         String name = Constants.EMPTY_STRING;
         String sign = Constants.EMPTY_STRING;
         String photo = shareContent.getIcon();
