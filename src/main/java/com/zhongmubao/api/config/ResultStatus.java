@@ -25,6 +25,8 @@ public enum ResultStatus {
     DEVICE_OFFLINE(-1010, "设备已离线"),
     USER_EXISTS_ERROR(-1011, "用户已存在"),
     USER_PASSWORD_LENGTH_ERROR(-1012, "密码长度应设置在6-16位之间"),
+    ACCOUNT_EMPTY_ERROR(-1013, "账号不能为空"),
+    PASSWORD_EMPTY_ERROR(-1014, "密码不能为空"),
     DATA_QUERY_FAILED (-2000, "未查到该数据"),
     YUNYING_PHONE_ERROR(-6, "由于运营商维护系统将于2018年1月1日恢复充值"),
     TOUTIAO_CALL_FAILED(-3001, "回传失败");

@@ -165,20 +165,29 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
         if (register == null) {
             throw new ApiException(ResultStatus.PARAMETER_MISSING);
         }
-        if (StringUtil.isNullOrEmpty(register.getAccount()) || StringUtil.isNullOrEmpty(register.getPassword()) || StringUtil.isNullOrEmpty(register.getReferenceCode())) {
-            throw new ApiException(ResultStatus.PARAMETER_MISSING);
+        int passwordMinLength = 6;
+        int passwordMaxLength = 16;
+        String account = register.getAccount();
+        String password = register.getPassword();
+        String platform = register.getPlatform();
+
+        if (StringUtil.isNullOrEmpty(account)) {
+            throw new ApiException(ResultStatus.ACCOUNT_EMPTY_ERROR);
+        }
+        if (StringUtil.isNullOrEmpty(password)) {
+            throw new ApiException(ResultStatus.PASSWORD_EMPTY_ERROR);
+        }
+        if (!RegExpMatcher.matcherMobile(account)) {
+            throw new ApiException(ResultStatus.INVALID_PHONE_ERROR);
         }
         if (StringUtil.isNullOrEmpty(register.getSmsCode())) {
             throw new ApiException(ResultStatus.PARAMETER_CODE_ERROR);
         }
-        if (!RegExpMatcher.matcherMobile(register.getAccount())) {
-            throw new ApiException(ResultStatus.PARAMETER_MISSING);
-        }
-        if (register.getPassword().length() < 6 || register.getPassword().length() > 16) {
+        if (password.length() < passwordMinLength || password.length() > passwordMaxLength) {
             throw new ApiException(ResultStatus.USER_PASSWORD_LENGTH_ERROR);
         }
-        Customer regCustomer = customerDao.getCustomerByAccount(register.getAccount());
-        if (null != regCustomer || regCustomer.getId() > 0) {
+        Customer regCustomer = customerDao.getCustomerByAccount(account);
+        if (null != regCustomer) {
             throw new ApiException(ResultStatus.USER_EXISTS_ERROR);
         }
         //endregion
@@ -188,43 +197,29 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
         if (refCustomer == null) {
             refrenceId = 0;
         }
-        SystemSmsLogMongo systemSms = systemSmsLogMongoDao.getFirstOrderByCreatedDesc(register.getAccount(), SmsType.VERIFICATION.getName());
+        SystemSmsLogMongo systemSms = systemSmsLogMongoDao.getFirstOrderByCreatedDesc(account, SmsType.VERIFICATION.getName());
         if (systemSms == null || !register.getSmsCode().equals(systemSms.getCode())) {
             throw new ApiException(ResultStatus.PARAMETER_CODE_ERROR);
         }
-        if (DateUtil.subDateOfSecond(systemSms.getExpired(), now) <= 0) {
+        if (systemSms.getExpired().getTime() < now.getTime()) {
             throw new ApiException(ResultStatus.PARAMETER_CODE_INVALID);
         }
         systemSms.setExpired(now);
         systemSmsLogMongoDao.update(systemSms);
 
         // Sign 生成规则，手机号 md5 16位
-        String sign = SecurityUtil.encrypt16(register.getAccount());
+        String sign = SecurityUtil.encrypt16(account);
         Customer customer = new Customer();
-        customer.setAccount(register.getAccount());
-        customer.setPassword(register.getPassword());
+        customer.setAccount(account);
+        customer.setPassword(password);
         customer.setSign(sign);
-        customer.setNickName(Constants.EMPTY_STRING);
-        customer.setName(Constants.EMPTY_STRING);
-        customer.setPhone(register.getAccount());
-        customer.setEmail(Constants.EMPTY_STRING);
-        customer.setOpenId(Constants.EMPTY_STRING);
-        customer.setCardType(Constants.EMPTY_STRING);
-        customer.setCardNo(Constants.EMPTY_STRING);
-        customer.setPhone(Constants.DEFAULT_PHOTO);
+        customer.setNickName(Constants.CATTLEMAN);
+        customer.setPhone(account);
+        customer.setPhoto(Constants.DEFAULT_PHOTO);
         customer.setReferenceId(refrenceId);
-        customer.setIsGrantLibrary(false);
-        customer.setCount(0);
-        customer.setPlatform(register.getPlatform());
-        customer.setRegisterIP(Constants.EMPTY_STRING);
-        customer.setRegisterAddredss(Constants.EMPTY_STRING);
-        customer.setDeleted(false);
+        customer.setPlatform(platform);
         customer.setCreated(now);
         customer.setModified(now);
-        customer.setRedeemPassword(Constants.EMPTY_STRING);
-        customer.setEnabledFingerprint(false);
-        customer.setHadaCount(0);
-        customer.setIsAutoRedeem(false);
         customer.setIsSetPassword(true);
         customerDao.insert(customer);
     }

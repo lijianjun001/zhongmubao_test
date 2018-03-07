@@ -14,6 +14,10 @@ import java.util.List;
  * @author 孙阿龙
  */
 public class Constants {
+    /**
+     * 客户默认头像
+     */
+    public static final String CATTLEMAN = "牧场主";
 
     /**
      * 客户默认头像
