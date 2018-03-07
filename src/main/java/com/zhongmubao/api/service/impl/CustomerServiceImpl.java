@@ -179,7 +179,7 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
         if (refCustomer == null) {
             throw new ApiException(ResultStatus.PARAMETER_ERROR);
         }
-        SystemSmsLogMongo systemSms = systemSmsLogMongoDao.getNewest(register.getAccount(), SmsType.VERIFICATION.getName());
+        SystemSmsLogMongo systemSms = systemSmsLogMongoDao.getFirstOrderByCreatedDesc(register.getAccount(), SmsType.VERIFICATION.getName());
         if (systemSms == null || !register.getSmsCode().equals(systemSms.getCode())) {
             throw new ApiException(ResultStatus.PARAMETER_CODE_ERROR);
         }
