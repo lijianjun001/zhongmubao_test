@@ -8,11 +8,6 @@ public enum ResultStatus {
     SUCCESS(100, "成功"),
     FAIL(-1, "服务器繁忙，请稍候再试"),
     PARAMETER_MISSING(-2, "参数不完整"),
-    PARAMETER_ERROR(-3, "参数错误"),
-    PARAMETER_CODE_ERROR(-4, "验证码错误"),
-    PARAMETER_CODE_INVALID(-4, "验证码已失效"),
-    REDEEM_PASSWORD_ERROR(-5, "赎回密码错误"),
-    INVALID_PHONE_ERROR(-6, "不是有效的手机号"),
     USERNAME_OR_PASSWORD_ERROR(-1001, "用户名或密码错误"),
     USER_NOT_FOUND(-1002, "用户不存在"),
     USER_NOT_LOGIN(-1003, "用户未登录"),
@@ -29,7 +24,12 @@ public enum ResultStatus {
     PASSWORD_EMPTY_ERROR(-1014, "密码不能为空"),
     DATA_QUERY_FAILED (-2000, "未查到该数据"),
     YUNYING_PHONE_ERROR(-6, "由于运营商维护系统将于2018年1月1日恢复充值"),
-    TOUTIAO_CALL_FAILED(-3001, "回传失败");
+    TOUTIAO_CALL_FAILED(-3001, "回传失败"),
+    PARAMETER_CODE_ERROR(-4001, "验证码错误"),
+    PARAMETER_CODE_INVALID(-4002, "验证码已失效"),
+    REDEEM_PASSWORD_ERROR(-4003, "赎回密码错误"),
+    INVALID_PHONE_ERROR(-4004, "不是有效的手机号"),
+    INVALID_RECOMMEND_ERROR(-4005, "推荐人不存在");
 
     /**
      * 返回码

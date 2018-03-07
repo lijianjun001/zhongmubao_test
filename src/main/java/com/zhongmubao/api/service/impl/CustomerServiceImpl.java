@@ -240,7 +240,7 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
         int id = ApiUtil.dInviteCode(register.getCode());
         Customer customer = customerDao.getCustomerById(id);
         if (null == customer) {
-            throw new ApiException(ResultStatus.PARAMETER_ERROR);
+            throw new ApiException(ResultStatus.INVALID_RECOMMEND_ERROR);
         }
 
         String photo = ApiUtil.formartPhoto(customer.getPhoto());
