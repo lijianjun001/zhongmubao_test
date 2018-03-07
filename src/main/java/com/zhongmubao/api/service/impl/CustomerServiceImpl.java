@@ -4,10 +4,10 @@ import com.zhongmubao.api.config.Constants;
 import com.zhongmubao.api.config.ResultStatus;
 import com.zhongmubao.api.config.enmu.*;
 import com.zhongmubao.api.dao.*;
-import com.zhongmubao.api.dto.request.customer.CustomerRequestModel;
+import com.zhongmubao.api.dto.request.customer.RecommendInfoRequestModel;
 import com.zhongmubao.api.dto.request.customer.RegisterRequestModel;
 import com.zhongmubao.api.dto.request.my.RealNameRequestModel;
-import com.zhongmubao.api.dto.response.customer.CustomerInfoViewModel;
+import com.zhongmubao.api.dto.response.customer.RecommendInfoViewModel;
 import com.zhongmubao.api.dto.response.my.RealNameViewModel;
 import com.zhongmubao.api.entity.Customer;
 import com.zhongmubao.api.entity.CustomerHF;
@@ -195,7 +195,7 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
     }
 
     @Override
-    public CustomerInfoViewModel infoByCode(CustomerRequestModel register) throws Exception {
+    public RecommendInfoViewModel recommendInfo(RecommendInfoRequestModel register) throws Exception {
         if (register == null || StringUtil.isNullOrEmpty(register.getCode())) {
             throw new ApiException(ResultStatus.PARAMETER_MISSING);
         }
@@ -208,7 +208,7 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
         String photo = customer.getPhone();
         photo = StringUtil.isNullOrEmpty(photo) ? Constants.DEFAULT_PHOTO : photo.toLowerCase().startsWith(Constants.HTTP) ? photo : Domain.WEIXIN.getDomain() + photo;
 
-        CustomerInfoViewModel viewModel = new CustomerInfoViewModel();
+        RecommendInfoViewModel viewModel = new RecommendInfoViewModel();
         viewModel.setNickName(customer.getNickName());
         viewModel.setPhone(photo);
 

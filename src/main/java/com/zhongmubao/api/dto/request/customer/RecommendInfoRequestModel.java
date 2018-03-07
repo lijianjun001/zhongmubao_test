@@ -5,7 +5,7 @@ package com.zhongmubao.api.dto.request.customer;
  *
  * @author 米立林
  */
-public class CustomerRequestModel {
+public class RecommendInfoRequestModel {
     private String code;
 
     public String getCode() {

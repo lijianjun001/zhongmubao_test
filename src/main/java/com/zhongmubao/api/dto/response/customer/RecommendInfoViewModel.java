@@ -4,7 +4,7 @@ package com.zhongmubao.api.dto.response.customer;
  * 客户信息
  * @author 米立林
  */
-public class CustomerInfoViewModel {
+public class RecommendInfoViewModel {
     private String nickName;
     private String phone;
 

@@ -1,9 +1,9 @@
 package com.zhongmubao.api.service;
 
-import com.zhongmubao.api.dto.request.customer.CustomerRequestModel;
+import com.zhongmubao.api.dto.request.customer.RecommendInfoRequestModel;
 import com.zhongmubao.api.dto.request.customer.RegisterRequestModel;
 import com.zhongmubao.api.dto.request.my.RealNameRequestModel;
-import com.zhongmubao.api.dto.response.customer.CustomerInfoViewModel;
+import com.zhongmubao.api.dto.response.customer.RecommendInfoViewModel;
 import com.zhongmubao.api.dto.response.my.RealNameViewModel;
 import com.zhongmubao.api.entity.Customer;
 
@@ -40,5 +40,5 @@ public interface CustomerService {
      * @return true or false
      * @throws Exception
      */
-    CustomerInfoViewModel infoByCode(CustomerRequestModel register) throws Exception;
+    RecommendInfoViewModel recommendInfo(RecommendInfoRequestModel register) throws Exception;
 }
