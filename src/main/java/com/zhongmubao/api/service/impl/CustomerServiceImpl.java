@@ -18,6 +18,7 @@ import com.zhongmubao.api.mongo.dao.SystemSmsLogMongoDao;
 import com.zhongmubao.api.mongo.entity.CustomerHFIndexMongo;
 import com.zhongmubao.api.mongo.entity.SystemSmsLogMongo;
 import com.zhongmubao.api.service.CustomerService;
+import com.zhongmubao.api.util.ApiUtil;
 import com.zhongmubao.api.util.DateUtil;
 import com.zhongmubao.api.util.RegExpMatcher;
 import com.zhongmubao.api.util.SecurityUtil;
@@ -183,7 +184,7 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
         }
         //endregion
         Date now = new Date();
-        int refrenceId = dInviteCode(register.getReferenceCode());
+        int refrenceId = ApiUtil.dInviteCode(register.getReferenceCode());
         Customer refCustomer = customerDao.getCustomerById(refrenceId);
         if (refCustomer == null) {
             refrenceId = 0;
@@ -234,13 +235,13 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
         if (register == null || StringUtil.isNullOrEmpty(register.getCode())) {
             throw new ApiException(ResultStatus.PARAMETER_MISSING);
         }
-        int id = dInviteCode(register.getCode());
+        int id = ApiUtil.dInviteCode(register.getCode());
         Customer customer = customerDao.getCustomerById(id);
         if (null == customer) {
             throw new ApiException(ResultStatus.PARAMETER_ERROR);
         }
 
-        String photo = formartPhoto(customer.getPhoto());
+        String photo = ApiUtil.formartPhoto(customer.getPhoto());
 
         RecommendInfoViewModel viewModel = new RecommendInfoViewModel();
         viewModel.setNickName(customer.getNickName());

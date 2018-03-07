@@ -21,10 +21,7 @@ import com.zhongmubao.api.mongo.entity.CustomerHFBalanceMongo;
 import com.zhongmubao.api.mongo.entity.base.PageModel;
 import com.zhongmubao.api.service.impl.BaseService;
 import com.zhongmubao.api.service.my.TransactionService;
-import com.zhongmubao.api.util.DateUtil;
-import com.zhongmubao.api.util.DoubleUtil;
-import com.zhongmubao.api.util.SerializeUtil;
-import com.zhongmubao.api.util.StringUtil;
+import com.zhongmubao.api.util.*;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
@@ -178,7 +175,7 @@ public class TransactionServiceImpl extends BaseService implements TransactionSe
         double sheepIncome = 0;
         double redPacketIncome = 0;
         for (SheepOrderInfo order : sheepOrderInfo) {
-            double sIncom = order.getCount() * calcProfitEx(order.getPrice(), order.getRate(), order.getPeriod());
+            double sIncom = order.getCount() * ApiUtil.calcProfitEx(order.getPrice(), order.getRate(), order.getPeriod());
             sheepIncome += sIncom;
             double rIncome = order.getRedPackageAmount();
             redPacketIncome += rIncome;
