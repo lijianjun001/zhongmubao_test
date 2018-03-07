@@ -77,8 +77,6 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
                     realNameViewModel.setIndexShowHFRealName(true);
                 }
             }
-            //不删除恒显示
-            //customerHFIndexMongoDao.delete(customerHFIndexMongo);
         }
 
         if (customer.getCreated().getTime() > (new SimpleDateFormat(dateFormat).parse(dateStr)).getTime()) {
@@ -183,7 +181,7 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
         if (systemSms == null || !register.getSmsCode().equals(systemSms.getCode())) {
             throw new ApiException(ResultStatus.PARAMETER_CODE_ERROR);
         }
-        if( DateUtil.subDateOfSecond(systemSms.getExpired(), now) <= 0){
+        if (DateUtil.subDateOfSecond(systemSms.getExpired(), now) <= 0) {
             throw new ApiException(ResultStatus.PARAMETER_CODE_INVALID);
         }
         systemSms.setExpired(now);
@@ -205,8 +203,7 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
             throw new ApiException(ResultStatus.PARAMETER_ERROR);
         }
 
-        String photo = customer.getPhone();
-        photo = StringUtil.isNullOrEmpty(photo) ? Constants.DEFAULT_PHOTO : photo.toLowerCase().startsWith(Constants.HTTP) ? photo : Domain.WEIXIN.getDomain() + photo;
+        String photo = formartPhoto(customer.getPhoto());
 
         RecommendInfoViewModel viewModel = new RecommendInfoViewModel();
         viewModel.setNickName(customer.getNickName());

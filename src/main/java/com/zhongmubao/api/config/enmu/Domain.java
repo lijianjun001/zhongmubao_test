@@ -20,7 +20,11 @@ public enum Domain {
     /**
      * WAP
      */
-    WAP(Platform.WAP.getName(), "http://192.168.31.200:46018/");
+    WAP(Platform.WAP.getName(), "http://192.168.31.200:46018/"),
+    /**
+     * 资源文件
+     */
+    RESOURCES(Platform.RESOURCES.getName(), "https://s.emubao.com/");
 
     private String platform;
     private String domain;

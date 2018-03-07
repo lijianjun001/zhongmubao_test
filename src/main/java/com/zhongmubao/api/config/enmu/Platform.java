@@ -41,6 +41,12 @@ public enum Platform {
         public String getName() {
             return "03";
         }
+    },
+    RESOURCES {
+        @Override
+        public String getName() {
+            return "04";
+        }
     };
 
     public abstract String getName();
