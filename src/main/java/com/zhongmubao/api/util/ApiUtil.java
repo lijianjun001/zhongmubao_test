@@ -5,6 +5,8 @@ import com.zhongmubao.api.config.enmu.Domain;
 import com.zhongmubao.api.config.enmu.Platform;
 import com.zhongmubao.api.config.enmu.SheepProjectPeriod;
 
+import static com.zhongmubao.api.config.Constants.UPLOAD_URL;
+
 /**
  * 接口基础类
  *
@@ -94,6 +96,6 @@ public class ApiUtil {
      * @return
      */
     public static String formartPhoto(String photo) {
-        return StringUtil.isNullOrEmpty(photo) ? Constants.DEFAULT_PHOTO : photo.toLowerCase().startsWith(Constants.HTTP) ? photo : Domain.RESOURCES.getDomain() + photo;
+        return StringUtil.isNullOrEmpty(photo) ? Constants.DEFAULT_PHOTO : photo.toLowerCase().startsWith(Constants.HTTP) ? photo : UPLOAD_URL + photo;
     }
 }
