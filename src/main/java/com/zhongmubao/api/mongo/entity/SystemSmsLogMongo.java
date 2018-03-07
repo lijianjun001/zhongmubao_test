@@ -11,7 +11,7 @@ import java.util.Date;
  *
  * @author 米立林
  */
-@Document(collection = "SystemSmsLogMongo")
+@Document(collection = "SystemSMSLogMongo")
 public class SystemSmsLogMongo extends BaseModel {
     @Field("SqlId")
     private int sqlId;
