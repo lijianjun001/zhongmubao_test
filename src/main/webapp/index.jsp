@@ -33,36 +33,18 @@
 //            version:"1.0"
 //        };
         var data = {
-            platform:"01",
-            name: "toyear",
-            param: "{\"imgUrl\":\"https://s.emubao.com/upload/banner/201709200958079273.png\"}"
+            account: "17701314002",
+            password: "klajsdfo34i59",
+            referenceCode: "Y96562",
+            smsCode: "568626"
         };
-
-        $.ajax({
-            type: "POST",
-            url: "/system/shareInfo",
-            data: JSON.stringify(data),
-            contentType: 'application/json;charset=UTF-8',
-            dataType: "json",                                     //预期服务器返回类型
-            headers: {
-                Authorization: "YR3D+mEt8SQSBFNpCoOLiJTh/nZMACMncBFB0C35vJjqFv1gVrk2g3uVvIwSPqSoDnnOWSIzPywvYiswNAOmuqyhymtVphmdBnYRvx0H0ricp6x4a49ak7cdo/WWz72h",
-                Platform: "04"
-            },
-            success: function (data) {
-                console.log(JSON.stringify(data));
-                alert(JSON.stringify(data))
-                //alert(data.msg);
-            }, error: function (data) {
-                alert("Error:" + data.msg);
-            }
-        });
 
         console.info(JSON.stringify(data));
 //        var saveData ={"USER_ID":leader,"Users":users};
 
         $.ajax({
             type: "POST",
-            url: "/system/shareInfo",
+            url: "/customer/register",
             data: JSON.stringify(data),
             contentType: 'application/json;charset=UTF-8',
             dataType: "json",                                     //预期服务器返回类型
