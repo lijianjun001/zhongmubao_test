@@ -10,6 +10,7 @@ import com.zhongmubao.api.dto.request.my.RealNameRequestModel;
 import com.zhongmubao.api.dto.request.sign.*;
 import com.zhongmubao.api.dto.response.ReponseModel;
 import com.zhongmubao.api.dto.response.customer.RecommendInfoViewModel;
+import com.zhongmubao.api.dto.response.customer.RegisterViewModel;
 import com.zhongmubao.api.dto.response.my.RealNameViewModel;
 import com.zhongmubao.api.dto.response.sign.MyGiftCardModel;
 import com.zhongmubao.api.dto.response.sign.SignShareInfoModel;
@@ -272,10 +273,11 @@ public class CustomerController {
      * @return
      */
     @RequestMapping(value = "/register", method = RequestMethod.POST, consumes = "application/json")
+    @Authorization(onlyGetCustomer = true)
     public ResponseEntity<ReponseModel> register(HttpEntity<RegisterRequestModel> model) {
         try {
-            customerService.register(model.getBody());
-            return new ResponseEntity<>(ReponseModel.ok(), HttpStatus.OK);
+            RegisterViewModel viewModel = customerService.register(model.getBody());
+            return new ResponseEntity<>(ReponseModel.ok(viewModel), HttpStatus.OK);
         } catch (ApiException ex) {
             return new ResponseEntity<>(ReponseModel.error(ex.getStatus()), HttpStatus.OK);
         } catch (Exception ex) {

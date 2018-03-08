@@ -33,10 +33,11 @@
 //            version:"1.0"
 //        };
         var data = {
-            account: "17701314002",
-            password: "klajsdfo34i59",
-            referenceCode: "Y96562",
-            smsCode: "568626"
+            platform: "01",
+            account:"18888888887",
+            password:"123456",
+            smsCode:"491582",
+            referenceCode: "Y96588"
         };
 
         console.info(JSON.stringify(data));

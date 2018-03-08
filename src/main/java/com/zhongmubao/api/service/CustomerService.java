@@ -4,6 +4,7 @@ import com.zhongmubao.api.dto.request.customer.RecommendInfoRequestModel;
 import com.zhongmubao.api.dto.request.customer.RegisterRequestModel;
 import com.zhongmubao.api.dto.request.my.RealNameRequestModel;
 import com.zhongmubao.api.dto.response.customer.RecommendInfoViewModel;
+import com.zhongmubao.api.dto.response.customer.RegisterViewModel;
 import com.zhongmubao.api.dto.response.my.RealNameViewModel;
 import com.zhongmubao.api.entity.Customer;
 
@@ -31,7 +32,7 @@ public interface CustomerService {
      * @return true or false
      * @throws Exception
      */
-    void register(RegisterRequestModel register) throws Exception;
+    RegisterViewModel register(RegisterRequestModel register) throws Exception;
 
     /**
      * 通过Code获取客户信息

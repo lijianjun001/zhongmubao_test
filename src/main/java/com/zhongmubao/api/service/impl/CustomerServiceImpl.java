@@ -8,6 +8,7 @@ import com.zhongmubao.api.dto.request.customer.RecommendInfoRequestModel;
 import com.zhongmubao.api.dto.request.customer.RegisterRequestModel;
 import com.zhongmubao.api.dto.request.my.RealNameRequestModel;
 import com.zhongmubao.api.dto.response.customer.RecommendInfoViewModel;
+import com.zhongmubao.api.dto.response.customer.RegisterViewModel;
 import com.zhongmubao.api.dto.response.my.RealNameViewModel;
 import com.zhongmubao.api.entity.Customer;
 import com.zhongmubao.api.entity.CustomerHF;
@@ -161,7 +162,7 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
 
 
     @Override
-    public void register(RegisterRequestModel register) throws Exception {
+    public RegisterViewModel register(RegisterRequestModel register) throws Exception {
         Date now = new Date();
         //region verification
         if (register == null) {
@@ -215,7 +216,7 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
 
         Customer customer = new Customer();
         customer.setAccount(account);
-        customer.setPassword(password);
+        customer.setPassword(ApiUtil.Encrypt(password));
         customer.setSign(sign);
         customer.setNickName(Constants.CATTLEMAN);
         customer.setPhone(account);
@@ -230,24 +231,37 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
         sendRedPackage(customer, RedPackageType.REGISTER, 8, DateUtil.addDay(now, 2), 2);
         sendRedPackage(customer, RedPackageType.REGISTER, 5, DateUtil.addDay(now, 7), 6);
         sendRedPackage(customer, RedPackageType.REGISTER, 2, DateUtil.addDay(now, 30), 17);
+
+        RegisterViewModel viewModel = new RegisterViewModel();
+        viewModel.setId(customer.getId());
+        viewModel.setAccount(customer.getAccount());
+        viewModel.setNickName(customer.getNickName());
+        viewModel.setOpenId(customer.getOpenId());
+        viewModel.setSign(customer.getSign());
+        viewModel.setPhoto(customer.getPhoto());
+        viewModel.setToken(setToken(platform, customer.getId()));
+
+        return viewModel;
     }
 
     @Override
     public RecommendInfoViewModel recommendInfo(RecommendInfoRequestModel register) throws Exception {
-        if (register == null || StringUtil.isNullOrEmpty(register.getCode())) {
+        if (register == null) {
             throw new ApiException(ResultStatus.PARAMETER_MISSING);
         }
+        RecommendInfoViewModel viewModel = new RecommendInfoViewModel();
         int id = ApiUtil.dInviteCode(register.getCode());
         Customer customer = customerDao.getCustomerById(id);
         if (null == customer) {
-            throw new ApiException(ResultStatus.INVALID_RECOMMEND_ERROR);
+            String nickName = "牧场主";
+            String photo = ApiUtil.formartPhoto(Constants.EMPTY_STRING);
+            viewModel.setNickName(nickName);
+            viewModel.setPhoto(photo);
+        } else {
+            String photo = ApiUtil.formartPhoto(customer.getPhoto());
+            viewModel.setNickName(customer.getNickName());
+            viewModel.setPhoto(photo);
         }
-
-        String photo = ApiUtil.formartPhoto(customer.getPhoto());
-
-        RecommendInfoViewModel viewModel = new RecommendInfoViewModel();
-        viewModel.setNickName(customer.getNickName());
-        viewModel.setPhone(photo);
 
         return viewModel;
     }

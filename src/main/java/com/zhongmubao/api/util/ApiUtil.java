@@ -5,6 +5,9 @@ import com.zhongmubao.api.config.enmu.Domain;
 import com.zhongmubao.api.config.enmu.Platform;
 import com.zhongmubao.api.config.enmu.SheepProjectPeriod;
 
+import java.io.IOException;
+import java.util.Date;
+
 import static com.zhongmubao.api.config.Constants.UPLOAD_URL;
 
 /**
@@ -97,5 +100,31 @@ public class ApiUtil {
      */
     public static String formartPhoto(String photo) {
         return StringUtil.isNullOrEmpty(photo) ? Constants.DEFAULT_PHOTO : photo.toLowerCase().startsWith(Constants.HTTP) ? photo : UPLOAD_URL + photo;
+    }
+
+    /**
+     * 加密密码
+     *
+     * @param password 平台
+     * @author 米立林
+     */
+    public static String Encrypt(String password) throws IOException {
+        String security;
+        Date now = new Date();
+        String res = HttpUtil.get(Constants.PASSWORD_ENCRYPT_URL + "?data=" + password);
+        return SerializeUtil.getJsonStringValueByKey(res, "data");
+    }
+
+    /**
+     * 加密密码
+     *
+     * @param password 平台
+     * @author 米立林
+     */
+    public static String CryptLibEncrypt(String password) throws IOException {
+        String security;
+        Date now = new Date();
+        String res = HttpUtil.get(Constants.CRYPTLIBENCRYPT_URL + "?data=" + password);
+        return SerializeUtil.getJsonStringValueByKey(res, "data");
     }
 }

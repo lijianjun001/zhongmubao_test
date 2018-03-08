@@ -6,7 +6,7 @@ package com.zhongmubao.api.dto.response.customer;
  */
 public class RecommendInfoViewModel {
     private String nickName;
-    private String phone;
+    private String photo;
 
     public String getNickName() {
         return nickName;
@@ -16,11 +16,11 @@ public class RecommendInfoViewModel {
         this.nickName = nickName;
     }
 
-    public String getPhone() {
-        return phone;
+    public String getPhoto() {
+        return photo;
     }
 
-    public void setPhone(String phone) {
-        this.phone = phone;
+    public void setPhoto(String photo) {
+        this.photo = photo;
     }
 }

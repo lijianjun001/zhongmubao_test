@@ -1,17 +1,19 @@
 package com.zhongmubao.api.service.impl;
 
+import com.zhongmubao.api.config.Constants;
 import com.zhongmubao.api.config.WxTemplate;
 import com.zhongmubao.api.config.enmu.*;
 import com.zhongmubao.api.dao.ExtRedPackageDao;
 import com.zhongmubao.api.entity.Customer;
 import com.zhongmubao.api.entity.ExtRedPackage;
 import com.zhongmubao.api.mongo.dao.SystemPushMongoDao;
+import com.zhongmubao.api.mongo.dao.SystemTokenMongoDao;
 import com.zhongmubao.api.mongo.entity.SystemPushMongo;
-import com.zhongmubao.api.util.DateUtil;
-import com.zhongmubao.api.util.DoubleUtil;
-import com.zhongmubao.api.util.StringUtil;
+import com.zhongmubao.api.mongo.entity.SystemTokenMongo;
+import com.zhongmubao.api.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.io.IOException;
 import java.util.Date;
 
 /**
@@ -24,6 +26,9 @@ public class BaseService {
     private ExtRedPackageDao extRedPackageDao;
     @Autowired
     private SystemPushMongoDao systemPushMongoDao;
+    @Autowired
+    private SystemTokenMongoDao systemTokenMongoDao;
+
 
     protected void sendRedPackage(Customer customer, RedPackageType type, double price, Date expTime, int count) {
         if (price < 0) {
@@ -124,6 +129,40 @@ public class BaseService {
             pushMongo.setCreateTime(DateUtil.formatMongo(new Date()));
             systemPushMongoDao.add(pushMongo);
         } catch (Exception ignore) {
+        }
+    }
+
+    /**
+     * 生成token
+     *
+     * @param platform   平台
+     * @param customerId 用户主键
+     * @author 米立林
+     */
+    protected String setToken(String platform, int customerId) {
+        try {
+            Date now = new Date();
+            Date mongoNow = DateUtil.formatMongo(now);
+            Date expired = DateUtil.addDay(mongoNow, 31);
+            String token = ApiUtil.CryptLibEncrypt(customerId + "-" + java.util.UUID.randomUUID().toString().replace("-", Constants.EMPTY_STRING));
+            SystemTokenMongo entity = systemTokenMongoDao.getByCustomerIdAndPlatform(customerId, platform);
+            if (entity == null) {
+                entity = new SystemTokenMongo();
+                entity.setPlatform(platform);
+                entity.setCustomerId(customerId);
+                entity.setToken(token);
+                entity.setExpired(expired);
+                entity.setCreated(mongoNow);
+                entity.setModified(mongoNow);
+            } else {
+                entity.setToken(token);
+                entity.setExpired(expired);
+                entity.setModified(mongoNow);
+            }
+            systemTokenMongoDao.save(entity);
+            return token;
+        } catch (Exception ignore) {
+            return "";
         }
     }
 }

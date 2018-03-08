@@ -160,7 +160,7 @@ public class SheepRoomServiceImpl extends BaseService implements SheepRoomServic
         }
         SheepProject sheepProject = sheepProjectDao.getSheepProjectById(model.getProjectId());
         if (null == sheepProject) {
-            throw new ApiException(ResultStatus.PARAMETER_ERROR);
+            throw new ApiException(ResultStatus.PARAMETER_MISSING);
         }
         // 判断类型 羊只00 Or 店铺03
         String type = null;

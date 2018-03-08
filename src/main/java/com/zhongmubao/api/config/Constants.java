@@ -30,6 +30,16 @@ public class Constants {
     public static final String UPLOAD_URL = "https://s.emubao.com/upload/";
 
     /**
+     * 密码加密URL
+     */
+    public static final String PASSWORD_ENCRYPT_URL = "http://192.168.31.200:8007/api/main/Encrypt";
+
+    /**
+     * CRYPTLIBENCRYPT_URL
+     */
+    public static final String CRYPTLIBENCRYPT_URL = "http://192.168.31.200:8007/api/main/CryptLibEncrypt";
+
+    /**
      * 每页显示条数
      */
     public static final int PAGE_SIZE = 20;
