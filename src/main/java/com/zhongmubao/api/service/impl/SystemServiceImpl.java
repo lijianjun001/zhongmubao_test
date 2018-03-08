@@ -102,8 +102,8 @@ public class SystemServiceImpl extends BaseService implements SystemService {
         //endregion
 
         /* replace处理掉多余的反斜杠 */
-        String shareName = model.getName().replace(Constants.BACKSLASH, Constants.EMPTY_STRING);
-        ShareContentMongo shareContent = shareContentMongoDao.getByType(shareName.toLowerCase());
+        String shareName = model.getName().replace(Constants.BACKSLASH, Constants.EMPTY_STRING).toLowerCase();
+        ShareContentMongo shareContent = shareContentMongoDao.getByType(shareName);
         if (null == shareContent) {
             throw new ApiException(ResultStatus.DATA_QUERY_FAILED);
         }
@@ -130,9 +130,16 @@ public class SystemServiceImpl extends BaseService implements SystemService {
         String imageUrl = SerializeUtil.getJsonStringValueByKey(model.getParam(), "imgUrl");
         imageUrl = StringUtil.isNullOrEmpty(imageUrl) ? shareContent.getImg() : imageUrl;
 
-        //处理每日分享的图片
+        // 处理每日分享的图片
+        String shareday = "shareday";
+        if (shareday.equals(shareName)) {
+            try {
+                String res = HttpUtil.get(Constants.SHARE_IMG_URL + "?data=" + ApiUtil.inviteCode(customer.getId()));
+                imageUrl = SerializeUtil.getJsonStringValueByKey(res, "data");
+            } catch (Exception ex) {
 
-
+            }
+        }
 
         ShareInfoViewModel viewModel = new ShareInfoViewModel();
         viewModel.setType(shareContent.getType());
@@ -155,7 +162,7 @@ public class SystemServiceImpl extends BaseService implements SystemService {
         if (null == model || StringUtil.isNullOrEmpty(model.getPhone())) {
             throw new ApiException(ResultStatus.PARAMETER_MISSING);
         }
-        if(!RegExpMatcher.matcherMobile(model.getPhone())){
+        if (!RegExpMatcher.matcherMobile(model.getPhone())) {
             throw new ApiException(ResultStatus.INVALID_PHONE_ERROR);
         }
         Date now = new Date();

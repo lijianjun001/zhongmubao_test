@@ -28,24 +28,26 @@
 //        private String ip;
 //        private String os;
 //        private String deviceid;
-//        var data = {
-//            platform:"01",
-//            version:"1.0"
-//        };
+
         var data = {
             platform: "01",
-            account:"18888888887",
-            password:"123456",
-            smsCode:"491582",
-            referenceCode: "Y96588"
+            name: "shareday",
+            param: ""
         };
+//        var data = {
+//            platform: "01",
+//            account:"18888888887",
+//            password:"123456",
+//            smsCode:"491582",
+//            referenceCode: "Y96588"
+//        };
 
         console.info(JSON.stringify(data));
 //        var saveData ={"USER_ID":leader,"Users":users};
 
         $.ajax({
             type: "POST",
-            url: "/customer/register",
+            url: "/system/shareInfo",
             data: JSON.stringify(data),
             contentType: 'application/json;charset=UTF-8',
             dataType: "json",                                     //预期服务器返回类型

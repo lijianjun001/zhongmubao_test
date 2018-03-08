@@ -40,6 +40,11 @@ public class Constants {
     public static final String CRYPTLIBENCRYPT_URL = "http://192.168.31.200:8007/api/main/CryptLibEncrypt";
 
     /**
+     * 分享获取ImgUrl
+     */
+    public static final String SHARE_IMG_URL = "http://192.168.31.200:8007/api/main/SignImg";
+
+    /**
      * 每页显示条数
      */
     public static final int PAGE_SIZE = 20;
