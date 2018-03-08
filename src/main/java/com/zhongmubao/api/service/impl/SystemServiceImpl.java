@@ -130,6 +130,10 @@ public class SystemServiceImpl extends BaseService implements SystemService {
         String imageUrl = SerializeUtil.getJsonStringValueByKey(model.getParam(), "imgUrl");
         imageUrl = StringUtil.isNullOrEmpty(imageUrl) ? shareContent.getImg() : imageUrl;
 
+        //处理每日分享的图片
+
+
+
         ShareInfoViewModel viewModel = new ShareInfoViewModel();
         viewModel.setType(shareContent.getType());
         viewModel.setShareTo(shareContent.getShareTo());
