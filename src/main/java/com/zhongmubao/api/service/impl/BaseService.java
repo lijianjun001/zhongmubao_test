@@ -144,7 +144,7 @@ public class BaseService {
             Date now = new Date();
             Date mongoNow = DateUtil.formatMongo(now);
             Date expired = DateUtil.addDay(mongoNow, 31);
-            String token = ApiUtil.CryptLibEncrypt(customerId + "-" + java.util.UUID.randomUUID().toString().replace("-", Constants.EMPTY_STRING));
+            String token = ApiUtil.cryptLibEncrypt(customerId + "-" + java.util.UUID.randomUUID().toString().replace("-", Constants.EMPTY_STRING));
             SystemTokenMongo entity = systemTokenMongoDao.getByCustomerIdAndPlatform(customerId, platform);
             if (entity == null) {
                 entity = new SystemTokenMongo();

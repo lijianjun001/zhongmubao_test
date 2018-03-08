@@ -69,8 +69,9 @@ public class ApiUtil {
             return str;
         }
         StringBuilder buffer = new StringBuilder();
-        for (int j = 0; j <= maxLength - str.length(); j++) {
-            buffer.append("Y").append(str);
+        for (int j = 0; j < maxLength - str.length(); j++) {
+            buffer.append("Y" + str);
+            break;
         }
         str = buffer.toString();
         return str;
@@ -108,7 +109,7 @@ public class ApiUtil {
      * @param password 平台
      * @author 米立林
      */
-    public static String Encrypt(String password) throws IOException {
+    public static String encrypt(String password) throws IOException {
         String security;
         Date now = new Date();
         String res = HttpUtil.get(Constants.PASSWORD_ENCRYPT_URL + "?data=" + password);
@@ -121,7 +122,7 @@ public class ApiUtil {
      * @param password 平台
      * @author 米立林
      */
-    public static String CryptLibEncrypt(String password) throws IOException {
+    public static String cryptLibEncrypt(String password) throws IOException {
         String security;
         Date now = new Date();
         String res = HttpUtil.get(Constants.CRYPTLIBENCRYPT_URL + "?data=" + password);

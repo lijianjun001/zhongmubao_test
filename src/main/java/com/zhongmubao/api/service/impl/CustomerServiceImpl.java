@@ -216,7 +216,7 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
 
         Customer customer = new Customer();
         customer.setAccount(account);
-        customer.setPassword(ApiUtil.Encrypt(password));
+        customer.setPassword(ApiUtil.encrypt(password));
         customer.setSign(sign);
         customer.setNickName(Constants.CATTLEMAN);
         customer.setPhone(account);
