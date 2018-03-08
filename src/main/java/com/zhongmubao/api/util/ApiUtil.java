@@ -37,7 +37,7 @@ public class ApiUtil {
      * 通过平台获取平台域名
      *
      * @param platform 平台
-     * @return
+     * @return 域名
      */
     public static String getDomainByPlatform(String platform) {
         if (Platform.IOS.getName().equals(platform)) {
@@ -68,9 +68,9 @@ public class ApiUtil {
         if (length <= 0) {
             return str;
         }
-        StringBuffer buffer = new StringBuffer();
+        StringBuilder buffer = new StringBuilder();
         for (int j = 0; j <= maxLength - str.length(); j++) {
-            buffer.append("Y" + str);
+            buffer.append("Y").append(str);
         }
         str = buffer.toString();
         return str;
@@ -95,8 +95,8 @@ public class ApiUtil {
     /**
      * 格式化用户头像
      *
-     * @param photo
-     * @return
+     * @param photo 用户头像
+     * @return 格式化后的头像
      */
     public static String formartPhoto(String photo) {
         return StringUtil.isNullOrEmpty(photo) ? Constants.DEFAULT_PHOTO : photo.toLowerCase().startsWith(Constants.HTTP) ? photo : UPLOAD_URL + photo;
