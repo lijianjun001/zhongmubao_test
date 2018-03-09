@@ -32,17 +32,17 @@ public class Constants {
     /**
      * 密码加密URL
      */
-    public static final String PASSWORD_ENCRYPT_URL = "http://192.168.31.200:8007/api/main/Encrypt";
+    public static final String PASSWORD_ENCRYPT_URL = "http://10.44.141.61:8016/api/main/Encrypt";
 
     /**
      * CRYPTLIBENCRYPT_URL
      */
-    public static final String CRYPTLIBENCRYPT_URL = "http://192.168.31.200:8007/api/main/CryptLibEncrypt";
+    public static final String CRYPTLIBENCRYPT_URL = "http://10.44.141.61:8016/api/main/CryptLibEncrypt";
 
     /**
      * 分享获取ImgUrl
      */
-    public static final String SHARE_IMG_URL = "http://192.168.31.200:8007/api/main/SignImg";
+    public static final String SHARE_IMG_URL = "http://10.44.141.61:8016/api/main/SignImg";
 
     /**
      * 每页显示条数
