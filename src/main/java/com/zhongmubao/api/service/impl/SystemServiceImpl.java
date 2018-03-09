@@ -119,7 +119,7 @@ public class SystemServiceImpl extends BaseService implements SystemService {
             }
             name = customer.getName();
             name = StringUtil.isNullOrEmpty(name) ? customer.getNickName() : name;
-            sign = customer.getSign();
+            sign = ApiUtil.inviteCode(customer.getId());
             photo = customer.getPhoto();
             photo = StringUtil.isNullOrEmpty(photo) ? Constants.DEFAULT_PHOTO : photo.toLowerCase().startsWith(Constants.HTTP) ? photo : Domain.WEIXIN.getDomain() + photo;
         }
