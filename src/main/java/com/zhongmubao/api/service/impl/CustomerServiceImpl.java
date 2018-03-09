@@ -278,11 +278,7 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
         }
         AccountExistViewModel viewModel = new AccountExistViewModel();
         Customer customer = customerDao.getCustomerByAccount(model.getAccount());
-        if (customer == null) {
-            viewModel.setExist(false);
-        } else {
-            viewModel.setExist(true);
-        }
+        viewModel.setExist(customer != null);
         return viewModel;
     }
 }
