@@ -110,7 +110,7 @@ public class SystemServiceImpl extends BaseService implements SystemService {
 
         String domain = ApiUtil.getDomainByPlatform(model.getPlatform());
         String name = Constants.EMPTY_STRING;
-        String sign = Constants.EMPTY_STRING;
+        String code = Constants.EMPTY_STRING;
         String photo = shareContent.getIcon();
 
         if (shareContent.getMustLogin()) {
@@ -119,13 +119,13 @@ public class SystemServiceImpl extends BaseService implements SystemService {
             }
             name = customer.getName();
             name = StringUtil.isNullOrEmpty(name) ? customer.getNickName() : name;
-            sign = ApiUtil.inviteCode(customer.getId());
+            code = ApiUtil.inviteCode(customer.getId());
             photo = customer.getPhoto();
             photo = StringUtil.isNullOrEmpty(photo) ? Constants.DEFAULT_PHOTO : photo.toLowerCase().startsWith(Constants.HTTP) ? photo : Domain.WEIXIN.getDomain() + photo;
         }
 
         String shareLink = shareContent.getShareSuccessLink().replace(Constants.DOMAIN_PLACEHOLDER, domain);
-        String url = shareContent.getUrl().replace(Constants.SIGN_PLACEHOLDER, sign).replace(Constants.DOMAIN_PLACEHOLDER, domain);
+        String url = shareContent.getUrl().replace(Constants.SIGN_PLACEHOLDER, code).replace(Constants.DOMAIN_PLACEHOLDER, domain);
         String title = shareContent.getTitle().replace(Constants.TITLE_PLACEHOLDER, name);
         String imageUrl = SerializeUtil.getJsonStringValueByKey(model.getParam(), "imgUrl");
         imageUrl = StringUtil.isNullOrEmpty(imageUrl) ? shareContent.getImg() : imageUrl;

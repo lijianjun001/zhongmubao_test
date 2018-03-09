@@ -315,7 +315,7 @@ public class Constants {
     /**
      * sign占位符
      */
-    public static final String SIGN_PLACEHOLDER = "{sign}";
+    public static final String SIGN_PLACEHOLDER = "{code}";
 
     /**
      * name占位符
