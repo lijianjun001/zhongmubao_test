@@ -276,8 +276,10 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
         if (StringUtil.isNullOrEmpty(model.getAccount())) {
             throw new ApiException(ResultStatus.INVALID_PHONE_ERROR);
         }
-        AccountExistViewModel viewModel = new AccountExistViewModel();
+
         Customer customer = customerDao.getCustomerByAccount(model.getAccount());
+
+        AccountExistViewModel viewModel = new AccountExistViewModel();
         viewModel.setExist(customer != null);
         return viewModel;
     }
