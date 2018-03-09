@@ -4,9 +4,11 @@ import com.zhongmubao.api.config.Constants;
 import com.zhongmubao.api.config.ResultStatus;
 import com.zhongmubao.api.config.enmu.*;
 import com.zhongmubao.api.dao.*;
+import com.zhongmubao.api.dto.request.customer.AccountExistRequestModel;
 import com.zhongmubao.api.dto.request.customer.RecommendInfoRequestModel;
 import com.zhongmubao.api.dto.request.customer.RegisterRequestModel;
 import com.zhongmubao.api.dto.request.my.RealNameRequestModel;
+import com.zhongmubao.api.dto.response.customer.AccountExistViewModel;
 import com.zhongmubao.api.dto.response.customer.RecommendInfoViewModel;
 import com.zhongmubao.api.dto.response.customer.RegisterViewModel;
 import com.zhongmubao.api.dto.response.my.RealNameViewModel;
@@ -263,6 +265,24 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
             viewModel.setPhoto(photo);
         }
 
+        return viewModel;
+    }
+
+    @Override
+    public AccountExistViewModel exist(AccountExistRequestModel model) throws Exception {
+        if (model == null) {
+            throw new ApiException(ResultStatus.PARAMETER_MISSING);
+        }
+        if (StringUtil.isNullOrEmpty(model.getAccount())) {
+            throw new ApiException(ResultStatus.INVALID_PHONE_ERROR);
+        }
+        AccountExistViewModel viewModel = new AccountExistViewModel();
+        Customer customer = customerDao.getCustomerByAccount(model.getAccount());
+        if (customer == null) {
+            viewModel.setExist(false);
+        } else {
+            viewModel.setExist(true);
+        }
         return viewModel;
     }
 }

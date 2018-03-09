@@ -1,8 +1,10 @@
 package com.zhongmubao.api.service;
 
+import com.zhongmubao.api.dto.request.customer.AccountExistRequestModel;
 import com.zhongmubao.api.dto.request.customer.RecommendInfoRequestModel;
 import com.zhongmubao.api.dto.request.customer.RegisterRequestModel;
 import com.zhongmubao.api.dto.request.my.RealNameRequestModel;
+import com.zhongmubao.api.dto.response.customer.AccountExistViewModel;
 import com.zhongmubao.api.dto.response.customer.RecommendInfoViewModel;
 import com.zhongmubao.api.dto.response.customer.RegisterViewModel;
 import com.zhongmubao.api.dto.response.my.RealNameViewModel;
@@ -42,4 +44,13 @@ public interface CustomerService {
      * @throws Exception
      */
     RecommendInfoViewModel recommendInfo(RecommendInfoRequestModel register) throws Exception;
+
+    /**
+     * 账号是否存在
+     *
+     * @param model 客户注册手机号
+     * @return true or false
+     * @throws Exception
+     */
+    AccountExistViewModel exist(AccountExistRequestModel model) throws Exception;
 }

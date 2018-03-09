@@ -4,11 +4,13 @@ import com.zhongmubao.api.authorization.annotation.Authorization;
 import com.zhongmubao.api.authorization.annotation.CurrentUser;
 import com.zhongmubao.api.config.Constants;
 import com.zhongmubao.api.dto.request.BaseRequest;
+import com.zhongmubao.api.dto.request.customer.AccountExistRequestModel;
 import com.zhongmubao.api.dto.request.customer.RecommendInfoRequestModel;
 import com.zhongmubao.api.dto.request.customer.RegisterRequestModel;
 import com.zhongmubao.api.dto.request.my.RealNameRequestModel;
 import com.zhongmubao.api.dto.request.sign.*;
 import com.zhongmubao.api.dto.response.ReponseModel;
+import com.zhongmubao.api.dto.response.customer.AccountExistViewModel;
 import com.zhongmubao.api.dto.response.customer.RecommendInfoViewModel;
 import com.zhongmubao.api.dto.response.customer.RegisterViewModel;
 import com.zhongmubao.api.dto.response.my.RealNameViewModel;
@@ -303,6 +305,27 @@ public class CustomerController {
             return new ResponseEntity<>(ReponseModel.error(ex, this.getClass()), HttpStatus.OK);
         }
     }
+
+    /**
+     * 通过Code获取信息
+     *
+     * @param model 请求参数
+     * @return
+     */
+    @RequestMapping(value = "exist", method = RequestMethod.POST, consumes = "application/json")
+    @Authorization(onlyGetCustomer = true)
+    public ResponseEntity<ReponseModel> exist(HttpEntity<AccountExistRequestModel> model) {
+        try {
+            AccountExistViewModel viewModel = customerService.exist(model.getBody());
+            return new ResponseEntity<>(ReponseModel.ok(viewModel), HttpStatus.OK);
+        } catch (ApiException ex) {
+            return new ResponseEntity<>(ReponseModel.error(ex.getStatus()), HttpStatus.OK);
+        } catch (Exception ex) {
+            return new ResponseEntity<>(ReponseModel.error(ex, this.getClass()), HttpStatus.OK);
+        }
+    }
+
+
 
     //endregion
 }

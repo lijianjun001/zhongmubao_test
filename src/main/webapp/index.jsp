@@ -31,8 +31,7 @@
 
         var data = {
             platform: "01",
-            name: "shareday",
-            param: ""
+            account: "17701314000"
         };
 //        var data = {
 //            platform: "01",
@@ -47,7 +46,7 @@
 
         $.ajax({
             type: "POST",
-            url: "/system/shareInfo",
+            url: "/customer/exist",
             data: JSON.stringify(data),
             contentType: 'application/json;charset=UTF-8',
             dataType: "json",                                     //预期服务器返回类型
