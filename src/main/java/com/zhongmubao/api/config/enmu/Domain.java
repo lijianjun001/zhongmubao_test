@@ -8,19 +8,19 @@ public enum Domain {
     /**
      * WEIXIN
      */
-    WEIXIN(Platform.WEIXIN.getName(), "http://192.168.31.210:46018/"),
+    WEIXIN(Platform.WEIXIN.getName(), "http://m.emubao.com/"),
     /**
      * ANDROID
      */
-    ANDROID(Platform.ANDROID.getName(), "http://192.168.31.200:8111/"),
+    ANDROID(Platform.ANDROID.getName(), "https://android2.emubao.com/"),
     /**
      * IOS
      */
-    IOS(Platform.IOS.getName(), "http://192.168.31.200:8111/"),
+    IOS(Platform.IOS.getName(), "https://ios2.emubao.com"),
     /**
      * WAP
      */
-    WAP(Platform.WAP.getName(), "http://192.168.31.200:46018/"),
+    WAP(Platform.WAP.getName(), "https://wap.emubao.com/"),
     /**
      * 资源文件
      */
