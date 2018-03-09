@@ -255,7 +255,7 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
         int id = ApiUtil.dInviteCode(register.getCode());
         Customer customer = customerDao.getCustomerById(id);
         if (null == customer) {
-            String nickName = "牧场主";
+            String nickName = "设置推荐人";
             String photo = ApiUtil.formartPhoto(Constants.EMPTY_STRING);
             viewModel.setNickName(nickName);
             viewModel.setPhoto(photo);
