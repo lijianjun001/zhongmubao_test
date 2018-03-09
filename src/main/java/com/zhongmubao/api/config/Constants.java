@@ -31,6 +31,8 @@ public class Constants {
 
     /**
      * 密码加密URL
+     * 正式环境：http://10.44.141.61:8016
+     * 测试环境：http://192.168.31.200:8007
      */
     public static final String PASSWORD_ENCRYPT_URL = "http://10.44.141.61:8016/api/main/Encrypt";
 
