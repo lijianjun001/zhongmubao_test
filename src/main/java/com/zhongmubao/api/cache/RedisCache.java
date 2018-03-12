@@ -48,7 +48,7 @@ public class RedisCache {
 
             return !StringUtil.isNullOrEmpty(str) && str.equals(value);
         } catch (Exception ex) {
-            return false;
+            return true;
         }
     }
 
