@@ -8,6 +8,13 @@ import java.util.Date;
  */
 public class ExtRedPackageGroup {
 
+    private double price;
+    private int totalCount;
+    private int newCount;
+    private double totalPrice;
+    private Date expTime;
+    private String Type;
+
     public double getPrice() {
         return price;
     }
@@ -32,11 +39,11 @@ public class ExtRedPackageGroup {
         this.newCount = newCount;
     }
 
-    public int getTotalPrice() {
+    public double getTotalPrice() {
         return totalPrice;
     }
 
-    public void setTotalPrice(int totalPrice) {
+    public void setTotalPrice(double totalPrice) {
         this.totalPrice = totalPrice;
     }
 
@@ -55,11 +62,4 @@ public class ExtRedPackageGroup {
     public void setType(String type) {
         Type = type;
     }
-
-    private double price;
-    private int totalCount;
-    private int newCount;
-    private int totalPrice;
-    private Date expTime;
-    private String Type;
 }
