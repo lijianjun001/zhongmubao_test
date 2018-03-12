@@ -92,10 +92,10 @@ public class SignServiceImpl extends BaseService implements SignService {
                 //region 逻辑
 
                 //分享天数
-                int shareDayCount = customerId == 4194 ? 6 : extRedPackageDao.countExtRedPackageByCustomerIdAndBeginTimeAndEndTimeAndType(customerId, monthBegin, monthEnd, dayShareType);
+                int shareDayCount = extRedPackageDao.countExtRedPackageByCustomerIdAndBeginTimeAndEndTimeAndType(customerId, monthBegin, monthEnd, dayShareType);
 
                 //region 验证
-                boolean todayIsShare = customerId == 4194 ? false : redisCache.getCustomerIsShare(customerId);
+                boolean todayIsShare = redisCache.getCustomerIsShare(customerId);
 
                 if (todayIsShare) {
                     return new SignModel(shareDayCount, "0.00", null, null, true, false);
@@ -131,7 +131,7 @@ public class SignServiceImpl extends BaseService implements SignService {
                 redisCache.saveCustomerIsShare(customerId);
 
                 //添加到数据库
-                CustomerShare customerShare=new CustomerShare();
+                CustomerShare customerShare = new CustomerShare();
                 customerShare.setCustomerId(customerId);
                 customerShare.setPlatform(platform);
                 customerShare.setCreateTime(now);
