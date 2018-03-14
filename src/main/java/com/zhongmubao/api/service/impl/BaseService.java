@@ -13,7 +13,6 @@ import com.zhongmubao.api.mongo.entity.SystemTokenMongo;
 import com.zhongmubao.api.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.io.IOException;
 import java.util.Date;
 
 /**
@@ -144,7 +143,7 @@ public class BaseService {
             Date now = new Date();
             Date mongoNow = DateUtil.formatMongo(now);
             Date expired = DateUtil.addDay(mongoNow, 31);
-            String token = ApiUtil.cryptLibEncrypt(customerId + "-" + java.util.UUID.randomUUID().toString().replace("-", Constants.EMPTY_STRING));
+            String token = ApiUtil.cryptLibEncrypt(customerId + "-" + java.util.UUID.randomUUID().toString().replace("-", Constants.STRING_EMPTY));
             SystemTokenMongo entity = systemTokenMongoDao.getByCustomerIdAndPlatform(customerId, platform);
             if (entity == null) {
                 entity = new SystemTokenMongo();

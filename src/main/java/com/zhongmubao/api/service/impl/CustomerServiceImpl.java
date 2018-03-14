@@ -16,10 +16,8 @@ import com.zhongmubao.api.entity.Customer;
 import com.zhongmubao.api.entity.CustomerHF;
 import com.zhongmubao.api.entity.CustomerSina;
 import com.zhongmubao.api.exception.ApiException;
-import com.zhongmubao.api.mongo.dao.CustomerHFIndexMongoDao;
-import com.zhongmubao.api.mongo.dao.SystemSmsLogMongoDao;
-import com.zhongmubao.api.mongo.entity.CustomerHFIndexMongo;
-import com.zhongmubao.api.mongo.entity.SystemSmsLogMongo;
+import com.zhongmubao.api.mongo.dao.*;
+import com.zhongmubao.api.mongo.entity.*;
 import com.zhongmubao.api.service.CustomerService;
 import com.zhongmubao.api.util.ApiUtil;
 import com.zhongmubao.api.util.DateUtil;
@@ -46,7 +44,7 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
     private final SystemSmsLogMongoDao systemSmsLogMongoDao;
 
     @Autowired
-    public CustomerServiceImpl(CustomerHFDao customerHFDao, CustomerSinaDao customerSinaDao, CustomerHFIndexMongoDao customerHFIndexMongoDao, CustomerDao customerDao, SystemSmsLogMongoDao systemSmsLogMongoDao) {
+    public CustomerServiceImpl(CustomerHFDao customerHFDao, CustomerSinaDao customerSinaDao, CustomerHFIndexMongoDao customerHFIndexMongoDao, CustomerDao customerDao, SystemSmsLogMongoDao systemSmsLogMongoDao, CustomerMessageMongo customerMessageMongo, CustomerMessageTypeMongo customerMessageTypeMongo, CustomerMessageTipsMongo customerMessageTipsMongo, CustomerMessageMongoDao customerMessageMongoDao, CustomerMessageTypeMongoDao customerMessageTypeMongoDao, CustomerMessageTipsMongoDao customerMessageTipsMongoDao) {
         this.customerHFDao = customerHFDao;
         this.customerSinaDao = customerSinaDao;
         this.customerHFIndexMongoDao = customerHFIndexMongoDao;
@@ -162,7 +160,7 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
     }
     //endregion
 
-
+    //region 注册
     @Override
     public RegisterViewModel register(RegisterRequestModel register) throws Exception {
         Date now = new Date();
@@ -256,7 +254,7 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
         Customer customer = customerDao.getCustomerById(id);
         if (null == customer) {
             String nickName = "设置推荐人";
-            String photo = ApiUtil.formartPhoto(Constants.EMPTY_STRING);
+            String photo = ApiUtil.formartPhoto(Constants.STRING_EMPTY);
             viewModel.setNickName(nickName);
             viewModel.setPhoto(photo);
         } else {
@@ -283,4 +281,6 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
         viewModel.setExist(customer != null);
         return viewModel;
     }
+    //endregion
+
 }

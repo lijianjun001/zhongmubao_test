@@ -13,7 +13,6 @@ import java.util.Date;
 @Document(collection = "CustomerNoticMongo")
 public class CustomerNoticMongo extends BaseModel {
 
-
     @Field("Title")
     private String title;
     @Field("Content")

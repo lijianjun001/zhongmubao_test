@@ -5,12 +5,14 @@ import com.zhongmubao.api.authorization.annotation.CurrentUser;
 import com.zhongmubao.api.config.Constants;
 import com.zhongmubao.api.dto.request.BaseRequest;
 import com.zhongmubao.api.dto.request.customer.AccountExistRequestModel;
+import com.zhongmubao.api.dto.request.message.CustomermessageRequestModel;
 import com.zhongmubao.api.dto.request.customer.RecommendInfoRequestModel;
 import com.zhongmubao.api.dto.request.customer.RegisterRequestModel;
 import com.zhongmubao.api.dto.request.my.RealNameRequestModel;
 import com.zhongmubao.api.dto.request.sign.*;
 import com.zhongmubao.api.dto.response.ReponseModel;
 import com.zhongmubao.api.dto.response.customer.AccountExistViewModel;
+import com.zhongmubao.api.dto.response.message.CustomerMessageListViewModel;
 import com.zhongmubao.api.dto.response.customer.RecommendInfoViewModel;
 import com.zhongmubao.api.dto.response.customer.RegisterViewModel;
 import com.zhongmubao.api.dto.response.my.RealNameViewModel;
@@ -23,6 +25,7 @@ import com.zhongmubao.api.dto.response.sign.packagelist.PageSignPackageModel;
 import com.zhongmubao.api.entity.Customer;
 import com.zhongmubao.api.exception.ApiException;
 import com.zhongmubao.api.service.CustomerService;
+import com.zhongmubao.api.service.MessageService;
 import com.zhongmubao.api.service.SignService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,11 +48,13 @@ import javax.servlet.http.HttpServletRequest;
 public class CustomerController {
     private final SignService signService;
     private final CustomerService customerService;
+    private final MessageService messageService;
 
     @Autowired
-    public CustomerController(SignService signService, CustomerService customerService) {
+    public CustomerController(SignService signService, CustomerService customerService, MessageService messageService) {
         this.signService = signService;
         this.customerService = customerService;
+        this.messageService = messageService;
     }
 
 
@@ -324,8 +329,48 @@ public class CustomerController {
             return new ResponseEntity<>(ReponseModel.error(ex, this.getClass()), HttpStatus.OK);
         }
     }
+    //endregion
 
+    //region 客户消息
 
+    /***
+     * 消息中心
+     * @param customer 客户
+     * @author 米立林
+     * @return ReponseModel
+     */
+    @RequestMapping(value = "/message/center", method = RequestMethod.POST, consumes = "application/json")
+    @Authorization
+    public ResponseEntity<ReponseModel> messageCenter(@CurrentUser Customer customer) {
+        try {
+            CustomerMessageListViewModel viewModel = messageService.messageCenter(customer);
+            return new ResponseEntity<>(ReponseModel.ok(viewModel), HttpStatus.OK);
+        } catch (ApiException ex) {
+            return new ResponseEntity<>(ReponseModel.error(ex.getStatus()), HttpStatus.OK);
+        } catch (Exception ex) {
+            return new ResponseEntity<>(ReponseModel.error(ex, this.getClass()), HttpStatus.OK);
+        }
+    }
+
+    /***
+     * 消息列表
+     * @param customer 客户
+     * @param model 请求参数
+     * @author 米立林
+     * @return ReponseModel
+     */
+    @RequestMapping(value = "/message/list", method = RequestMethod.POST, consumes = "application/json")
+    @Authorization
+    public ResponseEntity<ReponseModel> messageList(@CurrentUser Customer customer, HttpEntity<CustomermessageRequestModel> model) {
+        try {
+            CustomerMessageListViewModel viewModel = messageService.messageList(customer, model.getBody());
+            return new ResponseEntity<>(ReponseModel.ok(viewModel), HttpStatus.OK);
+        } catch (ApiException ex) {
+            return new ResponseEntity<>(ReponseModel.error(ex.getStatus()), HttpStatus.OK);
+        } catch (Exception ex) {
+            return new ResponseEntity<>(ReponseModel.error(ex, this.getClass()), HttpStatus.OK);
+        }
+    }
 
     //endregion
 }

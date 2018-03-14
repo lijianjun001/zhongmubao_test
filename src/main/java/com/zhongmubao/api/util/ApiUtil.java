@@ -86,7 +86,7 @@ public class ApiUtil {
      */
     public static int dInviteCode(String code) {
         try {
-            String str = code.trim().toLowerCase().replace("y", Constants.EMPTY_STRING);
+            String str = code.trim().toLowerCase().replace("y", Constants.STRING_EMPTY);
             return Integer.parseInt(str) - 88888;
         } catch (Exception ex) {
             return 0;

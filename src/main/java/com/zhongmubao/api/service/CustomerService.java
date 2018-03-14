@@ -1,10 +1,12 @@
 package com.zhongmubao.api.service;
 
 import com.zhongmubao.api.dto.request.customer.AccountExistRequestModel;
+import com.zhongmubao.api.dto.request.message.CustomermessageRequestModel;
 import com.zhongmubao.api.dto.request.customer.RecommendInfoRequestModel;
 import com.zhongmubao.api.dto.request.customer.RegisterRequestModel;
 import com.zhongmubao.api.dto.request.my.RealNameRequestModel;
 import com.zhongmubao.api.dto.response.customer.AccountExistViewModel;
+import com.zhongmubao.api.dto.response.message.CustomerMessageListViewModel;
 import com.zhongmubao.api.dto.response.customer.RecommendInfoViewModel;
 import com.zhongmubao.api.dto.response.customer.RegisterViewModel;
 import com.zhongmubao.api.dto.response.my.RealNameViewModel;

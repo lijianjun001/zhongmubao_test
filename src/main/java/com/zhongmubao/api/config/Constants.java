@@ -332,7 +332,17 @@ public class Constants {
     /**
      * 空字符串
      */
-    public static final String EMPTY_STRING = "";
+    public static final String STRING_EMPTY = "";
+
+    /**
+     * 常量“置顶”
+     */
+    public static final String STRING_TOP = "置顶";
+
+    /**
+     * 常量“新”
+     */
+    public static final String STRING_NEW = "新";
 
     /**
      * http常量
