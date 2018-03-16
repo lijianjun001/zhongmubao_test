@@ -7,7 +7,7 @@ import com.zhongmubao.api.config.Constants;
 import com.zhongmubao.api.config.ResultStatus;
 import com.zhongmubao.api.config.enmu.CustomerMessageType;
 import com.zhongmubao.api.dto.request.message.CustomerMessageDetailRequestModel;
-import com.zhongmubao.api.dto.request.message.CustomerMessageRequestModel;
+import com.zhongmubao.api.dto.request.message.CustomerMessageListRequestModel;
 import com.zhongmubao.api.dto.response.message.*;
 import com.zhongmubao.api.entity.Customer;
 import com.zhongmubao.api.exception.ApiException;
@@ -85,7 +85,7 @@ public class MessageServiceImpl extends BaseService implements MessageService {
     }
 
     @Override
-    public CustomerMessageListViewModel messageList(Customer customer, CustomerMessageRequestModel model) throws Exception {
+    public CustomerMessageListViewModel messageList(Customer customer, CustomerMessageListRequestModel model) throws Exception {
         if (model == null) {
             throw new ApiException(ResultStatus.PARAMETER_MISSING);
         }

@@ -7,7 +7,7 @@ import com.zhongmubao.api.dto.request.BaseRequest;
  *
  * @author 米立林
  */
-public class CustomerMessageRequestModel extends BaseRequest {
+public class CustomerMessageListRequestModel extends BaseRequest {
     /**
      * 页码
      */

@@ -8,6 +8,7 @@ import com.zhongmubao.api.dto.response.system.ShareInfoViewModel;
 import com.zhongmubao.api.entity.Customer;
 import com.zhongmubao.api.exception.ApiException;
 import com.zhongmubao.api.service.SystemService;
+import com.zhongmubao.api.util.mq.ProductorUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
@@ -31,6 +32,9 @@ public class SystemController {
         this.systemService = systemService;
     }
 
+    // 注入消息生产者
+    @Autowired
+    private ProductorUtil messageSender;
     /**
      * 头条广告
      *
@@ -110,15 +114,17 @@ public class SystemController {
         }
     }
 
-//    @RequestMapping(value = "/testTransaction", method = RequestMethod.POST, consumes = "application/json")
-//    public ResponseEntity<ReponseModel> testTransaction() {
-//        try {
-//            systemService.testTransaction();
-//            return new ResponseEntity<>(ReponseModel.ok(), HttpStatus.OK);
-//        } catch (ApiException ex) {
-//            return new ResponseEntity<>(ReponseModel.error(ex.getStatus()), HttpStatus.OK);
-//        } catch (Exception ex) {
-//            return new ResponseEntity<>(ReponseModel.error(ex, this.getClass()), HttpStatus.OK);
-//        }
-//    }
+    @RequestMapping(value = "/test", method = RequestMethod.POST, consumes = "application/json")
+    public ResponseEntity<ReponseModel> testTransaction() {
+        try {
+            // 发送消息
+            messageSender.sendDataToQueue("topic.justin.exchange", "topic.justin.queue", "insert Queue");
+
+            return new ResponseEntity<>(ReponseModel.ok(), HttpStatus.OK);
+        } catch (ApiException ex) {
+            return new ResponseEntity<>(ReponseModel.error(ex.getStatus()), HttpStatus.OK);
+        } catch (Exception ex) {
+            return new ResponseEntity<>(ReponseModel.error(ex, this.getClass()), HttpStatus.OK);
+        }
+    }
 }

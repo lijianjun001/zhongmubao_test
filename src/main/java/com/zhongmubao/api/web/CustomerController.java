@@ -6,7 +6,7 @@ import com.zhongmubao.api.config.Constants;
 import com.zhongmubao.api.dto.request.BaseRequest;
 import com.zhongmubao.api.dto.request.customer.AccountExistRequestModel;
 import com.zhongmubao.api.dto.request.message.CustomerMessageDetailRequestModel;
-import com.zhongmubao.api.dto.request.message.CustomerMessageRequestModel;
+import com.zhongmubao.api.dto.request.message.CustomerMessageListRequestModel;
 import com.zhongmubao.api.dto.request.customer.RecommendInfoRequestModel;
 import com.zhongmubao.api.dto.request.customer.RegisterRequestModel;
 import com.zhongmubao.api.dto.request.my.RealNameRequestModel;
@@ -362,7 +362,7 @@ public class CustomerController {
      */
     @RequestMapping(value = "/message/list", method = RequestMethod.POST, consumes = "application/json")
     @Authorization
-    public ResponseEntity<ReponseModel> messageList(@CurrentUser Customer customer, HttpEntity<CustomerMessageRequestModel> model) {
+    public ResponseEntity<ReponseModel> messageList(@CurrentUser Customer customer, HttpEntity<CustomerMessageListRequestModel> model) {
         try {
             CustomerMessageListViewModel viewModel = messageService.messageList(customer, model.getBody());
             return new ResponseEntity<>(ReponseModel.ok(viewModel), HttpStatus.OK);
