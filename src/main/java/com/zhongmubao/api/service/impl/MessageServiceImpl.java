@@ -93,11 +93,13 @@ public class MessageServiceImpl extends BaseService implements MessageService {
             model.setPageIndex(1);
         }
         String method = "list";
-        CustomerMessageListViewModel viewModel = new CustomerMessageListViewModel();
+
         PageModel<CustomerMessageMongo> pager = new PageModel<>();
         pager.setPageNo(model.getPageIndex());
         pager.setPageSize(Constants.PAGE_SIZE);
         pager = customerMessageMongoDao.pager(customer.getId(), pager, model.getType());
+
+        CustomerMessageListViewModel viewModel = new CustomerMessageListViewModel();
         ArrayList<CustomerMessageModel> list = formatMessage(pager.getDatas(), method);
         viewModel.setList(list);
         viewModel.setTotalPage(pager.getTotalPages());
