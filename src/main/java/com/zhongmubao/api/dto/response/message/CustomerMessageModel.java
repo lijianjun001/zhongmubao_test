@@ -1,11 +1,16 @@
 package com.zhongmubao.api.dto.response.message;
 
+
 /**
  * 消息中心实体
  *
  * @author 米立林
  */
 public class CustomerMessageModel {
+    /**
+     * 主键
+     */
+    private String id;
 
     /**
      * 消息类型，eg:开标、礼物、银行、活动、年报等
@@ -33,21 +38,6 @@ public class CustomerMessageModel {
     private String type;
 
     /**
-     * 是否已读
-     */
-    private boolean isRead;
-
-    /**
-     * 是否置顶
-     */
-    private boolean isTop;
-
-    /**
-     * 是否新消息
-     */
-    private boolean isNew;
-
-    /**
      * 标签
      */
     private String tips;
@@ -55,7 +45,20 @@ public class CustomerMessageModel {
     /**
      * 背景颜色
      */
-    private String backColor;
+    private String backgroundColor;
+
+    /**
+     * 创建时间
+     */
+    private String created;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public String getMessageTypeName() {
         return messageTypeName;
@@ -97,30 +100,6 @@ public class CustomerMessageModel {
         this.type = type;
     }
 
-    public boolean getIsRead() {
-        return isRead;
-    }
-
-    public void setRead(boolean read) {
-        isRead = read;
-    }
-
-    public boolean getIsTop() {
-        return isTop;
-    }
-
-    public void setTop(boolean top) {
-        isTop = top;
-    }
-
-    public boolean getIsNew() {
-        return isNew;
-    }
-
-    public void setNew(boolean aNew) {
-        isNew = aNew;
-    }
-
     public String getTips() {
         return tips;
     }
@@ -129,11 +108,19 @@ public class CustomerMessageModel {
         this.tips = tips;
     }
 
-    public String getBackColor() {
-        return backColor;
+    public String getBackgroundColor() {
+        return backgroundColor;
     }
 
-    public void setBackColor(String backColor) {
-        this.backColor = backColor;
+    public void setBackgroundColor(String backgroundColor) {
+        this.backgroundColor = backgroundColor;
+    }
+
+    public String getCreated() {
+        return created;
+    }
+
+    public void setCreated(String created) {
+        this.created = created;
     }
 }

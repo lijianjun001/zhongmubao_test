@@ -3,6 +3,7 @@ package com.zhongmubao.api.mongo.dao;
 import com.zhongmubao.api.mongo.dao.base.BaseDao;
 import com.zhongmubao.api.mongo.entity.CustomerMessageMongo;
 import com.zhongmubao.api.mongo.entity.base.PageModel;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -21,6 +22,7 @@ public class CustomerMessageMongoDao implements BaseDao<CustomerMessageMongo> {
 
     private final MongoTemplate mongoTemplate;
 
+    @Autowired
     public CustomerMessageMongoDao(MongoTemplate mongoTemplate) {
         this.mongoTemplate = mongoTemplate;
     }
@@ -76,8 +78,10 @@ public class CustomerMessageMongoDao implements BaseDao<CustomerMessageMongo> {
         query.addCriteria(criteria);
         query.addCriteria(Criteria.where("Type").is(type));
         query.addCriteria(Criteria.where("Deleted").is(false));
+        query.with(new Sort(Sort.Direction.ASC, "TipsIdentification"));
         query.with(new Sort(Sort.Direction.DESC, "Created"));
         query.limit(size);
+
         return mongoTemplate.find(query, CustomerMessageMongo.class);
     }
 
@@ -108,6 +112,21 @@ public class CustomerMessageMongoDao implements BaseDao<CustomerMessageMongo> {
         query.skip(page.getSkip()).limit(page.getPageSize());
         List<CustomerMessageMongo> list = mongoTemplate.find(query, CustomerMessageMongo.class);
         page.setDatas(list);
+
         return page;
+    }
+
+    /**
+     * 获取单个消息
+     *
+     * @param id 主键
+     * @return List<CustomerMessageMongo>
+     * @throws Exception Exception
+     */
+    public CustomerMessageMongo getById(String id) throws Exception {
+        Query query = new Query();
+        query.addCriteria(Criteria.where("_id").is(id));
+
+        return mongoTemplate.findOne(query, CustomerMessageMongo.class);
     }
 }

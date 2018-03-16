@@ -2,6 +2,7 @@ package com.zhongmubao.api.mongo.dao;
 
 import com.zhongmubao.api.mongo.dao.base.BaseDao;
 import com.zhongmubao.api.mongo.entity.CustomerMessageTipsMongo;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -19,6 +20,7 @@ public class CustomerMessageTipsMongoDao implements BaseDao<CustomerMessageTipsM
 
     private final MongoTemplate mongoTemplate;
 
+    @Autowired
     public CustomerMessageTipsMongoDao(MongoTemplate mongoTemplate) {
         this.mongoTemplate = mongoTemplate;
     }
@@ -68,6 +70,19 @@ public class CustomerMessageTipsMongoDao implements BaseDao<CustomerMessageTipsM
     public CustomerMessageTipsMongo getById(String id) throws Exception {
         Query query = new Query();
         query.addCriteria(Criteria.where("_id").is(id));
+        return mongoTemplate.findOne(query, CustomerMessageTipsMongo.class);
+    }
+
+    /**
+     * 通过Identification获取实体
+     *
+     * @param identification 主键
+     * @return
+     * @throws Exception
+     */
+    public CustomerMessageTipsMongo getByIdentification(int identification) throws Exception {
+        Query query = new Query();
+        query.addCriteria(Criteria.where("Identification").is(identification));
         return mongoTemplate.findOne(query, CustomerMessageTipsMongo.class);
     }
 }

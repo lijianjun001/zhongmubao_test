@@ -222,6 +222,16 @@ public class Constants {
     /**
      * 日期格式
      */
+    public static final String DATE_FORMAT_CHINA = "yyyy年MM月dd日";
+
+    /**
+     * 日期时间格式
+     */
+    public static final String DATETIME_FORMAT_CHINA = "yyyy年MM月dd日 HH:mm:ss";
+
+    /**
+     * 日期格式
+     */
     public static final String DATE_FORMAT_DOT = "yyyy.MM.dd";
 
     /**
@@ -233,6 +243,11 @@ public class Constants {
      * 日期时分秒格式
      */
     public static final String DATE_TIME_FORMAT_DOT = "yyyy.MM.dd HH:mm:ss";
+
+    /**
+     * 时分格式
+     */
+    public static final String TIME_HOUR_MINUTE_FORMAT = "HH:mm";
 
     /**
      * 金额格式（两位小数点）
@@ -343,6 +358,16 @@ public class Constants {
      * 常量“新”
      */
     public static final String STRING_NEW = "新";
+
+    /**
+     * 常量“本周”
+     */
+    public static final String STRING_THIS_WEEK = "本周";
+
+    /**
+     * 常量“历史”
+     */
+    public static final String STRING_HISTORY = "历史";
 
     /**
      * http常量

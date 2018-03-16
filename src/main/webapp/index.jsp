@@ -31,7 +31,7 @@
 
         var data = {
             platform: "01",
-            pageIndex: 1
+            id: "5aa8d95cde4b8575bace4741"
         };
 //        var data = {
 //            platform: "01",
@@ -46,7 +46,7 @@
 
         $.ajax({
             type: "POST",
-            url: "/my/readPackage/group",
+            url: "/customer/message/detail",
             data: JSON.stringify(data),
             contentType: 'application/json;charset=UTF-8',
             dataType: "json",                                     //预期服务器返回类型

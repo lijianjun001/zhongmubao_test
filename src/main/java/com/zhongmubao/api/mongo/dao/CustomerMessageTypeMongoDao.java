@@ -2,6 +2,7 @@ package com.zhongmubao.api.mongo.dao;
 
 import com.zhongmubao.api.mongo.dao.base.BaseDao;
 import com.zhongmubao.api.mongo.entity.CustomerMessageTypeMongo;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -20,6 +21,7 @@ public class CustomerMessageTypeMongoDao implements BaseDao<CustomerMessageTypeM
 
     private final MongoTemplate mongoTemplate;
 
+    @Autowired
     public CustomerMessageTypeMongoDao(MongoTemplate mongoTemplate) {
         this.mongoTemplate = mongoTemplate;
     }

@@ -335,4 +335,49 @@ public class DateUtil {
         }
         return weekDays[w];
     }
+
+    /**
+     * 获取当前日期是星期几（数字）
+     *
+     * @param dt 日期
+     * @return 当前日期是星期几
+     */
+    public static int getWeekOfDateNumber(Date dt) {
+        int[] weekDays = {7, 1, 2, 3, 4, 5, 6};
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(dt);
+        int w = cal.get(Calendar.DAY_OF_WEEK) - 1;
+        if (w < 0) {
+            w = 0;
+        }
+        return weekDays[w];
+    }
+
+    /**
+     * 获取当前日期的周一和周日
+     *
+     * @return 2018年03月12日-2018年03月18日
+     */
+    public static String getWeekSection() {
+        String weekSection;
+        SimpleDateFormat sdf = new SimpleDateFormat(Constants.DATE_FORMAT_CHINA);
+        Calendar cal = Calendar.getInstance();
+        // 设置一个星期的第一天，按中国的习惯一个星期的第一天是星期一
+        cal.setFirstDayOfWeek(Calendar.MONDAY);
+        // 获得当前日期是一个星期的第几天
+        int dayWeek = cal.get(Calendar.DAY_OF_WEEK);
+        if (dayWeek == 1) {
+            dayWeek = 8;
+        }
+        // 根据日历的规则，给当前日期减去星期几与一个星期第一天的差值
+        cal.add(Calendar.DATE, cal.getFirstDayOfWeek() - dayWeek);
+        Date mondayDate = cal.getTime();
+        String weekBegin = sdf.format(mondayDate);
+        cal.add(Calendar.DATE, 4 + cal.getFirstDayOfWeek());
+        Date sundayDate = cal.getTime();
+        String weekEnd = sdf.format(sundayDate);
+
+        weekSection = weekBegin + "-" + weekEnd;
+        return weekSection;
+    }
 }

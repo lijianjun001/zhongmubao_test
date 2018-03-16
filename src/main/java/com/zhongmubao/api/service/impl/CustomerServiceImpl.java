@@ -44,7 +44,7 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
     private final SystemSmsLogMongoDao systemSmsLogMongoDao;
 
     @Autowired
-    public CustomerServiceImpl(CustomerHFDao customerHFDao, CustomerSinaDao customerSinaDao, CustomerHFIndexMongoDao customerHFIndexMongoDao, CustomerDao customerDao, SystemSmsLogMongoDao systemSmsLogMongoDao, CustomerMessageMongo customerMessageMongo, CustomerMessageTypeMongo customerMessageTypeMongo, CustomerMessageTipsMongo customerMessageTipsMongo, CustomerMessageMongoDao customerMessageMongoDao, CustomerMessageTypeMongoDao customerMessageTypeMongoDao, CustomerMessageTipsMongoDao customerMessageTipsMongoDao) {
+    public CustomerServiceImpl(CustomerHFDao customerHFDao, CustomerSinaDao customerSinaDao, CustomerHFIndexMongoDao customerHFIndexMongoDao, CustomerDao customerDao, SystemSmsLogMongoDao systemSmsLogMongoDao) {
         this.customerHFDao = customerHFDao;
         this.customerSinaDao = customerSinaDao;
         this.customerHFIndexMongoDao = customerHFIndexMongoDao;

@@ -14,20 +14,36 @@ import java.util.Date;
 @Document(collection = "CustomerMessageTipsMongo")
 public class CustomerMessageTipsMongo extends BaseModel {
     /**
+     * 唯一标识
+     */
+    @Field("Identification")
+    private int identification;
+
+    /**
      * 标记名（有惊喜、有更新、巨有料、值得看等）
      */
     @Field("Name")
     private String name;
+
     /**
      * 标记背景颜色
      */
     @Field("BackColor")
     private String backColor;
+
     /**
      * 添加时间
      */
     @Field("Created")
     private Date created;
+
+    public int getIdentification() {
+        return identification;
+    }
+
+    public void setIdentification(int identification) {
+        this.identification = identification;
+    }
 
     public String getName() {
         return name;

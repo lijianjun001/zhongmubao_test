@@ -14,6 +14,7 @@ import java.util.Date;
  */
 @Document(collection = "CustomerMessageMongo")
 public class CustomerMessageMongo extends BaseModel {
+
     /**
      * 客户ID
      */
@@ -39,18 +40,6 @@ public class CustomerMessageMongo extends BaseModel {
     private String type;
 
     /**
-     * 是否已读
-     */
-    @Field("IsRead")
-    private boolean isRead;
-
-    /**
-     * 是否置顶
-     */
-    @Field("IsTop")
-    private boolean isTop;
-
-    /**
      * 分类消息类型（个人消息、礼物、开标、银行、活动、年报等）
      */
     @Field("CustomerMessageTypeId")
@@ -59,14 +48,14 @@ public class CustomerMessageMongo extends BaseModel {
     /**
      * 消息标记（标记提示、背景颜色等）
      */
-    @Field("CustomerMessageTipsId")
-    private String customerMessageTipsId;
+    @Field("TipsIdentification")
+    private int tipsIdentification;
 
     /**
      * 逻辑删除
      */
     @Field("Deleted")
-    private Date deleted;
+    private boolean deleted;
 
     /**
      * 创建时间
@@ -106,28 +95,12 @@ public class CustomerMessageMongo extends BaseModel {
         this.type = type;
     }
 
-    public boolean getIsRead() {
-        return isRead;
+    public int getTipsIdentification() {
+        return tipsIdentification;
     }
 
-    public void setRead(boolean read) {
-        isRead = read;
-    }
-
-    public boolean getIsTop() {
-        return isTop;
-    }
-
-    public void setTop(boolean top) {
-        isTop = top;
-    }
-
-    public String getCustomerMessageTipsId() {
-        return customerMessageTipsId;
-    }
-
-    public void setCustomerMessageTipsId(String customerMessageTipsId) {
-        this.customerMessageTipsId = customerMessageTipsId;
+    public void setTipsIdentification(int tipsIdentification) {
+        this.tipsIdentification = tipsIdentification;
     }
 
     public Date getCreated() {
@@ -136,5 +109,21 @@ public class CustomerMessageMongo extends BaseModel {
 
     public void setCreated(Date created) {
         this.created = created;
+    }
+
+    public int getCustomerId() {
+        return customerId;
+    }
+
+    public void setCustomerId(int customerId) {
+        this.customerId = customerId;
+    }
+
+    public boolean isDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
     }
 }

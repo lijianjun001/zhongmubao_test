@@ -1,7 +1,8 @@
 package com.zhongmubao.api.service;
 
-import com.zhongmubao.api.dto.request.message.CustomermessageRequestModel;
-import com.zhongmubao.api.dto.response.message.CustomerMessageListViewModel;
+import com.zhongmubao.api.dto.request.message.CustomerMessageDetailRequestModel;
+import com.zhongmubao.api.dto.request.message.CustomerMessageRequestModel;
+import com.zhongmubao.api.dto.response.message.*;
 import com.zhongmubao.api.entity.Customer;
 
 /**
@@ -18,7 +19,7 @@ public interface MessageService {
      * @return CustomerMessageListViewModel
      * @throws Exception
      */
-    CustomerMessageListViewModel messageCenter(Customer customer) throws Exception;
+    CustomerMessageCenterViewModel messageCenter(Customer customer) throws Exception;
 
     /**
      * 消息列表
@@ -28,5 +29,15 @@ public interface MessageService {
      * @return CustomerMessageListViewModel
      * @throws Exception
      */
-    CustomerMessageListViewModel messageList(Customer customer, CustomermessageRequestModel model) throws Exception;
+    CustomerMessageListViewModel messageList(Customer customer, CustomerMessageRequestModel model) throws Exception;
+
+    /**
+     * 消息详情
+     *
+     * @param customer 当前用户
+     * @param model    请求参数
+     * @return CustomerMessageListViewModel
+     * @throws Exception
+     */
+    CustomerMessageDetailViewModel messageDetail(Customer customer, CustomerMessageDetailRequestModel model) throws Exception;
 }

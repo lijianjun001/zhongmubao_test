@@ -18,11 +18,13 @@ public class CustomerMessageTypeMongo extends BaseModel {
      */
     @Field("Name")
     private String name;
+
     /**
      * 图标
      */
     @Field("Icon")
     private String icon;
+
     /**
      * 创建时间
      */
