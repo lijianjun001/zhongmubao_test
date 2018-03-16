@@ -5,7 +5,7 @@ package com.zhongmubao.api.dto.request.my.transaction;
  *
  * @author 米立林
  */
-public class TransactionMonthlyBillRequestModel {
+public class MonthlyBillRequestModel {
     /**
      * 月账单日期
      */

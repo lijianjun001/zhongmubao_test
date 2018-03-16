@@ -1,11 +1,11 @@
 package com.zhongmubao.api.service.my;
 
-import com.zhongmubao.api.dto.request.my.transaction.TransactionDetailRequestModel;
-import com.zhongmubao.api.dto.request.my.transaction.TransactionMonthlyBillRequestModel;
-import com.zhongmubao.api.dto.request.my.transaction.TransactionRequestModel;
-import com.zhongmubao.api.dto.response.my.transaction.TransactionDetailViewModel;
+import com.zhongmubao.api.dto.request.my.transaction.DetailRequestModel;
+import com.zhongmubao.api.dto.request.my.transaction.MonthlyBillRequestModel;
+import com.zhongmubao.api.dto.request.my.transaction.RequestModel;
+import com.zhongmubao.api.dto.response.my.transaction.DetailViewModel;
 import com.zhongmubao.api.dto.response.my.transaction.TransactionListViewModel;
-import com.zhongmubao.api.dto.response.my.transaction.TransactionMonthlyBillViewModel;
+import com.zhongmubao.api.dto.response.my.transaction.MonthlyBillViewModel;
 import com.zhongmubao.api.entity.Customer;
 
 /**
@@ -23,27 +23,27 @@ public interface TransactionService {
      * @throws Exception
      * @author 米立林
      */
-    TransactionListViewModel transactionList(Customer customer, TransactionRequestModel model) throws Exception;
+    TransactionListViewModel transactionList(Customer customer, RequestModel model) throws Exception;
 
     /**
      * 交易记录详情
      *
      * @param customer 客户
      * @param model    请求model
-     * @return TransactionDetailViewModel
+     * @return DetailViewModel
      * @throws Exception
      * @author 米立林
      */
-    TransactionDetailViewModel transactionDetail(Customer customer, TransactionDetailRequestModel model) throws Exception;
+    DetailViewModel transactionDetail(Customer customer, DetailRequestModel model) throws Exception;
 
     /**
      * 交易明细--月账单
      *
      * @param customer 客户
      * @param model    请求model
-     * @return TransactionDetailViewModel
+     * @return DetailViewModel
      * @throws Exception
      * @author 米立林
      */
-    TransactionMonthlyBillViewModel transactionMonthlyBill(Customer customer, TransactionMonthlyBillRequestModel model) throws Exception;
+    MonthlyBillViewModel transactionMonthlyBill(Customer customer, MonthlyBillRequestModel model) throws Exception;
 }

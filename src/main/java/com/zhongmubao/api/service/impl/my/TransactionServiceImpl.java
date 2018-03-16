@@ -8,9 +8,9 @@ import com.zhongmubao.api.config.enmu.TransactionBillResultType;
 import com.zhongmubao.api.config.enmu.TransactionDetailType;
 import com.zhongmubao.api.dao.SheepOrderDao;
 import com.zhongmubao.api.dao.SheepProjectDao;
-import com.zhongmubao.api.dto.request.my.transaction.TransactionDetailRequestModel;
-import com.zhongmubao.api.dto.request.my.transaction.TransactionMonthlyBillRequestModel;
-import com.zhongmubao.api.dto.request.my.transaction.TransactionRequestModel;
+import com.zhongmubao.api.dto.request.my.transaction.DetailRequestModel;
+import com.zhongmubao.api.dto.request.my.transaction.MonthlyBillRequestModel;
+import com.zhongmubao.api.dto.request.my.transaction.RequestModel;
 import com.zhongmubao.api.dto.response.my.transaction.*;
 import com.zhongmubao.api.entity.Customer;
 import com.zhongmubao.api.entity.ext.SheepBillInfo;
@@ -50,7 +50,7 @@ public class TransactionServiceImpl extends BaseService implements TransactionSe
 
     //region 交易明细列表
     @Override
-    public TransactionListViewModel transactionList(Customer customer, TransactionRequestModel model) throws Exception {
+    public TransactionListViewModel transactionList(Customer customer, RequestModel model) throws Exception {
         if (null == model) {
             throw new ApiException(ResultStatus.PARAMETER_MISSING);
         }
@@ -118,7 +118,7 @@ public class TransactionServiceImpl extends BaseService implements TransactionSe
     }
 
     @Override
-    public TransactionDetailViewModel transactionDetail(Customer customer, TransactionDetailRequestModel model) throws Exception {
+    public DetailViewModel transactionDetail(Customer customer, DetailRequestModel model) throws Exception {
         if (null == model || StringUtil.isNullOrEmpty(model.getId())) {
             throw new ApiException(ResultStatus.PARAMETER_MISSING);
         }
@@ -126,7 +126,7 @@ public class TransactionServiceImpl extends BaseService implements TransactionSe
         if (record == null || StringUtil.isNullOrEmpty(record.type)) {
             throw new ApiException(ResultStatus.PARAMETER_MISSING);
         }
-        TransactionDetailViewModel transactionDetailViewModel = new TransactionDetailViewModel();
+        DetailViewModel transactionDetailViewModel = new DetailViewModel();
         transactionDetailViewModel.setBillType(record.getType());
         transactionDetailViewModel.setTransactionDetail(record.getTransactionDetail());
         transactionDetailViewModel.setBalance(DoubleUtil.toFixed(record.getNowBalance(), Constants.PRICE_FORMAT));
@@ -135,12 +135,12 @@ public class TransactionServiceImpl extends BaseService implements TransactionSe
     }
 
     @Override
-    public TransactionMonthlyBillViewModel transactionMonthlyBill(Customer customer, TransactionMonthlyBillRequestModel model) throws Exception {
+    public MonthlyBillViewModel transactionMonthlyBill(Customer customer, MonthlyBillRequestModel model) throws Exception {
         if (null == model || StringUtil.isNullOrEmpty(model.getBillDate())) {
             throw new ApiException(ResultStatus.PARAMETER_MISSING);
         }
         Date billDate = DateUtil.strToShortDate(model.getBillDate());
-        TransactionMonthlyBillViewModel viewModel = new TransactionMonthlyBillViewModel();
+        MonthlyBillViewModel viewModel = new MonthlyBillViewModel();
         viewModel.setResultType(TransactionBillResultType.NORMAL.getName());
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM");
         String time = format.format(billDate);

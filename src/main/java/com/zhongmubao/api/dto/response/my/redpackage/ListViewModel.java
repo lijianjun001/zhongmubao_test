@@ -7,12 +7,12 @@ import java.util.ArrayList;
  *
  * @author 孙阿龙
  */
-public class RedPackageListViewModel {
+public class ListViewModel {
 
-    public RedPackageListViewModel() {
+    public ListViewModel() {
     }
 
-    public RedPackageListViewModel(int totalPage, ArrayList<RedPackageModel> list) {
+    public ListViewModel(int totalPage, ArrayList<RedPackageModel> list) {
         this.totalPage = totalPage;
         this.list = list;
     }

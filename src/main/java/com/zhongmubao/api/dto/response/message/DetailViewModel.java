@@ -5,11 +5,11 @@ package com.zhongmubao.api.dto.response.message;
  *
  * @author 米立林
  */
-public class CustomerMessageDetailViewModel {
-    public CustomerMessageDetailViewModel() {
+public class DetailViewModel {
+    public DetailViewModel() {
     }
 
-    public CustomerMessageDetailViewModel(String title, String text, String content) {
+    public DetailViewModel(String title, String text, String content) {
         this.title = title;
         this.text = text;
         this.content = content;

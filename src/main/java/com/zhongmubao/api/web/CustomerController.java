@@ -5,8 +5,8 @@ import com.zhongmubao.api.authorization.annotation.CurrentUser;
 import com.zhongmubao.api.config.Constants;
 import com.zhongmubao.api.dto.request.BaseRequest;
 import com.zhongmubao.api.dto.request.customer.AccountExistRequestModel;
-import com.zhongmubao.api.dto.request.message.CustomerMessageDetailRequestModel;
-import com.zhongmubao.api.dto.request.message.CustomerMessageListRequestModel;
+import com.zhongmubao.api.dto.request.message.DetailRequestModel;
+import com.zhongmubao.api.dto.request.message.ListRequestModel;
 import com.zhongmubao.api.dto.request.customer.RecommendInfoRequestModel;
 import com.zhongmubao.api.dto.request.customer.RegisterRequestModel;
 import com.zhongmubao.api.dto.request.my.RealNameRequestModel;
@@ -344,7 +344,7 @@ public class CustomerController {
     @Authorization
     public ResponseEntity<ReponseModel> messageCenter(@CurrentUser Customer customer) {
         try {
-            CustomerMessageCenterViewModel viewModel = messageService.messageCenter(customer);
+            CenterViewModel viewModel = messageService.messageCenter(customer);
             return new ResponseEntity<>(ReponseModel.ok(viewModel), HttpStatus.OK);
         } catch (ApiException ex) {
             return new ResponseEntity<>(ReponseModel.error(ex.getStatus()), HttpStatus.OK);
@@ -362,9 +362,9 @@ public class CustomerController {
      */
     @RequestMapping(value = "/message/list", method = RequestMethod.POST, consumes = "application/json")
     @Authorization
-    public ResponseEntity<ReponseModel> messageList(@CurrentUser Customer customer, HttpEntity<CustomerMessageListRequestModel> model) {
+    public ResponseEntity<ReponseModel> messageList(@CurrentUser Customer customer, HttpEntity<ListRequestModel> model) {
         try {
-            CustomerMessageListViewModel viewModel = messageService.messageList(customer, model.getBody());
+            ListViewModel viewModel = messageService.messageList(customer, model.getBody());
             return new ResponseEntity<>(ReponseModel.ok(viewModel), HttpStatus.OK);
         } catch (ApiException ex) {
             return new ResponseEntity<>(ReponseModel.error(ex.getStatus()), HttpStatus.OK);
@@ -382,9 +382,9 @@ public class CustomerController {
      */
     @RequestMapping(value = "/message/detail", method = RequestMethod.POST, consumes = "application/json")
     @Authorization
-    public ResponseEntity<ReponseModel> messageDetail(@CurrentUser Customer customer, HttpEntity<CustomerMessageDetailRequestModel> model) {
+    public ResponseEntity<ReponseModel> messageDetail(@CurrentUser Customer customer, HttpEntity<DetailRequestModel> model) {
         try {
-            CustomerMessageDetailViewModel viewModel = messageService.messageDetail(customer, model.getBody());
+            DetailViewModel viewModel = messageService.messageDetail(customer, model.getBody());
             return new ResponseEntity<>(ReponseModel.ok(viewModel), HttpStatus.OK);
         } catch (ApiException ex) {
             return new ResponseEntity<>(ReponseModel.error(ex.getStatus()), HttpStatus.OK);

@@ -7,7 +7,7 @@ import java.util.ArrayList;
  *
  * @author 孙阿龙
  */
-public class RedPackageGroupModel {
+public class GroupModel {
 
     /**
      * 红包金额

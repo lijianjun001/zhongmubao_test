@@ -7,7 +7,7 @@ import java.util.ArrayList;
  *
  * @author 米立林
  */
-public class CustomerMessageListViewModel {
+public class ListViewModel {
     private int totalPage;
     private ArrayList<CustomerMessageModel> list;
 

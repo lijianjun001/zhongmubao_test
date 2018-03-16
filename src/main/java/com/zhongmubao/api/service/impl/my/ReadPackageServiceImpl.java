@@ -8,10 +8,10 @@ import com.zhongmubao.api.config.enmu.RedPackageGroupType;
 import com.zhongmubao.api.config.enmu.RedPackageSortType;
 import com.zhongmubao.api.config.enmu.RedPackageState;
 import com.zhongmubao.api.dao.ExtRedPackageDao;
-import com.zhongmubao.api.dto.request.my.redpackage.RedPackageDetailRequestModel;
-import com.zhongmubao.api.dto.request.my.redpackage.RedPackageGroupRequestModel;
-import com.zhongmubao.api.dto.request.my.redpackage.RedPackageHistoryRequestModel;
-import com.zhongmubao.api.dto.request.my.redpackage.RedPackageListRequestModel;
+import com.zhongmubao.api.dto.request.my.redpackage.DetailRequestModel;
+import com.zhongmubao.api.dto.request.my.redpackage.GroupRequestModel;
+import com.zhongmubao.api.dto.request.my.redpackage.HistoryRequestModel;
+import com.zhongmubao.api.dto.request.my.redpackage.ListRequestModel;
 import com.zhongmubao.api.dto.response.my.redpackage.RedPackageModel;
 import com.zhongmubao.api.dto.response.my.redpackage.*;
 import com.zhongmubao.api.entity.Customer;
@@ -44,21 +44,21 @@ public class ReadPackageServiceImpl implements ReadPackageService {
     }
 
     @Override
-    public RedPackageGroupViewModel readPackageGroup(Customer customer, RedPackageGroupRequestModel model) throws Exception {
+    public GroupViewModel readPackageGroup(Customer customer, GroupRequestModel model) throws Exception {
         if (model == null) {
             throw new ApiException(ResultStatus.PARAMETER_MISSING);
         }
         // 分组只按金额排序
         model.setSortType(RedPackageSortType.Price);
 
-        RedPackageGroupViewModel viewModel = new RedPackageGroupViewModel();
-        ArrayList<RedPackageGroupModel> groupModelList = new ArrayList<>();
+        GroupViewModel viewModel = new GroupViewModel();
+        ArrayList<GroupModel> groupModelList = new ArrayList<>();
         List<ExtRedPackageGroup> list = extRedPackageDao.getByCustomerIdGroupByPrice(customer.getId(), model.getSortType().getName());
         boolean isPreLoad = false;
         // 8元红包
         List<ExtRedPackageGroup> eightGroup = list.stream().filter(en -> en.getPrice() == 8).collect(Collectors.toList());
         if (eightGroup != null && eightGroup.size() > 0) {
-            RedPackageGroupModel redPacket = redPacketGroupCalc(customer, eightGroup, RedPackageGroupType.EIGHT, isPreLoad, model.getSortType());
+            GroupModel redPacket = redPacketGroupCalc(customer, eightGroup, RedPackageGroupType.EIGHT, isPreLoad, model.getSortType());
 //            if (redPacket.getPreLoadList().size() > 1) {
 //                isPreLoad = false;
 //            }
@@ -68,7 +68,7 @@ public class ReadPackageServiceImpl implements ReadPackageService {
         // 5元红包
         List<ExtRedPackageGroup> fiveGroup = list.stream().filter(en -> en.getPrice() == 5).collect(Collectors.toList());
         if (fiveGroup != null && fiveGroup.size() > 0) {
-            RedPackageGroupModel redPacket = redPacketGroupCalc(customer, fiveGroup, RedPackageGroupType.FIVE, isPreLoad, model.getSortType());
+            GroupModel redPacket = redPacketGroupCalc(customer, fiveGroup, RedPackageGroupType.FIVE, isPreLoad, model.getSortType());
 //            if (isPreLoad && redPacket.getPreLoadList() != null && redPacket.getPreLoadList().size() > 1) {
 //                isPreLoad = false;
 //            }
@@ -78,7 +78,7 @@ public class ReadPackageServiceImpl implements ReadPackageService {
         // 2元红包
         List<ExtRedPackageGroup> twoGroup = list.stream().filter(en -> en.getPrice() == 2).collect(Collectors.toList());
         if (twoGroup != null && twoGroup.size() > 0) {
-            RedPackageGroupModel redPacket = redPacketGroupCalc(customer, twoGroup, RedPackageGroupType.TWO, isPreLoad, model.getSortType());
+            GroupModel redPacket = redPacketGroupCalc(customer, twoGroup, RedPackageGroupType.TWO, isPreLoad, model.getSortType());
 //            if (isPreLoad && redPacket.getPreLoadList() != null && redPacket.getPreLoadList().size() > 1) {
 //                isPreLoad = false;
 //            }
@@ -87,7 +87,7 @@ public class ReadPackageServiceImpl implements ReadPackageService {
         }
         // 零钱红包
         if (list.size() > 0) {
-            RedPackageGroupModel looseRadPacket = redPacketGroupCalc(customer, list, RedPackageGroupType.OTHER, isPreLoad, model.getSortType());
+            GroupModel looseRadPacket = redPacketGroupCalc(customer, list, RedPackageGroupType.OTHER, isPreLoad, model.getSortType());
             groupModelList.add(looseRadPacket);
         }
 
@@ -101,12 +101,12 @@ public class ReadPackageServiceImpl implements ReadPackageService {
      * @param groupRedPacket 分组列表
      * @param groupType      红包分组类型
      * @param isPreLoad      是否预加载
-     * @return RedPackageGroupModel
+     * @return GroupModel
      */
-    private RedPackageGroupModel redPacketGroupCalc(Customer customer, List<ExtRedPackageGroup> groupRedPacket, RedPackageGroupType groupType, boolean isPreLoad, RedPackageSortType sotType) {
+    private GroupModel redPacketGroupCalc(Customer customer, List<ExtRedPackageGroup> groupRedPacket, RedPackageGroupType groupType, boolean isPreLoad, RedPackageSortType sotType) {
 
         String remark = "仅可购买120天及以上长期羊使用";
-        RedPackageGroupModel groupModel = new RedPackageGroupModel();
+        GroupModel groupModel = new GroupModel();
         groupModel.setGroupType(groupType.getName());
         if (groupType == RedPackageGroupType.OTHER) {
             IntSummaryStatistics statsTotalCount = groupRedPacket.stream().mapToInt(ExtRedPackageGroup::getTotalCount).summaryStatistics();
@@ -166,7 +166,7 @@ public class ReadPackageServiceImpl implements ReadPackageService {
     }
 
     @Override
-    public RedPackageListViewModel readPackageGroupList(Customer customer, RedPackageListRequestModel model) throws Exception {
+    public ListViewModel readPackageGroupList(Customer customer, ListRequestModel model) throws Exception {
         if (model == null || model.getGroupType() == null) {
             throw new ApiException(ResultStatus.PARAMETER_MISSING);
         }
@@ -198,11 +198,11 @@ public class ReadPackageServiceImpl implements ReadPackageService {
         int totalPages = pager.getPages();
         PageHelper.clearPage();
 
-        return new RedPackageListViewModel(totalPages, (ArrayList<RedPackageModel>) list);
+        return new ListViewModel(totalPages, (ArrayList<RedPackageModel>) list);
     }
 
     @Override
-    public RedPackageHistoryViewModel readPackageHistory(Customer customer, RedPackageHistoryRequestModel model) throws Exception {
+    public HistoryViewModel readPackageHistory(Customer customer, HistoryRequestModel model) throws Exception {
         if (model == null) {
             throw new ApiException(ResultStatus.PARAMETER_MISSING);
         }
@@ -230,11 +230,11 @@ public class ReadPackageServiceImpl implements ReadPackageService {
         List<RedPackageModel> list = formatRedpackageModel(pager);
 
         PageHelper.clearPage();
-        return new RedPackageHistoryViewModel(pager.getPages(), (ArrayList<RedPackageModel>) list);
+        return new HistoryViewModel(pager.getPages(), (ArrayList<RedPackageModel>) list);
     }
 
     @Override
-    public RedPackageDetailViewModel readPackageDetail(Customer customer, RedPackageDetailRequestModel model) throws Exception {
+    public DetailViewModel readPackageDetail(Customer customer, DetailRequestModel model) throws Exception {
         if (model == null || model.getId() <= 0) {
             throw new ApiException(ResultStatus.PARAMETER_MISSING);
         }
@@ -256,7 +256,7 @@ public class ReadPackageServiceImpl implements ReadPackageService {
         if (redPackageState == RedPackageState.UNUSED && extRedPackage.getExpTime().getTime() < now.getTime()) {
             redPackageState = RedPackageState.EXPIRED;
         }
-        RedPackageDetailViewModel viewModel = new RedPackageDetailViewModel(
+        DetailViewModel viewModel = new DetailViewModel(
                 extRedPackage.getType(),
                 Constants.redpackettypestr(extRedPackage.getType()),
                 DoubleUtil.toFixed(extRedPackage.getPrice(), Constants.PRICE_FORMAT),
@@ -273,7 +273,7 @@ public class ReadPackageServiceImpl implements ReadPackageService {
     }
 
     @Override
-    public RedPackageListViewModel readPackageList(Customer customer, RedPackageListRequestModel model) throws Exception {
+    public ListViewModel readPackageList(Customer customer, ListRequestModel model) throws Exception {
         if (model == null) {
             throw new ApiException(ResultStatus.PARAMETER_MISSING);
         }
@@ -286,7 +286,7 @@ public class ReadPackageServiceImpl implements ReadPackageService {
         List<RedPackageModel> list = formatRedpackageModel(pager);
 
         PageHelper.clearPage();
-        return new RedPackageListViewModel(pager.getPages(), (ArrayList<RedPackageModel>) list);
+        return new ListViewModel(pager.getPages(), (ArrayList<RedPackageModel>) list);
     }
 
     /**

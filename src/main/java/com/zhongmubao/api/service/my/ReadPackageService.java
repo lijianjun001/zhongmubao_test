@@ -1,13 +1,13 @@
 package com.zhongmubao.api.service.my;
 
-import com.zhongmubao.api.dto.request.my.redpackage.RedPackageDetailRequestModel;
-import com.zhongmubao.api.dto.request.my.redpackage.RedPackageGroupRequestModel;
-import com.zhongmubao.api.dto.request.my.redpackage.RedPackageHistoryRequestModel;
-import com.zhongmubao.api.dto.request.my.redpackage.RedPackageListRequestModel;
-import com.zhongmubao.api.dto.response.my.redpackage.RedPackageDetailViewModel;
-import com.zhongmubao.api.dto.response.my.redpackage.RedPackageGroupViewModel;
-import com.zhongmubao.api.dto.response.my.redpackage.RedPackageListViewModel;
-import com.zhongmubao.api.dto.response.my.redpackage.RedPackageHistoryViewModel;
+import com.zhongmubao.api.dto.request.my.redpackage.DetailRequestModel;
+import com.zhongmubao.api.dto.request.my.redpackage.GroupRequestModel;
+import com.zhongmubao.api.dto.request.my.redpackage.HistoryRequestModel;
+import com.zhongmubao.api.dto.request.my.redpackage.ListRequestModel;
+import com.zhongmubao.api.dto.response.my.redpackage.DetailViewModel;
+import com.zhongmubao.api.dto.response.my.redpackage.GroupViewModel;
+import com.zhongmubao.api.dto.response.my.redpackage.HistoryViewModel;
+import com.zhongmubao.api.dto.response.my.redpackage.ListViewModel;
 import com.zhongmubao.api.entity.Customer;
 
 /**
@@ -21,49 +21,49 @@ public interface ReadPackageService {
      *
      * @param customer 客户
      * @param model    请求参数
-     * @return RedPackageGroupViewModel
+     * @return GroupViewModel
      * @throws Exception 异常
      */
-    RedPackageGroupViewModel readPackageGroup(Customer customer, RedPackageGroupRequestModel model) throws Exception;
+    GroupViewModel readPackageGroup(Customer customer, GroupRequestModel model) throws Exception;
 
     /**
      * 分组红包列表
      *
      * @param customer 客户
      * @param model    请求参数
-     * @return RedPackageListViewModel
+     * @return ListViewModel
      * @throws Exception
      */
-    RedPackageListViewModel readPackageGroupList(Customer customer, RedPackageListRequestModel model) throws Exception;
+    ListViewModel readPackageGroupList(Customer customer, ListRequestModel model) throws Exception;
 
     /**
      * 获取历史红包
      *
      * @param customer 客户
      * @param model    请求参数
-     * @return RedPackageHistoryViewModel
+     * @return HistoryViewModel
      * @throws Exception
      */
-    RedPackageHistoryViewModel readPackageHistory(Customer customer, RedPackageHistoryRequestModel model) throws Exception;
+    HistoryViewModel readPackageHistory(Customer customer, HistoryRequestModel model) throws Exception;
 
     /**
      * 红包详情readPackageEarlierHistory
      *
      * @param customer 客户
      * @param model    请求参数
-     * @return RedPackageDetailViewModel
+     * @return DetailViewModel
      * @throws Exception
      */
-    RedPackageDetailViewModel readPackageDetail(Customer customer, RedPackageDetailRequestModel model) throws Exception;
+    DetailViewModel readPackageDetail(Customer customer, DetailRequestModel model) throws Exception;
 
     /**
      * 排序红包列表
      *
      * @param customer 客户
      * @param model    请求参数
-     * @return RedPackageListViewModel
+     * @return ListViewModel
      * @throws Exception
      */
-    RedPackageListViewModel readPackageList(Customer customer, RedPackageListRequestModel model) throws Exception;
+    ListViewModel readPackageList(Customer customer, ListRequestModel model) throws Exception;
 
 }

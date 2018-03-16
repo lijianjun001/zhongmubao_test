@@ -5,7 +5,7 @@ package com.zhongmubao.api.dto.request.my.transaction;
  *
  * @author 米立林
  */
-public class TransactionDetailRequestModel {
+public class DetailRequestModel {
     /**
      * 交易号
      */

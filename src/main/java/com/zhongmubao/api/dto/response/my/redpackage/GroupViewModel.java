@@ -7,18 +7,18 @@ import java.util.ArrayList;
  *
  * @author 孙阿龙
  */
-public class RedPackageGroupViewModel {
+public class GroupViewModel {
 
     /**
      * 红包分组集合
      */
-    private ArrayList<RedPackageGroupModel> list;
+    private ArrayList<GroupModel> list;
 
-    public ArrayList<RedPackageGroupModel> getList() {
+    public ArrayList<GroupModel> getList() {
         return list;
     }
 
-    public void setList(ArrayList<RedPackageGroupModel> list) {
+    public void setList(ArrayList<GroupModel> list) {
         this.list = list;
     }
 }

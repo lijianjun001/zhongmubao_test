@@ -7,7 +7,7 @@ import com.zhongmubao.api.dto.request.BaseRequest;
  *
  * @author 孙阿龙
  */
-public class RedPackageDetailRequestModel extends BaseRequest {
+public class DetailRequestModel extends BaseRequest {
 
     /**
      * 红包id

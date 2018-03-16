@@ -6,11 +6,11 @@ package com.zhongmubao.api.dto.response.my.transaction;
  *
  * @author 米立林
  */
-public class TransactionDetailViewModel {
-    public TransactionDetailViewModel() {
+public class DetailViewModel {
+    public DetailViewModel() {
     }
 
-    public TransactionDetailViewModel(String billType) {
+    public DetailViewModel(String billType) {
         this.billType = billType;
     }
 

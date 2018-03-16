@@ -9,7 +9,7 @@ import com.zhongmubao.api.dto.request.BaseRequest;
  *
  * @author 孙阿龙
  */
-public class RedPackageListRequestModel extends BaseRequest {
+public class ListRequestModel extends BaseRequest {
     /**
      * 当前页码
      */

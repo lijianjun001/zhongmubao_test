@@ -7,7 +7,7 @@ import java.util.ArrayList;
  *
  * @author 米立林
  */
-public class CustomerMessageCenterViewModel {
+public class CenterViewModel {
 
     private ArrayList<CustomerMessageModel> projectList;
     private ArrayList<CustomerMessageModel> personList;

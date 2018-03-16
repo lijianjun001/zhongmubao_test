@@ -6,8 +6,8 @@ import com.google.gson.reflect.TypeToken;
 import com.zhongmubao.api.config.Constants;
 import com.zhongmubao.api.config.ResultStatus;
 import com.zhongmubao.api.config.enmu.CustomerMessageType;
-import com.zhongmubao.api.dto.request.message.CustomerMessageDetailRequestModel;
-import com.zhongmubao.api.dto.request.message.CustomerMessageListRequestModel;
+import com.zhongmubao.api.dto.request.message.DetailRequestModel;
+import com.zhongmubao.api.dto.request.message.ListRequestModel;
 import com.zhongmubao.api.dto.response.message.*;
 import com.zhongmubao.api.entity.Customer;
 import com.zhongmubao.api.exception.ApiException;
@@ -53,14 +53,14 @@ public class MessageServiceImpl extends BaseService implements MessageService {
 
     //region
     @Override
-    public CustomerMessageCenterViewModel messageCenter(Customer customer) throws Exception {
+    public CenterViewModel messageCenter(Customer customer) throws Exception {
         if (customer == null) {
             throw new ApiException(ResultStatus.PARAMETER_MISSING);
         }
         Date now = new Date();
         int pagesize = 3;
         String method = "center";
-        CustomerMessageCenterViewModel viewModel = new CustomerMessageCenterViewModel();
+        CenterViewModel viewModel = new CenterViewModel();
         List<CustomerMessageMongo> projectMessages = customerMessageMongoDao.getListByLimit(customer.getId(), pagesize, CustomerMessageType.OPEN_PROJECT.getName());
         List<CustomerMessageMongo> personMessages = customerMessageMongoDao.getListByLimit(customer.getId(), pagesize, CustomerMessageType.PERSON_MESSAGE.getName());
         List<CustomerMessageMongo> systemMessages = customerMessageMongoDao.getListByLimit(customer.getId(), pagesize, CustomerMessageType.SYSTEM_MESSAGE.getName());
@@ -85,7 +85,7 @@ public class MessageServiceImpl extends BaseService implements MessageService {
     }
 
     @Override
-    public CustomerMessageListViewModel messageList(Customer customer, CustomerMessageListRequestModel model) throws Exception {
+    public ListViewModel messageList(Customer customer, ListRequestModel model) throws Exception {
         if (model == null) {
             throw new ApiException(ResultStatus.PARAMETER_MISSING);
         }
@@ -99,7 +99,7 @@ public class MessageServiceImpl extends BaseService implements MessageService {
         pager.setPageSize(Constants.PAGE_SIZE);
         pager = customerMessageMongoDao.pager(customer.getId(), pager, model.getType());
 
-        CustomerMessageListViewModel viewModel = new CustomerMessageListViewModel();
+        ListViewModel viewModel = new ListViewModel();
         ArrayList<CustomerMessageModel> list = formatMessage(pager.getDatas(), method);
         viewModel.setList(list);
         viewModel.setTotalPage(pager.getTotalPages());
@@ -175,13 +175,13 @@ public class MessageServiceImpl extends BaseService implements MessageService {
     }
 
     @Override
-    public CustomerMessageDetailViewModel messageDetail(Customer customer, CustomerMessageDetailRequestModel model) throws Exception {
+    public DetailViewModel messageDetail(Customer customer, DetailRequestModel model) throws Exception {
         if (model == null) {
             throw new ApiException(ResultStatus.PARAMETER_MISSING);
         }
         CustomerMessageMongo message = customerMessageMongoDao.getById(model.getId());
         if (null == message) {
-            return new CustomerMessageDetailViewModel();
+            return new DetailViewModel();
         }
         String title = message.getTitle();
         String text = DateUtil.format(message.getCreated(), Constants.DATETIME_FORMAT_CHINA);
@@ -193,7 +193,7 @@ public class MessageServiceImpl extends BaseService implements MessageService {
             content = SerializeUtil.serialize(projectViewModel);
         }
 
-        return new CustomerMessageDetailViewModel(title, text, content);
+        return new DetailViewModel(title, text, content);
     }
 
     /**

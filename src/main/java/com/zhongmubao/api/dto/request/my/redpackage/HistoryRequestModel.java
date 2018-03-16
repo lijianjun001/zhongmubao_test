@@ -7,7 +7,7 @@ import com.zhongmubao.api.config.enmu.RedPackageSortType;
  *
  * @author 米立林
  */
-public class RedPackageHistoryRequestModel {
+public class HistoryRequestModel {
     /**
      * 当前页码
      */

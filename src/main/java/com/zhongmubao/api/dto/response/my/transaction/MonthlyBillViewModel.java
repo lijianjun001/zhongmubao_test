@@ -7,12 +7,12 @@ import java.util.ArrayList;
  *
  * @author 米立林
  */
-public class TransactionMonthlyBillViewModel {
+public class MonthlyBillViewModel {
 
-    public TransactionMonthlyBillViewModel() {
+    public MonthlyBillViewModel() {
     }
 
-    public TransactionMonthlyBillViewModel(String yearMonth, String totalAmount, ArrayList<SheepProjectInfoModel> list, String totalIncome, String sheepIncome, String redPacketIncome, String totalRecharge, String totalWithdraw) {
+    public MonthlyBillViewModel(String yearMonth, String totalAmount, ArrayList<SheepProjectInfoModel> list, String totalIncome, String sheepIncome, String redPacketIncome, String totalRecharge, String totalWithdraw) {
         this.yearMonth = yearMonth;
         this.totalAmount = totalAmount;
         this.list = list;

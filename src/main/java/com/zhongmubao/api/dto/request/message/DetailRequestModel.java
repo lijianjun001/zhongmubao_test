@@ -5,7 +5,7 @@ package com.zhongmubao.api.dto.request.message;
  *
  * @author 米立林
  */
-public class CustomerMessageDetailRequestModel {
+public class DetailRequestModel {
     /**
      * 消息主键
      */

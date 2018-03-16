@@ -9,12 +9,12 @@ import java.util.ArrayList;
  *
  * @author 孙阿龙
  */
-public class RedPackageDetailViewModel {
+public class DetailViewModel {
 
-    public RedPackageDetailViewModel() {
+    public DetailViewModel() {
     }
 
-    public RedPackageDetailViewModel(String type, String typeStr, String price, String beginTime, String expTime, ArrayList<String> remarks, String status) {
+    public DetailViewModel(String type, String typeStr, String price, String beginTime, String expTime, ArrayList<String> remarks, String status) {
         this.type = type;
         this.typeStr = typeStr;
         this.price = price;
