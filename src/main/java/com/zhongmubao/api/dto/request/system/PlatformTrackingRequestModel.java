@@ -9,14 +9,6 @@ import com.zhongmubao.api.dto.request.BaseRequest;
  */
 public class PlatformTrackingRequestModel extends BaseRequest {
 
-    public String getPlatform() {
-        return platform;
-    }
-
-    public void setPlatform(String platform) {
-        this.platform = platform;
-    }
-
     public String getImie() {
         return imie;
     }
@@ -33,7 +25,15 @@ public class PlatformTrackingRequestModel extends BaseRequest {
         this.mac = mac;
     }
 
-    private String platform;
+    public String getChannel() {
+        return channel;
+    }
+
+    public void setChannel(String channel) {
+        this.channel = channel;
+    }
+
+    private String channel;
     private String imie;
     private String mac;
 

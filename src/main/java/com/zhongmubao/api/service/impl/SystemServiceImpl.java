@@ -88,7 +88,7 @@ public class SystemServiceImpl extends BaseService implements SystemService {
         platformTrackingMongo.setCreateTime(new Date());
         platformTrackingMongo.setImie(model.getImie());
         platformTrackingMongo.setMac(model.getMac());
-        platformTrackingMongo.setPlatform(model.getPlatform());
+        platformTrackingMongo.setPlatform(model.getChannel());
         platformTrackingMongo.setVersion(model.getVersion());
         platformTrackingMongoDao.add(platformTrackingMongo);
     }
