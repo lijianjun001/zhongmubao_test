@@ -5,11 +5,11 @@ package com.zhongmubao.api.dto.response.message;
  *
  * @author 米立林
  */
-public class NewMessageCountModel {
-    public NewMessageCountModel() {
+public class NewMessageCountViewModel {
+    public NewMessageCountViewModel() {
     }
 
-    public NewMessageCountModel(int count) {
+    public NewMessageCountViewModel(int count) {
         this.count = count;
     }
 

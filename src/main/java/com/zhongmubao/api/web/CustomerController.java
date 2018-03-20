@@ -343,7 +343,7 @@ public class CustomerController {
     @Authorization
     public ResponseEntity<ReponseModel> messageCount(@CurrentUser Customer customer) {
         try {
-            NewMessageCountModel count = messageService.messageCount(customer);
+            NewMessageCountViewModel count = messageService.messageCount(customer);
             return new ResponseEntity<>(ReponseModel.ok(count), HttpStatus.OK);
         } catch (ApiException ex) {
             return new ResponseEntity<>(ReponseModel.error(ex.getStatus()), HttpStatus.OK);

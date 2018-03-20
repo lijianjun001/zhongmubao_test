@@ -55,12 +55,12 @@ public class MessageServiceImpl extends BaseService implements MessageService {
 
 
     @Override
-    public NewMessageCountModel messageCount(Customer customer) throws Exception {
+    public NewMessageCountViewModel messageCount(Customer customer) throws Exception {
         if (customer == null || customer.getId() <= 0) {
             throw new ApiException(ResultStatus.PARAMETER_MISSING);
         }
         long count = customerMessageMongoDao.getNewCount(customer.getId());
-        return new NewMessageCountModel((int) count);
+        return new NewMessageCountViewModel((int) count);
     }
 
     @Override

@@ -16,10 +16,10 @@ public interface MessageService {
      * 新消息数量
      *
      * @param customer 当前用户
-     * @return NewMessageCountModel
+     * @return NewMessageCountViewModel
      * @throws Exception Exception
      */
-    NewMessageCountModel messageCount(Customer customer) throws Exception;
+    NewMessageCountViewModel messageCount(Customer customer) throws Exception;
 
     /**
      * 消息中心
