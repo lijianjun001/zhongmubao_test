@@ -51,7 +51,18 @@ public class MessageServiceImpl extends BaseService implements MessageService {
     }
 
 
-    //region
+    //region 新消息中心
+
+
+    @Override
+    public NewMessageCountModel messageCount(Customer customer) throws Exception {
+        if (customer == null || customer.getId() <= 0) {
+            throw new ApiException(ResultStatus.PARAMETER_MISSING);
+        }
+        long count = customerMessageMongoDao.getNewCount(customer.getId());
+        return new NewMessageCountModel((int) count);
+    }
+
     @Override
     public CenterViewModel messageCenter(Customer customer) throws Exception {
         if (customer == null) {
@@ -68,12 +79,14 @@ public class MessageServiceImpl extends BaseService implements MessageService {
         if (ArrayUtil.isNull(projectMessages)) {
             String weekSection = DateUtil.getWeekSection();
             Optional<CustomerMessageMongo> optionalCms = projectMessages.stream().filter(m -> m.getTitle().equals(weekSection)).findFirst();
-            CustomerMessageMongo project = optionalCms.get();
-            String month = DateUtil.monthOfDate(now) + "月";
-            projectMessages.clear();
-            project.setContent(Constants.STRING_EMPTY);
-            projectMessages.add(project);
-            viewModel.setProjectList(formatMessage(projectMessages, method));
+            if (optionalCms.isPresent()) {
+                CustomerMessageMongo project = optionalCms.get();
+                String month = DateUtil.monthOfDate(now) + "月";
+                projectMessages.clear();
+                project.setContent(Constants.STRING_EMPTY);
+                projectMessages.add(project);
+                viewModel.setProjectList(formatMessage(projectMessages, method));
+            }
         }
         if (ArrayUtil.isNull(personMessages)) {
             viewModel.setPersonList(formatMessage(personMessages, method));
@@ -192,6 +205,10 @@ public class MessageServiceImpl extends BaseService implements MessageService {
             text = projectViewModel.getRemark();
             content = SerializeUtil.serialize(projectViewModel);
         }
+
+        // 修改为已读状态
+        message.setRead(true);
+        customerMessageMongoDao.update(message);
 
         return new DetailViewModel(title, text, content);
     }

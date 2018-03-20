@@ -333,6 +333,24 @@ public class CustomerController {
     //endregion
 
     //region 客户消息
+    /***
+     * 获取最新消息数
+     * @param customer 客户
+     * @author 米立林
+     * @return ReponseModel
+     */
+    @RequestMapping(value = "/message/count", method = RequestMethod.POST, consumes = "application/json")
+    @Authorization
+    public ResponseEntity<ReponseModel> messageCount(@CurrentUser Customer customer) {
+        try {
+            NewMessageCountModel count = messageService.messageCount(customer);
+            return new ResponseEntity<>(ReponseModel.ok(count), HttpStatus.OK);
+        } catch (ApiException ex) {
+            return new ResponseEntity<>(ReponseModel.error(ex.getStatus()), HttpStatus.OK);
+        } catch (Exception ex) {
+            return new ResponseEntity<>(ReponseModel.error(ex, this.getClass()), HttpStatus.OK);
+        }
+    }
 
     /***
      * 消息中心

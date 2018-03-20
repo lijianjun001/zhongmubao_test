@@ -52,6 +52,12 @@ public class CustomerMessageMongo extends BaseModel {
     private int tipsIdentification;
 
     /**
+     *
+     */
+    @Field("IsRead")
+    private boolean isRead;
+
+    /**
      * 逻辑删除
      */
     @Field("Deleted")
@@ -62,6 +68,15 @@ public class CustomerMessageMongo extends BaseModel {
      */
     @Field("Created")
     private Date created;
+
+
+    public int getCustomerId() {
+        return customerId;
+    }
+
+    public void setCustomerId(int customerId) {
+        this.customerId = customerId;
+    }
 
     public String getCustomerMessageTypeId() {
         return customerMessageTypeId;
@@ -103,20 +118,12 @@ public class CustomerMessageMongo extends BaseModel {
         this.tipsIdentification = tipsIdentification;
     }
 
-    public Date getCreated() {
-        return created;
+    public boolean getRead() {
+        return isRead;
     }
 
-    public void setCreated(Date created) {
-        this.created = created;
-    }
-
-    public int getCustomerId() {
-        return customerId;
-    }
-
-    public void setCustomerId(int customerId) {
-        this.customerId = customerId;
+    public void setRead(boolean read) {
+        isRead = read;
     }
 
     public boolean isDeleted() {
@@ -125,5 +132,13 @@ public class CustomerMessageMongo extends BaseModel {
 
     public void setDeleted(boolean deleted) {
         this.deleted = deleted;
+    }
+
+    public Date getCreated() {
+        return created;
+    }
+
+    public void setCreated(Date created) {
+        this.created = created;
     }
 }

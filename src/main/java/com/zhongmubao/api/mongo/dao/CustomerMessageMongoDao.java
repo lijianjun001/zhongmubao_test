@@ -129,4 +129,21 @@ public class CustomerMessageMongoDao implements BaseDao<CustomerMessageMongo> {
 
         return mongoTemplate.findOne(query, CustomerMessageMongo.class);
     }
+
+    /**
+     * 获取新消息数
+     *
+     * @param customerId 主键
+     * @return int
+     * @throws Exception Exception
+     */
+    public long getNewCount(int customerId) throws Exception {
+        Query query = new Query();
+        Criteria criteria = new Criteria();
+        criteria.orOperator(Criteria.where("CustomerId").is(0), Criteria.where("CustomerId").is(customerId));
+        query.addCriteria(criteria);
+        query.addCriteria(Criteria.where("IsRead").is(false));
+
+        return mongoTemplate.count(query, CustomerMessageMongo.class);
+    }
 }

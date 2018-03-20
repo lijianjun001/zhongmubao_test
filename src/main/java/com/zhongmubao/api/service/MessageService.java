@@ -13,11 +13,20 @@ import com.zhongmubao.api.entity.Customer;
 public interface MessageService {
 
     /**
+     * 新消息数量
+     *
+     * @param customer 当前用户
+     * @return NewMessageCountModel
+     * @throws Exception Exception
+     */
+    NewMessageCountModel messageCount(Customer customer) throws Exception;
+
+    /**
      * 消息中心
      *
      * @param customer 当前用户
-     * @return ListViewModel
-     * @throws Exception
+     * @return CenterViewModel
+     * @throws Exception Exception
      */
     CenterViewModel messageCenter(Customer customer) throws Exception;
 
@@ -27,7 +36,7 @@ public interface MessageService {
      * @param customer 当前用户
      * @param model    请求参数
      * @return ListViewModel
-     * @throws Exception
+     * @throws Exception Exception
      */
     ListViewModel messageList(Customer customer, ListRequestModel model) throws Exception;
 
@@ -36,8 +45,8 @@ public interface MessageService {
      *
      * @param customer 当前用户
      * @param model    请求参数
-     * @return ListViewModel
-     * @throws Exception
+     * @return DetailViewModel
+     * @throws Exception Exception
      */
     DetailViewModel messageDetail(Customer customer, DetailRequestModel model) throws Exception;
 }
