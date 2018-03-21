@@ -141,7 +141,9 @@ public class MessageServiceImpl extends BaseService implements MessageService {
         Date now = new Date();
         String title = message.getTitle();
         String text = DateUtil.format(message.getCreated(), Constants.DATETIME_FORMAT_CHINA);
-        String content = message.getContent();
+        String platform = model.getPlatform();
+        String domain = ApiUtil.getDomainByPlatform(platform);
+        String content = message.getContent().replace(Constants.DOMAIN_PLACEHOLDER, domain).replace(Constants.RESOURCE, Constants.RESOURES_ADDRESS_IMAGES).replace(Constants.PLATFROM, platform);
         if (CustomerMessageType.OPEN_PROJECT.getName().equals(message.getType())) {
             ProjectMessageListViewModel projectViewModel = projectMessageDetail(model.getId());
             title = projectViewModel.getTitle();
