@@ -180,7 +180,7 @@ public class MessageServiceImpl extends BaseService implements MessageService {
         if(StringUtil.isNullOrEmpty(id)){
             throw new ApiException(ResultStatus.PARAMETER_MISSING);
         }
-        CustomerMessageMongo message = customerMessageMongoDao.getByCustomerIdAndTipsId(id, customer.getId());
+        CustomerMessageMongo message = customerMessageMongoDao.getByCustomerId(id);
         setRead(customer, message);
     }
 
