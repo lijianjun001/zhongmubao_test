@@ -345,7 +345,7 @@ public class CustomerController {
     @Authorization(onlyGetCustomer = true)
     public ResponseEntity<ReponseModel> messageCount(@CurrentUser Customer customer) {
         try {
-            NewMessageCountViewModel count = messageService.messageCount(customer);
+            NewMessageCountViewModel count = messageService.count(customer);
             return new ResponseEntity<>(ReponseModel.ok(count), HttpStatus.OK);
         } catch (ApiException ex) {
             return new ResponseEntity<>(ReponseModel.error(ex.getStatus()), HttpStatus.OK);
@@ -364,7 +364,7 @@ public class CustomerController {
     @Authorization(onlyGetCustomer = true)
     public ResponseEntity<ReponseModel> messageCenter(@CurrentUser Customer customer) {
         try {
-            CenterViewModel viewModel = messageService.messageCenter(customer);
+            CenterViewModel viewModel = messageService.center(customer);
             return new ResponseEntity<>(ReponseModel.ok(viewModel), HttpStatus.OK);
         } catch (ApiException ex) {
             return new ResponseEntity<>(ReponseModel.error(ex.getStatus()), HttpStatus.OK);
@@ -384,7 +384,7 @@ public class CustomerController {
     @Authorization(onlyGetCustomer = true)
     public ResponseEntity<ReponseModel> messageList(@CurrentUser Customer customer, HttpEntity<ListRequestModel> model) {
         try {
-            ListViewModel viewModel = messageService.messageList(customer, model.getBody());
+            ListViewModel viewModel = messageService.list(customer, model.getBody());
             return new ResponseEntity<>(ReponseModel.ok(viewModel), HttpStatus.OK);
         } catch (ApiException ex) {
             return new ResponseEntity<>(ReponseModel.error(ex.getStatus()), HttpStatus.OK);
@@ -404,7 +404,7 @@ public class CustomerController {
     @Authorization(onlyGetCustomer = true)
     public ResponseEntity<ReponseModel> messageDetail(@CurrentUser Customer customer, HttpEntity<DetailRequestModel> model) {
         try {
-            DetailViewModel viewModel = messageService.messageDetail(customer, model.getBody());
+            DetailViewModel viewModel = messageService.detail(customer, model.getBody());
             return new ResponseEntity<>(ReponseModel.ok(viewModel), HttpStatus.OK);
         } catch (ApiException ex) {
             return new ResponseEntity<>(ReponseModel.error(ex.getStatus()), HttpStatus.OK);

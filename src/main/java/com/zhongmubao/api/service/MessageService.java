@@ -19,7 +19,7 @@ public interface MessageService {
      * @return NewMessageCountViewModel
      * @throws Exception Exception
      */
-    NewMessageCountViewModel messageCount(Customer customer) throws Exception;
+    NewMessageCountViewModel count(Customer customer) throws Exception;
 
     /**
      * 消息中心
@@ -28,7 +28,7 @@ public interface MessageService {
      * @return CenterViewModel
      * @throws Exception Exception
      */
-    CenterViewModel messageCenter(Customer customer) throws Exception;
+    CenterViewModel center(Customer customer) throws Exception;
 
     /**
      * 消息列表
@@ -38,7 +38,7 @@ public interface MessageService {
      * @return ListViewModel
      * @throws Exception Exception
      */
-    ListViewModel messageList(Customer customer, ListRequestModel model) throws Exception;
+    ListViewModel list(Customer customer, ListRequestModel model) throws Exception;
 
     /**
      * 消息详情
@@ -48,7 +48,7 @@ public interface MessageService {
      * @return DetailViewModel
      * @throws Exception Exception
      */
-    DetailViewModel messageDetail(Customer customer, DetailRequestModel model) throws Exception;
+    DetailViewModel detail(Customer customer, DetailRequestModel model) throws Exception;
 
     /**
      * 首页弹层消息

@@ -56,13 +56,13 @@ public class MessageServiceImpl extends BaseService implements MessageService {
 
 
     @Override
-    public NewMessageCountViewModel messageCount(Customer customer) throws Exception {
+    public NewMessageCountViewModel count(Customer customer) throws Exception {
         int customerId = customer == null ? 0 : customer.getId();
         long count = customerMessageMongoDao.countByCustoemrIdAndIsRead(customerId, false);
-        //获取系统消息
+        //获取发送给所有人的消息
         List<CustomerMessageMongo> list = customerMessageMongoDao.getListByCustomerId(0);
         for (CustomerMessageMongo message : list) {
-            CustomerMessageReadMongo readMongo = customerMessageReadMongoDao.getByCustoemrIdAndMessageId(customer.getId(), message.id);
+            CustomerMessageReadMongo readMongo = customerMessageReadMongoDao.getByCustoemrIdAndMessageId(customerId, message.id);
             if (null == readMongo) {
                 count = count + 1;
             }
@@ -72,7 +72,7 @@ public class MessageServiceImpl extends BaseService implements MessageService {
     }
 
     @Override
-    public CenterViewModel messageCenter(Customer customer) throws Exception {
+    public CenterViewModel center(Customer customer) throws Exception {
         int customerId = customer == null ? 0 : customer.getId();
 
         Date now = new Date();
@@ -107,7 +107,7 @@ public class MessageServiceImpl extends BaseService implements MessageService {
     }
 
     @Override
-    public ListViewModel messageList(Customer customer, ListRequestModel model) throws Exception {
+    public ListViewModel list(Customer customer, ListRequestModel model) throws Exception {
         if (model == null) {
             throw new ApiException(ResultStatus.PARAMETER_MISSING);
         }
@@ -129,7 +129,7 @@ public class MessageServiceImpl extends BaseService implements MessageService {
     }
 
     @Override
-    public DetailViewModel messageDetail(Customer customer, DetailRequestModel model) throws Exception {
+    public DetailViewModel detail(Customer customer, DetailRequestModel model) throws Exception {
         if (model == null) {
             throw new ApiException(ResultStatus.PARAMETER_MISSING);
         }
@@ -138,8 +138,6 @@ public class MessageServiceImpl extends BaseService implements MessageService {
             return new DetailViewModel();
         }
 
-
-        boolean isUpdate = false;
         Date now = new Date();
         String title = message.getTitle();
         String text = DateUtil.format(message.getCreated(), Constants.DATETIME_FORMAT_CHINA);
@@ -191,7 +189,7 @@ public class MessageServiceImpl extends BaseService implements MessageService {
      *
      * @param customer 客户
      * @param message  message
-     * @throws Exception
+     * @throws Exception Exception
      */
     private void setRead(Customer customer, CustomerMessageMongo message) throws Exception {
         if (null == message) {
