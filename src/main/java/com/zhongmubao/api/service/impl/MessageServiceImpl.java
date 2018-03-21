@@ -327,7 +327,7 @@ public class MessageServiceImpl extends BaseService implements MessageService {
                 }
             } else {
                 CustomerMessageReadMongo readMongo = customerMessageReadMongoDao.getByCustomerIdAndMessageId(customer.getId(), message.id);
-                if (null != readMongo && (!message.getType().equals(CustomerMessageType.OPEN_PROJECT))) {
+                if (null != readMongo && (!message.getType().equals(CustomerMessageType.OPEN_PROJECT.getName()))) {
                     message.setTipsId(CustomerMessageTips.DEFAULT.getKey());
                 }
             }
