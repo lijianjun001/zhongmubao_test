@@ -217,7 +217,7 @@ public class MessageServiceImpl extends BaseService implements MessageService {
             CustomerMessageModel customerMessageModel = new CustomerMessageModel();
             customerMessageModel.setId(customerMessageMongo.id);
             customerMessageModel.setTitle(customerMessageMongo.getTitle());
-            customerMessageModel.setContent(customerMessageMongo.getContent().replace(Constants.DOMAIN_PLACEHOLDER, domain));
+            customerMessageModel.setContent(customerMessageMongo.getContent().replace(Constants.DOMAIN_PLACEHOLDER, domain).replace(Constants.RESOURCE, Constants.RESOURES_ADDRESS_IMAGES));
             indexLayerViewModel.setCustomerMessageModel(customerMessageModel);
         }
 

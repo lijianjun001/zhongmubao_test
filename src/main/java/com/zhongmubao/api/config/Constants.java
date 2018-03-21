@@ -330,6 +330,11 @@ public class Constants {
     public static final String DOMAIN_PLACEHOLDER = "{domain}";
 
     /**
+     * RESOURCE占位符
+     */
+    public static final String RESOURCE = "{resource}";
+
+    /**
      * sign占位符
      */
     public static final String SIGN_PLACEHOLDER = "{code}";
