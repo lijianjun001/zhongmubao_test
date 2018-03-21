@@ -64,7 +64,7 @@ public class MessageServiceImpl extends BaseService implements MessageService {
         List<CustomerMessageMongo> list = customerMessageMongoDao.getListByCustomerId(0);
         for (CustomerMessageMongo message : list) {
             //不统计发标公告的历史
-            if (message.getType().equals(CustomerMessageType.SYSTEM_MESSAGE) && message.getTipsId() != CustomerMessageTips.CURRENT_WEEK.getKey()) {
+            if (message.getType().equals(CustomerMessageType.SYSTEM_MESSAGE.getName()) && message.getTipsId() != CustomerMessageTips.CURRENT_WEEK.getKey()) {
                 continue;
             }
             CustomerMessageReadMongo readMongo = customerMessageReadMongoDao.getByCustoemrIdAndMessageId(customerId, message.id);
@@ -202,10 +202,6 @@ public class MessageServiceImpl extends BaseService implements MessageService {
         if (null == message) {
             return;
         }
-        // 消息标签，2->表示为新消息,99->表示没有标签
-        int newTipsId = 2;
-        int indexLayerTipsId = 7;
-        int noTipsId = 99;
         if (message.getCustomerId() <= 0) {
             CustomerMessageReadMongo readMongo = customerMessageReadMongoDao.getByCustoemrIdAndMessageId(customer.getId(), message.id);
             if (readMongo == null) {
@@ -217,9 +213,9 @@ public class MessageServiceImpl extends BaseService implements MessageService {
             }
         } else {
             if (!message.getRead() && message.getCustomerId() == customer.getId()) {
-                if (message.getTipsId() == newTipsId || message.getTipsId() == indexLayerTipsId) {
+                if (message.getTipsId() == CustomerMessageTips.NEW.getKey() || message.getTipsId() == CustomerMessageTips.HOME_PAGE.getKey()) {
                     // 去掉lable[新]
-                    message.setTipsId(noTipsId);
+                    message.setTipsId(CustomerMessageTips.DEFAULT.getKey());
                 }
                 message.setRead(true);
                 customerMessageMongoDao.update(message);
@@ -321,10 +317,11 @@ public class MessageServiceImpl extends BaseService implements MessageService {
             String backColor = Constants.STRING_EMPTY;
             String date = method.equals(defaultMethod) ? DateUtil.format(message.getCreated(), Constants.TIME_HOUR_MINUTE_FORMAT) : DateUtil.format(message.getCreated(), Constants.DATE_TIME_FORMAT);
 
+            //客户id如果小于0的时候并且已读设置消息为默认标记
             if (message.getCustomerId() <= 0) {
                 CustomerMessageReadMongo readMongo = customerMessageReadMongoDao.getByCustoemrIdAndMessageId(customer.getId(), message.id);
-                if (null != readMongo && message.getTipsId() == 2) {
-                    message.setTipsId(99);
+                if (null != readMongo && message.getTipsId() == CustomerMessageTips.NEW.getKey()) {
+                    message.setTipsId(CustomerMessageTips.DEFAULT.getKey());
                 }
             }
             typeIcon = CustomerMessageIcon.formart(message.getIcon());

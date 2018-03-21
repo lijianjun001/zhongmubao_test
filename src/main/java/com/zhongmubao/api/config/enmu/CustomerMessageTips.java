@@ -112,6 +112,21 @@ public enum CustomerMessageTips {
         public int getKey() {
             return 7;
         }
+    }, DEFAULT {
+        @Override
+        public String getName() {
+            return "默认";
+        }
+
+        @Override
+        public String getColor() {
+            return "";
+        }
+
+        @Override
+        public int getKey() {
+            return 99;
+        }
     };
 
     public abstract int getKey();
@@ -141,6 +156,8 @@ public enum CustomerMessageTips {
             return CURRENT_WEEK.getName();
         } else if (key.equals(HOME_PAGE.getKey())) {
             return HOME_PAGE.getName();
+        } else if (key.equals(DEFAULT.getKey())) {
+            return DEFAULT.getName();
         } else {
             return "";
         }
@@ -167,6 +184,8 @@ public enum CustomerMessageTips {
             return CURRENT_WEEK.getColor();
         } else if (key.equals(HOME_PAGE.getKey())) {
             return HOME_PAGE.getColor();
+        } else if (key.equals(DEFAULT.getKey())) {
+            return DEFAULT.getColor();
         } else {
             return "";
         }
