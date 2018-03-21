@@ -57,7 +57,7 @@ public class MessageServiceImpl extends BaseService implements MessageService {
         List<CustomerMessageMongo> list = customerMessageMongoDao.getListByCustomerId(0);
         for (CustomerMessageMongo message : list) {
             //不统计发标公告的历史
-            if (message.getType().equals(CustomerMessageType.SYSTEM_MESSAGE.getName()) && message.getTipsId() != CustomerMessageTips.CURRENT_WEEK.getKey()) {
+            if (message.getType().equals(CustomerMessageType.SYSTEM_MESSAGE.getName()) && message.getTipsId() == CustomerMessageTips.HISTORY.getKey()) {
                 continue;
             }
             CustomerMessageReadMongo readMongo = customerMessageReadMongoDao.getByCustoemrIdAndMessageId(customerId, message.id);
@@ -160,7 +160,6 @@ public class MessageServiceImpl extends BaseService implements MessageService {
     public IndexLayerViewModel indexLayer(Customer customer, String platform) throws Exception {
 
         int customerId = customer == null ? 0 : customer.getId();
-
 
         CustomerMessageMongo customerMessageMongo = customerMessageMongoDao.getByCustomerIdAndTipsIdentification(customerId, CustomerMessageTips.HOME_PAGE.getKey());
 
