@@ -323,6 +323,11 @@ public class MessageServiceImpl extends BaseService implements MessageService {
                         message.setTipsId(CustomerMessageTips.DEFAULT.getKey());
                     }
                 }
+            } else {
+                CustomerMessageReadMongo readMongo = customerMessageReadMongoDao.getByCustomerIdAndMessageId(customer.getId(), message.id);
+                if (null != readMongo) {
+                    message.setTipsId(CustomerMessageTips.DEFAULT.getKey());
+                }
             }
             typeIcon = CustomerMessageIcon.formart(message.getIcon());
             tip = CustomerMessageTips.formartName(message.getTipsId());
