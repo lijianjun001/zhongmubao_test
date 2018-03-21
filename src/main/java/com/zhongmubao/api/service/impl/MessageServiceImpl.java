@@ -180,7 +180,7 @@ public class MessageServiceImpl extends BaseService implements MessageService {
         if(StringUtil.isNullOrEmpty(id)){
             throw new ApiException(ResultStatus.PARAMETER_MISSING);
         }
-        CustomerMessageMongo message = customerMessageMongoDao.getByCustomerId(id);
+        CustomerMessageMongo message = customerMessageMongoDao.getById(id);
         setRead(customer, message);
     }
 
@@ -309,7 +309,6 @@ public class MessageServiceImpl extends BaseService implements MessageService {
             String tip;
             String backColor;
             String date = method.equals(defaultMethod) ? DateUtil.format(message.getCreated(), Constants.TIME_HOUR_MINUTE_FORMAT) : DateUtil.format(message.getCreated(), Constants.DATE_TIME_FORMAT);
-
 
             if (message.getTipsId() == CustomerMessageTips.HOME_PAGE.getKey()) {
                 if (message.getCustomerId() <= 0) {
