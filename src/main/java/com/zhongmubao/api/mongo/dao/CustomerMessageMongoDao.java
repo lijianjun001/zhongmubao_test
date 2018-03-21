@@ -69,7 +69,7 @@ public class CustomerMessageMongoDao implements BaseDao<CustomerMessageMongo> {
         query.addCriteria(criteria);
         query.addCriteria(Criteria.where("Type").is(type));
         query.addCriteria(Criteria.where("Deleted").is(false));
-        query.with(new Sort(Sort.Direction.ASC, "TipsIdentification"));
+        query.with(new Sort(Sort.Direction.ASC, "TipsId"));
         query.with(new Sort(Sort.Direction.DESC, "Created"));
         query.limit(size);
 
@@ -80,20 +80,20 @@ public class CustomerMessageMongoDao implements BaseDao<CustomerMessageMongo> {
         Query query = new Query();
         query.addCriteria(Criteria.where("CustomerId").is(customerId));
         query.addCriteria(Criteria.where("Deleted").is(false));
-        query.with(new Sort(Sort.Direction.ASC, "TipsIdentification"));
+        query.with(new Sort(Sort.Direction.ASC, "TipsId"));
         query.with(new Sort(Sort.Direction.DESC, "Created"));
 
         return mongoTemplate.find(query, CustomerMessageMongo.class);
     }
 
-    public CustomerMessageMongo getByCustomerIdAndTipsId(int customerId, int tipsIdentification) throws Exception {
+    public CustomerMessageMongo getByCustomerIdAndTipsId(int customerId, int tipsId) throws Exception {
         Query query = new Query();
         Criteria criteria = new Criteria();
         criteria.orOperator(Criteria.where("CustomerId").is(0), Criteria.where("CustomerId").is(customerId));
         query.addCriteria(criteria);
         query.addCriteria(Criteria.where("Deleted").is(false));
-        query.addCriteria(Criteria.where("TipsIdentification").is(tipsIdentification));
-        query.with(new Sort(Sort.Direction.ASC, "TipsIdentification"));
+        query.addCriteria(Criteria.where("TipsId").is(tipsId));
+        query.with(new Sort(Sort.Direction.ASC, "TipsId"));
         query.with(new Sort(Sort.Direction.DESC, "Created"));
 
         return mongoTemplate.findOne(query, CustomerMessageMongo.class);
