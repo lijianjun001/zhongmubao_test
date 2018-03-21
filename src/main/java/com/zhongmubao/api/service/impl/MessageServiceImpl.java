@@ -60,7 +60,7 @@ public class MessageServiceImpl extends BaseService implements MessageService {
         int customerId = customer == null ? 0 : customer.getId();
         long count = customerMessageMongoDao.countByCustoemrIdAndIsRead(customerId, false);
         //获取发送给所有人的消息
-        List<CustomerMessageMongo> list = customerMessageMongoDao.getListByCustomerId(0);
+        List<CustomerMessageMongo> list = customerMessageMongoDao.getListByCustomerIdAndIsRead(0, false);
         for (CustomerMessageMongo message : list) {
             CustomerMessageReadMongo readMongo = customerMessageReadMongoDao.getByCustoemrIdAndMessageId(customerId, message.id);
             if (null == readMongo) {
