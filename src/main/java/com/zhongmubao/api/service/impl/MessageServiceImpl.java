@@ -50,7 +50,7 @@ public class MessageServiceImpl extends BaseService implements MessageService {
     @Override
     public NewMessageCountViewModel count(Customer customer) throws Exception {
         int customerId = customer == null ? 0 : customer.getId();
-        long count = customerMessageMongoDao.countByCustomerIdAndIsRead(customerId, false);
+        long count = customerId > 0 ? customerMessageMongoDao.countByCustomerIdAndIsRead(customerId, false) : 0;
         //获取发送给所有人的消息
         List<CustomerMessageMongo> list = customerMessageMongoDao.getListByCustomerId(0);
         for (CustomerMessageMongo message : list) {
