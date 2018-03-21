@@ -54,7 +54,7 @@ public interface MessageService {
      * 首页弹层消息
      *
      * @param customer 客户
-     * @param  platform 平台
+     * @param platform 平台
      * @return IndexLayerViewModel
      * @throws Exception Exception
      */
@@ -64,8 +64,8 @@ public interface MessageService {
      * 设置消息为已读
      *
      * @param customer 客户
-     * @param objectId 消息Id
+     * @param id       消息Id
      * @throws Exception Exception
      */
-    void read(Customer customer, String objectId) throws Exception;
+    void read(Customer customer, String id) throws Exception;
 }

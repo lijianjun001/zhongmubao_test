@@ -441,10 +441,10 @@ public class CustomerController {
      * @return ReponseModel
      */
     @RequestMapping(value = "/message/read", method = RequestMethod.POST, consumes = "application/json")
-    @Authorization
+    @Authorization(onlyGetCustomer = true)
     public ResponseEntity<ReponseModel> read(@CurrentUser Customer customer, HttpEntity<ReadRequestModel> model) {
         try {
-            messageService.read(customer, model.getBody().getObjectId());
+            messageService.read(customer, model.getBody().getId());
             return new ResponseEntity<>(ReponseModel.ok(), HttpStatus.OK);
         } catch (ApiException ex) {
             return new ResponseEntity<>(ReponseModel.error(ex.getStatus()), HttpStatus.OK);
