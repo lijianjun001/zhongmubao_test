@@ -335,6 +335,11 @@ public class Constants {
     public static final String PLATFROM = "{platfrom}";
 
     /**
+     * 消息占位符
+     */
+    public static final String MESSAGEID = "{messageId}";
+
+    /**
      * RESOURCE占位符
      */
     public static final String RESOURCE = "{resource}";

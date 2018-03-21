@@ -139,7 +139,7 @@ public class MessageServiceImpl extends BaseService implements MessageService {
         String text = DateUtil.format(message.getCreated(), Constants.DATETIME_FORMAT_CHINA);
         String platform = model.getPlatform();
         String domain = ApiUtil.getDomainByPlatform(platform);
-        String content = message.getContent().replace(Constants.DOMAIN_PLACEHOLDER, domain).replace(Constants.RESOURCE, Constants.RESOURES_ADDRESS_IMAGES).replace(Constants.PLATFROM, platform);
+        String content = message.getContent().replace(Constants.DOMAIN_PLACEHOLDER, domain).replace(Constants.RESOURCE, Constants.RESOURES_ADDRESS_IMAGES).replace(Constants.PLATFROM, platform).replace(Constants.MESSAGEID, message.id);
         if (CustomerMessageType.OPEN_PROJECT.getName().equals(message.getType())) {
             ProjectMessageListViewModel projectViewModel = projectMessageDetail(model.getId());
             title = projectViewModel.getTitle();
@@ -167,7 +167,7 @@ public class MessageServiceImpl extends BaseService implements MessageService {
             CustomerMessageModel customerMessageModel = new CustomerMessageModel();
             customerMessageModel.setId(customerMessageMongo.id);
             customerMessageModel.setTitle(customerMessageMongo.getTitle());
-            customerMessageModel.setContent(customerMessageMongo.getContent().replace(Constants.DOMAIN_PLACEHOLDER, domain).replace(Constants.RESOURCE, Constants.RESOURES_ADDRESS_IMAGES).replace(Constants.PLATFROM, platform));
+            customerMessageModel.setContent(customerMessageMongo.getContent().replace(Constants.DOMAIN_PLACEHOLDER, domain).replace(Constants.RESOURCE, Constants.RESOURES_ADDRESS_IMAGES).replace(Constants.PLATFROM, platform).replace(Constants.MESSAGEID, customerMessageMongo.id));
             indexLayerViewModel.setCustomerMessageModel(customerMessageModel);
         }
 
