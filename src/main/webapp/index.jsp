@@ -30,8 +30,7 @@
 //        private String deviceid;
 
         var data = {
-            platform: "01",
-            id: "5aa8d95cde4b8575bace4741"
+            platform: "01"
         };
 //        var data = {
 //            platform: "01",

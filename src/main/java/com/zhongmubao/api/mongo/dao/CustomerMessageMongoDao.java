@@ -86,7 +86,7 @@ public class CustomerMessageMongoDao implements BaseDao<CustomerMessageMongo> {
         return mongoTemplate.find(query, CustomerMessageMongo.class);
     }
 
-    public CustomerMessageMongo getByCustomerIdAndTipsIdentification(int customerId, int tipsIdentification) throws Exception {
+    public CustomerMessageMongo getByCustomerIdAndTipsId(int customerId, int tipsIdentification) throws Exception {
         Query query = new Query();
         Criteria criteria = new Criteria();
         criteria.orOperator(Criteria.where("CustomerId").is(0), Criteria.where("CustomerId").is(customerId));
@@ -130,7 +130,7 @@ public class CustomerMessageMongoDao implements BaseDao<CustomerMessageMongo> {
         return mongoTemplate.findOne(query, CustomerMessageMongo.class);
     }
 
-    public CustomerMessageMongo getByCustomerIdAndTipsIdentification(String id, int customerId) throws Exception {
+    public CustomerMessageMongo getByCustomerIdAndTipsId(String id, int customerId) throws Exception {
         Query query = new Query();
         query.addCriteria(Criteria.where("_id").is(id));
         query.addCriteria(Criteria.where("CustomerId").is(customerId));

@@ -159,7 +159,7 @@ public class MessageServiceImpl extends BaseService implements MessageService {
 
         int customerId = customer == null ? 0 : customer.getId();
 
-        CustomerMessageMongo customerMessageMongo = customerMessageMongoDao.getByCustomerIdAndTipsIdentification(customerId, CustomerMessageTips.HOME_PAGE.getKey());
+        CustomerMessageMongo customerMessageMongo = customerMessageMongoDao.getByCustomerIdAndTipsId(customerId, CustomerMessageTips.HOME_PAGE.getKey());
 
         IndexLayerViewModel indexLayerViewModel = new IndexLayerViewModel();
         if (null != customerMessageMongo) {
@@ -177,7 +177,10 @@ public class MessageServiceImpl extends BaseService implements MessageService {
 
     @Override
     public void read(Customer customer, String id) throws Exception {
-        CustomerMessageMongo message = customerMessageMongoDao.getByCustomerIdAndTipsIdentification(id, customer.getId());
+        if(StringUtil.isNullOrEmpty(id)){
+            throw new ApiException(ResultStatus.PARAMETER_MISSING);
+        }
+        CustomerMessageMongo message = customerMessageMongoDao.getByCustomerIdAndTipsId(id, customer.getId());
         setRead(customer, message);
     }
 
