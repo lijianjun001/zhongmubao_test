@@ -60,8 +60,12 @@ public class MessageServiceImpl extends BaseService implements MessageService {
         int customerId = customer == null ? 0 : customer.getId();
         long count = customerMessageMongoDao.countByCustoemrIdAndIsRead(customerId, false);
         //获取发送给所有人的消息
-        List<CustomerMessageMongo> list = customerMessageMongoDao.getListByCustomerIdAndIsRead(0, false);
+        List<CustomerMessageMongo> list = customerMessageMongoDao.getListByCustomerId(0);
         for (CustomerMessageMongo message : list) {
+            //不统计发标公告的历史
+            if (message.getType().equals("00") && message.getTipsIdentification() != 6) {
+                continue;
+            }
             CustomerMessageReadMongo readMongo = customerMessageReadMongoDao.getByCustoemrIdAndMessageId(customerId, message.id);
             if (null == readMongo) {
                 count = count + 1;
@@ -201,7 +205,7 @@ public class MessageServiceImpl extends BaseService implements MessageService {
         int newTipsId = 2;
         int indexLayerTipsId = 7;
         int noTipsId = 99;
-        if (CustomerMessageType.SYSTEM_MESSAGE.getName().equals(message.getType())) {
+        if (message.getCustomerId() <= 0) {
             CustomerMessageReadMongo readMongo = customerMessageReadMongoDao.getByCustoemrIdAndMessageId(customer.getId(), message.id);
             if (readMongo == null) {
                 readMongo = new CustomerMessageReadMongo();
@@ -320,18 +324,18 @@ public class MessageServiceImpl extends BaseService implements MessageService {
                 typeName = msgType.getName();
                 typeIcon = msgType.getIcon();
             }
+
+            if (message.getCustomerId() <= 0) {
+                CustomerMessageReadMongo readMongo = customerMessageReadMongoDao.getByCustoemrIdAndMessageId(customer.getId(), message.id);
+                if (null != readMongo && message.getTipsIdentification() == 2) {
+                    message.setTipsIdentification(99);
+                }
+            }
+
             CustomerMessageTipsMongo msgTips = customerMessageTipsMongoDao.getByIdentification(message.getTipsIdentification());
             if (null != msgTips) {
                 tip = msgTips.getName();
                 backColor = msgTips.getBackColor();
-            }
-
-            if (CustomerMessageType.SYSTEM_MESSAGE.getName().equals(message.getType())) {
-                CustomerMessageReadMongo readMongo = customerMessageReadMongoDao.getByCustoemrIdAndMessageId(customer.getId(), message.id);
-                if (readMongo != null) {
-                    tip = Constants.STRING_EMPTY;
-                    backColor = Constants.STRING_EMPTY;
-                }
             }
 
             cusMsg.setTitle(message.getTitle());

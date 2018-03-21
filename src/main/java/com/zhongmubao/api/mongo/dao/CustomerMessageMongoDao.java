@@ -76,11 +76,10 @@ public class CustomerMessageMongoDao implements BaseDao<CustomerMessageMongo> {
         return mongoTemplate.find(query, CustomerMessageMongo.class);
     }
 
-    public List<CustomerMessageMongo> getListByCustomerIdAndIsRead(int customerId, boolean isRead) throws Exception {
+    public List<CustomerMessageMongo> getListByCustomerId(int customerId) throws Exception {
         Query query = new Query();
         query.addCriteria(Criteria.where("CustomerId").is(customerId));
         query.addCriteria(Criteria.where("Deleted").is(false));
-        query.addCriteria(Criteria.where("IsRead").is(isRead));
         query.with(new Sort(Sort.Direction.ASC, "TipsIdentification"));
         query.with(new Sort(Sort.Direction.DESC, "Created"));
 
