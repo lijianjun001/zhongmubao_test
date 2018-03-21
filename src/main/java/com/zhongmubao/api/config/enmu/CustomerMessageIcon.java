@@ -5,7 +5,7 @@ package com.zhongmubao.api.config.enmu;
  *
  * @author 孙阿龙
  */
-public enum CustomerMessageTypeIcon {
+public enum CustomerMessageIcon {
     PROJECT {
         @Override
         public String getValue() {
