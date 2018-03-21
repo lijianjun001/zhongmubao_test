@@ -81,7 +81,7 @@ public class CustomerMessageReadMongoDao implements BaseDao<CustomerMessageReadM
      * @return CustomerMessageReadMongo
      * @throws Exception Exception
      */
-    public CustomerMessageReadMongo getByCustomerIdAndMessageId(int customerId, String messageId) throws Exception {
+    public CustomerMessageReadMongo getByCustoemrIdAndMessageId(int customerId, String messageId) throws Exception {
         Query query = new Query();
         query.addCriteria(Criteria.where("CustomerId").is(customerId));
         query.addCriteria(Criteria.where("MessageId").is(messageId));

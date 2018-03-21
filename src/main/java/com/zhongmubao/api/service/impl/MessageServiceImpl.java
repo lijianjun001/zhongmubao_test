@@ -57,11 +57,15 @@ public class MessageServiceImpl extends BaseService implements MessageService {
 
     @Override
     public NewMessageCountViewModel messageCount(Customer customer) throws Exception {
-        if (customer == null) {
-            // 允许没有登录查看系统消息
-            customer = new Customer();
+        int customerId = customer == null ? 0 : customer.getId();
+        long count = customerMessageMongoDao.countByCustoemrIdAndIsRead(customerId, false);
+        List<CustomerMessageMongo> list = customerMessageMongoDao.getListByCustomerId(customer.getId());
+        for (CustomerMessageMongo message : list) {
+            CustomerMessageReadMongo readMongo = customerMessageReadMongoDao.getByCustoemrIdAndMessageId(customer.getId(), message.id);
+            if (null == readMongo) {
+                count = count + 1;
+            }
         }
-        long count = customerMessageMongoDao.getNewCount(customer.getId());
 
         return new NewMessageCountViewModel((int) count);
     }
@@ -76,9 +80,9 @@ public class MessageServiceImpl extends BaseService implements MessageService {
         int pagesize = 3;
         String method = "center";
         CenterViewModel viewModel = new CenterViewModel();
-        List<CustomerMessageMongo> projectMessages = customerMessageMongoDao.getListBy(customer.getId(), pagesize, CustomerMessageType.OPEN_PROJECT.getName());
-        List<CustomerMessageMongo> personMessages = customerMessageMongoDao.getListBy(customer.getId(), pagesize, CustomerMessageType.PERSON_MESSAGE.getName());
-        List<CustomerMessageMongo> systemMessages = customerMessageMongoDao.getListBy(customer.getId(), pagesize, CustomerMessageType.SYSTEM_MESSAGE.getName());
+        List<CustomerMessageMongo> projectMessages = customerMessageMongoDao.getListByCustomerIdAndTypeLimitSize(customer.getId(), pagesize, CustomerMessageType.OPEN_PROJECT.getName());
+        List<CustomerMessageMongo> personMessages = customerMessageMongoDao.getListByCustomerIdAndTypeLimitSize(customer.getId(), pagesize, CustomerMessageType.PERSON_MESSAGE.getName());
+        List<CustomerMessageMongo> systemMessages = customerMessageMongoDao.getListByCustomerIdAndTypeLimitSize(customer.getId(), pagesize, CustomerMessageType.SYSTEM_MESSAGE.getName());
 
         if (ArrayUtil.isNull(projectMessages)) {
             String weekSection = DateUtil.getWeekSection();
@@ -129,13 +133,12 @@ public class MessageServiceImpl extends BaseService implements MessageService {
         if (model == null) {
             throw new ApiException(ResultStatus.PARAMETER_MISSING);
         }
-        CustomerMessageMongo message = customerMessageMongoDao.get(model.getId());
+        CustomerMessageMongo message = customerMessageMongoDao.getById(model.getId());
         if (null == message) {
             return new DetailViewModel();
         }
-        // 消息标签，2->表示为新消息,99->表示没有标签
-        int newTipsId = 2;
-        int noTipsId = 99;
+
+
         boolean isUpdate = false;
         Date now = new Date();
         String title = message.getTitle();
@@ -146,11 +149,6 @@ public class MessageServiceImpl extends BaseService implements MessageService {
             title = projectViewModel.getTitle();
             text = projectViewModel.getRemark();
             content = SerializeUtil.serialize(projectViewModel);
-        } else {
-            if (message.getTipsIdentification() == newTipsId) {
-                // 去掉lable[新]
-                message.setTipsIdentification(noTipsId);
-            }
         }
 
         //设置消息已读
@@ -166,7 +164,7 @@ public class MessageServiceImpl extends BaseService implements MessageService {
         int customerId = customer == null ? 0 : customer.getId();
 
         CustomerMessageTipsMongo customerMessageTipsMongo = customerMessageTipsMongoDao.getById("5ab0c45e0682de506a4e1a58");
-        CustomerMessageMongo customerMessageMongo = customerMessageMongoDao.getBy(customerId, customerMessageTipsMongo.getIdentification());
+        CustomerMessageMongo customerMessageMongo = customerMessageMongoDao.getByCustomerIdAndTipsIdentification(customerId, customerMessageTipsMongo.getIdentification());
 
         IndexLayerViewModel indexLayerViewModel = new IndexLayerViewModel();
         if (null != customerMessageMongo) {
@@ -184,7 +182,7 @@ public class MessageServiceImpl extends BaseService implements MessageService {
 
     @Override
     public void read(Customer customer, String id) throws Exception {
-        CustomerMessageMongo message = customerMessageMongoDao.getBy(id, customer.getId());
+        CustomerMessageMongo message = customerMessageMongoDao.getByCustomerIdAndTipsIdentification(id, customer.getId());
         setRead(customer, message);
     }
 
@@ -199,9 +197,11 @@ public class MessageServiceImpl extends BaseService implements MessageService {
         if (null == message) {
             return;
         }
-
+        // 消息标签，2->表示为新消息,99->表示没有标签
+        int newTipsId = 2;
+        int noTipsId = 99;
         if (CustomerMessageType.SYSTEM_MESSAGE.getName().equals(message.getType())) {
-            CustomerMessageReadMongo readMongo = customerMessageReadMongoDao.getByCustomerIdAndMessageId(customer.getId(), message.id);
+            CustomerMessageReadMongo readMongo = customerMessageReadMongoDao.getByCustoemrIdAndMessageId(customer.getId(), message.id);
             if (readMongo == null) {
                 readMongo = new CustomerMessageReadMongo();
                 readMongo.setCustomerId(customer.getId());
@@ -211,7 +211,10 @@ public class MessageServiceImpl extends BaseService implements MessageService {
             }
         } else {
             if (!message.getRead() && message.getCustomerId() == customer.getId()) {
-                // 修改为已读状态
+                if (message.getTipsIdentification() == newTipsId) {
+                    // 去掉lable[新]
+                    message.setTipsIdentification(noTipsId);
+                }
                 message.setRead(true);
                 customerMessageMongoDao.update(message);
             }
@@ -238,7 +241,7 @@ public class MessageServiceImpl extends BaseService implements MessageService {
         String title = Constants.STRING_EMPTY;
         String remark = Constants.STRING_EMPTY;
         List<ProjectWeekInfoModel> list = new ArrayList<>();
-        CustomerMessageMongo message = customerMessageMongoDao.get(id);
+        CustomerMessageMongo message = customerMessageMongoDao.getById(id);
         if (CustomerMessageType.OPEN_PROJECT.getName().equals(message.getType())) {
             remark = message.getTitle();
             if (remark.equals(DateUtil.getWeekSection())) {
@@ -323,7 +326,7 @@ public class MessageServiceImpl extends BaseService implements MessageService {
             }
 
             if (CustomerMessageType.SYSTEM_MESSAGE.getName().equals(message.getType())) {
-                CustomerMessageReadMongo readMongo = customerMessageReadMongoDao.getByCustomerIdAndMessageId(customer.getId(), message.id);
+                CustomerMessageReadMongo readMongo = customerMessageReadMongoDao.getByCustoemrIdAndMessageId(customer.getId(), message.id);
                 if (readMongo != null) {
                     tip = Constants.STRING_EMPTY;
                     backColor = Constants.STRING_EMPTY;

@@ -89,7 +89,7 @@ public class RedisLock {
                 }
             });
         } catch (Exception e) {
-            logger.error("get redis error, key : {}", key);
+            logger.error("getById redis error, key : {}", key);
         }
         return obj != null ? obj.toString() : null;
     }

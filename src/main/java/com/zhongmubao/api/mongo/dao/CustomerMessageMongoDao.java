@@ -62,16 +62,7 @@ public class CustomerMessageMongoDao implements BaseDao<CustomerMessageMongo> {
         return null;
     }
 
-    /**
-     * 消息中心
-     *
-     * @param customerId 客户主键
-     * @param size       取条数
-     * @param type       消息类型
-     * @return List<CustomerMessageMongo>
-     * @throws Exception Exception
-     */
-    public List<CustomerMessageMongo> getListBy(int customerId, int size, String type) throws Exception {
+    public List<CustomerMessageMongo> getListByCustomerIdAndTypeLimitSize(int customerId, int size, String type) throws Exception {
         Query query = new Query();
         Criteria criteria = new Criteria();
         criteria.orOperator(Criteria.where("CustomerId").is(0), Criteria.where("CustomerId").is(customerId));
@@ -85,15 +76,17 @@ public class CustomerMessageMongoDao implements BaseDao<CustomerMessageMongo> {
         return mongoTemplate.find(query, CustomerMessageMongo.class);
     }
 
-    /**
-     * 获取单条记录
-     *
-     * @param customerId         客户id
-     * @param tipsIdentification tipsIdentification
-     * @return CustomerMessageMongo
-     * @throws Exception Exception
-     */
-    public CustomerMessageMongo getBy(int customerId, int tipsIdentification) throws Exception {
+    public List<CustomerMessageMongo> getListByCustomerId(int customerId) throws Exception {
+        Query query = new Query();
+        query.addCriteria(Criteria.where("CustomerId").is(customerId));
+        query.addCriteria(Criteria.where("Deleted").is(false));
+        query.with(new Sort(Sort.Direction.ASC, "TipsIdentification"));
+        query.with(new Sort(Sort.Direction.DESC, "Created"));
+
+        return mongoTemplate.find(query, CustomerMessageMongo.class);
+    }
+
+    public CustomerMessageMongo getByCustomerIdAndTipsIdentification(int customerId, int tipsIdentification) throws Exception {
         Query query = new Query();
         Criteria criteria = new Criteria();
         criteria.orOperator(Criteria.where("CustomerId").is(0), Criteria.where("CustomerId").is(customerId));
@@ -106,13 +99,6 @@ public class CustomerMessageMongoDao implements BaseDao<CustomerMessageMongo> {
         return mongoTemplate.findOne(query, CustomerMessageMongo.class);
     }
 
-    /**
-     * 消息中心分页
-     *
-     * @param customerId 客户主键
-     * @param page       分页
-     * @return PageModel<CustomerMessageMongo>
-     */
     public PageModel<CustomerMessageMongo> pager(int customerId, PageModel<CustomerMessageMongo> page, String type) {
         Query query = new Query();
         Criteria criteria = new Criteria();
@@ -137,49 +123,24 @@ public class CustomerMessageMongoDao implements BaseDao<CustomerMessageMongo> {
         return page;
     }
 
-    /**
-     * 获取单个消息
-     *
-     * @param id 主键
-     * @return List<CustomerMessageMongo>
-     * @throws Exception Exception
-     */
-    public CustomerMessageMongo get(String id) throws Exception {
+    public CustomerMessageMongo getById(String id) throws Exception {
         Query query = new Query();
         query.addCriteria(Criteria.where("_id").is(id));
 
         return mongoTemplate.findOne(query, CustomerMessageMongo.class);
     }
 
-    /**
-     * 获取单个消息
-     *
-     * @param id         主键
-     * @param customerId 客户id
-     * @return List<CustomerMessageMongo>
-     * @throws Exception Exception
-     */
-    public CustomerMessageMongo getBy(String id, int customerId) throws Exception {
+    public CustomerMessageMongo getByCustomerIdAndTipsIdentification(String id, int customerId) throws Exception {
         Query query = new Query();
         query.addCriteria(Criteria.where("_id").is(id));
         query.addCriteria(Criteria.where("CustomerId").is(customerId));
         return mongoTemplate.findOne(query, CustomerMessageMongo.class);
     }
 
-    /**
-     * 获取新消息数
-     *
-     * @param customerId 主键
-     * @return int
-     * @throws Exception Exception
-     */
-    public long getNewCount(int customerId) throws Exception {
+    public long countByCustoemrIdAndIsRead(int customerId, boolean isRead) throws Exception {
         Query query = new Query();
-        Criteria criteria = new Criteria();
-        criteria.orOperator(Criteria.where("CustomerId").is(0), Criteria.where("CustomerId").is(customerId));
-        query.addCriteria(criteria);
-        query.addCriteria(Criteria.where("IsRead").is(false));
-
+        query.addCriteria(Criteria.where("CustomerId").is(customerId));
+        query.addCriteria(Criteria.where("IsRead").is(isRead));
         return mongoTemplate.count(query, CustomerMessageMongo.class);
     }
 }

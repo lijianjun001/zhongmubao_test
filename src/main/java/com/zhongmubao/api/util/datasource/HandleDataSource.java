@@ -18,7 +18,7 @@ class HandleDataSource {
     /**
      * 获取当前线程的数据源
      *
-     * @return HOLDER.get()
+     * @return HOLDER.getById()
      */
     static String getDataSource() {
         return HOLDER.get();
