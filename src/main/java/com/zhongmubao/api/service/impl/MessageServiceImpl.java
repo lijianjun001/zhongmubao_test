@@ -64,7 +64,6 @@ public class MessageServiceImpl extends BaseService implements MessageService {
             }
         }
 
-        //事实上
         return new NewMessageCountViewModel((int) count);
     }
 
