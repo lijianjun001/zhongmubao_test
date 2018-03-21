@@ -30,7 +30,8 @@
 //        private String deviceid;
 
         var data = {
-            platform: "01"
+            platform: "01",
+            id: "5ab0a4c10682de506a4e1a54"
         };
 //        var data = {
 //            platform: "01",
@@ -44,7 +45,7 @@
 
         $.ajax({
             type: "POST",
-            url: "/customer/message/center",
+            url: "/customer/message/detail",
             data: JSON.stringify(data),
             contentType: 'application/json;charset=UTF-8',
             dataType: "json",                                     //预期服务器返回类型

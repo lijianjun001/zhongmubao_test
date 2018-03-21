@@ -340,7 +340,7 @@ public class CustomerController {
      * @return ReponseModel
      */
     @RequestMapping(value = "/message/count", method = RequestMethod.POST, consumes = "application/json")
-    @Authorization
+    @Authorization(onlyGetCustomer = true)
     public ResponseEntity<ReponseModel> messageCount(@CurrentUser Customer customer) {
         try {
             NewMessageCountViewModel count = messageService.messageCount(customer);
@@ -359,7 +359,7 @@ public class CustomerController {
      * @return ReponseModel
      */
     @RequestMapping(value = "/message/center", method = RequestMethod.POST, consumes = "application/json")
-    @Authorization
+    @Authorization(onlyGetCustomer = true)
     public ResponseEntity<ReponseModel> messageCenter(@CurrentUser Customer customer) {
         try {
             CenterViewModel viewModel = messageService.messageCenter(customer);
@@ -379,7 +379,7 @@ public class CustomerController {
      * @return ReponseModel
      */
     @RequestMapping(value = "/message/list", method = RequestMethod.POST, consumes = "application/json")
-    @Authorization
+    @Authorization(onlyGetCustomer = true)
     public ResponseEntity<ReponseModel> messageList(@CurrentUser Customer customer, HttpEntity<ListRequestModel> model) {
         try {
             ListViewModel viewModel = messageService.messageList(customer, model.getBody());
@@ -399,7 +399,7 @@ public class CustomerController {
      * @return ReponseModel
      */
     @RequestMapping(value = "/message/detail", method = RequestMethod.POST, consumes = "application/json")
-    @Authorization
+    @Authorization(onlyGetCustomer = true)
     public ResponseEntity<ReponseModel> messageDetail(@CurrentUser Customer customer, HttpEntity<DetailRequestModel> model) {
         try {
             DetailViewModel viewModel = messageService.messageDetail(customer, model.getBody());

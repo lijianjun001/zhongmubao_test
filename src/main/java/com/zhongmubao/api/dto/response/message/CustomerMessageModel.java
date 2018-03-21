@@ -1,6 +1,8 @@
 package com.zhongmubao.api.dto.response.message;
 
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 /**
  * 消息中心实体
  *
@@ -36,6 +38,11 @@ public class CustomerMessageModel {
      * 消息中心分类，eg:开标计划、系统消息、个人消息
      */
     private String type;
+
+    /**
+     * 是否内部跳转
+     */
+    private boolean isInside;
 
     /**
      * 标签
@@ -98,6 +105,15 @@ public class CustomerMessageModel {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    @JsonProperty(value = "isInside")
+    public boolean getInside() {
+        return isInside;
+    }
+
+    public void setInside(boolean inside) {
+        isInside = inside;
     }
 
     public String getTips() {

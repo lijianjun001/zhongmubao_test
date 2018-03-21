@@ -52,10 +52,16 @@ public class CustomerMessageMongo extends BaseModel {
     private int tipsIdentification;
 
     /**
-     *
+     * 是否已读 true是 or false否
      */
     @Field("IsRead")
     private boolean isRead;
+
+    /**
+     * 是否内部跳转 true是 or false否
+     */
+    @Field("IsInside")
+    private boolean isInside;
 
     /**
      * 逻辑删除
@@ -132,6 +138,18 @@ public class CustomerMessageMongo extends BaseModel {
 
     public void setDeleted(boolean deleted) {
         this.deleted = deleted;
+    }
+
+    public boolean isRead() {
+        return isRead;
+    }
+
+    public boolean getIsInside() {
+        return isInside;
+    }
+
+    public void setInside(boolean inside) {
+        isInside = inside;
     }
 
     public Date getCreated() {
