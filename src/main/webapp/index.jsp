@@ -31,7 +31,7 @@
 
         var data = {
             platform: "01",
-            id: "5ab0a4c10682de506a4e1a54"
+            id: "5aaf373dc26e21596c748f2b"
         };
 //        var data = {
 //            platform: "01",
@@ -45,7 +45,7 @@
 
         $.ajax({
             type: "POST",
-            url: "/customer/message/count",
+            url: "/customer/message/detail",
             data: JSON.stringify(data),
             contentType: 'application/json;charset=UTF-8',
             dataType: "json",                                     //预期服务器返回类型

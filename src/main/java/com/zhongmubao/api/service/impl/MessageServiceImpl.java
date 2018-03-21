@@ -15,10 +15,8 @@ import com.zhongmubao.api.entity.Customer;
 import com.zhongmubao.api.exception.ApiException;
 import com.zhongmubao.api.mongo.dao.CustomerMessageMongoDao;
 import com.zhongmubao.api.mongo.dao.CustomerMessageReadMongoDao;
-import com.zhongmubao.api.mongo.dao.CustomerMessageTypeMongoDao;
 import com.zhongmubao.api.mongo.entity.CustomerMessageMongo;
 import com.zhongmubao.api.mongo.entity.CustomerMessageReadMongo;
-import com.zhongmubao.api.mongo.entity.CustomerMessageTipsMongo;
 import com.zhongmubao.api.mongo.entity.base.PageModel;
 import com.zhongmubao.api.service.MessageService;
 import com.zhongmubao.api.util.*;
@@ -39,15 +37,11 @@ import java.util.Optional;
 public class MessageServiceImpl extends BaseService implements MessageService {
 
     private final CustomerMessageMongoDao customerMessageMongoDao;
-    private final CustomerMessageTypeMongoDao customerMessageTypeMongoDao;
-    private final CustomerMessageTipsMongoDao customerMessageTipsMongoDao;
     private final CustomerMessageReadMongoDao customerMessageReadMongoDao;
 
     @Autowired
-    public MessageServiceImpl(CustomerMessageMongoDao customerMessageMongoDao, CustomerMessageTypeMongoDao customerMessageTypeMongoDao, CustomerMessageTipsMongoDao customerMessageTipsMongoDao, CustomerMessageReadMongoDao customerMessageReadMongoDao) {
+    public MessageServiceImpl(CustomerMessageMongoDao customerMessageMongoDao,CustomerMessageReadMongoDao customerMessageReadMongoDao) {
         this.customerMessageMongoDao = customerMessageMongoDao;
-        this.customerMessageTypeMongoDao = customerMessageTypeMongoDao;
-        this.customerMessageTipsMongoDao = customerMessageTipsMongoDao;
         this.customerMessageReadMongoDao = customerMessageReadMongoDao;
     }
 
@@ -167,8 +161,8 @@ public class MessageServiceImpl extends BaseService implements MessageService {
 
         int customerId = customer == null ? 0 : customer.getId();
 
-        CustomerMessageTipsMongo customerMessageTipsMongo = customerMessageTipsMongoDao.getByIdentification(7);
-        CustomerMessageMongo customerMessageMongo = customerMessageMongoDao.getByCustomerIdAndTipsIdentification(customerId, customerMessageTipsMongo.getIdentification());
+
+        CustomerMessageMongo customerMessageMongo = customerMessageMongoDao.getByCustomerIdAndTipsIdentification(customerId, CustomerMessageTips.HOME_PAGE.getKey());
 
         IndexLayerViewModel indexLayerViewModel = new IndexLayerViewModel();
         if (null != customerMessageMongo) {
@@ -312,11 +306,11 @@ public class MessageServiceImpl extends BaseService implements MessageService {
             cusMsg.setId(message.id);
             String typeName = Constants.STRING_EMPTY;
             String typeIcon;
-            String tip = Constants.STRING_EMPTY;
-            String backColor = Constants.STRING_EMPTY;
+            String tip;
+            String backColor;
             String date = method.equals(defaultMethod) ? DateUtil.format(message.getCreated(), Constants.TIME_HOUR_MINUTE_FORMAT) : DateUtil.format(message.getCreated(), Constants.DATE_TIME_FORMAT);
 
-            //客户id如果小于0的时候并且已读设置消息为默认标记
+            // 客户id如果小于0的时候并且已读设置消息为默认标记
             if (message.getCustomerId() <= 0) {
                 CustomerMessageReadMongo readMongo = customerMessageReadMongoDao.getByCustoemrIdAndMessageId(customer.getId(), message.id);
                 if (null != readMongo && message.getTipsId() == CustomerMessageTips.NEW.getKey()) {
@@ -324,11 +318,8 @@ public class MessageServiceImpl extends BaseService implements MessageService {
                 }
             }
             typeIcon = CustomerMessageIcon.formart(message.getIcon());
-            CustomerMessageTipsMongo msgTips = customerMessageTipsMongoDao.getByIdentification(message.getTipsId());
-            if (null != msgTips) {
-                tip = msgTips.getName();
-                backColor = msgTips.getBackColor();
-            }
+            tip = CustomerMessageTips.formartName(message.getTipsId());
+            backColor = CustomerMessageTips.formartColor(message.getTipsId());
 
             cusMsg.setTitle(message.getTitle());
             cusMsg.setContent(message.getContent());

@@ -115,7 +115,7 @@ public enum CustomerMessageTips {
     }, DEFAULT {
         @Override
         public String getName() {
-            return "默认";
+            return "";
         }
 
         @Override
@@ -141,22 +141,22 @@ public enum CustomerMessageTips {
      * @param key key值
      * @return String
      */
-    public static String formartName(String key) {
-        if (key.equals(TOP.getKey())) {
+    public static String formartName(int key) {
+        if (key == TOP.getKey()) {
             return TOP.getName();
-        } else if (key.equals(NEW.getKey())) {
+        } else if (key == NEW.getKey()) {
             return NEW.getName();
-        } else if (key.equals(SURPRISE.getKey())) {
+        } else if (key == SURPRISE.getKey()) {
             return SURPRISE.getName();
-        } else if (key.equals(UPDATE.getKey())) {
+        } else if (key == UPDATE.getKey()) {
             return UPDATE.getName();
-        } else if (key.equals(HISTORY.getKey())) {
+        } else if (key == HISTORY.getKey()) {
             return HISTORY.getName();
-        } else if (key.equals(CURRENT_WEEK.getKey())) {
+        } else if (key == CURRENT_WEEK.getKey()) {
             return CURRENT_WEEK.getName();
-        } else if (key.equals(HOME_PAGE.getKey())) {
+        } else if (key == HOME_PAGE.getKey()) {
             return HOME_PAGE.getName();
-        } else if (key.equals(DEFAULT.getKey())) {
+        } else if (key == DEFAULT.getKey()) {
             return DEFAULT.getName();
         } else {
             return "";
@@ -169,22 +169,22 @@ public enum CustomerMessageTips {
      * @param key key值
      * @return String
      */
-    public static String formartColor(String key) {
-        if (key.equals(TOP.getKey())) {
+    public static String formartColor(int key) {
+        if (key == TOP.getKey()) {
             return TOP.getColor();
-        } else if (key.equals(NEW.getKey())) {
+        } else if (key == NEW.getKey()) {
             return NEW.getColor();
-        } else if (key.equals(SURPRISE.getKey())) {
+        } else if (key == SURPRISE.getKey()) {
             return SURPRISE.getColor();
-        } else if (key.equals(UPDATE.getKey())) {
+        } else if (key == UPDATE.getKey()) {
             return UPDATE.getColor();
-        } else if (key.equals(HISTORY.getKey())) {
+        } else if (key == HISTORY.getKey()) {
             return HISTORY.getColor();
-        } else if (key.equals(CURRENT_WEEK.getKey())) {
+        } else if (key == CURRENT_WEEK.getKey()) {
             return CURRENT_WEEK.getColor();
-        } else if (key.equals(HOME_PAGE.getKey())) {
+        } else if (key == HOME_PAGE.getKey()) {
             return HOME_PAGE.getColor();
-        } else if (key.equals(DEFAULT.getKey())) {
+        } else if (key == DEFAULT.getKey()) {
             return DEFAULT.getColor();
         } else {
             return "";
