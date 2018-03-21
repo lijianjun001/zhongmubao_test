@@ -309,21 +309,20 @@ public class MessageServiceImpl extends BaseService implements MessageService {
             String backColor;
             String date = method.equals(defaultMethod) ? DateUtil.format(message.getCreated(), Constants.TIME_HOUR_MINUTE_FORMAT) : DateUtil.format(message.getCreated(), Constants.DATE_TIME_FORMAT);
 
-
-            if (message.getTipsId() == CustomerMessageTips.HOME_PAGE.getKey()) {
-                if (message.getCustomerId() <= 0) {
-                    CustomerMessageReadMongo readMongo = customerMessageReadMongoDao.getByCustoemrIdAndMessageId(customer.getId(), message.id);
-                    if (null != readMongo) {
-                        message.setTipsId(CustomerMessageTips.DEFAULT.getKey());
-                    }
+            if (message.getCustomerId() <= 0) {
+                CustomerMessageReadMongo readMongo = customerMessageReadMongoDao.getByCustoemrIdAndMessageId(customer.getId(), message.id);
+                if (null != readMongo) {
+                    message.setTipsId(CustomerMessageTips.DEFAULT.getKey());
                 } else {
-                    if (!message.getRead()) {
-                        message.setTipsId(CustomerMessageTips.NEW.getKey());
-                    } else {
-                        message.setTipsId(CustomerMessageTips.DEFAULT.getKey());
-                    }
+                    message.setTipsId(CustomerMessageTips.NEW.getKey());
+                }
+            } else {
+                if (!message.getRead()) {
+                    message.setTipsId(CustomerMessageTips.NEW.getKey());
                 }
             }
+
+
             typeIcon = CustomerMessageIcon.formart(message.getIcon());
             tip = CustomerMessageTips.formartName(message.getTipsId());
             backColor = CustomerMessageTips.formartColor(message.getTipsId());
