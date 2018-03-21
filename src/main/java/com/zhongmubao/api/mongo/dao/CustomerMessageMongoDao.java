@@ -137,9 +137,10 @@ public class CustomerMessageMongoDao implements BaseDao<CustomerMessageMongo> {
         return mongoTemplate.findOne(query, CustomerMessageMongo.class);
     }
 
-    public long countByCustoemrIdAndIsRead(int customerId, boolean isRead) throws Exception {
+    public long countByCustoemrIdAndIsReadAndTipsIdentification(int customerId, boolean isRead, int tipsIdentification) throws Exception {
         Query query = new Query();
         query.addCriteria(Criteria.where("CustomerId").is(customerId));
+        query.addCriteria(Criteria.where("TipsIdentification").is(tipsIdentification));
         query.addCriteria(Criteria.where("IsRead").is(isRead));
         return mongoTemplate.count(query, CustomerMessageMongo.class);
     }
