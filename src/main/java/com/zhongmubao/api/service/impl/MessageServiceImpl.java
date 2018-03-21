@@ -310,9 +310,8 @@ public class MessageServiceImpl extends BaseService implements MessageService {
             String backColor;
             String date = method.equals(defaultMethod) ? DateUtil.format(message.getCreated(), Constants.TIME_HOUR_MINUTE_FORMAT) : DateUtil.format(message.getCreated(), Constants.DATE_TIME_FORMAT);
 
-            if (message.getCustomerId() <= 0) {
-                if (message.getTipsId() == CustomerMessageTips.HOME_PAGE.getKey()) {
-
+            if (message.getTipsId() == CustomerMessageTips.HOME_PAGE.getKey()) {
+                if (message.getCustomerId() <= 0) {
                     CustomerMessageReadMongo readMongo = customerMessageReadMongoDao.getByCustomerIdAndMessageId(customer.getId(), message.id);
                     if (null != readMongo) {
                         message.setTipsId(CustomerMessageTips.DEFAULT.getKey());
