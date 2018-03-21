@@ -47,8 +47,6 @@ public class MessageServiceImpl extends BaseService implements MessageService {
 
 
     //region 新消息中心
-
-
     @Override
     public NewMessageCountViewModel count(Customer customer) throws Exception {
         int customerId = customer == null ? 0 : customer.getId();
@@ -60,7 +58,7 @@ public class MessageServiceImpl extends BaseService implements MessageService {
             if (message.getType().equals(CustomerMessageType.SYSTEM_MESSAGE.getName()) && message.getTipsId() == CustomerMessageTips.HISTORY.getKey()) {
                 continue;
             }
-            CustomerMessageReadMongo readMongo = customerMessageReadMongoDao.getByCustoemrIdAndMessageId(customerId, message.id);
+            CustomerMessageReadMongo readMongo = customerMessageReadMongoDao.getByCustomerIdAndMessageId(customerId, message.id);
             if (null == readMongo) {
                 count = count + 1;
             }
@@ -309,20 +307,21 @@ public class MessageServiceImpl extends BaseService implements MessageService {
             String backColor;
             String date = method.equals(defaultMethod) ? DateUtil.format(message.getCreated(), Constants.TIME_HOUR_MINUTE_FORMAT) : DateUtil.format(message.getCreated(), Constants.DATE_TIME_FORMAT);
 
-            if (message.getCustomerId() <= 0) {
-                CustomerMessageReadMongo readMongo = customerMessageReadMongoDao.getByCustoemrIdAndMessageId(customer.getId(), message.id);
-                if (null != readMongo) {
-                    message.setTipsId(CustomerMessageTips.DEFAULT.getKey());
+
+            if (message.getTipsId() == CustomerMessageTips.HOME_PAGE.getKey()) {
+                if (message.getCustomerId() <= 0) {
+                    CustomerMessageReadMongo readMongo = customerMessageReadMongoDao.getByCustoemrIdAndMessageId(customer.getId(), message.id);
+                    if (null != readMongo) {
+                        message.setTipsId(CustomerMessageTips.DEFAULT.getKey());
+                    }
                 } else {
-                    message.setTipsId(CustomerMessageTips.NEW.getKey());
-                }
-            } else {
-                if (!message.getRead()) {
-                    message.setTipsId(CustomerMessageTips.NEW.getKey());
+                    if (!message.getRead()) {
+                        message.setTipsId(CustomerMessageTips.NEW.getKey());
+                    } else {
+                        message.setTipsId(CustomerMessageTips.DEFAULT.getKey());
+                    }
                 }
             }
-
-
             typeIcon = CustomerMessageIcon.formart(message.getIcon());
             tip = CustomerMessageTips.formartName(message.getTipsId());
             backColor = CustomerMessageTips.formartColor(message.getTipsId());
