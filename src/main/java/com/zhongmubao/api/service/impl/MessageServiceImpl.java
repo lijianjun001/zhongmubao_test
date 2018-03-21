@@ -55,7 +55,7 @@ public class MessageServiceImpl extends BaseService implements MessageService {
         List<CustomerMessageMongo> list = customerMessageMongoDao.getListByCustomerId(0);
         for (CustomerMessageMongo message : list) {
             //不统计发标公告的历史
-            if (message.getType().equals(CustomerMessageType.SYSTEM_MESSAGE.getName()) && message.getTipsId() != CustomerMessageTips.CURRENT_WEEK.getKey()) {
+            if (message.getType().equals(CustomerMessageType.SYSTEM_MESSAGE.getName()) && message.getTipsId() == CustomerMessageTips.HISTORY.getKey()) {
                 continue;
             }
             CustomerMessageReadMongo readMongo = customerMessageReadMongoDao.getByCustomerIdAndMessageId(customerId, message.id);
@@ -193,17 +193,8 @@ public class MessageServiceImpl extends BaseService implements MessageService {
         if (null == message) {
             return;
         }
-
-        boolean isUpdate = false;
-        if (!CustomerMessageType.OPEN_PROJECT.getName().equals(message.getType())) {
-            if (message.getTipsId() == CustomerMessageTips.NEW.getKey() || message.getTipsId() == CustomerMessageTips.HOME_PAGE.getKey()) {
-                // 去掉lable[新]
-                message.setTipsId(CustomerMessageTips.DEFAULT.getKey());
-                isUpdate = true;
-            }
-        }
-        if (CustomerMessageType.SYSTEM_MESSAGE.getName().equals(message.getType())) {
-            CustomerMessageReadMongo readMongo = customerMessageReadMongoDao.getByCustomerIdAndMessageId(customer.getId(), message.id);
+        if (message.getCustomerId() <= 0) {
+            CustomerMessageReadMongo readMongo = customerMessageReadMongoDao.getByCustoemrIdAndMessageId(customer.getId(), message.id);
             if (readMongo == null) {
                 readMongo = new CustomerMessageReadMongo();
                 readMongo.setCustomerId(customer.getId());
@@ -212,14 +203,14 @@ public class MessageServiceImpl extends BaseService implements MessageService {
                 customerMessageReadMongoDao.add(readMongo);
             }
         } else {
-            if (!message.getRead()) {
-                // 修改为已读状态
+            if (!message.getRead() && message.getCustomerId() == customer.getId()) {
+                if (message.getTipsId() == CustomerMessageTips.NEW.getKey() || message.getTipsId() == CustomerMessageTips.HOME_PAGE.getKey()) {
+                    // 去掉lable[新]
+                    message.setTipsId(CustomerMessageTips.DEFAULT.getKey());
+                }
                 message.setRead(true);
-                isUpdate = true;
+                customerMessageMongoDao.update(message);
             }
-        }
-        if (isUpdate) {
-            customerMessageMongoDao.update(message);
         }
     }
 
@@ -319,7 +310,7 @@ public class MessageServiceImpl extends BaseService implements MessageService {
 
             // 客户id如果小于0的时候并且已读设置消息为默认标记
             if (message.getCustomerId() <= 0) {
-                CustomerMessageReadMongo readMongo = customerMessageReadMongoDao.getByCustomerIdAndMessageId(customer.getId(), message.id);
+                CustomerMessageReadMongo readMongo = customerMessageReadMongoDao.getByCustoemrIdAndMessageId(customer.getId(), message.id);
                 if (null != readMongo && message.getTipsId() == CustomerMessageTips.NEW.getKey()) {
                     message.setTipsId(CustomerMessageTips.DEFAULT.getKey());
                 }

@@ -126,7 +126,7 @@ public class CustomerMessageMongoDao implements BaseDao<CustomerMessageMongo> {
     public CustomerMessageMongo getById(String id) throws Exception {
         Query query = new Query();
         query.addCriteria(Criteria.where("_id").is(id));
-
+        query.addCriteria(Criteria.where("Deleted").is(false));
         return mongoTemplate.findOne(query, CustomerMessageMongo.class);
     }
 
@@ -134,6 +134,7 @@ public class CustomerMessageMongoDao implements BaseDao<CustomerMessageMongo> {
         Query query = new Query();
         query.addCriteria(Criteria.where("_id").is(id));
         query.addCriteria(Criteria.where("CustomerId").is(customerId));
+        query.addCriteria(Criteria.where("Deleted").is(false));
         return mongoTemplate.findOne(query, CustomerMessageMongo.class);
     }
 
@@ -141,6 +142,7 @@ public class CustomerMessageMongoDao implements BaseDao<CustomerMessageMongo> {
         Query query = new Query();
         query.addCriteria(Criteria.where("CustomerId").is(customerId));
         query.addCriteria(Criteria.where("IsRead").is(isRead));
+        query.addCriteria(Criteria.where("Deleted").is(false));
         return mongoTemplate.count(query, CustomerMessageMongo.class);
     }
 }

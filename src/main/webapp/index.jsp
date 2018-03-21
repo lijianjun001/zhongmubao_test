@@ -45,7 +45,7 @@
 
         $.ajax({
             type: "POST",
-            url: "/customer/message/detail",
+            url: "/customer/message/count",
             data: JSON.stringify(data),
             contentType: 'application/json;charset=UTF-8',
             dataType: "json",                                     //预期服务器返回类型
