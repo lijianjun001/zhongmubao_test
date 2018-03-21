@@ -199,6 +199,7 @@ public class MessageServiceImpl extends BaseService implements MessageService {
         }
         // 消息标签，2->表示为新消息,99->表示没有标签
         int newTipsId = 2;
+        int indexLayerTipsId = 7;
         int noTipsId = 99;
         if (CustomerMessageType.SYSTEM_MESSAGE.getName().equals(message.getType())) {
             CustomerMessageReadMongo readMongo = customerMessageReadMongoDao.getByCustoemrIdAndMessageId(customer.getId(), message.id);
@@ -211,7 +212,7 @@ public class MessageServiceImpl extends BaseService implements MessageService {
             }
         } else {
             if (!message.getRead() && message.getCustomerId() == customer.getId()) {
-                if (message.getTipsIdentification() == newTipsId) {
+                if (message.getTipsIdentification() == newTipsId || message.getTipsIdentification() == indexLayerTipsId) {
                     // 去掉lable[新]
                     message.setTipsIdentification(noTipsId);
                 }
