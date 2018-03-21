@@ -6,7 +6,7 @@ import com.google.gson.reflect.TypeToken;
 import com.zhongmubao.api.config.Constants;
 import com.zhongmubao.api.config.ResultStatus;
 import com.zhongmubao.api.config.enmu.CustomerMessageType;
-import com.zhongmubao.api.config.enmu.MessageTypeIcon;
+import com.zhongmubao.api.config.enmu.CustomerMessageTypeIcon;
 import com.zhongmubao.api.dto.request.message.DetailRequestModel;
 import com.zhongmubao.api.dto.request.message.ListRequestModel;
 import com.zhongmubao.api.dto.response.message.*;
@@ -19,7 +19,6 @@ import com.zhongmubao.api.mongo.dao.CustomerMessageTypeMongoDao;
 import com.zhongmubao.api.mongo.entity.CustomerMessageMongo;
 import com.zhongmubao.api.mongo.entity.CustomerMessageReadMongo;
 import com.zhongmubao.api.mongo.entity.CustomerMessageTipsMongo;
-import com.zhongmubao.api.mongo.entity.CustomerMessageTypeMongo;
 import com.zhongmubao.api.mongo.entity.base.PageModel;
 import com.zhongmubao.api.service.MessageService;
 import com.zhongmubao.api.util.*;
@@ -327,7 +326,7 @@ public class MessageServiceImpl extends BaseService implements MessageService {
                     message.setTipsIdentification(99);
                 }
             }
-            typeIcon = MessageTypeIcon.formart(message.getIcon());
+            typeIcon = CustomerMessageTypeIcon.formart(message.getIcon());
             CustomerMessageTipsMongo msgTips = customerMessageTipsMongoDao.getByIdentification(message.getTipsIdentification());
             if (null != msgTips) {
                 tip = msgTips.getName();
