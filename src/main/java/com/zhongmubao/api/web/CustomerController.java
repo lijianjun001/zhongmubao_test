@@ -333,6 +333,7 @@ public class CustomerController {
     //endregion
 
     //region 客户消息
+
     /***
      * 获取最新消息数
      * @param customer 客户
@@ -403,6 +404,26 @@ public class CustomerController {
     public ResponseEntity<ReponseModel> messageDetail(@CurrentUser Customer customer, HttpEntity<DetailRequestModel> model) {
         try {
             DetailViewModel viewModel = messageService.messageDetail(customer, model.getBody());
+            return new ResponseEntity<>(ReponseModel.ok(viewModel), HttpStatus.OK);
+        } catch (ApiException ex) {
+            return new ResponseEntity<>(ReponseModel.error(ex.getStatus()), HttpStatus.OK);
+        } catch (Exception ex) {
+            return new ResponseEntity<>(ReponseModel.error(ex, this.getClass()), HttpStatus.OK);
+        }
+    }
+
+    /***
+     * 首页
+     * @param customer 客户
+     * @param model 请求参数
+     * @author 孙阿龙
+     * @return ReponseModel
+     */
+    @RequestMapping(value = "/message/indexLayer", method = RequestMethod.POST, consumes = "application/json")
+    @Authorization(onlyGetCustomer = true)
+    public ResponseEntity<ReponseModel> indexLayer(@CurrentUser Customer customer, HttpEntity<BaseRequest> model) {
+        try {
+            IndexLayerViewModel viewModel = messageService.indexLayer(customer, model.getBody().getPlatform());
             return new ResponseEntity<>(ReponseModel.ok(viewModel), HttpStatus.OK);
         } catch (ApiException ex) {
             return new ResponseEntity<>(ReponseModel.error(ex.getStatus()), HttpStatus.OK);

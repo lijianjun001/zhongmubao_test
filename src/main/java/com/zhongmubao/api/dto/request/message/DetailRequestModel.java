@@ -1,11 +1,13 @@
 package com.zhongmubao.api.dto.request.message;
 
+import com.zhongmubao.api.dto.request.BaseRequest;
+
 /**
  * 消息详情请求
  *
  * @author 米立林
  */
-public class DetailRequestModel {
+public class DetailRequestModel extends BaseRequest {
     /**
      * 消息主键
      */

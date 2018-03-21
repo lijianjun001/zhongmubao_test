@@ -49,4 +49,14 @@ public interface MessageService {
      * @throws Exception Exception
      */
     DetailViewModel messageDetail(Customer customer, DetailRequestModel model) throws Exception;
+
+    /**
+     * 首页弹层消息
+     *
+     * @param customer 客户
+     * @param  platform 平台
+     * @return IndexLayerViewModel
+     * @throws Exception Exception
+     */
+    IndexLayerViewModel indexLayer(Customer customer, String platform) throws Exception;
 }

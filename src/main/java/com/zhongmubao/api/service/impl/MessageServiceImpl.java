@@ -21,10 +21,7 @@ import com.zhongmubao.api.mongo.entity.CustomerMessageTipsMongo;
 import com.zhongmubao.api.mongo.entity.CustomerMessageTypeMongo;
 import com.zhongmubao.api.mongo.entity.base.PageModel;
 import com.zhongmubao.api.service.MessageService;
-import com.zhongmubao.api.util.ArrayUtil;
-import com.zhongmubao.api.util.DateUtil;
-import com.zhongmubao.api.util.SerializeUtil;
-import com.zhongmubao.api.util.StringUtil;
+import com.zhongmubao.api.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -110,10 +107,6 @@ public class MessageServiceImpl extends BaseService implements MessageService {
         if (model == null) {
             throw new ApiException(ResultStatus.PARAMETER_MISSING);
         }
-        if (customer == null) {
-            // 允许没有登录查看系统消息
-            customer = new Customer();
-        }
         if (model.getPageIndex() <= 0) {
             model.setPageIndex(1);
         }
@@ -129,6 +122,53 @@ public class MessageServiceImpl extends BaseService implements MessageService {
         viewModel.setTotalPage(pager.getTotalPages());
 
         return viewModel;
+    }
+
+    @Override
+    public DetailViewModel messageDetail(Customer customer, DetailRequestModel model) throws Exception {
+        if (model == null) {
+            throw new ApiException(ResultStatus.PARAMETER_MISSING);
+        }
+        CustomerMessageMongo message = customerMessageMongoDao.getById(model.getId());
+        if (null == message) {
+            return new DetailViewModel();
+        }
+        String title = message.getTitle();
+        String text = DateUtil.format(message.getCreated(), Constants.DATETIME_FORMAT_CHINA);
+        String content = message.getContent();
+        if (CustomerMessageType.OPEN_PROJECT.getName().equals(message.getType())) {
+            ProjectMessageListViewModel projectViewModel = projectMessageDetail(model.getId());
+            title = projectViewModel.getTitle();
+            text = projectViewModel.getRemark();
+            content = SerializeUtil.serialize(projectViewModel);
+        }
+
+        // 修改为已读状态
+        message.setRead(true);
+        customerMessageMongoDao.update(message);
+
+        return new DetailViewModel(title, text, content);
+    }
+
+    @Override
+    public IndexLayerViewModel indexLayer(Customer customer, String platform) throws Exception {
+
+        int customerId = customer == null ? 0 : customer.getId();
+
+        CustomerMessageTipsMongo customerMessageTipsMongo = customerMessageTipsMongoDao.getById("5ab0c45e0682de506a4e1a58");
+        CustomerMessageMongo customerMessageMongo = customerMessageMongoDao.getBy(customerId, customerMessageTipsMongo.getIdentification());
+
+        IndexLayerViewModel indexLayerViewModel = new IndexLayerViewModel();
+        if (null != customerMessageMongo) {
+            String domain = ApiUtil.getDomainByPlatform(platform);
+            CustomerMessageModel customerMessageModel = new CustomerMessageModel();
+            customerMessageModel.setId(customerMessageMongo.id);
+            customerMessageModel.setTitle(customerMessageMongo.getTitle());
+            customerMessageModel.setContent(customerMessageMongo.getContent().replace(Constants.DOMAIN_PLACEHOLDER, domain));
+            indexLayerViewModel.setCustomerMessageModel(customerMessageModel);
+        }
+
+        return indexLayerViewModel;
     }
 
     /**

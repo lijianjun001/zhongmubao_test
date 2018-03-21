@@ -71,7 +71,7 @@ public class CustomerMessageMongoDao implements BaseDao<CustomerMessageMongo> {
      * @return List<CustomerMessageMongo>
      * @throws Exception Exception
      */
-    public List<CustomerMessageMongo> getListByLimit(int customerId, int size, String type) throws Exception {
+    public List<CustomerMessageMongo> getListBy(int customerId, int size, String type) throws Exception {
         Query query = new Query();
         Criteria criteria = new Criteria();
         criteria.orOperator(Criteria.where("CustomerId").is(0), Criteria.where("CustomerId").is(customerId));
@@ -83,6 +83,27 @@ public class CustomerMessageMongoDao implements BaseDao<CustomerMessageMongo> {
         query.limit(size);
 
         return mongoTemplate.find(query, CustomerMessageMongo.class);
+    }
+
+    /**
+     * 获取单条记录
+     *
+     * @param customerId         客户id
+     * @param tipsIdentification tipsIdentification
+     * @return CustomerMessageMongo
+     * @throws Exception Exception
+     */
+    public CustomerMessageMongo getBy(int customerId, int tipsIdentification) throws Exception {
+        Query query = new Query();
+        Criteria criteria = new Criteria();
+        criteria.orOperator(Criteria.where("CustomerId").is(0), Criteria.where("CustomerId").is(customerId));
+        query.addCriteria(criteria);
+        query.addCriteria(Criteria.where("Deleted").is(false));
+        query.addCriteria(Criteria.where("TipsIdentification").is(tipsIdentification));
+        query.with(new Sort(Sort.Direction.ASC, "TipsIdentification"));
+        query.with(new Sort(Sort.Direction.DESC, "Created"));
+
+        return mongoTemplate.findOne(query, CustomerMessageMongo.class);
     }
 
     /**
