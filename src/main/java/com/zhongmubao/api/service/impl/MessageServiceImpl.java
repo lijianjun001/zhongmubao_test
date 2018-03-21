@@ -151,6 +151,59 @@ public class MessageServiceImpl extends BaseService implements MessageService {
 //    }
 
     @Override
+    public DetailViewModel messageDetail(Customer customer, DetailRequestModel model) throws Exception {
+        if (model == null) {
+            throw new ApiException(ResultStatus.PARAMETER_MISSING);
+        }
+        CustomerMessageMongo message = customerMessageMongoDao.getById(model.getId());
+        if (null == message) {
+            return new DetailViewModel();
+        }
+        // 消息标签，2->表示为新消息,99->表示没有标签
+        int newTipsId = 2;
+        int noTipsId = 99;
+        boolean isUpdate = false;
+        Date now = new Date();
+        String title = message.getTitle();
+        String text = DateUtil.format(message.getCreated(), Constants.DATETIME_FORMAT_CHINA);
+        String content = message.getContent();
+        if (CustomerMessageType.OPEN_PROJECT.getName().equals(message.getType())) {
+            ProjectMessageListViewModel projectViewModel = projectMessageDetail(model.getId());
+            title = projectViewModel.getTitle();
+            text = projectViewModel.getRemark();
+            content = SerializeUtil.serialize(projectViewModel);
+        } else {
+            if (message.getTipsIdentification() == newTipsId) {
+                // 去掉lable[新]
+                message.setTipsIdentification(noTipsId);
+                isUpdate = true;
+            }
+        }
+        if (CustomerMessageType.SYSTEM_MESSAGE.getName().equals(message.getType())) {
+            CustomerMessageReadMongo readMongo = customerMessageReadMongoDao.getByCustomerIdAndMessageId(customer.getId(), message.id);
+            if (readMongo == null) {
+                readMongo = new CustomerMessageReadMongo();
+                readMongo.setCustomerId(customer.getId());
+                readMongo.setMessageId(message.id);
+                readMongo.setCreated(DateUtil.formatMongo(now));
+                customerMessageReadMongoDao.add(readMongo);
+            }
+        } else {
+            if (!message.getRead()) {
+                // 修改为已读状态
+                message.setRead(true);
+                isUpdate = true;
+            }
+        }
+        if (isUpdate) {
+            customerMessageMongoDao.update(message);
+        }
+
+        return new DetailViewModel(title, text, content);
+    }
+
+
+    @Override
     public IndexLayerViewModel indexLayer(Customer customer, String platform) throws Exception {
 
         int customerId = customer == null ? 0 : customer.getId();
@@ -242,58 +295,6 @@ public class MessageServiceImpl extends BaseService implements MessageService {
         }
 
         return new ProjectMessageListViewModel(title, remark, list);
-    }
-
-    @Override
-    public DetailViewModel messageDetail(Customer customer, DetailRequestModel model) throws Exception {
-        if (model == null) {
-            throw new ApiException(ResultStatus.PARAMETER_MISSING);
-        }
-        CustomerMessageMongo message = customerMessageMongoDao.getById(model.getId());
-        if (null == message) {
-            return new DetailViewModel();
-        }
-        // 消息标签，2->表示为新消息,99->表示没有标签
-        int newTipsId = 2;
-        int noTipsId = 99;
-        boolean isUpdate = false;
-        Date now = new Date();
-        String title = message.getTitle();
-        String text = DateUtil.format(message.getCreated(), Constants.DATETIME_FORMAT_CHINA);
-        String content = message.getContent();
-        if (CustomerMessageType.OPEN_PROJECT.getName().equals(message.getType())) {
-            ProjectMessageListViewModel projectViewModel = projectMessageDetail(model.getId());
-            title = projectViewModel.getTitle();
-            text = projectViewModel.getRemark();
-            content = SerializeUtil.serialize(projectViewModel);
-        } else {
-            if (message.getTipsIdentification() == newTipsId) {
-                // 去掉lable[新]
-                message.setTipsIdentification(noTipsId);
-                isUpdate = true;
-            }
-        }
-        if (CustomerMessageType.SYSTEM_MESSAGE.getName().equals(message.getType())) {
-            CustomerMessageReadMongo readMongo = customerMessageReadMongoDao.getByCustomerIdAndMessageId(customer.getId(), message.id);
-            if (readMongo == null) {
-                readMongo = new CustomerMessageReadMongo();
-                readMongo.setCustomerId(customer.getId());
-                readMongo.setMessageId(message.id);
-                readMongo.setCreated(DateUtil.formatMongo(now));
-                customerMessageReadMongoDao.add(readMongo);
-            }
-        } else {
-            if (!message.getRead()) {
-                // 修改为已读状态
-                message.setRead(true);
-                isUpdate = true;
-            }
-        }
-        if (isUpdate) {
-            customerMessageMongoDao.update(message);
-        }
-
-        return new DetailViewModel(title, text, content);
     }
 
     /**
