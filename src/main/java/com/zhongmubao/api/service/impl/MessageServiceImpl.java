@@ -40,15 +40,13 @@ public class MessageServiceImpl extends BaseService implements MessageService {
     private final CustomerMessageReadMongoDao customerMessageReadMongoDao;
 
     @Autowired
-    public MessageServiceImpl(CustomerMessageMongoDao customerMessageMongoDao,CustomerMessageReadMongoDao customerMessageReadMongoDao) {
+    public MessageServiceImpl(CustomerMessageMongoDao customerMessageMongoDao, CustomerMessageReadMongoDao customerMessageReadMongoDao) {
         this.customerMessageMongoDao = customerMessageMongoDao;
         this.customerMessageReadMongoDao = customerMessageReadMongoDao;
     }
 
 
     //region 新消息中心
-
-
     @Override
     public NewMessageCountViewModel count(Customer customer) throws Exception {
         int customerId = customer == null ? 0 : customer.getId();
@@ -60,7 +58,7 @@ public class MessageServiceImpl extends BaseService implements MessageService {
             if (message.getType().equals(CustomerMessageType.SYSTEM_MESSAGE.getName()) && message.getTipsId() != CustomerMessageTips.CURRENT_WEEK.getKey()) {
                 continue;
             }
-            CustomerMessageReadMongo readMongo = customerMessageReadMongoDao.getByCustoemrIdAndMessageId(customerId, message.id);
+            CustomerMessageReadMongo readMongo = customerMessageReadMongoDao.getByCustomerIdAndMessageId(customerId, message.id);
             if (null == readMongo) {
                 count = count + 1;
             }
@@ -195,8 +193,17 @@ public class MessageServiceImpl extends BaseService implements MessageService {
         if (null == message) {
             return;
         }
-        if (message.getCustomerId() <= 0) {
-            CustomerMessageReadMongo readMongo = customerMessageReadMongoDao.getByCustoemrIdAndMessageId(customer.getId(), message.id);
+
+        boolean isUpdate = false;
+        if (!CustomerMessageType.OPEN_PROJECT.getName().equals(message.getType())) {
+            if (message.getTipsId() == CustomerMessageTips.NEW.getKey() || message.getTipsId() == CustomerMessageTips.HOME_PAGE.getKey()) {
+                // 去掉lable[新]
+                message.setTipsId(CustomerMessageTips.DEFAULT.getKey());
+                isUpdate = true;
+            }
+        }
+        if (CustomerMessageType.SYSTEM_MESSAGE.getName().equals(message.getType())) {
+            CustomerMessageReadMongo readMongo = customerMessageReadMongoDao.getByCustomerIdAndMessageId(customer.getId(), message.id);
             if (readMongo == null) {
                 readMongo = new CustomerMessageReadMongo();
                 readMongo.setCustomerId(customer.getId());
@@ -205,14 +212,14 @@ public class MessageServiceImpl extends BaseService implements MessageService {
                 customerMessageReadMongoDao.add(readMongo);
             }
         } else {
-            if (!message.getRead() && message.getCustomerId() == customer.getId()) {
-                if (message.getTipsId() == CustomerMessageTips.NEW.getKey() || message.getTipsId() == CustomerMessageTips.HOME_PAGE.getKey()) {
-                    // 去掉lable[新]
-                    message.setTipsId(CustomerMessageTips.DEFAULT.getKey());
-                }
+            if (!message.getRead()) {
+                // 修改为已读状态
                 message.setRead(true);
-                customerMessageMongoDao.update(message);
+                isUpdate = true;
             }
+        }
+        if (isUpdate) {
+            customerMessageMongoDao.update(message);
         }
     }
 
@@ -312,7 +319,7 @@ public class MessageServiceImpl extends BaseService implements MessageService {
 
             // 客户id如果小于0的时候并且已读设置消息为默认标记
             if (message.getCustomerId() <= 0) {
-                CustomerMessageReadMongo readMongo = customerMessageReadMongoDao.getByCustoemrIdAndMessageId(customer.getId(), message.id);
+                CustomerMessageReadMongo readMongo = customerMessageReadMongoDao.getByCustomerIdAndMessageId(customer.getId(), message.id);
                 if (null != readMongo && message.getTipsId() == CustomerMessageTips.NEW.getKey()) {
                     message.setTipsId(CustomerMessageTips.DEFAULT.getKey());
                 }
