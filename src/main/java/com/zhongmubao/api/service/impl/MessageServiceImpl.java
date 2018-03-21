@@ -76,9 +76,9 @@ public class MessageServiceImpl extends BaseService implements MessageService {
         int pagesize = 3;
         String method = "center";
         CenterViewModel viewModel = new CenterViewModel();
-        List<CustomerMessageMongo> projectMessages = customerMessageMongoDao.getListByLimit(customer.getId(), pagesize, CustomerMessageType.OPEN_PROJECT.getName());
-        List<CustomerMessageMongo> personMessages = customerMessageMongoDao.getListByLimit(customer.getId(), pagesize, CustomerMessageType.PERSON_MESSAGE.getName());
-        List<CustomerMessageMongo> systemMessages = customerMessageMongoDao.getListByLimit(customer.getId(), pagesize, CustomerMessageType.SYSTEM_MESSAGE.getName());
+        List<CustomerMessageMongo> projectMessages = customerMessageMongoDao.getListBy(customer.getId(), pagesize, CustomerMessageType.OPEN_PROJECT.getName());
+        List<CustomerMessageMongo> personMessages = customerMessageMongoDao.getListBy(customer.getId(), pagesize, CustomerMessageType.PERSON_MESSAGE.getName());
+        List<CustomerMessageMongo> systemMessages = customerMessageMongoDao.getListBy(customer.getId(), pagesize, CustomerMessageType.SYSTEM_MESSAGE.getName());
 
         if (ArrayUtil.isNull(projectMessages)) {
             String weekSection = DateUtil.getWeekSection();
@@ -124,31 +124,31 @@ public class MessageServiceImpl extends BaseService implements MessageService {
         return viewModel;
     }
 
-    @Override
-    public DetailViewModel messageDetail(Customer customer, DetailRequestModel model) throws Exception {
-        if (model == null) {
-            throw new ApiException(ResultStatus.PARAMETER_MISSING);
-        }
-        CustomerMessageMongo message = customerMessageMongoDao.getById(model.getId());
-        if (null == message) {
-            return new DetailViewModel();
-        }
-        String title = message.getTitle();
-        String text = DateUtil.format(message.getCreated(), Constants.DATETIME_FORMAT_CHINA);
-        String content = message.getContent();
-        if (CustomerMessageType.OPEN_PROJECT.getName().equals(message.getType())) {
-            ProjectMessageListViewModel projectViewModel = projectMessageDetail(model.getId());
-            title = projectViewModel.getTitle();
-            text = projectViewModel.getRemark();
-            content = SerializeUtil.serialize(projectViewModel);
-        }
-
-        // 修改为已读状态
-        message.setRead(true);
-        customerMessageMongoDao.update(message);
-
-        return new DetailViewModel(title, text, content);
-    }
+//    @Override
+//    public DetailViewModel messageDetail(Customer customer, DetailRequestModel model) throws Exception {
+//        if (model == null) {
+//            throw new ApiException(ResultStatus.PARAMETER_MISSING);
+//        }
+//        CustomerMessageMongo message = customerMessageMongoDao.getById(model.getId());
+//        if (null == message) {
+//            return new DetailViewModel();
+//        }
+//        String title = message.getTitle();
+//        String text = DateUtil.format(message.getCreated(), Constants.DATETIME_FORMAT_CHINA);
+//        String content = message.getContent();
+//        if (CustomerMessageType.OPEN_PROJECT.getName().equals(message.getType())) {
+//            ProjectMessageListViewModel projectViewModel = projectMessageDetail(model.getId());
+//            title = projectViewModel.getTitle();
+//            text = projectViewModel.getRemark();
+//            content = SerializeUtil.serialize(projectViewModel);
+//        }
+//
+//        // 修改为已读状态
+//        message.setRead(true);
+//        customerMessageMongoDao.update(message);
+//
+//        return new DetailViewModel(title, text, content);
+//    }
 
     @Override
     public IndexLayerViewModel indexLayer(Customer customer, String platform) throws Exception {
