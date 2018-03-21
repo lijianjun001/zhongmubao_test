@@ -194,7 +194,7 @@ public class MessageServiceImpl extends BaseService implements MessageService {
             return;
         }
         if (message.getCustomerId() <= 0) {
-            CustomerMessageReadMongo readMongo = customerMessageReadMongoDao.getByCustoemrIdAndMessageId(customer.getId(), message.id);
+            CustomerMessageReadMongo readMongo = customerMessageReadMongoDao.getByCustomerIdAndMessageId(customer.getId(), message.id);
             if (readMongo == null) {
                 readMongo = new CustomerMessageReadMongo();
                 readMongo.setCustomerId(customer.getId());
@@ -310,7 +310,7 @@ public class MessageServiceImpl extends BaseService implements MessageService {
 
             // 客户id如果小于0的时候并且已读设置消息为默认标记
             if (message.getCustomerId() <= 0) {
-                CustomerMessageReadMongo readMongo = customerMessageReadMongoDao.getByCustoemrIdAndMessageId(customer.getId(), message.id);
+                CustomerMessageReadMongo readMongo = customerMessageReadMongoDao.getByCustomerIdAndMessageId(customer.getId(), message.id);
                 if (null != readMongo && message.getTipsId() == CustomerMessageTips.NEW.getKey()) {
                     message.setTipsId(CustomerMessageTips.DEFAULT.getKey());
                 }
