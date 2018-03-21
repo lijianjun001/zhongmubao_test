@@ -55,7 +55,7 @@ public class MessageServiceImpl extends BaseService implements MessageService {
         List<CustomerMessageMongo> list = customerMessageMongoDao.getListByCustomerId(0);
         for (CustomerMessageMongo message : list) {
             //不统计发标公告的历史
-            if (message.getType().equals(CustomerMessageType.SYSTEM_MESSAGE.getName()) && message.getTipsId() == CustomerMessageTips.HISTORY.getKey()) {
+            if (message.getType().equals(CustomerMessageType.OPEN_PROJECT.getName()) && message.getTipsId() == CustomerMessageTips.HISTORY.getKey()) {
                 continue;
             }
             CustomerMessageReadMongo readMongo = customerMessageReadMongoDao.getByCustomerIdAndMessageId(customerId, message.id);
