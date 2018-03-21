@@ -177,7 +177,7 @@ public class MessageServiceImpl extends BaseService implements MessageService {
 
     @Override
     public void read(Customer customer, String id) throws Exception {
-        if(StringUtil.isNullOrEmpty(id)){
+        if (StringUtil.isNullOrEmpty(id)) {
             throw new ApiException(ResultStatus.PARAMETER_MISSING);
         }
         CustomerMessageMongo message = customerMessageMongoDao.getByCustomerId(id);
@@ -328,7 +328,7 @@ public class MessageServiceImpl extends BaseService implements MessageService {
                 }
             } else {
                 CustomerMessageReadMongo readMongo = customerMessageReadMongoDao.getByCustomerIdAndMessageId(customer.getId(), message.id);
-                if (null != readMongo) {
+                if (null != readMongo && message.getTipsId() == CustomerMessageTips.CURRENT_WEEK.getKey()) {
                     message.setTipsId(CustomerMessageTips.DEFAULT.getKey());
                 }
             }
