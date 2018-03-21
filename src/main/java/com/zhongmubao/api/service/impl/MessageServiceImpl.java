@@ -129,7 +129,7 @@ public class MessageServiceImpl extends BaseService implements MessageService {
 //        if (model == null) {
 //            throw new ApiException(ResultStatus.PARAMETER_MISSING);
 //        }
-//        CustomerMessageMongo message = customerMessageMongoDao.getById(model.getId());
+//        CustomerMessageMongo message = customerMessageMongoDao.get(model.getId());
 //        if (null == message) {
 //            return new DetailViewModel();
 //        }
@@ -155,7 +155,7 @@ public class MessageServiceImpl extends BaseService implements MessageService {
         if (model == null) {
             throw new ApiException(ResultStatus.PARAMETER_MISSING);
         }
-        CustomerMessageMongo message = customerMessageMongoDao.getById(model.getId());
+        CustomerMessageMongo message = customerMessageMongoDao.get(model.getId());
         if (null == message) {
             return new DetailViewModel();
         }
@@ -224,6 +224,15 @@ public class MessageServiceImpl extends BaseService implements MessageService {
         return indexLayerViewModel;
     }
 
+    @Override
+    public void read(Customer customer, String objectId) throws Exception {
+        CustomerMessageMongo message = customerMessageMongoDao.getBy(objectId, customer.getId());
+        if (null != message && customer.getId() == message.getCustomerId()) {
+            message.setRead(true);
+            customerMessageMongoDao.update(message);
+        }
+    }
+
     /**
      * 开标消息详情单独处理
      *
@@ -244,7 +253,7 @@ public class MessageServiceImpl extends BaseService implements MessageService {
         String title = Constants.STRING_EMPTY;
         String remark = Constants.STRING_EMPTY;
         List<ProjectWeekInfoModel> list = new ArrayList<>();
-        CustomerMessageMongo message = customerMessageMongoDao.getById(id);
+        CustomerMessageMongo message = customerMessageMongoDao.get(id);
         if (CustomerMessageType.OPEN_PROJECT.getName().equals(message.getType())) {
             remark = message.getTitle();
             if (remark.equals(DateUtil.getWeekSection())) {

@@ -59,4 +59,13 @@ public interface MessageService {
      * @throws Exception Exception
      */
     IndexLayerViewModel indexLayer(Customer customer, String platform) throws Exception;
+
+    /**
+     * 设置消息为已读
+     *
+     * @param customer 客户
+     * @param objectId 消息Id
+     * @throws Exception Exception
+     */
+    void read(Customer customer, String objectId) throws Exception;
 }

@@ -144,10 +144,25 @@ public class CustomerMessageMongoDao implements BaseDao<CustomerMessageMongo> {
      * @return List<CustomerMessageMongo>
      * @throws Exception Exception
      */
-    public CustomerMessageMongo getById(String id) throws Exception {
+    public CustomerMessageMongo get(String id) throws Exception {
         Query query = new Query();
         query.addCriteria(Criteria.where("_id").is(id));
 
+        return mongoTemplate.findOne(query, CustomerMessageMongo.class);
+    }
+
+    /**
+     * 获取单个消息
+     *
+     * @param id         主键
+     * @param customerId 客户id
+     * @return List<CustomerMessageMongo>
+     * @throws Exception Exception
+     */
+    public CustomerMessageMongo getBy(String id, int customerId) throws Exception {
+        Query query = new Query();
+        query.addCriteria(Criteria.where("_id").is(id));
+        query.addCriteria(Criteria.where("CustomerId").is(customerId));
         return mongoTemplate.findOne(query, CustomerMessageMongo.class);
     }
 

@@ -9,6 +9,7 @@ import com.zhongmubao.api.dto.request.message.DetailRequestModel;
 import com.zhongmubao.api.dto.request.message.ListRequestModel;
 import com.zhongmubao.api.dto.request.customer.RecommendInfoRequestModel;
 import com.zhongmubao.api.dto.request.customer.RegisterRequestModel;
+import com.zhongmubao.api.dto.request.message.ReadRequestModel;
 import com.zhongmubao.api.dto.request.my.RealNameRequestModel;
 import com.zhongmubao.api.dto.request.sign.*;
 import com.zhongmubao.api.dto.response.ReponseModel;
@@ -413,7 +414,7 @@ public class CustomerController {
     }
 
     /***
-     * 首页
+     * 首页弹层
      * @param customer 客户
      * @param model 请求参数
      * @author 孙阿龙
@@ -431,6 +432,27 @@ public class CustomerController {
             return new ResponseEntity<>(ReponseModel.error(ex, this.getClass()), HttpStatus.OK);
         }
     }
+
+    /***
+     * 设置消息已读
+     * @param customer 客户
+     * @param model 请求参数
+     * @author 孙阿龙
+     * @return ReponseModel
+     */
+    @RequestMapping(value = "/message/read", method = RequestMethod.POST, consumes = "application/json")
+    @Authorization
+    public ResponseEntity<ReponseModel> read(@CurrentUser Customer customer, HttpEntity<ReadRequestModel> model) {
+        try {
+            messageService.read(customer, model.getBody().getObjectId());
+            return new ResponseEntity<>(ReponseModel.ok(), HttpStatus.OK);
+        } catch (ApiException ex) {
+            return new ResponseEntity<>(ReponseModel.error(ex.getStatus()), HttpStatus.OK);
+        } catch (Exception ex) {
+            return new ResponseEntity<>(ReponseModel.error(ex, this.getClass()), HttpStatus.OK);
+        }
+    }
+
 
     //endregion
 }
