@@ -5,6 +5,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.zhongmubao.api.config.Constants;
 import com.zhongmubao.api.config.ResultStatus;
+import com.zhongmubao.api.config.enmu.CustomerMessageTips;
 import com.zhongmubao.api.config.enmu.CustomerMessageType;
 import com.zhongmubao.api.config.enmu.CustomerMessageIcon;
 import com.zhongmubao.api.dto.request.message.DetailRequestModel;
@@ -63,7 +64,7 @@ public class MessageServiceImpl extends BaseService implements MessageService {
         List<CustomerMessageMongo> list = customerMessageMongoDao.getListByCustomerId(0);
         for (CustomerMessageMongo message : list) {
             //不统计发标公告的历史
-            if (message.getType().equals("00") && message.getTipsIdentification() != 6) {
+            if (message.getType().equals(CustomerMessageType.SYSTEM_MESSAGE) && message.getTipsId() != CustomerMessageTips.CURRENT_WEEK.getKey()) {
                 continue;
             }
             CustomerMessageReadMongo readMongo = customerMessageReadMongoDao.getByCustoemrIdAndMessageId(customerId, message.id);
@@ -216,9 +217,9 @@ public class MessageServiceImpl extends BaseService implements MessageService {
             }
         } else {
             if (!message.getRead() && message.getCustomerId() == customer.getId()) {
-                if (message.getTipsIdentification() == newTipsId || message.getTipsIdentification() == indexLayerTipsId) {
+                if (message.getTipsId() == newTipsId || message.getTipsId() == indexLayerTipsId) {
                     // 去掉lable[新]
-                    message.setTipsIdentification(noTipsId);
+                    message.setTipsId(noTipsId);
                 }
                 message.setRead(true);
                 customerMessageMongoDao.update(message);
@@ -322,12 +323,12 @@ public class MessageServiceImpl extends BaseService implements MessageService {
 
             if (message.getCustomerId() <= 0) {
                 CustomerMessageReadMongo readMongo = customerMessageReadMongoDao.getByCustoemrIdAndMessageId(customer.getId(), message.id);
-                if (null != readMongo && message.getTipsIdentification() == 2) {
-                    message.setTipsIdentification(99);
+                if (null != readMongo && message.getTipsId() == 2) {
+                    message.setTipsId(99);
                 }
             }
             typeIcon = CustomerMessageIcon.formart(message.getIcon());
-            CustomerMessageTipsMongo msgTips = customerMessageTipsMongoDao.getByIdentification(message.getTipsIdentification());
+            CustomerMessageTipsMongo msgTips = customerMessageTipsMongoDao.getByIdentification(message.getTipsId());
             if (null != msgTips) {
                 tip = msgTips.getName();
                 backColor = msgTips.getBackColor();

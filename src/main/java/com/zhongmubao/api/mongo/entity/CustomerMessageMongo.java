@@ -48,8 +48,8 @@ public class CustomerMessageMongo extends BaseModel {
     /**
      * 消息标记（标记提示、背景颜色等）
      */
-    @Field("TipsIdentification")
-    private int tipsIdentification;
+    @Field("TipsId")
+    private int tipsId;
 
     /**
      * 是否已读 true是 or false否
@@ -108,12 +108,12 @@ public class CustomerMessageMongo extends BaseModel {
         this.type = type;
     }
 
-    public int getTipsIdentification() {
-        return tipsIdentification;
+    public int getTipsId() {
+        return tipsId;
     }
 
-    public void setTipsIdentification(int tipsIdentification) {
-        this.tipsIdentification = tipsIdentification;
+    public void setTipsId(int tipsId) {
+        this.tipsId = tipsId;
     }
 
     public boolean getRead() {
