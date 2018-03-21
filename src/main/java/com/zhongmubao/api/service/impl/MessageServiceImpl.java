@@ -15,7 +15,6 @@ import com.zhongmubao.api.entity.Customer;
 import com.zhongmubao.api.exception.ApiException;
 import com.zhongmubao.api.mongo.dao.CustomerMessageMongoDao;
 import com.zhongmubao.api.mongo.dao.CustomerMessageReadMongoDao;
-import com.zhongmubao.api.mongo.dao.CustomerMessageTipsMongoDao;
 import com.zhongmubao.api.mongo.dao.CustomerMessageTypeMongoDao;
 import com.zhongmubao.api.mongo.entity.CustomerMessageMongo;
 import com.zhongmubao.api.mongo.entity.CustomerMessageReadMongo;
