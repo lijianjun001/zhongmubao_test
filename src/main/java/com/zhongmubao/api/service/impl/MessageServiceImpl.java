@@ -178,7 +178,7 @@ public class MessageServiceImpl extends BaseService implements MessageService {
     @Override
     public void read(Customer customer, String id) throws Exception {
         int customerId = customer == null ? 0 : customer.getId();
-        CustomerMessageMongo message = customerMessageMongoDao.getByCustomerIdAndTipsIdentification(id, customer.getId());
+        CustomerMessageMongo message = customerMessageMongoDao.getByCustomerIdAndTipsIdentification(id, customerId);
         setRead(customer, message);
     }
 
