@@ -19,10 +19,7 @@ import com.zhongmubao.api.mongo.entity.CustomerMessageTipsMongo;
 import com.zhongmubao.api.mongo.entity.CustomerMessageTypeMongo;
 import com.zhongmubao.api.mongo.entity.base.PageModel;
 import com.zhongmubao.api.service.MessageService;
-import com.zhongmubao.api.util.ArrayUtil;
-import com.zhongmubao.api.util.DateUtil;
-import com.zhongmubao.api.util.SerializeUtil;
-import com.zhongmubao.api.util.StringUtil;
+import com.zhongmubao.api.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -147,7 +144,7 @@ public class MessageServiceImpl extends BaseService implements MessageService {
     }
 
     @Override
-    public IndexLayerViewModel indexLayer(Customer customer) throws Exception {
+    public IndexLayerViewModel indexLayer(Customer customer, String platform) throws Exception {
 
         int customerId = customer == null ? 0 : customer.getId();
 
@@ -156,10 +153,11 @@ public class MessageServiceImpl extends BaseService implements MessageService {
 
         IndexLayerViewModel indexLayerViewModel = new IndexLayerViewModel();
         if (null != customerMessageMongo) {
+            String domain = ApiUtil.getDomainByPlatform(platform);
             CustomerMessageModel customerMessageModel = new CustomerMessageModel();
             customerMessageModel.setId(customerMessageMongo.id);
             customerMessageModel.setTitle(customerMessageMongo.getTitle());
-            customerMessageModel.setContent(customerMessageMongo.getContent());
+            customerMessageModel.setContent(customerMessageMongo.getContent().replace(Constants.DOMAIN_PLACEHOLDER, domain));
             indexLayerViewModel.setCustomerMessageModel(customerMessageModel);
         }
 

@@ -421,9 +421,9 @@ public class CustomerController {
      */
     @RequestMapping(value = "/message/indexLayer", method = RequestMethod.POST, consumes = "application/json")
     @Authorization(onlyGetCustomer = true)
-    public ResponseEntity<ReponseModel> indexLayer(@CurrentUser Customer customer, HttpEntity<DetailRequestModel> model) {
+    public ResponseEntity<ReponseModel> indexLayer(@CurrentUser Customer customer, HttpEntity<BaseRequest> model) {
         try {
-            IndexLayerViewModel viewModel = messageService.indexLayer(customer);
+            IndexLayerViewModel viewModel = messageService.indexLayer(customer, model.getBody().getPlatform());
             return new ResponseEntity<>(ReponseModel.ok(viewModel), HttpStatus.OK);
         } catch (ApiException ex) {
             return new ResponseEntity<>(ReponseModel.error(ex.getStatus()), HttpStatus.OK);
