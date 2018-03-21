@@ -6,6 +6,7 @@ import com.google.gson.reflect.TypeToken;
 import com.zhongmubao.api.config.Constants;
 import com.zhongmubao.api.config.ResultStatus;
 import com.zhongmubao.api.config.enmu.CustomerMessageType;
+import com.zhongmubao.api.config.enmu.MessageTypeIcon;
 import com.zhongmubao.api.dto.request.message.DetailRequestModel;
 import com.zhongmubao.api.dto.request.message.ListRequestModel;
 import com.zhongmubao.api.dto.response.message.*;
@@ -315,15 +316,10 @@ public class MessageServiceImpl extends BaseService implements MessageService {
             CustomerMessageModel cusMsg = new CustomerMessageModel();
             cusMsg.setId(message.id);
             String typeName = Constants.STRING_EMPTY;
-            String typeIcon = Constants.STRING_EMPTY;
+            String typeIcon;
             String tip = Constants.STRING_EMPTY;
             String backColor = Constants.STRING_EMPTY;
             String date = method.equals(defaultMethod) ? DateUtil.format(message.getCreated(), Constants.TIME_HOUR_MINUTE_FORMAT) : DateUtil.format(message.getCreated(), Constants.DATE_TIME_FORMAT);
-            CustomerMessageTypeMongo msgType = customerMessageTypeMongoDao.getById(message.getCustomerMessageTypeId());
-            if (null != msgType) {
-                typeName = msgType.getName();
-                typeIcon = msgType.getIcon();
-            }
 
             if (message.getCustomerId() <= 0) {
                 CustomerMessageReadMongo readMongo = customerMessageReadMongoDao.getByCustoemrIdAndMessageId(customer.getId(), message.id);
@@ -331,7 +327,7 @@ public class MessageServiceImpl extends BaseService implements MessageService {
                     message.setTipsIdentification(99);
                 }
             }
-
+            typeIcon = MessageTypeIcon.formart(message.getIcon());
             CustomerMessageTipsMongo msgTips = customerMessageTipsMongoDao.getByIdentification(message.getTipsIdentification());
             if (null != msgTips) {
                 tip = msgTips.getName();

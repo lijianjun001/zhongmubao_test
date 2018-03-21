@@ -42,8 +42,8 @@ public class CustomerMessageMongo extends BaseModel {
     /**
      * 分类消息类型（个人消息、礼物、开标、银行、活动、年报等）
      */
-    @Field("CustomerMessageTypeId")
-    private String customerMessageTypeId;
+    @Field("Icon")
+    private String icon;
 
     /**
      * 消息标记（标记提示、背景颜色等）
@@ -82,14 +82,6 @@ public class CustomerMessageMongo extends BaseModel {
 
     public void setCustomerId(int customerId) {
         this.customerId = customerId;
-    }
-
-    public String getCustomerMessageTypeId() {
-        return customerMessageTypeId;
-    }
-
-    public void setCustomerMessageTypeId(String customerMessageTypeId) {
-        this.customerMessageTypeId = customerMessageTypeId;
     }
 
     public String getTitle() {
@@ -159,4 +151,17 @@ public class CustomerMessageMongo extends BaseModel {
     public void setCreated(Date created) {
         this.created = created;
     }
+
+    public String getIcon() {
+        return icon;
+    }
+
+    public void setIcon(String icon) {
+        this.icon = icon;
+    }
+
+    public boolean isInside() {
+        return isInside;
+    }
+
 }
