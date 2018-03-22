@@ -78,9 +78,8 @@ public class MessageServiceImpl extends BaseService implements MessageService {
         int defaultPageSize = 3;
         int personPageSize = 3;
         if (customerId > 0) {
-            long temp = customerMessageMongoDao.countByCustomerIdAndIsRead(customerId, false);
-            personPageSize = (int) temp;
-            personPageSize = personPageSize > 10 ? 10 : personPageSize;
+            int temp = (int) customerMessageMongoDao.countByCustomerIdAndIsRead(customerId, false);
+            personPageSize = temp > personPageSize ? temp : personPageSize;
         }
 
         String method = "center";
