@@ -42,14 +42,16 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
     private final CustomerHFIndexMongoDao customerHFIndexMongoDao;
     private final CustomerDao customerDao;
     private final SystemSmsLogMongoDao systemSmsLogMongoDao;
+    private final CustomerMessageMongoDao customerMessageMongoDao;
 
     @Autowired
-    public CustomerServiceImpl(CustomerHFDao customerHFDao, CustomerSinaDao customerSinaDao, CustomerHFIndexMongoDao customerHFIndexMongoDao, CustomerDao customerDao, SystemSmsLogMongoDao systemSmsLogMongoDao) {
+    public CustomerServiceImpl(CustomerHFDao customerHFDao, CustomerSinaDao customerSinaDao, CustomerHFIndexMongoDao customerHFIndexMongoDao, CustomerDao customerDao, SystemSmsLogMongoDao systemSmsLogMongoDao, CustomerMessageMongoDao customerMessageMongoDao) {
         this.customerHFDao = customerHFDao;
         this.customerSinaDao = customerSinaDao;
         this.customerHFIndexMongoDao = customerHFIndexMongoDao;
         this.customerDao = customerDao;
         this.systemSmsLogMongoDao = systemSmsLogMongoDao;
+        this.customerMessageMongoDao = customerMessageMongoDao;
     }
 
     //region 是否实名
@@ -231,6 +233,18 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
         sendRedPackage(customer, RedPackageType.REGISTER, 8, DateUtil.addDay(now, 2), 2);
         sendRedPackage(customer, RedPackageType.REGISTER, 5, DateUtil.addDay(now, 7), 6);
         sendRedPackage(customer, RedPackageType.REGISTER, 2, DateUtil.addDay(now, 30), 17);
+        // 发送消息
+        //Mongo 消息插入 type：开标信息(00)、系统消息(01)、个人消息(02)
+        CustomerMessageMongo mongo = new CustomerMessageMongo();
+        mongo.setCustomerId(customer.getId());
+        mongo.setTitle("欢迎新牧场主");
+        mongo.setContent("<div class='news-detail-content'><div class='title'><p><span style ='font-size:0.4rem'>亲，欢迎来到众牧宝互联网牧场，您的羊圈里还没有羊呢，快去抢购一只吧!</span><img class='news-success'src='https://s.emubao.com/weixin/images/news/news-detail-success.png'alt=''/></p></div></div>");
+        mongo.setType(CustomerMessageType.PERSON_MESSAGE.getName());
+        mongo.setIcon(CustomerMessageIcon.PERSONMESSAGE.getKey());
+        mongo.setTipsId(CustomerMessageTips.NEW.getKey());
+        mongo.setDeleted(false);
+        mongo.setCreated(DateUtil.formatMongo(now));
+        customerMessageMongoDao.add(mongo);
 
         RegisterViewModel viewModel = new RegisterViewModel();
         viewModel.setId(customer.getId());

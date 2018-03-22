@@ -75,13 +75,20 @@ public class MessageServiceImpl extends BaseService implements MessageService {
         int customerId = customer.getId();
 
         Date now = new Date();
-        int pagesize = 3;
+        int defaultPageSize = 3;
+        int personPageSize = 3;
+        if (customerId > 0) {
+            long temp = customerMessageMongoDao.countByCustomerIdAndIsRead(customerId, false);
+            personPageSize = (int) temp;
+            personPageSize = personPageSize > 10 ? 10 : personPageSize;
+        }
+
         String method = "center";
         CenterViewModel viewModel = new CenterViewModel();
 
-        List<CustomerMessageMongo> projectMessages = customerMessageMongoDao.getListByCustomerIdAndTypeLimitSize(customerId, pagesize, CustomerMessageType.OPEN_PROJECT.getName());
-        List<CustomerMessageMongo> personMessages = customerMessageMongoDao.getListByCustomerIdAndTypeLimitSize(customerId, pagesize, CustomerMessageType.PERSON_MESSAGE.getName());
-        List<CustomerMessageMongo> systemMessages = customerMessageMongoDao.getListByCustomerIdAndTypeLimitSize(customerId, pagesize, CustomerMessageType.SYSTEM_MESSAGE.getName());
+        List<CustomerMessageMongo> projectMessages = customerMessageMongoDao.getListByCustomerIdAndTypeLimitSize(customerId, defaultPageSize, CustomerMessageType.OPEN_PROJECT.getName());
+        List<CustomerMessageMongo> systemMessages = customerMessageMongoDao.getListByCustomerIdAndTypeLimitSize(customerId, defaultPageSize, CustomerMessageType.SYSTEM_MESSAGE.getName());
+        List<CustomerMessageMongo> personMessages = customerMessageMongoDao.getListByCustomerIdAndTypeLimitSize(customerId, personPageSize, CustomerMessageType.PERSON_MESSAGE.getName());
 
         if (ArrayUtil.isNull(projectMessages)) {
             String weekSection = DateUtil.getWeekSection();

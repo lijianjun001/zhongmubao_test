@@ -130,15 +130,20 @@ public class SystemServiceImpl extends BaseService implements SystemService {
         String imageUrl = SerializeUtil.getJsonStringValueByKey(model.getParam(), "imgUrl");
         imageUrl = StringUtil.isNullOrEmpty(imageUrl) ? shareContent.getImg() : imageUrl;
 
-        // 处理每日分享的图片
         String shareday = "shareday";
+        String shareProject = "shareproject";
         if (shareday.equals(shareName)) {
+            // 处理每日分享的图片
             try {
                 String res = HttpUtil.get(Constants.SHARE_IMG_URL + "?data=" + ApiUtil.inviteCode(customer.getId()));
                 imageUrl = SerializeUtil.getJsonStringValueByKey(res, "data");
             } catch (Exception ex) {
 
             }
+        } else if (shareProject.equals(shareName)) {
+            // 分享开标
+            String messageId = SerializeUtil.getJsonStringValueByKey(model.getParam(), "messageId");
+            url= shareContent.getUrl().replace(Constants.MESSAGEID, messageId).replace(Constants.DOMAIN_PLACEHOLDER, domain);
         }
 
         ShareInfoViewModel viewModel = new ShareInfoViewModel();
