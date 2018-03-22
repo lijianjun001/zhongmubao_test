@@ -69,7 +69,10 @@ public class MessageServiceImpl extends BaseService implements MessageService {
 
     @Override
     public CenterViewModel center(Customer customer) throws Exception {
-        int customerId = customer == null ? 0 : customer.getId();
+        if (customer == null) {
+            customer = new Customer();
+        }
+        int customerId = customer.getId();
 
         Date now = new Date();
         int pagesize = 3;
@@ -107,6 +110,9 @@ public class MessageServiceImpl extends BaseService implements MessageService {
         if (model == null) {
             throw new ApiException(ResultStatus.PARAMETER_MISSING);
         }
+        if (customer == null) {
+            customer = new Customer();
+        }
         if (model.getPageIndex() <= 0) {
             model.setPageIndex(1);
         }
@@ -128,6 +134,9 @@ public class MessageServiceImpl extends BaseService implements MessageService {
     public DetailViewModel detail(Customer customer, DetailRequestModel model) throws Exception {
         if (model == null) {
             throw new ApiException(ResultStatus.PARAMETER_MISSING);
+        }
+        if (customer == null) {
+            customer = new Customer();
         }
         CustomerMessageMongo message = customerMessageMongoDao.getById(model.getId());
         if (null == message) {
@@ -156,8 +165,10 @@ public class MessageServiceImpl extends BaseService implements MessageService {
 
     @Override
     public IndexLayerViewModel indexLayer(Customer customer, String platform) throws Exception {
-
-        int customerId = customer == null ? 0 : customer.getId();
+        if (customer == null) {
+            customer = new Customer();
+        }
+        int customerId = customer.getId();
 
         CustomerMessageMongo customerMessageMongo = customerMessageMongoDao.getByCustomerIdAndTipsId(customerId, CustomerMessageTips.HOME_PAGE.getKey());
 
