@@ -200,12 +200,13 @@ public class MessageServiceImpl extends BaseService implements MessageService {
     }
 
     /**
-     * 设置消息已读
+     * 设置消息已读 TODO:mq
      *
      * @param customer 客户
      * @param message  message
      * @throws Exception Exception
      */
+
     private void setRead(Customer customer, CustomerMessageMongo message) throws Exception {
         if (null == message) {
             return;

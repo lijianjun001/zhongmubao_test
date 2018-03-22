@@ -229,11 +229,12 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
         customer.setModified(now);
         customer.setIsSetPassword(true);
         customerDao.insert(customer);
-        // 新手红包
+
+        // 新手红包 TODO:mq
         sendRedPackage(customer, RedPackageType.REGISTER, 8, DateUtil.addDay(now, 2), 2);
         sendRedPackage(customer, RedPackageType.REGISTER, 5, DateUtil.addDay(now, 7), 6);
         sendRedPackage(customer, RedPackageType.REGISTER, 2, DateUtil.addDay(now, 30), 17);
-        // 发送消息
+        // 发送消息 TODO:mq
         //Mongo 消息插入 type：开标信息(00)、系统消息(01)、个人消息(02)
         CustomerMessageMongo mongo = new CustomerMessageMongo();
         mongo.setCustomerId(customer.getId());
