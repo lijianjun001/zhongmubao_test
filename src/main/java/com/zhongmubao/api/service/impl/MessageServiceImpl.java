@@ -171,10 +171,8 @@ public class MessageServiceImpl extends BaseService implements MessageService {
 
     @Override
     public IndexLayerViewModel indexLayer(Customer customer, String platform) throws Exception {
-        if (customer == null) {
-            customer = new Customer();
-        }
-        int customerId = customer.getId();
+
+        int customerId = customer == null ? 0 : customer.getId();
 
         CustomerMessageMongo customerMessageMongo = customerMessageMongoDao.getByCustomerIdAndTipsId(customerId, CustomerMessageTips.HOME_PAGE.getKey());
 
