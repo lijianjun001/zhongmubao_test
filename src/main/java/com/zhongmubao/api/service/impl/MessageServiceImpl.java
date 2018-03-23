@@ -52,7 +52,7 @@ public class MessageServiceImpl extends BaseService implements MessageService {
         int customerId = customer == null ? 0 : customer.getId();
         long count = customerId > 0 ? customerMessageMongoDao.countByCustomerIdAndIsRead(customerId, false) : 0;
         //获取发送给所有人的消息
-        List<CustomerMessageMongo> list = customerMessageMongoDao.getListByCustomerId(0);
+        List<CustomerMessageMongo> list = customerMessageMongoDao.getListByCustomerIdIsRead(0, false);
         for (CustomerMessageMongo message : list) {
             //不统计发标公告的历史
             if (message.getType().equals(CustomerMessageType.OPEN_PROJECT.getName()) && message.getTipsId() == CustomerMessageTips.HISTORY.getKey()) {
@@ -342,9 +342,11 @@ public class MessageServiceImpl extends BaseService implements MessageService {
                     }
                 }
             } else {
-                CustomerMessageReadMongo readMongo = customerMessageReadMongoDao.getByCustomerIdAndMessageId(customer.getId(), message.id);
-                if (null != readMongo && (!message.getType().equals(CustomerMessageType.OPEN_PROJECT.getName()))) {
-                    message.setTipsId(CustomerMessageTips.DEFAULT.getKey());
+                if (message.getCustomerId() <= 0 && !message.getRead()) {
+                    CustomerMessageReadMongo readMongo = customerMessageReadMongoDao.getByCustomerIdAndMessageId(customer.getId(), message.id);
+                    if (null != readMongo && (!message.getType().equals(CustomerMessageType.OPEN_PROJECT.getName()))) {
+                        message.setTipsId(CustomerMessageTips.DEFAULT.getKey());
+                    }
                 }
             }
             typeIcon = CustomerMessageIcon.formart(message.getIcon());
