@@ -244,6 +244,7 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
         mongo.setIcon(CustomerMessageIcon.PERSONMESSAGE.getKey());
         mongo.setTipsId(CustomerMessageTips.NEW.getKey());
         mongo.setDeleted(false);
+        mongo.setInside(true);
         mongo.setCreated(DateUtil.formatMongo(now));
         customerMessageMongoDao.add(mongo);
 
