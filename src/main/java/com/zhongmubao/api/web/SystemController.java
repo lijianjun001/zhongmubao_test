@@ -114,17 +114,17 @@ public class SystemController {
         }
     }
 
-    @RequestMapping(value = "/test", method = RequestMethod.POST, consumes = "application/json")
-    public ResponseEntity<ReponseModel> testTransaction() {
-        try {
-            // 发送消息
-            messageSender.sendDataToQueue("topic.justin.exchange", "topic.justin.queue", "insert Queue");
-
-            return new ResponseEntity<>(ReponseModel.ok(), HttpStatus.OK);
-        } catch (ApiException ex) {
-            return new ResponseEntity<>(ReponseModel.error(ex.getStatus()), HttpStatus.OK);
-        } catch (Exception ex) {
-            return new ResponseEntity<>(ReponseModel.error(ex, this.getClass()), HttpStatus.OK);
-        }
-    }
+//    @RequestMapping(value = "/test", method = RequestMethod.POST, consumes = "application/json")
+//    public ResponseEntity<ReponseModel> testTransaction() {
+//        try {
+//            // 发送消息
+//            messageSender.sendDataToQueue("topic.justin.exchange", "topic.justin.queue", "insert Queue");
+//
+//            return new ResponseEntity<>(ReponseModel.ok(), HttpStatus.OK);
+//        } catch (ApiException ex) {
+//            return new ResponseEntity<>(ReponseModel.error(ex.getStatus()), HttpStatus.OK);
+//        } catch (Exception ex) {
+//            return new ResponseEntity<>(ReponseModel.error(ex, this.getClass()), HttpStatus.OK);
+//        }
+//    }
 }

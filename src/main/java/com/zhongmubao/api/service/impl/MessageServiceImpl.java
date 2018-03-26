@@ -275,17 +275,16 @@ public class MessageServiceImpl extends BaseService implements MessageService {
                     continue;
                 }
                 // "00"已售罄 "01"未售罄
-                String sellout = "00";
-                if (remark.equals(DateUtil.getWeekSection())) {
+                String sellout = "01";
+                if (message.getRead()) {
+                    sellout = "00";
+                } else if (remark.equals(DateUtil.getWeekSection())) {
                     int weekNum = DateUtil.getWeekOfDateNumber(now);
-                    if (StringUtil.convartWeekToNumber(plan.getDay()) >= weekNum) {
-                        sellout = "01";
-                    }
-                } else {
-                    if (!message.getRead()) {
-                        sellout = "01";
+                    if (StringUtil.convartWeekToNumber(plan.getDay()) < weekNum) {
+                        sellout = "00";
                     }
                 }
+
                 if (list.stream().noneMatch(m -> m.getWeek().equals(lambdaWeek))) {
                     ProjectWeekInfoModel weekInfo = new ProjectWeekInfoModel();
                     weekInfo.setWeek(week);
