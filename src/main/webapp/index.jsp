@@ -31,10 +31,7 @@
 
         var data = {
             platform: "03",
-            account: "18668688989",
-            password: "6c748f2b",
-            referenceCode: "Y96888",
-            smsCode: "797813"
+            version:""
         };
 //        var data = {
 //            platform: "01",
@@ -48,7 +45,7 @@
 
         $.ajax({
             type: "POST",
-            url: "/customer/register",
+            url: "/customer/message/indexLayer",
             data: JSON.stringify(data),
             contentType: 'application/json;charset=UTF-8',
             dataType: "json",                                     //预期服务器返回类型

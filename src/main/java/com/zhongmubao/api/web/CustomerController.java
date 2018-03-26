@@ -394,7 +394,7 @@ public class CustomerController {
     }
 
     /***
-     * 获取信息
+     * 获取消息详情
      * @param customer 客户
      * @param model 请求参数
      * @author 米立林

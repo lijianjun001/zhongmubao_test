@@ -9,9 +9,18 @@ import java.util.ArrayList;
  */
 public class CenterViewModel {
 
+    /**
+     * 开标信息
+     */
     private ArrayList<CustomerMessageModel> projectList;
-    private ArrayList<CustomerMessageModel> personList;
+    /**
+     * 系统信息
+     */
     private ArrayList<CustomerMessageModel> systemList;
+    /**
+     * 个人信息
+     */
+    private ArrayList<CustomerMessageModel> personList;
 
     public ArrayList<CustomerMessageModel> getProjectList() {
         return projectList;

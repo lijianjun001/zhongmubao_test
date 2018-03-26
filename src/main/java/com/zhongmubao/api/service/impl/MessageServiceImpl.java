@@ -102,11 +102,11 @@ public class MessageServiceImpl extends BaseService implements MessageService {
                 viewModel.setProjectList(formatMessage(customer, projectMessages, method));
             }
         }
-        if (ArrayUtil.isNull(personMessages)) {
-            viewModel.setPersonList(formatMessage(customer, personMessages, method));
-        }
         if (ArrayUtil.isNull(systemMessages)) {
             viewModel.setSystemList(formatMessage(customer, systemMessages, method));
+        }
+        if (ArrayUtil.isNull(personMessages)) {
+            viewModel.setPersonList(formatMessage(customer, personMessages, method));
         }
         return viewModel;
     }
