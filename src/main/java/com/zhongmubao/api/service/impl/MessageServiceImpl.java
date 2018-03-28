@@ -148,6 +148,9 @@ public class MessageServiceImpl extends BaseService implements MessageService {
         if (null == message) {
             return new DetailViewModel();
         }
+        if (message.getCustomerId() > 0 && customer.getId() != message.getCustomerId()) {
+            throw new ApiException(ResultStatus.INVALID_NEWSDETAIL_CODE_ERROR);
+        }
 
         Date now = new Date();
         String title = message.getTitle();

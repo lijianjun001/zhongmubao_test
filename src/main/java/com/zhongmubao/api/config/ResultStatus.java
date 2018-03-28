@@ -32,7 +32,8 @@ public enum ResultStatus {
     REDEEM_PASSWORD_ERROR(-4003, "赎回密码错误"),
     INVALID_PHONE_ERROR(-4004, "不是有效的手机号"),
     INVALID_RECOMMEND_ERROR(-4005, "推荐人不存在"),
-    INVALID_RECOMMEND_CODE_ERROR(-4006, "推荐码不能为空");
+    INVALID_RECOMMEND_CODE_ERROR(-4006, "推荐码不能为空"),
+    INVALID_NEWSDETAIL_CODE_ERROR(-4007, "消息不存在");
 
     /**
      * 返回码
