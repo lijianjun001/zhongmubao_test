@@ -380,4 +380,22 @@ public class DateUtil {
         weekSection = weekBegin + "-" + weekEnd;
         return weekSection;
     }
+
+    /**
+     * 得到某一天是这一年的第几周
+     *
+     * @param date 某一天
+     * @return int 第几周
+     */
+    public static int getYearWeek(String date) {
+        Calendar cal = Calendar.getInstance();
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            cal.setTime(format.parse(date));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        int week = cal.get(Calendar.WEEK_OF_YEAR);
+        return week;
+    }
 }

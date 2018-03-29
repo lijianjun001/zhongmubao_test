@@ -319,6 +319,7 @@ public class MessageServiceImpl extends BaseService implements MessageService {
         ArrayList<CustomerMessageModel> list = new ArrayList<>();
         String defaultMethod = "center";
         String listMethod = "list";
+        Date now = new Date();
         for (CustomerMessageMongo message : messages) {
             CustomerMessageModel cusMsg = new CustomerMessageModel();
             cusMsg.setId(message.id);
@@ -354,8 +355,30 @@ public class MessageServiceImpl extends BaseService implements MessageService {
             typeIcon = CustomerMessageIcon.formart(message.getIcon());
             tip = CustomerMessageTips.formartName(message.getTipsId());
             backColor = CustomerMessageTips.formartColor(message.getTipsId());
+            String title = message.getTitle();
+            if (CustomerMessageType.OPEN_PROJECT.getName().equals(message.getType())) {
+                try {
+                    // 第十三周开标公告（03月26日-04月01日）
+                    String splitStr = "-";
+                    int weekInt = DateUtil.getYearWeek(DateUtil.formatDefault(now));
+                    String weekStr = NumberUtil.numberToChina(weekInt);
+                    if (weekStr.startsWith("一")) {
+                        // 一十三 改为 十三
+                        weekStr = weekStr.substring(1);
+                    }
+                    String pre = "第" + weekStr + "周开标计划";
+                    String[] plans = title.split(splitStr);
+                    String leftBracket = "（";
+                    String weekStart = plans[0].substring(5);
+                    String weekEnd = plans[1].substring(5);
+                    String rightBracket = "）";
+                    title = pre + leftBracket + weekStart + splitStr + weekEnd + rightBracket;
+                } catch (Exception ignored) {
 
-            cusMsg.setTitle(message.getTitle());
+                }
+            }
+
+            cusMsg.setTitle(title);
             cusMsg.setContent(message.getContent());
             if (defaultMethod.equals(method) || listMethod.equals(method)) {
                 if (message.getIsInside()) {

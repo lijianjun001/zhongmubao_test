@@ -31,7 +31,7 @@
 
         var data = {
             platform: "03",
-            version:""
+            type: "00"
         };
 //        var data = {
 //            platform: "01",
@@ -45,7 +45,7 @@
 
         $.ajax({
             type: "POST",
-            url: "/customer/message/indexLayer",
+            url: "/customer/message/list",
             data: JSON.stringify(data),
             contentType: 'application/json;charset=UTF-8',
             dataType: "json",                                     //预期服务器返回类型

@@ -7,9 +7,7 @@
 
 
     <!-- rabbitmq连接配置 -->
-    <!-- 偷了个懒 没写配置文件-->
     <!-- virtual-host 就是在（1）中配置的VH-->
-    <!-- -->
     <!-- -->
     <rabbit:connection-factory id="connectionFactory" virtual-host="${mq.virtual-host}"
                                host="${mq.host}" username="${mq.username}" password="${mq.password}"
