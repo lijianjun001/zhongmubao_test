@@ -358,7 +358,7 @@ public class MessageServiceImpl extends BaseService implements MessageService {
             String title = message.getTitle();
             if (CustomerMessageType.OPEN_PROJECT.getName().equals(message.getType())) {
                 try {
-                    // 第十三周开标公告（03月26日-04月01日）
+                    // 第十三周（03月26日-04月01日）
                     String splitStr = "-";
                     int weekInt = DateUtil.getYearWeek(DateUtil.formatDefault(now));
                     String weekStr = NumberUtil.numberToChina(weekInt);
@@ -366,7 +366,7 @@ public class MessageServiceImpl extends BaseService implements MessageService {
                         // 一十三 改为 十三
                         weekStr = weekStr.substring(1);
                     }
-                    String pre = "第" + weekStr + "周开标计划";
+                    String pre = "第" + weekStr + "周";
                     String[] plans = title.split(splitStr);
                     String leftBracket = "（";
                     String weekStart = plans[0].substring(5);
