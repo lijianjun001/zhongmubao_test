@@ -381,21 +381,26 @@ public class DateUtil {
         return weekSection;
     }
 
+    public static java.sql.Date strToDate(String str, String partten) {
+        java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat(partten);
+        try {
+            java.util.Date d = sdf.parse(str);
+            java.sql.Date d1 = new java.sql.Date(d.getTime());
+            return d1;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return null;
+        }
+    }
     /**
      * 得到某一天是这一年的第几周
      *
      * @param date 某一天
      * @return int 第几周
      */
-    public static int getYearWeek(String date) {
+    public static int getYearWeek(Date date) {
         Calendar cal = Calendar.getInstance();
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-        try {
-            cal.setTime(format.parse(date));
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        int week = cal.get(Calendar.WEEK_OF_YEAR);
-        return week;
+        cal.setTime(date);
+        return cal.get(Calendar.WEEK_OF_YEAR);
     }
 }

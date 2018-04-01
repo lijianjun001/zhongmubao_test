@@ -358,19 +358,20 @@ public class MessageServiceImpl extends BaseService implements MessageService {
             String title = message.getTitle();
             if (CustomerMessageType.OPEN_PROJECT.getName().equals(message.getType())) {
                 try {
+
                     // 第十三周（03月26日-04月01日）
                     String splitStr = "-";
-                    int weekInt = DateUtil.getYearWeek(DateUtil.formatDefault(now));
+                    String[] plans = title.split(splitStr);
+                    String weekStart = plans[0].substring(5);
+                    String weekEnd = plans[1].substring(5);
+                    int weekInt = DateUtil.getYearWeek(DateUtil.strToDate(plans[0], Constants.DATE_FORMAT_CHINA));
                     String weekStr = NumberUtil.numberToChina(weekInt);
                     if (weekStr.startsWith("一")) {
                         // 一十三 改为 十三
                         weekStr = weekStr.substring(1);
                     }
                     String pre = "第" + weekStr + "周";
-                    String[] plans = title.split(splitStr);
                     String leftBracket = "（";
-                    String weekStart = plans[0].substring(5);
-                    String weekEnd = plans[1].substring(5);
                     String rightBracket = "）";
                     title = pre + leftBracket + weekStart + splitStr + weekEnd + rightBracket;
                 } catch (Exception ignored) {
