@@ -381,11 +381,11 @@ public class DateUtil {
         return weekSection;
     }
 
-    public static java.sql.Date strToDate(String str, String partten) {
+    public static Date strToDate(String str, String partten) {
         java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat(partten);
         try {
             java.util.Date d = sdf.parse(str);
-            java.sql.Date d1 = new java.sql.Date(d.getTime());
+            Date d1 = new Date(d.getTime());
             return d1;
         } catch (Exception ex) {
             ex.printStackTrace();
