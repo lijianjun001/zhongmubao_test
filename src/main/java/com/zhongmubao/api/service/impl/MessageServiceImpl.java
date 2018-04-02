@@ -15,7 +15,6 @@ import com.zhongmubao.api.entity.Customer;
 import com.zhongmubao.api.exception.ApiException;
 import com.zhongmubao.api.mongo.dao.CustomerMessageMongoDao;
 import com.zhongmubao.api.mongo.dao.CustomerMessageReadMongoDao;
-import com.zhongmubao.api.mongo.entity.CustomerHFBalanceMongo;
 import com.zhongmubao.api.mongo.entity.CustomerMessageMongo;
 import com.zhongmubao.api.mongo.entity.CustomerMessageReadMongo;
 import com.zhongmubao.api.mongo.entity.base.PageModel;
@@ -138,19 +137,21 @@ public class MessageServiceImpl extends BaseService implements MessageService {
                     // 修改上一周开标计划为历史和已读
                     Date preWeek = DateUtil.addDay(now, -7);
                     String preWeekTitle = DateUtil.getWeekSection(preWeek);
-                    CustomerMessageMongo messageMongo = messageMongoList.stream().filter(m -> m.getTitle().equals(preWeekTitle)).findFirst().get();
-                    if (null != messageMongo) {
+                    Optional<CustomerMessageMongo> prePlan = messageMongoList.stream().filter(m -> m.getTitle().equals(preWeekTitle)).findFirst();
+                    if (prePlan.isPresent()) {
+                        CustomerMessageMongo messageMongo = prePlan.get();
                         messageMongo.setTipsId(CustomerMessageTips.HISTORY.getKey());
                         messageMongo.setRead(true);
                         customerMessageMongoDao.update(messageMongo);
                     }
                     // 修改上周为本周
                     String curWeekTitle = DateUtil.getWeekSection(now);
-                    CustomerMessageMongo curPlan = messageMongoList.stream().filter(m -> m.getTitle().equals(curWeekTitle)).findFirst().get();
-                    if (null != curPlan) {
-                        curPlan.setTipsId(CustomerMessageTips.CURRENT_WEEK.getKey());
-                        curPlan.setRead(false);
-                        customerMessageMongoDao.update(curPlan);
+                    Optional<CustomerMessageMongo> curPlan = messageMongoList.stream().filter(m -> m.getTitle().equals(curWeekTitle)).findFirst();
+                    if (curPlan.isPresent()) {
+                        CustomerMessageMongo messageMongo = curPlan.get();
+                        messageMongo.setTipsId(CustomerMessageTips.CURRENT_WEEK.getKey());
+                        messageMongo.setRead(false);
+                        customerMessageMongoDao.update(messageMongo);
                     }
                 }
             }
