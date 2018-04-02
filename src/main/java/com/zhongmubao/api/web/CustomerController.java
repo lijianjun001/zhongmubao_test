@@ -279,7 +279,7 @@ public class CustomerController {
      * 用户注册
      *
      * @param model 请求参数
-     * @return
+     * @return ReponseModel
      */
     @RequestMapping(value = "/register", method = RequestMethod.POST, consumes = "application/json")
     @Authorization(onlyGetCustomer = true)
@@ -298,7 +298,7 @@ public class CustomerController {
      * 通过Code获取信息
      *
      * @param model 请求参数
-     * @return
+     * @return ReponseModel
      */
     @RequestMapping(value = "recommendInfo", method = RequestMethod.POST, consumes = "application/json")
     @Authorization(onlyGetCustomer = true)
@@ -317,7 +317,7 @@ public class CustomerController {
      * 通过Code获取信息
      *
      * @param model 请求参数
-     * @return
+     * @return ReponseModel
      */
     @RequestMapping(value = "exist", method = RequestMethod.POST, consumes = "application/json")
     @Authorization(onlyGetCustomer = true)

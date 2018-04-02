@@ -112,6 +112,21 @@ public enum CustomerMessageTips {
         public int getKey() {
             return 7;
         }
+    }, NEXT_WEEK {
+        @Override
+        public String getName() {
+            return "下周";
+        }
+
+        @Override
+        public String getColor() {
+            return "";
+        }
+
+        @Override
+        public int getKey() {
+            return 8;
+        }
     }, DEFAULT {
         @Override
         public String getName() {
@@ -156,6 +171,8 @@ public enum CustomerMessageTips {
             return CURRENT_WEEK.getName();
         } else if (key == HOME_PAGE.getKey()) {
             return HOME_PAGE.getName();
+        } else if (key == NEXT_WEEK.getKey()) {
+            return NEXT_WEEK.getName();
         } else if (key == DEFAULT.getKey()) {
             return DEFAULT.getName();
         } else {
@@ -184,6 +201,8 @@ public enum CustomerMessageTips {
             return CURRENT_WEEK.getColor();
         } else if (key == HOME_PAGE.getKey()) {
             return HOME_PAGE.getColor();
+        } else if (key == NEXT_WEEK.getKey()) {
+            return NEXT_WEEK.getColor();
         } else if (key == DEFAULT.getKey()) {
             return DEFAULT.getColor();
         } else {

@@ -358,10 +358,11 @@ public class DateUtil {
      *
      * @return 2018年03月12日-2018年03月18日
      */
-    public static String getWeekSection() {
+    public static String getWeekSection(Date date) {
         String weekSection;
         SimpleDateFormat sdf = new SimpleDateFormat(Constants.DATE_FORMAT_CHINA);
         Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
         // 设置一个星期的第一天，按中国的习惯一个星期的第一天是星期一
         cal.setFirstDayOfWeek(Calendar.MONDAY);
         // 获得当前日期是一个星期的第几天
@@ -381,6 +382,13 @@ public class DateUtil {
         return weekSection;
     }
 
+    /**
+     * 字符串转日期
+     *
+     * @param str     日期字符串
+     * @param partten 转换格式
+     * @return Date
+     */
     public static Date strToDate(String str, String partten) {
         java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat(partten);
         try {
@@ -392,6 +400,7 @@ public class DateUtil {
             return null;
         }
     }
+
     /**
      * 得到某一天是这一年的第几周
      *

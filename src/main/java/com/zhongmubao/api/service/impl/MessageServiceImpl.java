@@ -15,6 +15,7 @@ import com.zhongmubao.api.entity.Customer;
 import com.zhongmubao.api.exception.ApiException;
 import com.zhongmubao.api.mongo.dao.CustomerMessageMongoDao;
 import com.zhongmubao.api.mongo.dao.CustomerMessageReadMongoDao;
+import com.zhongmubao.api.mongo.entity.CustomerHFBalanceMongo;
 import com.zhongmubao.api.mongo.entity.CustomerMessageMongo;
 import com.zhongmubao.api.mongo.entity.CustomerMessageReadMongo;
 import com.zhongmubao.api.mongo.entity.base.PageModel;
@@ -23,10 +24,7 @@ import com.zhongmubao.api.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * 消息中心实现类
@@ -90,7 +88,7 @@ public class MessageServiceImpl extends BaseService implements MessageService {
         List<CustomerMessageMongo> personMessages = customerMessageMongoDao.getListByCustomerIdAndTypeLimitSize(customerId, personPageSize, CustomerMessageType.PERSON_MESSAGE.getName());
 
         if (ArrayUtil.isNull(projectMessages)) {
-            String weekSection = DateUtil.getWeekSection();
+            String weekSection = DateUtil.getWeekSection(now);
             Optional<CustomerMessageMongo> optionalCms = projectMessages.stream().filter(m -> m.getTitle().equals(weekSection)).findFirst();
             if (optionalCms.isPresent()) {
                 CustomerMessageMongo project = optionalCms.get();
@@ -128,8 +126,38 @@ public class MessageServiceImpl extends BaseService implements MessageService {
         pager.setPageSize(Constants.PAGE_SIZE);
         pager = customerMessageMongoDao.pager(customer.getId(), pager, model.getType());
 
+        List<CustomerMessageMongo> messageMongoList = pager.getDatas();
+        if (CustomerMessageType.OPEN_PROJECT.getName().equals(model.getType())) {
+            // 开标消息，每周一同步状态
+            Date now = new Date();
+            if (DateUtil.getWeekOfDateNumber(now) == 1) {
+                // 若存在两个未读，修改上一个为历史
+                int numberTwo = 2;
+                long count = messageMongoList.stream().filter(m -> !m.getRead()).count();
+                if (count == numberTwo) {
+                    // 修改上一周开标计划为历史和已读
+                    Date preWeek = DateUtil.addDay(now, -7);
+                    String preWeekTitle = DateUtil.getWeekSection(preWeek);
+                    CustomerMessageMongo messageMongo = messageMongoList.stream().filter(m -> m.getTitle().equals(preWeekTitle)).findFirst().get();
+                    if (null != messageMongo) {
+                        messageMongo.setTipsId(CustomerMessageTips.HISTORY.getKey());
+                        messageMongo.setRead(true);
+                        customerMessageMongoDao.update(messageMongo);
+                    }
+                    // 修改上周为本周
+                    String curWeekTitle = DateUtil.getWeekSection(now);
+                    CustomerMessageMongo curPlan = messageMongoList.stream().filter(m -> m.getTitle().equals(curWeekTitle)).findFirst().get();
+                    if (null != curPlan) {
+                        curPlan.setTipsId(CustomerMessageTips.CURRENT_WEEK.getKey());
+                        curPlan.setRead(false);
+                        customerMessageMongoDao.update(curPlan);
+                    }
+                }
+            }
+        }
+
         ListViewModel viewModel = new ListViewModel();
-        ArrayList<CustomerMessageModel> list = formatMessage(customer, pager.getDatas(), method);
+        ArrayList<CustomerMessageModel> list = formatMessage(customer, messageMongoList, method);
         viewModel.setList(list);
         viewModel.setTotalPage(pager.getTotalPages());
 
@@ -258,7 +286,7 @@ public class MessageServiceImpl extends BaseService implements MessageService {
         CustomerMessageMongo message = customerMessageMongoDao.getById(id);
         if (CustomerMessageType.OPEN_PROJECT.getName().equals(message.getType())) {
             remark = message.getTitle();
-            if (remark.equals(DateUtil.getWeekSection())) {
+            if (remark.equals(DateUtil.getWeekSection(now))) {
                 title = curPlan;
             } else {
                 title = historyPlan;
@@ -267,7 +295,7 @@ public class MessageServiceImpl extends BaseService implements MessageService {
             }.getType());
             for (ProjectDetailModel plan : projectList) {
                 String week = plan.getDay();
-                if (remark.equals(DateUtil.getWeekSection())) {
+                if (remark.equals(DateUtil.getWeekSection(now))) {
                     String curWeek = DateUtil.getWeekOfDate(now);
                     if (week.contains(curWeek)) {
                         week = curDayString;
@@ -281,7 +309,7 @@ public class MessageServiceImpl extends BaseService implements MessageService {
                 String sellout = "01";
                 if (message.getRead()) {
                     sellout = "00";
-                } else if (remark.equals(DateUtil.getWeekSection())) {
+                } else if (remark.equals(DateUtil.getWeekSection(now))) {
                     int weekNum = DateUtil.getWeekOfDateNumber(now);
                     if (StringUtil.convartWeekToNumber(plan.getDay()) < weekNum) {
                         sellout = "00";
@@ -310,7 +338,7 @@ public class MessageServiceImpl extends BaseService implements MessageService {
     /**
      * 格式化消息数据
      *
-     * @param messages 消息中心列表
+     * @param messages 消息列表
      * @param method   方法来源，center or list
      * @return ArrayList<CustomerMessageModel>
      * @throws Exception Exception
