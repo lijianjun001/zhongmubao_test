@@ -126,36 +126,6 @@ public class MessageServiceImpl extends BaseService implements MessageService {
         pager = customerMessageMongoDao.pager(customer.getId(), pager, model.getType());
 
         List<CustomerMessageMongo> messageMongoList = pager.getDatas();
-        if (CustomerMessageType.OPEN_PROJECT.getName().equals(model.getType())) {
-            // 开标消息，每周一同步状态
-            Date now = new Date();
-            if (DateUtil.getWeekOfDateNumber(now) == 1) {
-                // 若存在两个未读，修改上一个为历史
-                int numberTwo = 2;
-                long count = messageMongoList.stream().filter(m -> !m.getRead()).count();
-                if (count == numberTwo) {
-                    // 修改上一周开标计划为历史和已读
-                    Date preWeek = DateUtil.addDay(now, -7);
-                    String preWeekTitle = DateUtil.getWeekSection(preWeek);
-                    Optional<CustomerMessageMongo> prePlan = messageMongoList.stream().filter(m -> m.getTitle().equals(preWeekTitle)).findFirst();
-                    if (prePlan.isPresent()) {
-                        CustomerMessageMongo messageMongo = prePlan.get();
-                        messageMongo.setTipsId(CustomerMessageTips.HISTORY.getKey());
-                        messageMongo.setRead(true);
-                        customerMessageMongoDao.update(messageMongo);
-                    }
-                    // 修改上周为本周
-                    String curWeekTitle = DateUtil.getWeekSection(now);
-                    Optional<CustomerMessageMongo> curPlan = messageMongoList.stream().filter(m -> m.getTitle().equals(curWeekTitle)).findFirst();
-                    if (curPlan.isPresent()) {
-                        CustomerMessageMongo messageMongo = curPlan.get();
-                        messageMongo.setTipsId(CustomerMessageTips.CURRENT_WEEK.getKey());
-                        messageMongo.setRead(false);
-                        customerMessageMongoDao.update(messageMongo);
-                    }
-                }
-            }
-        }
 
         ListViewModel viewModel = new ListViewModel();
         ArrayList<CustomerMessageModel> list = formatMessage(customer, messageMongoList, method);
@@ -350,8 +320,6 @@ public class MessageServiceImpl extends BaseService implements MessageService {
         String listMethod = "list";
         Date now = new Date();
         for (CustomerMessageMongo message : messages) {
-            CustomerMessageModel cusMsg = new CustomerMessageModel();
-            cusMsg.setId(message.id);
             String typeName = Constants.STRING_EMPTY;
             String typeIcon;
             String tip;
@@ -385,9 +353,10 @@ public class MessageServiceImpl extends BaseService implements MessageService {
             tip = CustomerMessageTips.formartName(message.getTipsId());
             backColor = CustomerMessageTips.formartColor(message.getTipsId());
             String title = message.getTitle();
+            String content = message.getContent();
             if (CustomerMessageType.OPEN_PROJECT.getName().equals(message.getType())) {
+                // region Title
                 try {
-
                     // 第十三周（03月26日-04月01日）
                     String splitStr = "-";
                     String[] plans = title.split(splitStr);
@@ -406,15 +375,34 @@ public class MessageServiceImpl extends BaseService implements MessageService {
                 } catch (Exception ignored) {
 
                 }
-            }
+                //endregion
 
-            cusMsg.setTitle(title);
-            cusMsg.setContent(message.getContent());
+                // region Tips
+                Date nextWeek = DateUtil.addDay(now, 7);
+                String currWeekTitle = DateUtil.getWeekSection(now);
+                String nextWeekTitle = DateUtil.getWeekSection(nextWeek);
+                if (currWeekTitle.equals(message.getTitle())) {
+                    tip = CustomerMessageTips.CURRENT_WEEK.getName();
+                    backColor = CustomerMessageTips.CURRENT_WEEK.getColor();
+                } else if (nextWeekTitle.equals(message.getTitle())) {
+                    tip = CustomerMessageTips.NEXT_WEEK.getName();
+                    backColor = CustomerMessageTips.NEXT_WEEK.getColor();
+                } else {
+                    tip = CustomerMessageTips.HISTORY.getName();
+                    backColor = CustomerMessageTips.HISTORY.getColor();
+                }
+                //endregion
+            }
             if (defaultMethod.equals(method) || listMethod.equals(method)) {
                 if (message.getIsInside()) {
-                    cusMsg.setContent(Constants.STRING_EMPTY);
+                    content = Constants.STRING_EMPTY;
                 }
             }
+
+            CustomerMessageModel cusMsg = new CustomerMessageModel();
+            cusMsg.setId(message.id);
+            cusMsg.setTitle(title);
+            cusMsg.setContent(content);
             cusMsg.setType(message.getType());
             cusMsg.setInside(message.getIsInside());
             cusMsg.setMessageTypeName(typeName);
