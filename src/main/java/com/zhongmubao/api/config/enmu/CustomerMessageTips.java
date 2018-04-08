@@ -120,7 +120,7 @@ public enum CustomerMessageTips {
 
         @Override
         public String getColor() {
-            return "";
+            return "#FE7A40";
         }
 
         @Override

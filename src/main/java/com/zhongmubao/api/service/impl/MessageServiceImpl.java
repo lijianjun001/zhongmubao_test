@@ -247,10 +247,12 @@ public class MessageServiceImpl extends BaseService implements MessageService {
             throw new ApiException(ResultStatus.PARAMETER_ERROR);
         }
         Date now = new Date();
-        String curDayString = "今日";
+        int weekDays = 7;
         String method = "detail";
+        String curDayString = "今日";
         String curPlan = "本周羊标计划";
         String historyPlan = "历史羊标计划";
+        String nextPlan = "下周羊标计划";
         String title = Constants.STRING_EMPTY;
         String remark = Constants.STRING_EMPTY;
         List<ProjectWeekInfoModel> list = new ArrayList<>();
@@ -259,6 +261,8 @@ public class MessageServiceImpl extends BaseService implements MessageService {
             remark = message.getTitle();
             if (remark.equals(DateUtil.getWeekSection(now))) {
                 title = curPlan;
+            } else if (remark.equals(DateUtil.getWeekSection(DateUtil.addDay(now, weekDays)))) {
+                title = nextPlan;
             } else {
                 title = historyPlan;
             }
