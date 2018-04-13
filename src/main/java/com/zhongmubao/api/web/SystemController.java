@@ -2,12 +2,16 @@ package com.zhongmubao.api.web;
 
 import com.zhongmubao.api.authorization.annotation.Authorization;
 import com.zhongmubao.api.authorization.annotation.CurrentUser;
+import com.zhongmubao.api.config.enmu.RedPackageType;
 import com.zhongmubao.api.dto.request.system.*;
 import com.zhongmubao.api.dto.response.ReponseModel;
 import com.zhongmubao.api.dto.response.system.ShareInfoViewModel;
 import com.zhongmubao.api.entity.Customer;
+import com.zhongmubao.api.entity.ExtRedPackage;
 import com.zhongmubao.api.exception.ApiException;
 import com.zhongmubao.api.service.SystemService;
+import com.zhongmubao.api.util.DateUtil;
+import com.zhongmubao.api.util.SerializeUtil;
 import com.zhongmubao.api.util.mq.ProductorUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
@@ -16,6 +20,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.Date;
 
 /**
  * 系统控制器
@@ -118,7 +124,7 @@ public class SystemController {
 //    public ResponseEntity<ReponseModel> testTransaction() {
 //        try {
 //            // 发送消息
-//            messageSender.sendDataToQueue("topic.justin.exchange", "topic.justin.queue", "insert Queue");
+//            /*messageSender.sendDataToQueue("topic.justin.exchange", "topic.justin.queue", "insert Queue");*/
 //
 //            return new ResponseEntity<>(ReponseModel.ok(), HttpStatus.OK);
 //        } catch (ApiException ex) {

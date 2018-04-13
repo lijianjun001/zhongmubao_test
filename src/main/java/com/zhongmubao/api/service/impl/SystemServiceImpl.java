@@ -143,7 +143,7 @@ public class SystemServiceImpl extends BaseService implements SystemService {
         } else if (shareProject.equals(shareName)) {
             // 分享开标
             String messageId = SerializeUtil.getJsonStringValueByKey(model.getParam(), "messageId");
-            url= shareContent.getUrl().replace(Constants.MESSAGEID, messageId).replace(Constants.DOMAIN_PLACEHOLDER, domain);
+            url = shareContent.getUrl().replace(Constants.MESSAGEID, messageId).replace(Constants.DOMAIN_PLACEHOLDER, domain);
         }
 
         ShareInfoViewModel viewModel = new ShareInfoViewModel();

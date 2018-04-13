@@ -46,7 +46,6 @@ public interface SystemService {
      *
      * @param customer 客户
      * @param model    请求model
-     * @return true or false
      * @throws Exception 异常
      * @author 米立林
      */

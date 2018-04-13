@@ -122,6 +122,15 @@ public enum RedPackageType {
         public String getName() {
             return "12";
         }
+    },
+    /**
+     * 微信公众号提供赠送
+     */
+    WE_CHAT_OFFERING{
+        @Override
+        public String getName() {
+            return "13";
+        }
     };
 
     public abstract String getName();
