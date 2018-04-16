@@ -43,8 +43,8 @@ public class SecurityUtil {
         StringBuilder md5str = new StringBuilder();
         // 把数组每一字节换成16进制连成md5字符串
         int digital;
-        for (int i = 0; i < bytes.length; i++) {
-            digital = bytes[i];
+        for (byte aByte : bytes) {
+            digital = aByte;
 
             if (digital < 0) {
                 digital += 256;
@@ -62,14 +62,14 @@ public class SecurityUtil {
      *
      * @author:米立林
      */
-    public static String encrypt32(String encryptStr) {
+    private static String encrypt32(String encryptStr) {
         MessageDigest md5;
         try {
             md5 = MessageDigest.getInstance("MD5");
             byte[] md5Bytes = md5.digest(encryptStr.getBytes());
-            StringBuffer hexValue = new StringBuffer();
-            for (int i = 0; i < md5Bytes.length; i++) {
-                int val = ((int) md5Bytes[i]) & 0xff;
+            StringBuilder hexValue = new StringBuilder();
+            for (byte md5Byte : md5Bytes) {
+                int val = ((int) md5Byte) & 0xff;
                 if (val < 16) {
                     hexValue.append("0");
                 }
