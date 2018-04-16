@@ -7,12 +7,8 @@ import com.zhongmubao.api.dto.request.system.*;
 import com.zhongmubao.api.dto.response.ReponseModel;
 import com.zhongmubao.api.dto.response.system.ShareInfoViewModel;
 import com.zhongmubao.api.entity.Customer;
-import com.zhongmubao.api.entity.ExtRedPackage;
 import com.zhongmubao.api.exception.ApiException;
 import com.zhongmubao.api.service.SystemService;
-import com.zhongmubao.api.util.DateUtil;
-import com.zhongmubao.api.util.SerializeUtil;
-import com.zhongmubao.api.util.mq.ProductorUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
@@ -21,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Date;
 
 /**
  * 系统控制器
@@ -38,9 +33,6 @@ public class SystemController {
         this.systemService = systemService;
     }
 
-    // 注入消息生产者
-    @Autowired
-    private ProductorUtil messageSender;
     /**
      * 头条广告
      *
