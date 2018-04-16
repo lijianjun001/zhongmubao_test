@@ -30,7 +30,7 @@
 //        private String deviceid;
 
         var data = {
-//            platform: "03"
+            platform: "03"
         };
 //        var data = {
 //            platform: "01",

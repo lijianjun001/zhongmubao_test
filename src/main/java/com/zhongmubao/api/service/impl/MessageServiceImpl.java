@@ -181,12 +181,12 @@ public class MessageServiceImpl extends BaseService implements MessageService {
         IndexLayerViewModel indexLayerViewModel = new IndexLayerViewModel();
         if (null != customerMessageMongo) {
             if (customerMessageMongo.getCustomerId() > 0 && customerMessageMongo.getRead()) {
-                return null;
+                return indexLayerViewModel;
             }
             if (customerMessageMongo.getCustomerId() <= 0) {
                 CustomerMessageReadMongo readMongo = customerMessageReadMongoDao.getByCustomerIdAndMessageId(customerId, customerMessageMongo.id);
                 if (readMongo != null) {
-                    return null;
+                    return indexLayerViewModel;
                 }
             }
 
