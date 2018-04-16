@@ -159,4 +159,21 @@ public class CustomerMessageMongoDao implements BaseDao<CustomerMessageMongo> {
         query.addCriteria(Criteria.where("Deleted").is(false));
         return query;
     }
+
+    /**
+     * 获取当前周开标计划
+     *
+     * @param type       类型
+     * @param title      周标区间
+     * @return
+     * @throws Exception
+     */
+    public List<CustomerMessageMongo> getCurrentWeekPlan(String type, String title) throws Exception {
+        Query query = baseQuery();
+        query.addCriteria(Criteria.where("Type").is(type));
+        query.addCriteria(Criteria.where("Title").is(title));
+        query.with(new Sort(Sort.Direction.DESC, "Created"));
+
+        return mongoTemplate.find(query, CustomerMessageMongo.class);
+    }
 }
