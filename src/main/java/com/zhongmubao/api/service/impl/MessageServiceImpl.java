@@ -80,14 +80,14 @@ public class MessageServiceImpl extends BaseService implements MessageService {
         }
 
         String method = "center";
+        String weekSection = DateUtil.getWeekSection(now);
         CenterViewModel viewModel = new CenterViewModel();
 
-        List<CustomerMessageMongo> projectMessages = customerMessageMongoDao.getListByCustomerIdAndTypeLimitSize(customerId, defaultPageSize, CustomerMessageType.OPEN_PROJECT.getName());
+        List<CustomerMessageMongo> projectMessages = customerMessageMongoDao.getCurrentWeekPlan(CustomerMessageType.OPEN_PROJECT.getName(),weekSection);
         List<CustomerMessageMongo> systemMessages = customerMessageMongoDao.getListByCustomerIdAndTypeLimitSize(customerId, defaultPageSize, CustomerMessageType.SYSTEM_MESSAGE.getName());
         List<CustomerMessageMongo> personMessages = customerMessageMongoDao.getListByCustomerIdAndTypeLimitSize(customerId, personPageSize, CustomerMessageType.PERSON_MESSAGE.getName());
 
         if (ArrayUtil.isNull(projectMessages)) {
-            String weekSection = DateUtil.getWeekSection(now);
             Optional<CustomerMessageMongo> optionalCms = projectMessages.stream().filter(m -> m.getTitle().equals(weekSection)).findFirst();
             if (optionalCms.isPresent()) {
                 CustomerMessageMongo project = optionalCms.get();
