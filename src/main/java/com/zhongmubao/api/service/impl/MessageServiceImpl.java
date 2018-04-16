@@ -338,6 +338,7 @@ public class MessageServiceImpl extends BaseService implements MessageService {
             String typeIcon;
             String tip;
             String backColor;
+            message.setCreated(DateUtil.addHours(message.getCreated(), 16));
             String date = method.equals(defaultMethod) ? DateUtil.format(message.getCreated(), Constants.TIME_HOUR_MINUTE_FORMAT) : DateUtil.format(message.getCreated(), Constants.DATE_TIME_FORMAT);
 
             if (message.getTipsId() == CustomerMessageTips.HOME_PAGE.getKey()) {
