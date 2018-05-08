@@ -30,7 +30,7 @@ public class StringUtil {
      * @param week 周"一、二、三、四、五、六、日"
      * @return true 空 ，false非空
      */
-    public static int convartWeekToNumber(String week) {
+    public static int convertWeekToNumber(String week) {
         switch (week) {
             case "周一":
                 return 1;

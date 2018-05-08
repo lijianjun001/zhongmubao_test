@@ -296,7 +296,7 @@ public class MessageServiceImpl extends BaseService implements MessageService {
                     sellout = "00";
                 } else if (remark.equals(DateUtil.getWeekSection(now))) {
                     int weekNum = DateUtil.getWeekOfDateNumber(now);
-                    if (StringUtil.convartWeekToNumber(plan.getDay()) < weekNum) {
+                    if (StringUtil.convertWeekToNumber(plan.getDay()) < weekNum) {
                         sellout = "00";
                     }
                 }
