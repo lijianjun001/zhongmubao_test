@@ -52,6 +52,13 @@
 		and SheepOrderId>=0
 	</select>
 
+    <select id="countSignExtRedPackageByCustomerIdAndBeginTimeAndEndTimeAndTypeAnd" resultType="int">
+        select count(1) from ExtRedPackage where
+        type = #{type}
+        and created &gt;=#{beginTime}
+        and created &lt;=#{endTime} and customerid =#{customerId}
+    </select>
+
     <select id="countExtRedPackageByBeginTimeAndEndTimeAndType" resultType="int">
 		select count(1) from ExtRedPackage where
 		type = #{type}
@@ -59,6 +66,13 @@
 		and created &lt;=#{endTime}
 		and SheepOrderId>=0
 	</select>
+
+    <select id="countSignExtRedPackageByBeginTimeAndEndTimeAndType" resultType="int">
+        select count(1) from ExtRedPackage where
+        type = #{type}
+        and created >=#{beginTime}
+        and created &lt;=#{endTime}
+    </select>
 
     <select id="countLtPriceExtRedPackageByBeginTimeAndEndTimeAndType" resultType="int">
 		select count(1) from ExtRedPackage where

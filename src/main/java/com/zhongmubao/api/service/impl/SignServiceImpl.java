@@ -92,7 +92,7 @@ public class SignServiceImpl extends BaseService implements SignService {
                 //region 逻辑
 
                 //分享天数
-                int shareDayCount = extRedPackageDao.countExtRedPackageByCustomerIdAndBeginTimeAndEndTimeAndType(customerId, monthBegin, monthEnd, dayShareType);
+                int shareDayCount = extRedPackageDao.countSignExtRedPackageByCustomerIdAndBeginTimeAndEndTimeAndTypeAnd(customerId, monthBegin, monthEnd, dayShareType);
 
                 //region 验证
                 boolean todayIsShare = redisCache.getCustomerIsShare(customerId);
@@ -113,7 +113,7 @@ public class SignServiceImpl extends BaseService implements SignService {
                 //region 每日分享送红包
                 double price = redisCache.getShareRandom(MathUtil.random(1, 10000));
 
-                int signCount = extRedPackageDao.countExtRedPackageByBeginTimeAndEndTimeAndType(dayBegin, dayEnd, dayShareType);
+                int signCount = extRedPackageDao.countSignExtRedPackageByBeginTimeAndEndTimeAndType(dayBegin, dayEnd, dayShareType);
                 signCount = signCount == 0 ? 1 : signCount;
                 if (now.getTime() <= boundaryTime.getTime()) {
                     signInfo = String.format("早起的鸟儿有虫吃，您是今日第%d位签到牧场主", signCount);

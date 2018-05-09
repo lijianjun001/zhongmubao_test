@@ -45,6 +45,17 @@ public interface ExtRedPackageDao {
     int countExtRedPackageByCustomerIdAndBeginTimeAndEndTimeAndType(@Param("customerId") int customerId, @Param("beginTime") Date beginTime, @Param("endTime") Date endTime, @Param("type") String type);
 
     /**
+     * 统计每月签到红包数
+     *
+     * @param customerId 客户id
+     * @param beginTime  开始时间
+     * @param endTime    结束时间
+     * @param type       红包类型
+     * @return 用户红包数
+     */
+    int countSignExtRedPackageByCustomerIdAndBeginTimeAndEndTimeAndTypeAnd(@Param("customerId") int customerId, @Param("beginTime") Date beginTime, @Param("endTime") Date endTime, @Param("type") String type);
+
+    /**
      * 统计用户红包数
      *
      * @param beginTime 开始时间
@@ -53,6 +64,16 @@ public interface ExtRedPackageDao {
      * @return 红包数
      */
     int countExtRedPackageByBeginTimeAndEndTimeAndType(@Param("beginTime") Date beginTime, @Param("endTime") Date endTime, @Param("type") String type);
+
+    /**
+     * 统计每月签到用户红包数
+     *
+     * @param beginTime 开始时间
+     * @param endTime   结束时间
+     * @param type      类型
+     * @return 红包数
+     */
+    int countSignExtRedPackageByBeginTimeAndEndTimeAndType(@Param("beginTime") Date beginTime, @Param("endTime") Date endTime, @Param("type") String type);
 
     /**
      * 统计大于某个金额的红包数量
