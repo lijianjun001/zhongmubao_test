@@ -1,6 +1,7 @@
 package com.zhongmubao.api.util;
 
 import com.zhongmubao.api.config.Constants;
+import net.sf.jsqlparser.expression.DateTimeLiteralExpression;
 
 import java.text.ParseException;
 import java.text.ParsePosition;
@@ -213,6 +214,31 @@ public class DateUtil {
         try {
             SimpleDateFormat formater = new SimpleDateFormat(Constants.DATE_FORMAT);
             return formater.format(date);
+        } catch (Exception ex) {
+            return "";
+        }
+    }
+
+    /**
+     * 把时间格式化成今天、昨天、以前
+     *
+     * @param date 日期
+     */
+    public static String format(Date date) {
+        try {
+            long paraDate = date.getTime();
+            Date now = new Date();
+            long todayBegin = dayBegin().getTime();
+            long todayEnd = dayEnd().getTime();
+            long yesterdayBegin = weeHours(addDay(now, -1), 0).getTime();
+            if (paraDate >= todayBegin && paraDate <= todayEnd) {
+                String cuur = "今天";
+                return cuur + format(date, Constants.TIME_HOUR_MINUTE_FORMAT);
+            } else if (paraDate >= yesterdayBegin && paraDate < todayBegin) {
+                String cuur = "昨天";
+                return cuur + format(date, Constants.TIME_HOUR_MINUTE_FORMAT);
+            }
+            return format(date, Constants.TIME_MONTH_DAY_HOUR_MINUTE_FORMAT);
         } catch (Exception ex) {
             return "";
         }
