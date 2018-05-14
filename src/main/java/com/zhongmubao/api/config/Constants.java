@@ -230,6 +230,11 @@ public class Constants {
     public static final String DATETIME_FORMAT_CHINA = "yyyy年MM月dd日 HH:mm:ss";
 
     /**
+     * 日期时间格式
+     */
+    public static final String DATETIME_FORMAT_CHINA_SHORT = "MM月dd日 HH:mm";
+
+    /**
      * 日期格式
      */
     public static final String DATE_FORMAT_DOT = "yyyy.MM.dd";
@@ -248,6 +253,11 @@ public class Constants {
      * 时分格式
      */
     public static final String TIME_HOUR_MINUTE_FORMAT = "HH:mm";
+
+    /**
+     * 月日 时分格式
+     */
+    public static final String TIME_MONTH_DAY_HOUR_MINUTE_FORMAT = "MM-dd HH:mm";
 
     /**
      * 金额格式（两位小数点）
