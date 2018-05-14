@@ -93,7 +93,7 @@ public class ApiUtil {
         }
     }
 
-    /**
+    /**5
      * 格式化用户头像
      *
      * @param photo 用户头像
