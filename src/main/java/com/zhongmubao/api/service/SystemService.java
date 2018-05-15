@@ -1,6 +1,7 @@
 package com.zhongmubao.api.service;
 
 import com.zhongmubao.api.dto.request.system.*;
+import com.zhongmubao.api.dto.response.system.RedEnvelopeViewModel;
 import com.zhongmubao.api.dto.response.system.ShareInfoViewModel;
 import com.zhongmubao.api.entity.Customer;
 
@@ -50,6 +51,28 @@ public interface SystemService {
      * @author 米立林
      */
     void sendSms(Customer customer, SendSmsRequestModel model) throws Exception;
+
+    /**
+     * 小程序红包
+     *
+     * @param customer 客户
+     * @param model    请求model
+     * @return RedEnvelopeViewModel
+     * @throws Exception 异常
+     * @author 米立林
+     */
+    RedEnvelopeViewModel redEnvelope(Customer customer, RedEnvelopeRequestModel model) throws Exception;
+
+    /**
+     * 拆开红包
+     *
+     * @param customer 客户
+     * @param model    请求model
+     * @throws Exception 异常
+     * @author 米立林
+     */
+    void redEnvelopeOpen(Customer customer, RedEnvelopeRequestModel model) throws Exception;
+
 
 //    void testTransaction();
 }

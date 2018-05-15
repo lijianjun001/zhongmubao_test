@@ -2,24 +2,26 @@ package com.zhongmubao.api.service.impl;
 
 import com.zhongmubao.api.config.Constants;
 import com.zhongmubao.api.config.ResultStatus;
-import com.zhongmubao.api.config.enmu.Domain;
-import com.zhongmubao.api.config.enmu.SmsType;
+import com.zhongmubao.api.config.enmu.*;
+import com.zhongmubao.api.dao.CustomerDao;
 import com.zhongmubao.api.dto.request.system.*;
+import com.zhongmubao.api.dto.response.system.RedEnvelopeCustomer;
+import com.zhongmubao.api.dto.response.system.RedEnvelopeViewModel;
 import com.zhongmubao.api.dto.response.system.ShareInfoViewModel;
 import com.zhongmubao.api.entity.Customer;
 import com.zhongmubao.api.exception.ApiException;
 import com.zhongmubao.api.mongo.dao.*;
-import com.zhongmubao.api.mongo.entity.PlatformTrackingMongo;
-import com.zhongmubao.api.mongo.entity.ShareContentMongo;
-import com.zhongmubao.api.mongo.entity.SystemSmsLogMongo;
-import com.zhongmubao.api.mongo.entity.TouTiaoAdvMongo;
+import com.zhongmubao.api.mongo.entity.*;
 import com.zhongmubao.api.service.SystemService;
 import com.zhongmubao.api.util.*;
+import org.apache.commons.collections.DoubleOrderedMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 系统服务实现
@@ -34,14 +36,20 @@ public class SystemServiceImpl extends BaseService implements SystemService {
     private final SystemServerActionMongoDao systemServerActionMongoDao;
     private final ShareContentMongoDao shareContentMongoDao;
     private final SystemSmsLogMongoDao systemSmsLogMongoDao;
+    private final RedEnvelopeMongoDao redEnvelopeMongoDao;
+    private final RedEnvelopeInfoMongoDao redEnvelopeInfoMongoDao;
+    private final CustomerDao customerDao;
 
     @Autowired
-    public SystemServiceImpl(TouTiaoAdvMongoDao touTiaoAdvMongoDao, PlatformTrackingMongoDao platformTrackingMongoDao, SystemServerActionMongoDao systemServerActionMongoDao, ShareContentMongoDao shareContentMongoDao, SystemSmsLogMongoDao systemSmsLogMongoDao) {
+    public SystemServiceImpl(TouTiaoAdvMongoDao touTiaoAdvMongoDao, PlatformTrackingMongoDao platformTrackingMongoDao, SystemServerActionMongoDao systemServerActionMongoDao, ShareContentMongoDao shareContentMongoDao, SystemSmsLogMongoDao systemSmsLogMongoDao, RedEnvelopeMongoDao redEnvelopeMongoDao, RedEnvelopeInfoMongoDao redEnvelopeInfoMongoDao, CustomerDao customerDao) {
         this.touTiaoAdvMongoDao = touTiaoAdvMongoDao;
         this.platformTrackingMongoDao = platformTrackingMongoDao;
         this.systemServerActionMongoDao = systemServerActionMongoDao;
         this.shareContentMongoDao = shareContentMongoDao;
         this.systemSmsLogMongoDao = systemSmsLogMongoDao;
+        this.redEnvelopeMongoDao = redEnvelopeMongoDao;
+        this.redEnvelopeInfoMongoDao = redEnvelopeInfoMongoDao;
+        this.customerDao = customerDao;
     }
 
     @Override
@@ -186,6 +194,121 @@ public class SystemServiceImpl extends BaseService implements SystemService {
         smsLog.setAsyncType(0);
         systemSmsLogMongoDao.save(smsLog);
 
+    }
+
+    @Override
+    public RedEnvelopeViewModel redEnvelope(Customer customer, RedEnvelopeRequestModel model) throws Exception {
+        if (null == model || StringUtil.isNullOrEmpty(model.getId())) {
+            throw new ApiException(ResultStatus.PARAMETER_MISSING);
+        }
+        Date now = new Date();
+        int countdown;
+        boolean flat = false;
+        String status;
+        String text = Constants.STRING_EMPTY;
+        RedEnvelopeViewModel viewModel = new RedEnvelopeViewModel();
+        RedEnvelopeMongo redEnvelopeMongo = redEnvelopeMongoDao.getById(model.getId());
+        if (redEnvelopeMongo == null) {
+            throw new ApiException(ResultStatus.INVALID_REC_ENVELOPE_ERROR);
+        }
+        ArrayList<RedEnvelopeCustomer> joins = new ArrayList<>();
+        List<RedEnvelopeInfoMongo> redEnvelopeInfoMongos = redEnvelopeInfoMongoDao.getListByRedEnvelopeId(redEnvelopeMongo.id);
+
+        RedEnvelopeInfoMongo currentCustomer = redEnvelopeInfoMongoDao.getOne(customer.getId(), redEnvelopeMongo.id);
+        if (currentCustomer == null) {
+            if (redEnvelopeInfoMongos.size() >= redEnvelopeMongo.getHeadcount()) {
+                text = "来迟了，红包已被抢完";
+            } else {
+                if (redEnvelopeMongo.getStatus().equals(RedEnvelopeStatus.UNDERWAY.getName())) {
+                    // 加入抢红包
+                    flat = true;
+                    currentCustomer = new RedEnvelopeInfoMongo();
+                    currentCustomer.setRedEnvelopeId(redEnvelopeMongo.id);
+                    currentCustomer.setJoinCustomerId(customer.getId());
+                    currentCustomer.setJoinNo(redEnvelopeInfoMongos.size() + 1);
+                    currentCustomer.setOpened(false);
+                    currentCustomer.setCreated(DateUtil.addHours(now, 8));
+                    redEnvelopeInfoMongos.add(currentCustomer);
+                }
+            }
+        }
+
+        for (RedEnvelopeInfoMongo info : redEnvelopeInfoMongos) {
+            Customer joinCustomer = customerDao.getCustomerById(info.getJoinCustomerId());
+            RedEnvelopeCustomer customerInfo = new RedEnvelopeCustomer();
+            customerInfo.setCustomerId(joinCustomer.getId());
+            customerInfo.setPhoto(ApiUtil.formartPhoto(customerInfo.getPhoto()));
+            customerInfo.setName(joinCustomer.getNickName());
+            customerInfo.setPrice(info.getPrice());
+            joins.add(customerInfo);
+            if (info.getJoinCustomerId() == customer.getId()) {
+                currentCustomer = info;
+            }
+        }
+
+        // 人员满，则分配红包
+        if (redEnvelopeInfoMongos.size() == redEnvelopeMongo.getHeadcount() && redEnvelopeMongo.getStatus().equals(RedEnvelopeStatus.UNDERWAY.getName())) {
+            RedPacketUtil redPacketUtil = new RedPacketUtil();
+            List<Float> prices = redPacketUtil.splitRedPackets(redEnvelopeMongo.getPrice(), redEnvelopeMongo.getHeadcount());
+            // 分配到个人
+            for (int i = 0; i < redEnvelopeInfoMongos.size(); i++) {
+                String price = DoubleUtil.toFixed(prices.get(i), Constants.PRICE_FORMAT);
+                RedEnvelopeInfoMongo mongo = redEnvelopeInfoMongos.get(i);
+                mongo.setPrice(price);
+                redEnvelopeInfoMongoDao.save(mongo);
+                joins.get(i).setPrice(price);
+            }
+
+            // 修改RedEnvelope状态为"完成"
+            redEnvelopeMongo.setStatus(RedEnvelopeStatus.SUCCESS.getName());
+            redEnvelopeMongoDao.update(redEnvelopeMongo);
+        } else {
+            if (flat) {
+                // 把当前用户添加到Mongo
+                redEnvelopeInfoMongoDao.save(currentCustomer);
+            }
+        }
+        status = redEnvelopeMongo.getStatus();
+        countdown = (int) DateUtil.subDateOfSecond(redEnvelopeMongo.getEndTime(), now);
+        if (StringUtil.isNullOrEmpty(text)) {
+            assert currentCustomer != null;
+            if (!currentCustomer.isOpened()) {
+                if (countdown <= 0) {
+                    text = "红包已过期";
+                } else {
+                    if (redEnvelopeInfoMongos.size() >= redEnvelopeMongo.getHeadcount()) {
+                        text = "恭喜你！人员全部到齐";
+                    } else {
+                        int headcount = redEnvelopeMongo.getHeadcount() - joins.size();
+                        text = "还差" + headcount + "人就能拆开大额红包，求助攻啊";
+                    }
+                }
+            }
+        }
+        viewModel.setStatus(status);
+        viewModel.setText(text);
+        viewModel.setTotalPrice(String.valueOf(redEnvelopeMongo.getPrice()));
+        viewModel.setCountdown(countdown);
+        viewModel.setList(joins);
+
+        return viewModel;
+    }
+
+    @Override
+    public void redEnvelopeOpen(Customer customer, RedEnvelopeRequestModel model) throws Exception {
+        if (null == model || StringUtil.isNullOrEmpty(model.getId())) {
+            throw new ApiException(ResultStatus.PARAMETER_MISSING);
+        }
+        Date now = new Date();
+        // 修改已开红包状态
+        RedEnvelopeInfoMongo currentCustomer = redEnvelopeInfoMongoDao.getOne(customer.getId(), model.getId());
+        if (currentCustomer != null && !currentCustomer.isOpened()) {
+            currentCustomer.setOpened(true);
+            redEnvelopeInfoMongoDao.update(currentCustomer);
+
+            // 发送红包
+            sendRedPackage(customer, RedPackageType.SHARE, Double.parseDouble(currentCustomer.getPrice()), now, 1);
+        }
     }
 
     //    @Override

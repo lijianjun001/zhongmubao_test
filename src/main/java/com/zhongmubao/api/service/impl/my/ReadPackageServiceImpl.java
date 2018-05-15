@@ -49,7 +49,7 @@ public class ReadPackageServiceImpl implements ReadPackageService {
             throw new ApiException(ResultStatus.PARAMETER_MISSING);
         }
         // 分组只按金额排序
-        model.setSortType(RedPackageSortType.Price);
+        model.setSortType(RedPackageSortType.PRICE);
 
         GroupViewModel viewModel = new GroupViewModel();
         ArrayList<GroupModel> groupModelList = new ArrayList<>();
@@ -171,7 +171,7 @@ public class ReadPackageServiceImpl implements ReadPackageService {
             throw new ApiException(ResultStatus.PARAMETER_MISSING);
         }
         if (model.getSortType() == null) {
-            model.setSortType(RedPackageSortType.ExpTime);
+            model.setSortType(RedPackageSortType.EXPTIME);
         }
 
         PageHelper.startPage(model.getPageIndex(), Constants.PAGE_SIZE);
@@ -207,7 +207,7 @@ public class ReadPackageServiceImpl implements ReadPackageService {
             throw new ApiException(ResultStatus.PARAMETER_MISSING);
         }
         if (model.getSortType() == null) {
-            model.setSortType(RedPackageSortType.ExpTime);
+            model.setSortType(RedPackageSortType.EXPTIME);
         }
 
         Date now = new Date();
@@ -216,7 +216,7 @@ public class ReadPackageServiceImpl implements ReadPackageService {
         String expTime = DateUtil.format(now, Constants.DATE_TIME_FORMAT);
         Page<ExtRedPackage> pager;
 
-        if (model.getSortType() == RedPackageSortType.ExpTime) {
+        if (model.getSortType() == RedPackageSortType.EXPTIME) {
             if (model.isLoadEarlier()) {
                 pager = extRedPackageDao.pageEffectiveEarlierHistoryByCustomerIdOrderByType(customer.getId(), created, expTime, model.getSortType().getName());
             } else {
@@ -278,7 +278,7 @@ public class ReadPackageServiceImpl implements ReadPackageService {
             throw new ApiException(ResultStatus.PARAMETER_MISSING);
         }
         if (model.getSortType() == null) {
-            model.setSortType(RedPackageSortType.ExpTime);
+            model.setSortType(RedPackageSortType.EXPTIME);
         }
 
         PageHelper.startPage(model.getPageIndex(), Constants.PAGE_SIZE);
