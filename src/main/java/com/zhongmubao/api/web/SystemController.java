@@ -5,6 +5,8 @@ import com.zhongmubao.api.authorization.annotation.CurrentUser;
 import com.zhongmubao.api.config.enmu.RedPackageType;
 import com.zhongmubao.api.dto.request.system.*;
 import com.zhongmubao.api.dto.response.ReponseModel;
+import com.zhongmubao.api.dto.response.my.ListArticleViewModel;
+import com.zhongmubao.api.dto.response.system.IncomeCalcViewModel;
 import com.zhongmubao.api.dto.response.system.RedEnvelopeViewModel;
 import com.zhongmubao.api.dto.response.system.ShareInfoViewModel;
 import com.zhongmubao.api.entity.Customer;
@@ -146,6 +148,42 @@ public class SystemController {
         try {
             systemService.redEnvelopeOpen(customer, model.getBody());
             return new ResponseEntity<>(ReponseModel.ok(), HttpStatus.OK);
+        } catch (ApiException ex) {
+            return new ResponseEntity<>(ReponseModel.error(ex.getStatus()), HttpStatus.OK);
+        } catch (Exception ex) {
+            return new ResponseEntity<>(ReponseModel.error(ex, this.getClass()), HttpStatus.OK);
+        }
+    }
+
+    /**
+     * 文章列表
+     *
+     * @author 米立林
+     */
+    @RequestMapping(value = "/miniapps/article/list", method = RequestMethod.POST, consumes = "application/json")
+    @Authorization(onlyGetCustomer = true)
+    public ResponseEntity<ReponseModel> miniappsArticleList(@CurrentUser Customer customer, HttpEntity<PageRequestModel> model) {
+        try {
+            ListArticleViewModel viewModel = systemService.miniappsArticleList(customer, model.getBody());
+            return new ResponseEntity<>(ReponseModel.ok(viewModel), HttpStatus.OK);
+        } catch (ApiException ex) {
+            return new ResponseEntity<>(ReponseModel.error(ex.getStatus()), HttpStatus.OK);
+        } catch (Exception ex) {
+            return new ResponseEntity<>(ReponseModel.error(ex, this.getClass()), HttpStatus.OK);
+        }
+    }
+
+    /**
+     * 收益计算
+     *
+     * @author 米立林
+     */
+    @RequestMapping(value = "/miniapps/Income/calc", method = RequestMethod.POST, consumes = "application/json")
+    @Authorization(onlyGetCustomer = true)
+    public ResponseEntity<ReponseModel> miniappsIncomeCalc(@CurrentUser Customer customer, HttpEntity<IncomeCalcRequestModel> model) {
+        try {
+            IncomeCalcViewModel viewModel = systemService.miniappsIncomeCalc(customer, model.getBody());
+            return new ResponseEntity<>(ReponseModel.ok(viewModel), HttpStatus.OK);
         } catch (ApiException ex) {
             return new ResponseEntity<>(ReponseModel.error(ex.getStatus()), HttpStatus.OK);
         } catch (Exception ex) {

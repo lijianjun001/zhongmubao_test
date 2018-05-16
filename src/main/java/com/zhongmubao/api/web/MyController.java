@@ -9,6 +9,8 @@ import com.zhongmubao.api.dto.request.my.transaction.DetailRequestModel;
 import com.zhongmubao.api.dto.request.my.transaction.MonthlyBillRequestModel;
 import com.zhongmubao.api.dto.request.my.transaction.RequestModel;
 import com.zhongmubao.api.dto.response.ReponseModel;
+import com.zhongmubao.api.dto.response.my.ListArticleViewModel;
+import com.zhongmubao.api.dto.response.my.MyAssetViewModel;
 import com.zhongmubao.api.dto.response.my.redpackage.GroupViewModel;
 import com.zhongmubao.api.dto.response.my.redpackage.ListViewModel;
 import com.zhongmubao.api.dto.response.my.redpackage.HistoryViewModel;
@@ -248,6 +250,23 @@ public class MyController {
 
     //endregion
 
-
+    //region 小程序接口
+    /**
+     * 我的资产
+     *
+     * @author 米立林
+     */
+    @RequestMapping(value = "/miniapps/myAsset", method = RequestMethod.POST, consumes = "application/json")
+    @Authorization
+    public ResponseEntity<ReponseModel> miniappsMyAsset(@CurrentUser Customer customer) {
+        try {
+            MyAssetViewModel viewModel = customerService.miniappsMyAsset(customer);
+            return new ResponseEntity<>(ReponseModel.ok(viewModel), HttpStatus.OK);
+        } catch (ApiException ex) {
+            return new ResponseEntity<>(ReponseModel.error(ex.getStatus()), HttpStatus.OK);
+        } catch (Exception ex) {
+            return new ResponseEntity<>(ReponseModel.error(ex, this.getClass()), HttpStatus.OK);
+        }
+    }
     //endregion
 }

@@ -235,6 +235,11 @@ public class Constants {
     public static final String DATETIME_FORMAT_CHINA_SHORT = "MM月dd日 HH:mm";
 
     /**
+     * 日期时间格式
+     */
+    public static final String DATETIME_FORMAT_MONTH_DAY = "MM月dd日";
+
+    /**
      * 日期格式
      */
     public static final String DATE_FORMAT_DOT = "yyyy.MM.dd";

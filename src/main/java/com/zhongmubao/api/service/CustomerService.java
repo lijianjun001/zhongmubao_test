@@ -7,6 +7,7 @@ import com.zhongmubao.api.dto.request.my.RealNameRequestModel;
 import com.zhongmubao.api.dto.response.customer.AccountExistViewModel;
 import com.zhongmubao.api.dto.response.customer.RecommendInfoViewModel;
 import com.zhongmubao.api.dto.response.customer.RegisterViewModel;
+import com.zhongmubao.api.dto.response.my.MyAssetViewModel;
 import com.zhongmubao.api.dto.response.my.RealNameViewModel;
 import com.zhongmubao.api.entity.Customer;
 
@@ -53,4 +54,13 @@ public interface CustomerService {
      * @throws Exception
      */
     AccountExistViewModel exist(AccountExistRequestModel model) throws Exception;
+
+    /**
+     * 小程序我的资产
+     *
+     * @param customer 客户
+     * @return true or false
+     * @throws Exception
+     */
+    MyAssetViewModel miniappsMyAsset(Customer customer) throws Exception;
 }

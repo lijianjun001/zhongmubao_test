@@ -31,7 +31,7 @@
 
         var data = {
             platform: "03",
-            id:"5afa4f384e3537d91cc9f6d5"
+            money: 150000.00
         };
 //        var data = {
 //            platform: "01",
@@ -45,7 +45,7 @@
 
         $.ajax({
             type: "POST",
-            url: "system/redEnvelope/open",
+            url: "system/miniapps/Income/calc",
             data: JSON.stringify(data),
             contentType: 'application/json;charset=UTF-8',
             dataType: "json",                                     //预期服务器返回类型

@@ -120,6 +120,45 @@
         AND sp.BeginTime &lt;= #{endDate}
         AND so.state ='05'
         AND so.deleted = 0
+        AND so.Frozened = 0
+    </select>
+
+    <select id="statisticsTotalRedeemIncome" resultType="java.lang.Double">
+        <!-- 统计总收益（已赎回） -->
+        SELECT IFNULL(SUM(RedemAmount)-SUM(TotalAmount),0) AS totalIncome
+        FROM SheepOrder so
+        WHERE so.CustomerId=#{customerId}
+        AND so.state ='05'
+        AND so.deleted = 0
+        AND so.Frozened =0
+    </select>
+
+    <select id="statisticsRedeemIncome" resultType="java.lang.Double">
+        <!-- 统计当月收益（已赎回） -->
+        SELECT IFNULL(SUM(so.RedemAmount)-SUM(so.TotalAmount),0) AS totalIncome
+        FROM SheepOrder so
+        LEFT JOIN SheepProject sp ON(so.ProjectId=sp.Id)
+        WHERE so.CustomerId=#{customerId}
+        AND so.state ='05'
+        AND so.deleted = 0
+        AND so.Frozened =0
+        AND sp.RedemTime >= #{startDate}
+        AND sp.RedemTime &lt;= #{endDate}
+        AND sp.Deleted=0
+    </select>
+
+    <select id="statisticsAssetInfo" resultType="SheepOrderInfo">
+        <!-- 羊只列表，统计资产 -->
+        SELECT sp.Title,so.Count,sp.Price,sp.Rate,sp.Period,
+        (SELECT SUM(Price) FROM ExtRedPackage erp WHERE erp.SheepOrderId=so.Id) AS redPackageAmount
+        FROM SheepOrder so
+        LEFT JOIN SheepProject sp ON (so.ProjectId=sp.Id)
+        WHERE so.CustomerId=#{customerId}
+        AND so.state IN
+        <foreach collection="states" item="item" index="index" open="(" close=")" separator=",">
+            #{item}
+        </foreach>
+        AND so.deleted = 0
         AND so.Frozened =0
     </select>
 

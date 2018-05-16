@@ -5,6 +5,9 @@ import com.zhongmubao.api.config.ResultStatus;
 import com.zhongmubao.api.config.enmu.*;
 import com.zhongmubao.api.dao.CustomerDao;
 import com.zhongmubao.api.dto.request.system.*;
+import com.zhongmubao.api.dto.response.my.ArticleModel;
+import com.zhongmubao.api.dto.response.my.ListArticleViewModel;
+import com.zhongmubao.api.dto.response.system.IncomeCalcViewModel;
 import com.zhongmubao.api.dto.response.system.RedEnvelopeCustomer;
 import com.zhongmubao.api.dto.response.system.RedEnvelopeViewModel;
 import com.zhongmubao.api.dto.response.system.ShareInfoViewModel;
@@ -12,9 +15,9 @@ import com.zhongmubao.api.entity.Customer;
 import com.zhongmubao.api.exception.ApiException;
 import com.zhongmubao.api.mongo.dao.*;
 import com.zhongmubao.api.mongo.entity.*;
+import com.zhongmubao.api.mongo.entity.base.PageModel;
 import com.zhongmubao.api.service.SystemService;
 import com.zhongmubao.api.util.*;
-import org.apache.commons.collections.DoubleOrderedMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +25,7 @@ import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 系统服务实现
@@ -39,9 +43,10 @@ public class SystemServiceImpl extends BaseService implements SystemService {
     private final RedEnvelopeMongoDao redEnvelopeMongoDao;
     private final RedEnvelopeInfoMongoDao redEnvelopeInfoMongoDao;
     private final CustomerDao customerDao;
+    private final ArticleMongoDao articleMongoDao;
 
     @Autowired
-    public SystemServiceImpl(TouTiaoAdvMongoDao touTiaoAdvMongoDao, PlatformTrackingMongoDao platformTrackingMongoDao, SystemServerActionMongoDao systemServerActionMongoDao, ShareContentMongoDao shareContentMongoDao, SystemSmsLogMongoDao systemSmsLogMongoDao, RedEnvelopeMongoDao redEnvelopeMongoDao, RedEnvelopeInfoMongoDao redEnvelopeInfoMongoDao, CustomerDao customerDao) {
+    public SystemServiceImpl(TouTiaoAdvMongoDao touTiaoAdvMongoDao, PlatformTrackingMongoDao platformTrackingMongoDao, SystemServerActionMongoDao systemServerActionMongoDao, ShareContentMongoDao shareContentMongoDao, SystemSmsLogMongoDao systemSmsLogMongoDao, RedEnvelopeMongoDao redEnvelopeMongoDao, RedEnvelopeInfoMongoDao redEnvelopeInfoMongoDao, CustomerDao customerDao, ArticleMongoDao articleMongoDao) {
         this.touTiaoAdvMongoDao = touTiaoAdvMongoDao;
         this.platformTrackingMongoDao = platformTrackingMongoDao;
         this.systemServerActionMongoDao = systemServerActionMongoDao;
@@ -50,6 +55,7 @@ public class SystemServiceImpl extends BaseService implements SystemService {
         this.redEnvelopeMongoDao = redEnvelopeMongoDao;
         this.redEnvelopeInfoMongoDao = redEnvelopeInfoMongoDao;
         this.customerDao = customerDao;
+        this.articleMongoDao = articleMongoDao;
     }
 
     @Override
@@ -196,6 +202,7 @@ public class SystemServiceImpl extends BaseService implements SystemService {
 
     }
 
+    //region 小程序
     @Override
     public RedEnvelopeViewModel redEnvelope(Customer customer, RedEnvelopeRequestModel model) throws Exception {
         if (null == model || StringUtil.isNullOrEmpty(model.getId())) {
@@ -310,6 +317,53 @@ public class SystemServiceImpl extends BaseService implements SystemService {
             sendRedPackage(customer, RedPackageType.SHARE, Double.parseDouble(currentCustomer.getPrice()), now, 1);
         }
     }
+
+    @Override
+    public ListArticleViewModel miniappsArticleList(Customer customer, PageRequestModel model) throws Exception {
+        if (null == model) {
+            throw new ApiException(ResultStatus.PARAMETER_MISSING);
+        }
+
+        ListArticleViewModel viewModel = new ListArticleViewModel();
+        PageModel<ArticleMongo> pager = new PageModel<>();
+        pager.setPageNo(model.getPageIndex());
+        pager = articleMongoDao.pager(false, pager);
+
+        List<ArticleModel> list = pager.getDatas().stream()
+                .map(en -> new ArticleModel(
+                        en.id,
+                        en.getTitle(),
+                        en.getContent(),
+                        en.getUrl(),
+                        DateUtil.format(en.getCreated(), Constants.DATE_FORMAT_CHINA)))
+                .collect(Collectors.toList());
+
+        viewModel.setTotalPage(pager.getTotalPages());
+        viewModel.setList(list);
+        return viewModel;
+    }
+
+    @Override
+    public IncomeCalcViewModel miniappsIncomeCalc(Customer customer, IncomeCalcRequestModel model) throws Exception {
+        if (null == model) {
+            throw new ApiException(ResultStatus.PARAMETER_MISSING);
+        }
+        double money = model.getMoney();
+        if (money == 0) {
+            return new IncomeCalcViewModel();
+        }
+        double zmbIncome = money * 0.125;
+        double bankIncome = money * 0.031;
+        double zfmIncome = money * 0.043;
+
+        IncomeCalcViewModel viewModel = new IncomeCalcViewModel();
+        viewModel.setMoney(DoubleUtil.toFixed(money, Constants.PRICE_FORMAT));
+        viewModel.setZmbIncome(DoubleUtil.toFixed(zmbIncome, Constants.PRICE_FORMAT));
+        viewModel.setBankIncome(DoubleUtil.toFixed(bankIncome, Constants.PRICE_FORMAT));
+        viewModel.setZfbIncome(DoubleUtil.toFixed(zfmIncome, Constants.PRICE_FORMAT));
+        return viewModel;
+    }
+    //endregion
 
     //    @Override
 //    @Transactional(timeout=1000, isolation= Isolation.DEFAULT, propagation= Propagation.REQUIRED,rollbackFor = ApiException.class)

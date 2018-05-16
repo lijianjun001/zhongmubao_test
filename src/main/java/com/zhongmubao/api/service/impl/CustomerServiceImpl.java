@@ -11,24 +11,23 @@ import com.zhongmubao.api.dto.request.my.RealNameRequestModel;
 import com.zhongmubao.api.dto.response.customer.AccountExistViewModel;
 import com.zhongmubao.api.dto.response.customer.RecommendInfoViewModel;
 import com.zhongmubao.api.dto.response.customer.RegisterViewModel;
+import com.zhongmubao.api.dto.response.my.MyAssetViewModel;
 import com.zhongmubao.api.dto.response.my.RealNameViewModel;
 import com.zhongmubao.api.entity.Customer;
 import com.zhongmubao.api.entity.CustomerHF;
 import com.zhongmubao.api.entity.CustomerSina;
+import com.zhongmubao.api.entity.ext.SheepOrderInfo;
 import com.zhongmubao.api.exception.ApiException;
 import com.zhongmubao.api.mongo.dao.*;
 import com.zhongmubao.api.mongo.entity.*;
 import com.zhongmubao.api.service.CustomerService;
-import com.zhongmubao.api.util.ApiUtil;
-import com.zhongmubao.api.util.DateUtil;
-import com.zhongmubao.api.util.RegExpMatcher;
-import com.zhongmubao.api.util.SecurityUtil;
-import com.zhongmubao.api.util.StringUtil;
+import com.zhongmubao.api.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Customer
@@ -43,15 +42,17 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
     private final CustomerDao customerDao;
     private final SystemSmsLogMongoDao systemSmsLogMongoDao;
     private final CustomerMessageMongoDao customerMessageMongoDao;
+    private final SheepOrderDao sheepOrderDao;
 
     @Autowired
-    public CustomerServiceImpl(CustomerHFDao customerHFDao, CustomerSinaDao customerSinaDao, CustomerHFIndexMongoDao customerHFIndexMongoDao, CustomerDao customerDao, SystemSmsLogMongoDao systemSmsLogMongoDao, CustomerMessageMongoDao customerMessageMongoDao) {
+    public CustomerServiceImpl(CustomerHFDao customerHFDao, CustomerSinaDao customerSinaDao, CustomerHFIndexMongoDao customerHFIndexMongoDao, CustomerDao customerDao, SystemSmsLogMongoDao systemSmsLogMongoDao, CustomerMessageMongoDao customerMessageMongoDao, SheepOrderDao sheepOrderDao) {
         this.customerHFDao = customerHFDao;
         this.customerSinaDao = customerSinaDao;
         this.customerHFIndexMongoDao = customerHFIndexMongoDao;
         this.customerDao = customerDao;
         this.systemSmsLogMongoDao = systemSmsLogMongoDao;
         this.customerMessageMongoDao = customerMessageMongoDao;
+        this.sheepOrderDao = sheepOrderDao;
     }
 
     //region 是否实名
@@ -295,6 +296,33 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
 
         AccountExistViewModel viewModel = new AccountExistViewModel();
         viewModel.setExist(customer != null);
+        return viewModel;
+    }
+    //endregion
+
+    //region 微信小程序-我的资产
+    @Override
+    public MyAssetViewModel miniappsMyAsset(Customer customer) throws Exception {
+        Date now = new Date();
+        // 1、总资产
+        double totalAsset = 0;
+        List<SheepOrderInfo> sheepOrders = sheepOrderDao.statisticsAssetInfo(customer.getId(), Constants.SHEEP_IN_THE_BAR_STATE);
+        for (SheepOrderInfo order : sheepOrders) {
+            double sheepIncom = order.getCount() * ApiUtil.calcProfitEx(order.getPrice(), order.getRate(), order.getPeriod());
+            double redIncome = order.getRedPackageAmount();
+            totalAsset += (sheepIncom + redIncome);
+        }
+        // 2、累计总收益
+        double totalIncome = sheepOrderDao.statisticsTotalRedeemIncome(customer.getId());
+        // 3、累计月收益
+        Date beginTime = DateUtil.formatMongo(DateUtil.monthFirstDay());
+        Date endTime = DateUtil.formatMongo(now);
+        double monthIncome = sheepOrderDao.statisticsRedeemIncome(customer.getId(), DateUtil.formatDefault(beginTime), DateUtil.formatDefault(endTime));
+
+        MyAssetViewModel viewModel = new MyAssetViewModel();
+        viewModel.setTotalAsset(DoubleUtil.toFixed(totalAsset, Constants.PRICE_FORMAT));
+        viewModel.setTotalIncome(DoubleUtil.toFixed(totalIncome, Constants.PRICE_FORMAT));
+        viewModel.setMonthIncome(DoubleUtil.toFixed(monthIncome, Constants.PRICE_FORMAT));
         return viewModel;
     }
     //endregion
