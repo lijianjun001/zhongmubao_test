@@ -33,6 +33,24 @@ public enum RedEnvelopeStatus {
         public String getName() {
             return "02";
         }
+    },
+    /**
+     * 不能参与
+     */
+    NOT_JOIN {
+        @Override
+        public String getName() {
+            return "03";
+        }
+    },
+    /**
+     * 红包已打开
+     */
+    OPENED {
+        @Override
+        public String getName() {
+            return "04";
+        }
     };
 
     public abstract String getName();

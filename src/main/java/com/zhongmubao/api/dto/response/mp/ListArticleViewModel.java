@@ -1,4 +1,6 @@
-package com.zhongmubao.api.dto.response.my;
+package com.zhongmubao.api.dto.response.mp;
+
+import com.zhongmubao.api.dto.response.my.ArticleModel;
 
 import java.util.List;
 

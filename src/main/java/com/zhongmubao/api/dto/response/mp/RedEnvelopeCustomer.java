@@ -1,23 +1,14 @@
-package com.zhongmubao.api.dto.response.system;
+package com.zhongmubao.api.dto.response.mp;
 
 /**
  * 小程序红包邀请
  *
- * @author Yekai
+ * @author 米立林
  */
 public class RedEnvelopeCustomer {
-    private int customerId;
     private String name;
     private String photo;
     private String price;
-
-    public int getCustomerId() {
-        return customerId;
-    }
-
-    public void setCustomerId(int customerId) {
-        this.customerId = customerId;
-    }
 
     public String getName() {
         return name;

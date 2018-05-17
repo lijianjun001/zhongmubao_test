@@ -31,7 +31,7 @@
 
         var data = {
             platform: "03",
-            money: 150000.00
+            money:100000.10
         };
 //        var data = {
 //            platform: "01",
@@ -45,11 +45,10 @@
 
         $.ajax({
             type: "POST",
-            url: "system/miniapps/Income/calc",
+            url: "mp/calcProfit",
             data: JSON.stringify(data),
             contentType: 'application/json;charset=UTF-8',
             dataType: "json",                                     //预期服务器返回类型
-
             headers: {
                 Authorization: "YR3D+mEt8SQSBFNpCoOLiJTh/nZMACMncBFB0C35vJjqFv1gVrk2g3uVvIwSPqSoDnnOWSIzPywvYiswNAOmuqyhymtVphmdBnYRvx0H0ricp6x4a49ak7cdo/WWz72h",
                 platform: "04"

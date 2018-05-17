@@ -1,4 +1,4 @@
-package com.zhongmubao.api.dto.request.system;
+package com.zhongmubao.api.dto.request.mp;
 
 /**
  * 分页请求参数

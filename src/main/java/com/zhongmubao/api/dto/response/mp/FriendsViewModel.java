@@ -1,18 +1,18 @@
-package com.zhongmubao.api.dto.response.system;
+package com.zhongmubao.api.dto.response.mp;
 
 import java.util.ArrayList;
 
 /**
- * 小程序红包响应类
+ * 红包进度ViewModel
  *
- * @author Yekai
+ * @author 米立林
  */
-public class RedEnvelopeViewModel {
+public class FriendsViewModel {
     /**
-     * 状态 00进行中 01完成 02失败
+     * 状态 00进行中 01完成 02失败 03不能参与 04红包已打开
      */
     private String status;
-    private String text;
+    private int surplus;
     private String totalPrice;
     private int countdown;
     private ArrayList<RedEnvelopeCustomer> list;
@@ -25,12 +25,12 @@ public class RedEnvelopeViewModel {
         this.status = status;
     }
 
-    public String getText() {
-        return text;
+    public int getSurplus() {
+        return surplus;
     }
 
-    public void setText(String text) {
-        this.text = text;
+    public void setSurplus(int surplus) {
+        this.surplus = surplus;
     }
 
     public String getTotalPrice() {

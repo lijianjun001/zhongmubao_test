@@ -1,12 +1,12 @@
-package com.zhongmubao.api.dto.response.system;
+package com.zhongmubao.api.dto.response.mp;
 
 /**
  * 收益计算
  *
  * @author 米立林
  */
-public class IncomeCalcViewModel {
-    public IncomeCalcViewModel() {
+public class CalcProfitViewModel {
+    public CalcProfitViewModel() {
         this.money = "0.00";
         this.zmbIncome = "0.00";
         this.bankIncome = "0.00";

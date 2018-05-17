@@ -4,28 +4,21 @@ import com.zhongmubao.api.config.Constants;
 import com.zhongmubao.api.config.ResultStatus;
 import com.zhongmubao.api.config.enmu.*;
 import com.zhongmubao.api.dao.CustomerDao;
+import com.zhongmubao.api.dto.request.mp.CalcProfitRequestModel;
 import com.zhongmubao.api.dto.request.system.*;
-import com.zhongmubao.api.dto.response.my.ArticleModel;
-import com.zhongmubao.api.dto.response.my.ListArticleViewModel;
-import com.zhongmubao.api.dto.response.system.IncomeCalcViewModel;
-import com.zhongmubao.api.dto.response.system.RedEnvelopeCustomer;
-import com.zhongmubao.api.dto.response.system.RedEnvelopeViewModel;
+import com.zhongmubao.api.dto.response.mp.CalcProfitViewModel;
 import com.zhongmubao.api.dto.response.system.ShareInfoViewModel;
 import com.zhongmubao.api.entity.Customer;
 import com.zhongmubao.api.exception.ApiException;
 import com.zhongmubao.api.mongo.dao.*;
 import com.zhongmubao.api.mongo.entity.*;
-import com.zhongmubao.api.mongo.entity.base.PageModel;
 import com.zhongmubao.api.service.SystemService;
 import com.zhongmubao.api.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.net.URLEncoder;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * 系统服务实现
@@ -40,22 +33,14 @@ public class SystemServiceImpl extends BaseService implements SystemService {
     private final SystemServerActionMongoDao systemServerActionMongoDao;
     private final ShareContentMongoDao shareContentMongoDao;
     private final SystemSmsLogMongoDao systemSmsLogMongoDao;
-    private final RedEnvelopeMongoDao redEnvelopeMongoDao;
-    private final RedEnvelopeInfoMongoDao redEnvelopeInfoMongoDao;
-    private final CustomerDao customerDao;
-    private final ArticleMongoDao articleMongoDao;
 
     @Autowired
-    public SystemServiceImpl(TouTiaoAdvMongoDao touTiaoAdvMongoDao, PlatformTrackingMongoDao platformTrackingMongoDao, SystemServerActionMongoDao systemServerActionMongoDao, ShareContentMongoDao shareContentMongoDao, SystemSmsLogMongoDao systemSmsLogMongoDao, RedEnvelopeMongoDao redEnvelopeMongoDao, RedEnvelopeInfoMongoDao redEnvelopeInfoMongoDao, CustomerDao customerDao, ArticleMongoDao articleMongoDao) {
+    public SystemServiceImpl(TouTiaoAdvMongoDao touTiaoAdvMongoDao, PlatformTrackingMongoDao platformTrackingMongoDao, SystemServerActionMongoDao systemServerActionMongoDao, ShareContentMongoDao shareContentMongoDao, SystemSmsLogMongoDao systemSmsLogMongoDao) {
         this.touTiaoAdvMongoDao = touTiaoAdvMongoDao;
         this.platformTrackingMongoDao = platformTrackingMongoDao;
         this.systemServerActionMongoDao = systemServerActionMongoDao;
         this.shareContentMongoDao = shareContentMongoDao;
         this.systemSmsLogMongoDao = systemSmsLogMongoDao;
-        this.redEnvelopeMongoDao = redEnvelopeMongoDao;
-        this.redEnvelopeInfoMongoDao = redEnvelopeInfoMongoDao;
-        this.customerDao = customerDao;
-        this.articleMongoDao = articleMongoDao;
     }
 
     @Override
@@ -202,168 +187,6 @@ public class SystemServiceImpl extends BaseService implements SystemService {
 
     }
 
-    //region 小程序
-    @Override
-    public RedEnvelopeViewModel redEnvelope(Customer customer, RedEnvelopeRequestModel model) throws Exception {
-        if (null == model || StringUtil.isNullOrEmpty(model.getId())) {
-            throw new ApiException(ResultStatus.PARAMETER_MISSING);
-        }
-        Date now = new Date();
-        int countdown;
-        boolean flat = false;
-        String status;
-        String text = Constants.STRING_EMPTY;
-        RedEnvelopeViewModel viewModel = new RedEnvelopeViewModel();
-        RedEnvelopeMongo redEnvelopeMongo = redEnvelopeMongoDao.getById(model.getId());
-        if (redEnvelopeMongo == null) {
-            throw new ApiException(ResultStatus.INVALID_REC_ENVELOPE_ERROR);
-        }
-        ArrayList<RedEnvelopeCustomer> joins = new ArrayList<>();
-        List<RedEnvelopeInfoMongo> redEnvelopeInfoMongos = redEnvelopeInfoMongoDao.getListByRedEnvelopeId(redEnvelopeMongo.id);
-
-        RedEnvelopeInfoMongo currentCustomer = redEnvelopeInfoMongoDao.getOne(customer.getId(), redEnvelopeMongo.id);
-        if (currentCustomer == null) {
-            if (redEnvelopeInfoMongos.size() >= redEnvelopeMongo.getHeadcount()) {
-                text = "来迟了，红包已被抢完";
-            } else {
-                if (redEnvelopeMongo.getStatus().equals(RedEnvelopeStatus.UNDERWAY.getName())) {
-                    // 加入抢红包
-                    flat = true;
-                    currentCustomer = new RedEnvelopeInfoMongo();
-                    currentCustomer.setRedEnvelopeId(redEnvelopeMongo.id);
-                    currentCustomer.setJoinCustomerId(customer.getId());
-                    currentCustomer.setJoinNo(redEnvelopeInfoMongos.size() + 1);
-                    currentCustomer.setOpened(false);
-                    currentCustomer.setCreated(DateUtil.addHours(now, 8));
-                    redEnvelopeInfoMongos.add(currentCustomer);
-                }
-            }
-        }
-
-        for (RedEnvelopeInfoMongo info : redEnvelopeInfoMongos) {
-            Customer joinCustomer = customerDao.getCustomerById(info.getJoinCustomerId());
-            RedEnvelopeCustomer customerInfo = new RedEnvelopeCustomer();
-            customerInfo.setCustomerId(joinCustomer.getId());
-            customerInfo.setPhoto(ApiUtil.formartPhoto(customerInfo.getPhoto()));
-            customerInfo.setName(joinCustomer.getNickName());
-            customerInfo.setPrice(info.getPrice());
-            joins.add(customerInfo);
-            if (info.getJoinCustomerId() == customer.getId()) {
-                currentCustomer = info;
-            }
-        }
-
-        // 人员满，则分配红包
-        if (redEnvelopeInfoMongos.size() == redEnvelopeMongo.getHeadcount() && redEnvelopeMongo.getStatus().equals(RedEnvelopeStatus.UNDERWAY.getName())) {
-            RedPacketUtil redPacketUtil = new RedPacketUtil();
-            List<Float> prices = redPacketUtil.splitRedPackets(redEnvelopeMongo.getPrice(), redEnvelopeMongo.getHeadcount());
-            // 分配到个人
-            for (int i = 0; i < redEnvelopeInfoMongos.size(); i++) {
-                String price = DoubleUtil.toFixed(prices.get(i), Constants.PRICE_FORMAT);
-                RedEnvelopeInfoMongo mongo = redEnvelopeInfoMongos.get(i);
-                mongo.setPrice(price);
-                redEnvelopeInfoMongoDao.save(mongo);
-                joins.get(i).setPrice(price);
-            }
-
-            // 修改RedEnvelope状态为"完成"
-            redEnvelopeMongo.setStatus(RedEnvelopeStatus.SUCCESS.getName());
-            redEnvelopeMongoDao.update(redEnvelopeMongo);
-        } else {
-            if (flat) {
-                // 把当前用户添加到Mongo
-                redEnvelopeInfoMongoDao.save(currentCustomer);
-            }
-        }
-        status = redEnvelopeMongo.getStatus();
-        countdown = (int) DateUtil.subDateOfSecond(redEnvelopeMongo.getEndTime(), now);
-        if (StringUtil.isNullOrEmpty(text)) {
-            assert currentCustomer != null;
-            if (!currentCustomer.isOpened()) {
-                if (countdown <= 0) {
-                    text = "红包已过期";
-                } else {
-                    if (redEnvelopeInfoMongos.size() >= redEnvelopeMongo.getHeadcount()) {
-                        text = "恭喜你！人员全部到齐";
-                    } else {
-                        int headcount = redEnvelopeMongo.getHeadcount() - joins.size();
-                        text = "还差" + headcount + "人就能拆开大额红包，求助攻啊";
-                    }
-                }
-            }
-        }
-        viewModel.setStatus(status);
-        viewModel.setText(text);
-        viewModel.setTotalPrice(String.valueOf(redEnvelopeMongo.getPrice()));
-        viewModel.setCountdown(countdown);
-        viewModel.setList(joins);
-
-        return viewModel;
-    }
-
-    @Override
-    public void redEnvelopeOpen(Customer customer, RedEnvelopeRequestModel model) throws Exception {
-        if (null == model || StringUtil.isNullOrEmpty(model.getId())) {
-            throw new ApiException(ResultStatus.PARAMETER_MISSING);
-        }
-        Date now = new Date();
-        // 修改已开红包状态
-        RedEnvelopeInfoMongo currentCustomer = redEnvelopeInfoMongoDao.getOne(customer.getId(), model.getId());
-        if (currentCustomer != null && !currentCustomer.isOpened()) {
-            currentCustomer.setOpened(true);
-            redEnvelopeInfoMongoDao.update(currentCustomer);
-
-            // 发送红包
-            sendRedPackage(customer, RedPackageType.SHARE, Double.parseDouble(currentCustomer.getPrice()), now, 1);
-        }
-    }
-
-    @Override
-    public ListArticleViewModel miniappsArticleList(Customer customer, PageRequestModel model) throws Exception {
-        if (null == model) {
-            throw new ApiException(ResultStatus.PARAMETER_MISSING);
-        }
-
-        ListArticleViewModel viewModel = new ListArticleViewModel();
-        PageModel<ArticleMongo> pager = new PageModel<>();
-        pager.setPageNo(model.getPageIndex());
-        pager = articleMongoDao.pager(false, pager);
-
-        List<ArticleModel> list = pager.getDatas().stream()
-                .map(en -> new ArticleModel(
-                        en.id,
-                        en.getTitle(),
-                        en.getContent(),
-                        en.getUrl(),
-                        DateUtil.format(en.getCreated(), Constants.DATE_FORMAT_CHINA)))
-                .collect(Collectors.toList());
-
-        viewModel.setTotalPage(pager.getTotalPages());
-        viewModel.setList(list);
-        return viewModel;
-    }
-
-    @Override
-    public IncomeCalcViewModel miniappsIncomeCalc(Customer customer, IncomeCalcRequestModel model) throws Exception {
-        if (null == model) {
-            throw new ApiException(ResultStatus.PARAMETER_MISSING);
-        }
-        double money = model.getMoney();
-        if (money == 0) {
-            return new IncomeCalcViewModel();
-        }
-        double zmbIncome = money * 0.125;
-        double bankIncome = money * 0.031;
-        double zfmIncome = money * 0.043;
-
-        IncomeCalcViewModel viewModel = new IncomeCalcViewModel();
-        viewModel.setMoney(DoubleUtil.toFixed(money, Constants.PRICE_FORMAT));
-        viewModel.setZmbIncome(DoubleUtil.toFixed(zmbIncome, Constants.PRICE_FORMAT));
-        viewModel.setBankIncome(DoubleUtil.toFixed(bankIncome, Constants.PRICE_FORMAT));
-        viewModel.setZfbIncome(DoubleUtil.toFixed(zfmIncome, Constants.PRICE_FORMAT));
-        return viewModel;
-    }
-    //endregion
 
     //    @Override
 //    @Transactional(timeout=1000, isolation= Isolation.DEFAULT, propagation= Propagation.REQUIRED,rollbackFor = ApiException.class)

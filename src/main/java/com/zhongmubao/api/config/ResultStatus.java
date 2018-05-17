@@ -35,7 +35,8 @@ public enum ResultStatus {
     INVALID_RECOMMEND_CODE_ERROR(-4006, "推荐码不能为空"),
     INVALID_NEWSDETAIL_CODE_ERROR(-4007, "消息不存在"),
     INVALID_REC_ENVELOPE_ERROR(-4008, "该红包不存在"),
-    OVERTOP_MAX_ERROR(-4008, "该红包已满员");
+    OVERTOP_MAX_ERROR(-4009, "该红包已满员"),
+    NOW_COMPLETED_ERROR(-4010, "该红包未满员");
 
     /**
      * 返回码

@@ -1,11 +1,11 @@
-package com.zhongmubao.api.dto.request.system;
+package com.zhongmubao.api.dto.request.mp;
 
 /**
- * 小程序红包请求参数
+ * 红包进度请求实体
  *
- * @author Yekai
+ * @author 米立林
  */
-public class RedEnvelopeRequestModel {
+public class FriendsRequestModel {
     private String id;
 
     public String getId() {

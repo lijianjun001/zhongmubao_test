@@ -1,12 +1,11 @@
-package com.zhongmubao.api.dto.response.my;
-
+package com.zhongmubao.api.dto.response.mp;
 
 /**
- * 我的资产
+ * 我的首页
  *
  * @author 米立林
  */
-public class MyAssetViewModel {
+public class IndexViewModel {
     private String totalAsset;
     private String totalIncome;
     private String monthIncome;

@@ -2,12 +2,11 @@ package com.zhongmubao.api.web;
 
 import com.zhongmubao.api.authorization.annotation.Authorization;
 import com.zhongmubao.api.authorization.annotation.CurrentUser;
-import com.zhongmubao.api.config.enmu.RedPackageType;
+import com.zhongmubao.api.dto.request.mp.CalcProfitRequestModel;
 import com.zhongmubao.api.dto.request.system.*;
 import com.zhongmubao.api.dto.response.ReponseModel;
-import com.zhongmubao.api.dto.response.my.ListArticleViewModel;
-import com.zhongmubao.api.dto.response.system.IncomeCalcViewModel;
-import com.zhongmubao.api.dto.response.system.RedEnvelopeViewModel;
+import com.zhongmubao.api.dto.response.mp.CalcProfitViewModel;
+import com.zhongmubao.api.dto.response.mp.ListArticleViewModel;
 import com.zhongmubao.api.dto.response.system.ShareInfoViewModel;
 import com.zhongmubao.api.entity.Customer;
 import com.zhongmubao.api.exception.ApiException;
@@ -114,84 +113,6 @@ public class SystemController {
         }
     }
 
-    //region 微信小程序分享红包
-
-    /**
-     * 展示红包进度信息
-     *
-     * @param model 请求实体
-     * @return RedEnvelopeViewModel
-     * @author 米立林
-     */
-    @RequestMapping(value = "/redEnvelope/info", method = RequestMethod.POST, consumes = "application/json")
-    @Authorization
-    public ResponseEntity<ReponseModel> redEnvelopeInfo(@CurrentUser Customer customer, HttpEntity<RedEnvelopeRequestModel> model) {
-        try {
-            RedEnvelopeViewModel viewModel = systemService.redEnvelope(customer, model.getBody());
-            return new ResponseEntity<>(ReponseModel.ok(viewModel), HttpStatus.OK);
-        } catch (ApiException ex) {
-            return new ResponseEntity<>(ReponseModel.error(ex.getStatus()), HttpStatus.OK);
-        } catch (Exception ex) {
-            return new ResponseEntity<>(ReponseModel.error(ex, this.getClass()), HttpStatus.OK);
-        }
-    }
-
-    /**
-     * 拆开红包
-     *
-     * @param model 请求实体
-     * @author 米立林
-     */
-    @RequestMapping(value = "/redEnvelope/open", method = RequestMethod.POST, consumes = "application/json")
-    @Authorization
-    public ResponseEntity<ReponseModel> redEnvelopeOpen(@CurrentUser Customer customer, HttpEntity<RedEnvelopeRequestModel> model) {
-        try {
-            systemService.redEnvelopeOpen(customer, model.getBody());
-            return new ResponseEntity<>(ReponseModel.ok(), HttpStatus.OK);
-        } catch (ApiException ex) {
-            return new ResponseEntity<>(ReponseModel.error(ex.getStatus()), HttpStatus.OK);
-        } catch (Exception ex) {
-            return new ResponseEntity<>(ReponseModel.error(ex, this.getClass()), HttpStatus.OK);
-        }
-    }
-
-    /**
-     * 文章列表
-     *
-     * @author 米立林
-     */
-    @RequestMapping(value = "/miniapps/article/list", method = RequestMethod.POST, consumes = "application/json")
-    @Authorization(onlyGetCustomer = true)
-    public ResponseEntity<ReponseModel> miniappsArticleList(@CurrentUser Customer customer, HttpEntity<PageRequestModel> model) {
-        try {
-            ListArticleViewModel viewModel = systemService.miniappsArticleList(customer, model.getBody());
-            return new ResponseEntity<>(ReponseModel.ok(viewModel), HttpStatus.OK);
-        } catch (ApiException ex) {
-            return new ResponseEntity<>(ReponseModel.error(ex.getStatus()), HttpStatus.OK);
-        } catch (Exception ex) {
-            return new ResponseEntity<>(ReponseModel.error(ex, this.getClass()), HttpStatus.OK);
-        }
-    }
-
-    /**
-     * 收益计算
-     *
-     * @author 米立林
-     */
-    @RequestMapping(value = "/miniapps/Income/calc", method = RequestMethod.POST, consumes = "application/json")
-    @Authorization(onlyGetCustomer = true)
-    public ResponseEntity<ReponseModel> miniappsIncomeCalc(@CurrentUser Customer customer, HttpEntity<IncomeCalcRequestModel> model) {
-        try {
-            IncomeCalcViewModel viewModel = systemService.miniappsIncomeCalc(customer, model.getBody());
-            return new ResponseEntity<>(ReponseModel.ok(viewModel), HttpStatus.OK);
-        } catch (ApiException ex) {
-            return new ResponseEntity<>(ReponseModel.error(ex.getStatus()), HttpStatus.OK);
-        } catch (Exception ex) {
-            return new ResponseEntity<>(ReponseModel.error(ex, this.getClass()), HttpStatus.OK);
-        }
-    }
-
-    //endregion
 
 //    @RequestMapping(value = "/test", method = RequestMethod.POST, consumes = "application/json")
 //    public ResponseEntity<ReponseModel> testTransaction() {
