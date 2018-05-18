@@ -30,8 +30,7 @@
 //        private String deviceid;
 
         var data = {
-            platform: "03",
-            money:100000.10
+            platform: "03"
         };
 //        var data = {
 //            platform: "01",
@@ -45,7 +44,7 @@
 
         $.ajax({
             type: "POST",
-            url: "mp/calcProfit",
+            url: "mp/index",
             data: JSON.stringify(data),
             contentType: 'application/json;charset=UTF-8',
             dataType: "json",                                     //预期服务器返回类型

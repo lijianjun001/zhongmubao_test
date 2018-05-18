@@ -222,10 +222,27 @@ public class MPShareServiceImpl extends BaseService implements MPShareService {
         Date endTime = DateUtil.formatMongo(now);
         double monthIncome = sheepOrderDao.statisticsRedeemIncome(customer.getId(), DateUtil.formatDefault(beginTime), DateUtil.formatDefault(endTime));
 
+        PageModel<ArticleMongo> pager = new PageModel<>();
+        pager.setPageNo(1);
+        pager = articleMongoDao.pager(false, pager);
+
+        List<ArticleModel> list = pager.getDatas().stream()
+                .map(en -> new ArticleModel(
+                        en.id,
+                        en.getTitle(),
+                        en.getContent(),
+                        ApiUtil.formartPhoto(en.getUrl()),
+                        DateUtil.format(en.getCreated(), Constants.DATE_FORMAT_CHINA)))
+                .collect(Collectors.toList());
+
         IndexViewModel viewModel = new IndexViewModel();
+        viewModel.setName(customer.getNickName());
+        viewModel.setPhoto(ApiUtil.formartPhoto(customer.getPhoto()));
         viewModel.setTotalAsset(DoubleUtil.toFixed(totalAsset, Constants.PRICE_FORMAT));
         viewModel.setTotalIncome(DoubleUtil.toFixed(totalIncome, Constants.PRICE_FORMAT));
         viewModel.setMonthIncome(DoubleUtil.toFixed(monthIncome, Constants.PRICE_FORMAT));
+        viewModel.setTotalPage(pager.getTotalPages());
+        viewModel.setList(list);
         return viewModel;
     }
 

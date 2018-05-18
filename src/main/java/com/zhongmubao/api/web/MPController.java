@@ -39,6 +39,60 @@ public class MPController {
     }
 
     /**
+     * 我的资产
+     *
+     * @author 米立林
+     */
+    @RequestMapping(value = "/index", method = RequestMethod.POST, consumes = "application/json")
+    @Authorization
+    public ResponseEntity<ReponseModel> index(@CurrentUser Customer customer) {
+        try {
+            IndexViewModel viewModel = mpShareService.index(customer);
+            return new ResponseEntity<>(ReponseModel.ok(viewModel), HttpStatus.OK);
+        } catch (ApiException ex) {
+            return new ResponseEntity<>(ReponseModel.error(ex.getStatus()), HttpStatus.OK);
+        } catch (Exception ex) {
+            return new ResponseEntity<>(ReponseModel.error(ex, this.getClass()), HttpStatus.OK);
+        }
+    }
+
+    /**
+     * 我的牧场
+     *
+     * @author 米立林
+     */
+    @RequestMapping(value = "/myPasture", method = RequestMethod.POST, consumes = "application/json")
+    @Authorization
+    public ResponseEntity<ReponseModel> myPasture(@CurrentUser Customer customer) {
+        try {
+            MyPastureViewModel viewModel = mpShareService.myPasture(customer);
+            return new ResponseEntity<>(ReponseModel.ok(viewModel), HttpStatus.OK);
+        } catch (ApiException ex) {
+            return new ResponseEntity<>(ReponseModel.error(ex.getStatus()), HttpStatus.OK);
+        } catch (Exception ex) {
+            return new ResponseEntity<>(ReponseModel.error(ex, this.getClass()), HttpStatus.OK);
+        }
+    }
+
+    /**
+     * 收益计算
+     *
+     * @author 米立林
+     */
+    @RequestMapping(value = "/calcProfit", method = RequestMethod.POST, consumes = "application/json")
+    @Authorization(onlyGetCustomer = true)
+    public ResponseEntity<ReponseModel> calcProfit(@CurrentUser Customer customer, HttpEntity<CalcProfitRequestModel> model) {
+        try {
+            CalcProfitViewModel viewModel = mpShareService.calcProfit(customer, model.getBody());
+            return new ResponseEntity<>(ReponseModel.ok(viewModel), HttpStatus.OK);
+        } catch (ApiException ex) {
+            return new ResponseEntity<>(ReponseModel.error(ex.getStatus()), HttpStatus.OK);
+        } catch (Exception ex) {
+            return new ResponseEntity<>(ReponseModel.error(ex, this.getClass()), HttpStatus.OK);
+        }
+    }
+
+    /**
      * 展示红包进度信息
      *
      * @param model 请求实体
@@ -87,60 +141,6 @@ public class MPController {
     public ResponseEntity<ReponseModel> article(@CurrentUser Customer customer, HttpEntity<PageRequestModel> model) {
         try {
             ListArticleViewModel viewModel = mpShareService.article(customer, model.getBody());
-            return new ResponseEntity<>(ReponseModel.ok(viewModel), HttpStatus.OK);
-        } catch (ApiException ex) {
-            return new ResponseEntity<>(ReponseModel.error(ex.getStatus()), HttpStatus.OK);
-        } catch (Exception ex) {
-            return new ResponseEntity<>(ReponseModel.error(ex, this.getClass()), HttpStatus.OK);
-        }
-    }
-
-    /**
-     * 我的资产
-     *
-     * @author 米立林
-     */
-    @RequestMapping(value = "/index", method = RequestMethod.POST, consumes = "application/json")
-    @Authorization
-    public ResponseEntity<ReponseModel> index(@CurrentUser Customer customer) {
-        try {
-            IndexViewModel viewModel = mpShareService.index(customer);
-            return new ResponseEntity<>(ReponseModel.ok(viewModel), HttpStatus.OK);
-        } catch (ApiException ex) {
-            return new ResponseEntity<>(ReponseModel.error(ex.getStatus()), HttpStatus.OK);
-        } catch (Exception ex) {
-            return new ResponseEntity<>(ReponseModel.error(ex, this.getClass()), HttpStatus.OK);
-        }
-    }
-
-    /**
-     * 我的牧场
-     *
-     * @author 米立林
-     */
-    @RequestMapping(value = "/myPasture", method = RequestMethod.POST, consumes = "application/json")
-    @Authorization
-    public ResponseEntity<ReponseModel> myPasture(@CurrentUser Customer customer) {
-        try {
-            MyPastureViewModel viewModel = mpShareService.myPasture(customer);
-            return new ResponseEntity<>(ReponseModel.ok(viewModel), HttpStatus.OK);
-        } catch (ApiException ex) {
-            return new ResponseEntity<>(ReponseModel.error(ex.getStatus()), HttpStatus.OK);
-        } catch (Exception ex) {
-            return new ResponseEntity<>(ReponseModel.error(ex, this.getClass()), HttpStatus.OK);
-        }
-    }
-
-    /**
-     * 收益计算
-     *
-     * @author 米立林
-     */
-    @RequestMapping(value = "/calcProfit", method = RequestMethod.POST, consumes = "application/json")
-    @Authorization(onlyGetCustomer = true)
-    public ResponseEntity<ReponseModel> calcProfit(@CurrentUser Customer customer, HttpEntity<CalcProfitRequestModel> model) {
-        try {
-            CalcProfitViewModel viewModel = mpShareService.calcProfit(customer, model.getBody());
             return new ResponseEntity<>(ReponseModel.ok(viewModel), HttpStatus.OK);
         } catch (ApiException ex) {
             return new ResponseEntity<>(ReponseModel.error(ex.getStatus()), HttpStatus.OK);

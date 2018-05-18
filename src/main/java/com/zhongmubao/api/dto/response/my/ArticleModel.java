@@ -9,19 +9,19 @@ public class ArticleModel {
     public ArticleModel() {
     }
 
-    public ArticleModel(String id, String title, String content, String url, String editTime) {
+    public ArticleModel(String id, String title, String content, String url, String createdTime) {
         this.id = id;
         this.title = title;
         this.content = content;
         this.url = url;
-        this.editTime = editTime;
+        this.createdTime = createdTime;
     }
 
     private String id;
     private String title;
     private String content;
     private String url;
-    private String editTime;
+    private String createdTime;
 
     public String getId() {
         return id;
@@ -55,11 +55,11 @@ public class ArticleModel {
         this.url = url;
     }
 
-    public String getEditTime() {
-        return editTime;
+    public String getCreatedTime() {
+        return createdTime;
     }
 
-    public void setEditTime(String editTime) {
-        this.editTime = editTime;
+    public void setCreatedTime(String createdTime) {
+        this.createdTime = createdTime;
     }
 }
