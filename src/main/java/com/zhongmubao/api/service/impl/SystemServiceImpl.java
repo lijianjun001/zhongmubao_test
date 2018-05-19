@@ -2,17 +2,16 @@ package com.zhongmubao.api.service.impl;
 
 import com.zhongmubao.api.config.Constants;
 import com.zhongmubao.api.config.ResultStatus;
-import com.zhongmubao.api.config.enmu.Domain;
-import com.zhongmubao.api.config.enmu.SmsType;
+import com.zhongmubao.api.config.enmu.*;
+import com.zhongmubao.api.dao.CustomerDao;
+import com.zhongmubao.api.dto.request.mp.CalcProfitRequestModel;
 import com.zhongmubao.api.dto.request.system.*;
+import com.zhongmubao.api.dto.response.mp.CalcProfitViewModel;
 import com.zhongmubao.api.dto.response.system.ShareInfoViewModel;
 import com.zhongmubao.api.entity.Customer;
 import com.zhongmubao.api.exception.ApiException;
 import com.zhongmubao.api.mongo.dao.*;
-import com.zhongmubao.api.mongo.entity.PlatformTrackingMongo;
-import com.zhongmubao.api.mongo.entity.ShareContentMongo;
-import com.zhongmubao.api.mongo.entity.SystemSmsLogMongo;
-import com.zhongmubao.api.mongo.entity.TouTiaoAdvMongo;
+import com.zhongmubao.api.mongo.entity.*;
 import com.zhongmubao.api.service.SystemService;
 import com.zhongmubao.api.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -187,6 +186,7 @@ public class SystemServiceImpl extends BaseService implements SystemService {
         systemSmsLogMongoDao.save(smsLog);
 
     }
+
 
     //    @Override
 //    @Transactional(timeout=1000, isolation= Isolation.DEFAULT, propagation= Propagation.REQUIRED,rollbackFor = ApiException.class)

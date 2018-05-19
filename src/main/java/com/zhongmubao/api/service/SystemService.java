@@ -1,6 +1,9 @@
 package com.zhongmubao.api.service;
 
+import com.zhongmubao.api.dto.request.mp.CalcProfitRequestModel;
 import com.zhongmubao.api.dto.request.system.*;
+import com.zhongmubao.api.dto.response.mp.ListArticleViewModel;
+import com.zhongmubao.api.dto.response.mp.CalcProfitViewModel;
 import com.zhongmubao.api.dto.response.system.ShareInfoViewModel;
 import com.zhongmubao.api.entity.Customer;
 
@@ -50,6 +53,8 @@ public interface SystemService {
      * @author 米立林
      */
     void sendSms(Customer customer, SendSmsRequestModel model) throws Exception;
+
+
 
 //    void testTransaction();
 }

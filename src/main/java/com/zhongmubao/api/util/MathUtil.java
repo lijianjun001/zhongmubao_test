@@ -1,5 +1,6 @@
 package com.zhongmubao.api.util;
 
+
 import java.util.Random;
 
 /**
@@ -19,4 +20,5 @@ public class MathUtil {
         Random rand = new Random();
         return rand.nextInt(endNum - beginNum + 1) + beginNum;
     }
+
 }

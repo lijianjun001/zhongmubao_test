@@ -36,4 +36,31 @@
         AND so.deleted =0 AND so.Frozened =0 AND so.State IN ('01','02','03','04','05')
         GROUP BY sp.Type,sp.Period
     </select>
+
+    <select id="firstRedeem" resultType="java.util.Date">
+        <!-- 最早赎回 -->
+        SELECT RedemTime FROM SheepProject
+        WHERE Id IN(
+        SELECT ProjectId FROM SheepOrder
+        WHERE CustomerId=#{customerId} AND Deleted = 0 AND Frozened = 0
+        AND state IN
+        <foreach collection="states" item="item" index="index" open="(" close=")" separator=",">
+            #{item}
+        </foreach>)
+        LIMIT 1
+    </select>
+
+    <select id="finallyRedeem" resultType="java.util.Date">
+        <!-- 最后赎回 -->
+        SELECT RedemTime FROM SheepProject
+        WHERE Id IN(
+        SELECT ProjectId FROM SheepOrder
+        WHERE CustomerId=#{customerId} AND Deleted = 0 AND Frozened = 0
+        AND state IN
+        <foreach collection="states" item="item" index="index" open="(" close=")" separator=",">
+            #{item}
+        </foreach>)
+        ORDER BY RedemTime DESC
+        LIMIT 1
+    </select>
 </mapper>

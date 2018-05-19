@@ -2,9 +2,9 @@ package com.zhongmubao.api.dao;
 
 import com.zhongmubao.api.entity.SheepProject;
 import com.zhongmubao.api.entity.ext.SheepBillInfo;
-import com.zhongmubao.api.util.datasource.DataSource;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -37,4 +37,22 @@ public interface SheepProjectDao {
      * @return
      */
     List<SheepBillInfo> getBuySheepBillByCustomerId(@Param("customerId") int customerId, @Param("startDate") String startDate, @Param("endDate") String endDate);
+
+    /**
+     * 最早赎回
+     *
+     * @param customerId 用户ID
+     * @param states     订单状态
+     * @return List<SheepOrderInfo>
+     */
+    Date firstRedeem(@Param("customerId") int customerId, @Param("states") List<String> states);
+
+    /**
+     * 最后赎回
+     *
+     * @param customerId 用户ID
+     * @param states     订单状态
+     * @return List<SheepOrderInfo>
+     */
+    Date finallyRedeem(@Param("customerId") int customerId, @Param("states") List<String> states);
 }

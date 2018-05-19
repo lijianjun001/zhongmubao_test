@@ -2,9 +2,11 @@ package com.zhongmubao.api.web;
 
 import com.zhongmubao.api.authorization.annotation.Authorization;
 import com.zhongmubao.api.authorization.annotation.CurrentUser;
-import com.zhongmubao.api.config.enmu.RedPackageType;
+import com.zhongmubao.api.dto.request.mp.CalcProfitRequestModel;
 import com.zhongmubao.api.dto.request.system.*;
 import com.zhongmubao.api.dto.response.ReponseModel;
+import com.zhongmubao.api.dto.response.mp.CalcProfitViewModel;
+import com.zhongmubao.api.dto.response.mp.ListArticleViewModel;
 import com.zhongmubao.api.dto.response.system.ShareInfoViewModel;
 import com.zhongmubao.api.entity.Customer;
 import com.zhongmubao.api.exception.ApiException;
@@ -81,9 +83,9 @@ public class SystemController {
      */
     @RequestMapping(value = "/shareInfo", method = RequestMethod.POST, consumes = "application/json")
     @Authorization(onlyGetCustomer = true)
-    public ResponseEntity<ReponseModel> shareInfo(@CurrentUser Customer customer,HttpEntity<ShareInfoRequestModel> model) {
+    public ResponseEntity<ReponseModel> shareInfo(@CurrentUser Customer customer, HttpEntity<ShareInfoRequestModel> model) {
         try {
-            ShareInfoViewModel viewModel = systemService.shareInfo(customer,model.getBody());
+            ShareInfoViewModel viewModel = systemService.shareInfo(customer, model.getBody());
             return new ResponseEntity<>(ReponseModel.ok(viewModel), HttpStatus.OK);
         } catch (ApiException ex) {
             return new ResponseEntity<>(ReponseModel.error(ex.getStatus()), HttpStatus.OK);
@@ -96,14 +98,13 @@ public class SystemController {
      * 发送验证码
      *
      * @param model 请求实体
-     * @return ShareInfoViewModel
      * @author 米立林
      */
     @RequestMapping(value = "/sendSms", method = RequestMethod.POST, consumes = "application/json")
     @Authorization(onlyGetCustomer = true)
-    public ResponseEntity<ReponseModel> sendSms(@CurrentUser Customer customer,HttpEntity<SendSmsRequestModel> model) {
+    public ResponseEntity<ReponseModel> sendSms(@CurrentUser Customer customer, HttpEntity<SendSmsRequestModel> model) {
         try {
-            systemService.sendSms(customer,model.getBody());
+            systemService.sendSms(customer, model.getBody());
             return new ResponseEntity<>(ReponseModel.ok(), HttpStatus.OK);
         } catch (ApiException ex) {
             return new ResponseEntity<>(ReponseModel.error(ex.getStatus()), HttpStatus.OK);
@@ -111,6 +112,7 @@ public class SystemController {
             return new ResponseEntity<>(ReponseModel.error(ex, this.getClass()), HttpStatus.OK);
         }
     }
+
 
 //    @RequestMapping(value = "/test", method = RequestMethod.POST, consumes = "application/json")
 //    public ResponseEntity<ReponseModel> testTransaction() {

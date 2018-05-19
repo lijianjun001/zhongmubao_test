@@ -8,6 +8,7 @@ import com.zhongmubao.api.entity.ext.SheepOrderInfo;
 import com.zhongmubao.api.util.datasource.DataSource;
 import org.apache.ibatis.annotations.Param;
 
+import java.time.DateTimeException;
 import java.util.Date;
 import java.util.List;
 
@@ -95,4 +96,31 @@ public interface SheepOrderDao {
      * @return List<SheepOrderInfo>
      */
     List<SheepOrderInfo> statisticsBuySheepIncome(@Param("customerId") int customerId, @Param("startDate") String startDate, @Param("endDate") String endDate);
+
+    /**
+     * 购羊列表，资产信息
+     *
+     * @param customerId 客户主键
+     * @param states     订单状态
+     * @return List<SheepOrderInfo>
+     */
+    List<SheepOrderInfo> statisticsAssetInfo(@Param("customerId") int customerId, @Param("states") List<String> states);
+
+    /**
+     * 统计总收益，仅统计已赎回
+     *
+     * @param customerId 用户ID
+     * @return List<SheepOrderInfo>
+     */
+    double statisticsTotalRedeemIncome(@Param("customerId") int customerId);
+
+    /**
+     * 统计总收益，仅统计已赎回
+     *
+     * @param customerId 用户ID
+     * @param startDate  开始时间
+     * @param endDate    结束时间
+     * @return List<SheepOrderInfo>
+     */
+    double statisticsRedeemIncome(@Param("customerId") int customerId, @Param("startDate") String startDate, @Param("endDate") String endDate);
 }

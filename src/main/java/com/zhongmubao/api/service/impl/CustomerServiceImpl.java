@@ -19,11 +19,7 @@ import com.zhongmubao.api.exception.ApiException;
 import com.zhongmubao.api.mongo.dao.*;
 import com.zhongmubao.api.mongo.entity.*;
 import com.zhongmubao.api.service.CustomerService;
-import com.zhongmubao.api.util.ApiUtil;
-import com.zhongmubao.api.util.DateUtil;
-import com.zhongmubao.api.util.RegExpMatcher;
-import com.zhongmubao.api.util.SecurityUtil;
-import com.zhongmubao.api.util.StringUtil;
+import com.zhongmubao.api.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -298,5 +294,6 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
         return viewModel;
     }
     //endregion
+
 
 }
