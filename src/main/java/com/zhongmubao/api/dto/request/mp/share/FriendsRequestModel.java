@@ -1,11 +1,11 @@
-package com.zhongmubao.api.dto.request.mp;
+package com.zhongmubao.api.dto.request.mp.share;
 
 /**
- * 拆开红包
+ * 红包进度请求实体
  *
  * @author 米立林
  */
-public class OpenRequestModel {
+public class FriendsRequestModel {
     private String id;
 
     public String getId() {

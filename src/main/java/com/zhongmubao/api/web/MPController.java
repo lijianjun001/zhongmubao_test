@@ -2,19 +2,19 @@ package com.zhongmubao.api.web;
 
 import com.zhongmubao.api.authorization.annotation.Authorization;
 import com.zhongmubao.api.authorization.annotation.CurrentUser;
-import com.zhongmubao.api.dto.request.mp.FriendsRequestModel;
-import com.zhongmubao.api.dto.request.mp.OpenRequestModel;
-import com.zhongmubao.api.dto.request.mp.CalcProfitRequestModel;
-import com.zhongmubao.api.dto.request.mp.PageRequestModel;
+import com.zhongmubao.api.dto.request.mp.JsCode2SessionRequestModel;
+import com.zhongmubao.api.dto.request.mp.share.*;
 import com.zhongmubao.api.dto.response.ReponseModel;
-import com.zhongmubao.api.dto.response.mp.FriendsViewModel;
-import com.zhongmubao.api.dto.response.mp.IndexViewModel;
-import com.zhongmubao.api.dto.response.mp.ListArticleViewModel;
-import com.zhongmubao.api.dto.response.mp.MyPastureViewModel;
-import com.zhongmubao.api.dto.response.mp.CalcProfitViewModel;
+import com.zhongmubao.api.dto.response.mp.JsCode2SessionViewModel;
+import com.zhongmubao.api.dto.response.mp.share.FriendsViewModel;
+import com.zhongmubao.api.dto.response.mp.share.IndexViewModel;
+import com.zhongmubao.api.dto.response.mp.share.ListArticleViewModel;
+import com.zhongmubao.api.dto.response.mp.share.MyPastureViewModel;
+import com.zhongmubao.api.dto.response.mp.share.CalcProfitViewModel;
 import com.zhongmubao.api.entity.Customer;
 import com.zhongmubao.api.exception.ApiException;
-import com.zhongmubao.api.service.MPShareService;
+import com.zhongmubao.api.service.mp.MPService;
+import com.zhongmubao.api.service.mp.MPShareService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
@@ -32,12 +32,32 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/mp")
 public class MPController {
     private final MPShareService mpShareService;
+    private final MPService mpService;
 
     @Autowired
-    public MPController(MPShareService mpShareService) {
+    public MPController(MPShareService mpShareService, MPService mpService) {
         this.mpShareService = mpShareService;
+        this.mpService = mpService;
     }
 
+    /**
+     * 根据code获取session和openId
+     *
+     * @author 孙阿龙
+     */
+    @RequestMapping(value = "/jsCode2Session", method = RequestMethod.POST, consumes = "application/json")
+    public ResponseEntity<ReponseModel> jsCode2Session(HttpEntity<JsCode2SessionRequestModel> model) {
+        try {
+            JsCode2SessionViewModel viewModel = mpService.jsCode2Session(model.getBody());
+            return new ResponseEntity<>(ReponseModel.ok(viewModel), HttpStatus.OK);
+        } catch (ApiException ex) {
+            return new ResponseEntity<>(ReponseModel.error(ex.getStatus()), HttpStatus.OK);
+        } catch (Exception ex) {
+            return new ResponseEntity<>(ReponseModel.error(ex, this.getClass()), HttpStatus.OK);
+        }
+    }
+
+    //region 小程序分享
     /**
      * 我的资产
      *
@@ -148,4 +168,7 @@ public class MPController {
             return new ResponseEntity<>(ReponseModel.error(ex, this.getClass()), HttpStatus.OK);
         }
     }
+    //endregion
+
+
 }

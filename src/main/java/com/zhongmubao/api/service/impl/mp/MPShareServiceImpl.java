@@ -1,4 +1,4 @@
-package com.zhongmubao.api.service.impl;
+package com.zhongmubao.api.service.impl.mp;
 
 import com.zhongmubao.api.config.Constants;
 import com.zhongmubao.api.config.ResultStatus;
@@ -7,13 +7,12 @@ import com.zhongmubao.api.config.enmu.RedPackageType;
 import com.zhongmubao.api.dao.CustomerDao;
 import com.zhongmubao.api.dao.SheepOrderDao;
 import com.zhongmubao.api.dao.SheepProjectDao;
-import com.zhongmubao.api.dto.request.mp.CalcProfitRequestModel;
-import com.zhongmubao.api.dto.request.mp.FriendsRequestModel;
-import com.zhongmubao.api.dto.request.mp.OpenRequestModel;
-import com.zhongmubao.api.dto.request.mp.PageRequestModel;
-import com.zhongmubao.api.dto.response.mp.*;
+import com.zhongmubao.api.dto.request.mp.share.CalcProfitRequestModel;
+import com.zhongmubao.api.dto.request.mp.share.FriendsRequestModel;
+import com.zhongmubao.api.dto.request.mp.share.OpenRequestModel;
+import com.zhongmubao.api.dto.request.mp.share.PageRequestModel;
+import com.zhongmubao.api.dto.response.mp.share.*;
 import com.zhongmubao.api.dto.response.my.ArticleModel;
-import com.zhongmubao.api.dto.response.mp.RedEnvelopeCustomer;
 import com.zhongmubao.api.entity.Customer;
 import com.zhongmubao.api.entity.ext.SheepOrderInfo;
 import com.zhongmubao.api.exception.ApiException;
@@ -24,7 +23,8 @@ import com.zhongmubao.api.mongo.entity.ArticleMongo;
 import com.zhongmubao.api.mongo.entity.RedEnvelopeInfoMongo;
 import com.zhongmubao.api.mongo.entity.RedEnvelopeMongo;
 import com.zhongmubao.api.mongo.entity.base.PageModel;
-import com.zhongmubao.api.service.MPShareService;
+import com.zhongmubao.api.service.mp.MPShareService;
+import com.zhongmubao.api.service.impl.BaseService;
 import com.zhongmubao.api.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -155,27 +155,27 @@ public class MPShareServiceImpl extends BaseService implements MPShareService {
 
     @Override
     public void open(Customer customer, OpenRequestModel model) throws Exception {
-            if (null == model || StringUtil.isNullOrEmpty(model.getId())) {
-                throw new ApiException(ResultStatus.PARAMETER_MISSING);
-            }
-            Date now = new Date();
-            // 修改已开红包状态
-            RedEnvelopeInfoMongo currentCustomer = redEnvelopeInfoMongoDao.getOne(customer.getId(), model.getId());
-            if (currentCustomer == null) {
-                throw new ApiException(ResultStatus.PARAMETER_ERROR);
-            }
-            List<RedEnvelopeInfoMongo> redEnvelopeInfoMongos = redEnvelopeInfoMongoDao.getListByRedEnvelopeId(currentCustomer.getRedEnvelopeId());
-            int headcount = 5;
-            if (redEnvelopeInfoMongos.size() < headcount) {
-                throw new ApiException(ResultStatus.NOW_COMPLETED_ERROR);
-            }
-            if (!currentCustomer.isOpened()) {
-                currentCustomer.setOpened(true);
-                redEnvelopeInfoMongoDao.update(currentCustomer);
+        if (null == model || StringUtil.isNullOrEmpty(model.getId())) {
+            throw new ApiException(ResultStatus.PARAMETER_MISSING);
+        }
+        Date now = new Date();
+        // 修改已开红包状态
+        RedEnvelopeInfoMongo currentCustomer = redEnvelopeInfoMongoDao.getOne(customer.getId(), model.getId());
+        if (currentCustomer == null) {
+            throw new ApiException(ResultStatus.PARAMETER_ERROR);
+        }
+        List<RedEnvelopeInfoMongo> redEnvelopeInfoMongos = redEnvelopeInfoMongoDao.getListByRedEnvelopeId(currentCustomer.getRedEnvelopeId());
+        int headcount = 5;
+        if (redEnvelopeInfoMongos.size() < headcount) {
+            throw new ApiException(ResultStatus.NOW_COMPLETED_ERROR);
+        }
+        if (!currentCustomer.isOpened()) {
+            currentCustomer.setOpened(true);
+            redEnvelopeInfoMongoDao.update(currentCustomer);
 
-                // 发送红包
-                sendRedPackage(customer, RedPackageType.SHARE, Double.parseDouble(currentCustomer.getPrice()), now, 1);
-            }
+            // 发送红包
+            sendRedPackage(customer, RedPackageType.SHARE, Double.parseDouble(currentCustomer.getPrice()), now, 1);
+        }
     }
 
     @Override

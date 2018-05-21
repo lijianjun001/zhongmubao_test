@@ -30,7 +30,8 @@
 //        private String deviceid;
 
         var data = {
-            platform: "03"
+            platform: "03",
+            code: "081GjXtQ1ZQBA81IFbtQ18C6uQ1GjXtG"
         };
 //        var data = {
 //            platform: "01",
@@ -44,7 +45,7 @@
 
         $.ajax({
             type: "POST",
-            url: "customer/sign",
+            url: "mp/jsCode2Session",
             data: JSON.stringify(data),
             contentType: 'application/json;charset=UTF-8',
             dataType: "json",                                     //预期服务器返回类型

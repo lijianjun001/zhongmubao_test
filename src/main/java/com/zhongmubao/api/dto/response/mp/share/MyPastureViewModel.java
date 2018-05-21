@@ -1,4 +1,4 @@
-package com.zhongmubao.api.dto.response.mp;
+package com.zhongmubao.api.dto.response.mp.share;
 
 /**
  * 我的牧场

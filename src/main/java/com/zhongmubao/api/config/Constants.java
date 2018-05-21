@@ -1,6 +1,5 @@
 package com.zhongmubao.api.config;
 
-import com.zhongmubao.api.config.enmu.RedPackageType;
 import com.zhongmubao.api.config.enmu.SignGiftType;
 import com.zhongmubao.api.config.entity.SignGift;
 
@@ -287,7 +286,7 @@ public class Constants {
      * 红包类型中文名
      *
      * @param type 红包类型
-     * @return
+     * @return 红包名称
      */
     public static String redpackettypestr(String type) {
         String typeStr;
@@ -403,4 +402,5 @@ public class Constants {
      * http常量
      */
     public static final String HTTP = "http";
+
 }

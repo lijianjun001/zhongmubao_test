@@ -1,10 +1,10 @@
-package com.zhongmubao.api.service;
+package com.zhongmubao.api.service.mp;
 
-import com.zhongmubao.api.dto.request.mp.CalcProfitRequestModel;
-import com.zhongmubao.api.dto.request.mp.FriendsRequestModel;
-import com.zhongmubao.api.dto.request.mp.OpenRequestModel;
-import com.zhongmubao.api.dto.request.mp.PageRequestModel;
-import com.zhongmubao.api.dto.response.mp.*;
+import com.zhongmubao.api.dto.request.mp.share.CalcProfitRequestModel;
+import com.zhongmubao.api.dto.request.mp.share.FriendsRequestModel;
+import com.zhongmubao.api.dto.request.mp.share.OpenRequestModel;
+import com.zhongmubao.api.dto.request.mp.share.PageRequestModel;
+import com.zhongmubao.api.dto.response.mp.share.*;
 import com.zhongmubao.api.entity.Customer;
 
 /**

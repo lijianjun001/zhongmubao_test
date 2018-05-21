@@ -1,4 +1,4 @@
-package com.zhongmubao.api.dto.request.mp;
+package com.zhongmubao.api.dto.request.mp.share;
 
 /**
  * 收益计算--小程序

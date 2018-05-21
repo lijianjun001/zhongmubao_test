@@ -1,4 +1,4 @@
-package com.zhongmubao.api.dto.response.mp;
+package com.zhongmubao.api.dto.response.mp.share;
 
 import java.util.ArrayList;
 
