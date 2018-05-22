@@ -144,16 +144,14 @@ public class SystemServiceImpl extends BaseService implements SystemService {
             String messageId = SerializeUtil.getJsonStringValueByKey(model.getParam(), "messageId");
             url = shareContent.getUrl().replace(Constants.MESSAGEID, messageId).replace(Constants.DOMAIN_PLACEHOLDER, domain);
         } else if (shareThirdactivityweixinquan.equals(shareName)) {
-            //imageUrl = Constants.UPLOAD_ADDRESS + "Thirt/" + imageUrl;
+            String userId = SerializeUtil.getJsonStringValueByKey(model.getParam(), "userId");
+            url = shareContent.getUrl().replace("{userId}", userId).replace(Constants.DOMAIN_PLACEHOLDER, domain);
         } else if (shareThirdactivityweixinpengyou.equals(shareName)) {
-//            String messageId = SerializeUtil.getJsonStringValueByKey(model.getParam(), "messageId");
-//            url = shareContent.getUrl().replace(Constants.MESSAGEID, messageId).replace(Constants.DOMAIN_PLACEHOLDER, domain);
-            String messageId = SerializeUtil.getJsonStringValueByKey(model.getParam(), "messageId");
-            url = shareContent.getUrl().replace("{userId}", messageId).replace(Constants.DOMAIN_PLACEHOLDER, domain);
+            String userId = SerializeUtil.getJsonStringValueByKey(model.getParam(), "userId");
+            url = shareContent.getUrl().replace("{userId}", userId).replace(Constants.DOMAIN_PLACEHOLDER, domain);
         } else if (shareThirdactivityweibo.equals(shareName)) {
-            //imageUrl = Constants.UPLOAD_ADDRESS + "Thirt/" + imageUrl;
-            String messageId = SerializeUtil.getJsonStringValueByKey(model.getParam(), "messageId");
-            url = shareContent.getUrl().replace("{userId}", messageId).replace(Constants.DOMAIN_PLACEHOLDER, domain);
+            String userId = SerializeUtil.getJsonStringValueByKey(model.getParam(), "userId");
+            url = shareContent.getUrl().replace("{userId}", userId).replace(Constants.DOMAIN_PLACEHOLDER, domain);
         }
 
 
