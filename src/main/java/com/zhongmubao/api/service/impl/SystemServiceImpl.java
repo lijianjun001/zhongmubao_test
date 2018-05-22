@@ -128,6 +128,9 @@ public class SystemServiceImpl extends BaseService implements SystemService {
 
         String shareday = "shareday";
         String shareProject = "shareproject";
+        String shareThirdactivityweixinquan = "thirdactivityweixinquan";
+        String shareThirdactivityweixinpengyou = "thirdactivityweixinpengyou";
+        String shareThirdactivityweibo = "thirdactivityweibo";
         if (shareday.equals(shareName)) {
             // 处理每日分享的图片
             try {
@@ -140,7 +143,19 @@ public class SystemServiceImpl extends BaseService implements SystemService {
             // 分享开标
             String messageId = SerializeUtil.getJsonStringValueByKey(model.getParam(), "messageId");
             url = shareContent.getUrl().replace(Constants.MESSAGEID, messageId).replace(Constants.DOMAIN_PLACEHOLDER, domain);
+        } else if (shareThirdactivityweixinquan.equals(shareName)) {
+            //imageUrl = Constants.UPLOAD_ADDRESS + "Thirt/" + imageUrl;
+        } else if (shareThirdactivityweixinpengyou.equals(shareName)) {
+//            String messageId = SerializeUtil.getJsonStringValueByKey(model.getParam(), "messageId");
+//            url = shareContent.getUrl().replace(Constants.MESSAGEID, messageId).replace(Constants.DOMAIN_PLACEHOLDER, domain);
+            String messageId = SerializeUtil.getJsonStringValueByKey(model.getParam(), "messageId");
+            url = shareContent.getUrl().replace("{userId}", messageId).replace(Constants.DOMAIN_PLACEHOLDER, domain);
+        } else if (shareThirdactivityweibo.equals(shareName)) {
+            //imageUrl = Constants.UPLOAD_ADDRESS + "Thirt/" + imageUrl;
+            String messageId = SerializeUtil.getJsonStringValueByKey(model.getParam(), "messageId");
+            url = shareContent.getUrl().replace("{userId}", messageId).replace(Constants.DOMAIN_PLACEHOLDER, domain);
         }
+
 
         ShareInfoViewModel viewModel = new ShareInfoViewModel();
         viewModel.setType(shareContent.getType());
