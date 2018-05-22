@@ -146,14 +146,16 @@ public class SystemServiceImpl extends BaseService implements SystemService {
         } else if (shareThirdactivityweixinquan.equals(shareName)) {
             String userId = SerializeUtil.getJsonStringValueByKey(model.getParam(), "userId");
             url = shareContent.getUrl().replace("{userId}", userId).replace(Constants.DOMAIN_PLACEHOLDER, domain);
+            shareContent.setShareSuccessLink(shareContent.getShareSuccessLink().replace("{userId}", userId).replace(Constants.DOMAIN_PLACEHOLDER, domain));
         } else if (shareThirdactivityweixinpengyou.equals(shareName)) {
             String userId = SerializeUtil.getJsonStringValueByKey(model.getParam(), "userId");
             url = shareContent.getUrl().replace("{userId}", userId).replace(Constants.DOMAIN_PLACEHOLDER, domain);
+            shareContent.setShareSuccessLink(shareContent.getShareSuccessLink().replace("{userId}", userId).replace(Constants.DOMAIN_PLACEHOLDER, domain));
         } else if (shareThirdactivityweibo.equals(shareName)) {
             String userId = SerializeUtil.getJsonStringValueByKey(model.getParam(), "userId");
             url = shareContent.getUrl().replace("{userId}", userId).replace(Constants.DOMAIN_PLACEHOLDER, domain);
+            shareContent.setShareSuccessLink(shareContent.getShareSuccessLink().replace("{userId}", userId).replace(Constants.DOMAIN_PLACEHOLDER, domain));
         }
-
 
         ShareInfoViewModel viewModel = new ShareInfoViewModel();
         viewModel.setType(shareContent.getType());
