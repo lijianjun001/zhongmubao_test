@@ -2,6 +2,7 @@ package com.zhongmubao.api.web;
 
 import com.zhongmubao.api.authorization.annotation.Authorization;
 import com.zhongmubao.api.authorization.annotation.CurrentUser;
+import com.zhongmubao.api.config.system.ConfigurationFields;
 import com.zhongmubao.api.dto.request.system.*;
 import com.zhongmubao.api.dto.response.ReponseModel;
 import com.zhongmubao.api.dto.response.system.ShareInfoViewModel;
@@ -82,6 +83,7 @@ public class SystemController {
     @Authorization(onlyGetCustomer = true)
     public ResponseEntity<ReponseModel> shareInfo(@CurrentUser Customer customer, HttpEntity<ShareInfoRequestModel> model) {
         try {
+            String key = ConfigurationFields.APP_DuiBa_KEY;
             ShareInfoViewModel viewModel = systemService.shareInfo(customer, model.getBody());
             return new ResponseEntity<>(ReponseModel.ok(viewModel), HttpStatus.OK);
         } catch (ApiException ex) {
