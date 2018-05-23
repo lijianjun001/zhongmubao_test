@@ -9,7 +9,7 @@ import io.swagger.annotations.ApiModelProperty;
  *
  * @author 米立林
  */
-@ApiModel(value = "AccountExistRequestModel", description = "用户对象")
+@ApiModel(description = "用户对象")
 public class AccountExistRequestModel extends BaseRequest {
     @ApiModelProperty(value = "手机号")
     private String account;
