@@ -156,7 +156,8 @@ public class SignServiceImpl extends BaseService implements SignService {
                         //判断30天内是否买羊
                         Date buySheepBeginTime = DateUtil.addDay(now, -30);
                         int buySheepCount = sheepOrderDao.countSheepOrderByCustomerIdAndBeginTimeAndEndTimeAndState(customerId, buySheepBeginTime, now, Constants.SHEEP_IN_THE_BAR_STATE);
-                        if (buySheepCount <= 0) {
+                        boolean hasGift = true;
+                        if (buySheepCount <= 0 || hasGift) {
                             // 没买羊默认奖励红包
                             signGift = Constants.SIGN_GIFT_LIST.get(0);
                         } else {
