@@ -5,10 +5,12 @@ import com.zhongmubao.api.config.ResultStatus;
 import com.zhongmubao.api.config.enmu.*;
 import com.zhongmubao.api.dao.*;
 import com.zhongmubao.api.dto.request.customer.AccountExistRequestModel;
+import com.zhongmubao.api.dto.request.customer.LoginRequestModel;
 import com.zhongmubao.api.dto.request.customer.RecommendInfoRequestModel;
 import com.zhongmubao.api.dto.request.customer.RegisterRequestModel;
 import com.zhongmubao.api.dto.request.my.RealNameRequestModel;
 import com.zhongmubao.api.dto.response.customer.AccountExistViewModel;
+import com.zhongmubao.api.dto.response.customer.LoginViewmodel;
 import com.zhongmubao.api.dto.response.customer.RecommendInfoViewModel;
 import com.zhongmubao.api.dto.response.customer.RegisterViewModel;
 import com.zhongmubao.api.dto.response.my.RealNameViewModel;
@@ -39,16 +41,41 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
     private final CustomerDao customerDao;
     private final SystemSmsLogMongoDao systemSmsLogMongoDao;
     private final CustomerMessageMongoDao customerMessageMongoDao;
+    private final LoginIpBlackListMongoDao loginIpBlackListMongoDao;
 
     @Autowired
-    public CustomerServiceImpl(CustomerHFDao customerHFDao, CustomerSinaDao customerSinaDao, CustomerHFIndexMongoDao customerHFIndexMongoDao, CustomerDao customerDao, SystemSmsLogMongoDao systemSmsLogMongoDao, CustomerMessageMongoDao customerMessageMongoDao) {
+    public CustomerServiceImpl(CustomerHFDao customerHFDao, CustomerSinaDao customerSinaDao, CustomerHFIndexMongoDao customerHFIndexMongoDao, CustomerDao customerDao, SystemSmsLogMongoDao systemSmsLogMongoDao, CustomerMessageMongoDao customerMessageMongoDao, LoginIpBlackListMongoDao loginIpBlackListMongoDao) {
         this.customerHFDao = customerHFDao;
         this.customerSinaDao = customerSinaDao;
         this.customerHFIndexMongoDao = customerHFIndexMongoDao;
         this.customerDao = customerDao;
         this.systemSmsLogMongoDao = systemSmsLogMongoDao;
         this.customerMessageMongoDao = customerMessageMongoDao;
+        this.loginIpBlackListMongoDao = loginIpBlackListMongoDao;
     }
+
+    //region 登录
+    @Override
+    public LoginViewmodel login(LoginRequestModel model) throws Exception {
+        if (model == null) {
+            throw new ApiException(ResultStatus.PARAMETER_MISSING);
+        }
+        // 手机号格式校验
+        if(!RegExpMatcher.matcherMobile(model.getAccount())){
+            throw new ApiException(ResultStatus.INVALID_PHONE_ERROR);
+        }
+        Date now=new Date();
+
+        //  password 加密方式
+
+        // ip黑名单
+
+        // SMS Code校验
+
+        LoginViewmodel viewmodel = new LoginViewmodel();
+        return viewmodel;
+    }
+    //endregion
 
     //region 是否实名
     @Override

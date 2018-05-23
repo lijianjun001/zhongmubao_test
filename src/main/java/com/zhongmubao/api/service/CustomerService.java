@@ -1,10 +1,12 @@
 package com.zhongmubao.api.service;
 
 import com.zhongmubao.api.dto.request.customer.AccountExistRequestModel;
+import com.zhongmubao.api.dto.request.customer.LoginRequestModel;
 import com.zhongmubao.api.dto.request.customer.RecommendInfoRequestModel;
 import com.zhongmubao.api.dto.request.customer.RegisterRequestModel;
 import com.zhongmubao.api.dto.request.my.RealNameRequestModel;
 import com.zhongmubao.api.dto.response.customer.AccountExistViewModel;
+import com.zhongmubao.api.dto.response.customer.LoginViewmodel;
 import com.zhongmubao.api.dto.response.customer.RecommendInfoViewModel;
 import com.zhongmubao.api.dto.response.customer.RegisterViewModel;
 import com.zhongmubao.api.dto.response.my.RealNameViewModel;
@@ -16,6 +18,15 @@ import com.zhongmubao.api.entity.Customer;
  * @author xy
  */
 public interface CustomerService {
+
+    /**
+     * 登录
+     *
+     * @param model 请求参数
+     * @return LoginViewmodel
+     * @throws Exception 异常处理
+     */
+    LoginViewmodel login(LoginRequestModel model) throws Exception;
 
     /**
      * 实名是否实名(汇付是否开户[激活])
