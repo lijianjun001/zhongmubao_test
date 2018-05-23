@@ -30,7 +30,6 @@ import com.zhongmubao.api.service.CustomerService;
 import com.zhongmubao.api.service.MessageService;
 import com.zhongmubao.api.service.SignService;
 
-import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
@@ -49,7 +48,6 @@ import javax.servlet.http.HttpServletRequest;
  */
 @RestController
 @RequestMapping("/customer")
-@Api(description = "客户接口")
 public class CustomerController {
     private final SignService signService;
     private final CustomerService customerService;
