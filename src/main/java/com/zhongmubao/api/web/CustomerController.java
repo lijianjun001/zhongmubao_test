@@ -30,6 +30,10 @@ import com.zhongmubao.api.service.CustomerService;
 import com.zhongmubao.api.service.MessageService;
 import com.zhongmubao.api.service.SignService;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
@@ -47,6 +51,7 @@ import javax.servlet.http.HttpServletRequest;
  */
 @RestController
 @RequestMapping("/customer")
+@Api(description = "客户接口")
 public class CustomerController {
     private final SignService signService;
     private final CustomerService customerService;
@@ -319,6 +324,7 @@ public class CustomerController {
      * @param model 请求参数
      * @return ReponseModel
      */
+    @ApiOperation(value = "创建用户-传递复杂对象", notes = "传递复杂对象DTO，json格式传递数据", produces = "application/json")
     @RequestMapping(value = "exist", method = RequestMethod.POST, consumes = "application/json")
     @Authorization(onlyGetCustomer = true)
     public ResponseEntity<ReponseModel> exist(HttpEntity<AccountExistRequestModel> model) {
