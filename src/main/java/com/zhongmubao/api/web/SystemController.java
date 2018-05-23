@@ -83,7 +83,6 @@ public class SystemController {
     @Authorization(onlyGetCustomer = true)
     public ResponseEntity<ReponseModel> shareInfo(@CurrentUser Customer customer, HttpEntity<ShareInfoRequestModel> model) {
         try {
-            String key = ConfigurationFields.APP_DuiBa_KEY;
             ShareInfoViewModel viewModel = systemService.shareInfo(customer, model.getBody());
             return new ResponseEntity<>(ReponseModel.ok(viewModel), HttpStatus.OK);
         } catch (ApiException ex) {
