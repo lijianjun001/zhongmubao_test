@@ -1,5 +1,7 @@
 package com.zhongmubao.api.config.enmu;
 
+import com.zhongmubao.api.config.system.ConfigurationFields;
+
 /**
  * 客户端域名
  * @author xy
@@ -8,23 +10,23 @@ public enum Domain {
     /**
      * WEIXIN
      */
-    WEIXIN(Platform.WEIXIN.getName(), "http://m.emubao.com/"),
+    WEIXIN(Platform.WEIXIN.getName(), ConfigurationFields.WEI_XIN),
     /**
      * ANDROID
      */
-    ANDROID(Platform.ANDROID.getName(), "https://android2.emubao.com/"),
+    ANDROID(Platform.ANDROID.getName(), ConfigurationFields.ANDROID),
     /**
      * IOS
      */
-    IOS(Platform.IOS.getName(), "https://ios2.emubao.com"),
+    IOS(Platform.IOS.getName(), ConfigurationFields.IOS),
     /**
      * WAP
      */
-    WAP(Platform.WAP.getName(), "https://wap.emubao.com/"),
+    WAP(Platform.WAP.getName(), ConfigurationFields.WAP),
     /**
      * 资源文件
      */
-    RESOURCES(Platform.RESOURCES.getName(), "https://s.emubao.com/");
+    RESOURCES(Platform.RESOURCES.getName(), ConfigurationFields.RESOURCES);
 
     private String platform;
     private String domain;

@@ -22,9 +22,50 @@ public class ConfigurationFields {
 
     public static String APP_KEY;
 
+    /**
+     * AppKey
+     */
+    @Value("#{pValue['sys.zhongmubao.domain.weiXin']}")
+    private String weiXin;
+    public static String WEI_XIN;
+
+    /**
+     * 安卓域名
+     */
+    @Value("#{pValue['sys.zhongmubao.domain.android']}")
+    private String android;
+    public static String ANDROID;
+
+    /**
+     * ios域名
+     */
+    @Value("#{pValue['sys.zhongmubao.domain.ios']}")
+    private String ios;
+    public static String IOS;
+
+    /**
+     * Wap域名
+     */
+    @Value("#{pValue['sys.zhongmubao.domain.wap']}")
+    private String wap;
+    public static String WAP;
+
+    /**
+     * 资源域名
+     */
+    @Value("#{pValue['sys.zhongmubao.domain.resources']}")
+    private String resources;
+    public static String RESOURCES;
+
 
     @PostConstruct
     public void init() {
+
         APP_KEY = this.appKey;
+        WEI_XIN = this.weiXin;
+        ANDROID = this.android;
+        IOS = this.ios;
+        WAP = this.wap;
+        RESOURCES = this.resources;
     }
 }
