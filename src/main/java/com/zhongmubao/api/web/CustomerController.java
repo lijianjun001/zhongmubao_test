@@ -71,7 +71,6 @@ public class CustomerController {
      * @return LoginViewmodel
      */
     @RequestMapping(value = "/login", method = RequestMethod.POST, consumes = "application/json")
-    @Authorization
     public ResponseEntity<ReponseModel> login(HttpEntity<LoginRequestModel> model) {
         try {
 

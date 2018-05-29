@@ -58,6 +58,13 @@ public class ConfigurationFields {
     public static String RESOURCES;
 
 
+    /**
+     * 中转网站域名
+     */
+    @Value("#{pValue['sys.zhongmubao.domain.middle']}")
+    private String middle;
+    public static String MIDDLE;
+
     @PostConstruct
     public void init() {
 
@@ -67,5 +74,6 @@ public class ConfigurationFields {
         IOS = this.ios;
         WAP = this.wap;
         RESOURCES = this.resources;
+        MIDDLE = this.middle;
     }
 }
