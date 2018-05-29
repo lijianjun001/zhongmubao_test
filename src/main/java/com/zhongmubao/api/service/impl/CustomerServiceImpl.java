@@ -65,6 +65,10 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
             throw new ApiException(ResultStatus.INVALID_PHONE_ERROR);
         }
         Date now=new Date();
+        LoginIpBlackListMongo loginIpBlack = loginIpBlackListMongoDao.getByIp(model.getIp());
+        if(Platform.ANDROID.equals(model.getPlatform())|| Platform.IOS.equals(model.getPlatform())){
+            
+        }
 
         //  password 加密方式
 
