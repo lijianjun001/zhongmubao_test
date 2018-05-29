@@ -36,7 +36,9 @@ public enum ResultStatus {
     INVALID_NEWSDETAIL_CODE_ERROR(-4007, "消息不存在"),
     INVALID_REC_ENVELOPE_ERROR(-4008, "该红包不存在"),
     OVERTOP_MAX_ERROR(-4009, "该红包已满员"),
-    NOW_COMPLETED_ERROR(-4010, "该红包未满员");
+    NOW_COMPLETED_ERROR(-4010, "该红包未满员"),
+    LOGIN_NO_REGISTER(-5000, "用户没有注册"),
+    LOGIN_INVALID_PWD(-5001, "密码不正确");
 
     /**
      * 返回码
