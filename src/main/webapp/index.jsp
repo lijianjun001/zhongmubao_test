@@ -31,7 +31,7 @@
 
         var data = {
             platform: "03",
-            name: "thirdactivityweixinquan",
+            name: "thirdactivityweibo",
             param: "{\"imgUrl\":\"http://s.emubao.com/txueimg.png\",\"userId\":4194} "
         };
 //        var data = {
