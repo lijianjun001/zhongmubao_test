@@ -17,6 +17,7 @@ import com.zhongmubao.api.dto.response.my.RealNameViewModel;
 import com.zhongmubao.api.entity.Customer;
 import com.zhongmubao.api.entity.CustomerHF;
 import com.zhongmubao.api.entity.CustomerSina;
+import com.zhongmubao.api.entity.ExtFailedLogin;
 import com.zhongmubao.api.exception.ApiException;
 import com.zhongmubao.api.mongo.dao.*;
 import com.zhongmubao.api.mongo.entity.*;
@@ -42,9 +43,10 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
     private final SystemSmsLogMongoDao systemSmsLogMongoDao;
     private final CustomerMessageMongoDao customerMessageMongoDao;
     private final LoginIpBlackListMongoDao loginIpBlackListMongoDao;
+    private final ExtFailedLoginDao extFailedLoginDao;
 
     @Autowired
-    public CustomerServiceImpl(CustomerHFDao customerHFDao, CustomerSinaDao customerSinaDao, CustomerHFIndexMongoDao customerHFIndexMongoDao, CustomerDao customerDao, SystemSmsLogMongoDao systemSmsLogMongoDao, CustomerMessageMongoDao customerMessageMongoDao, LoginIpBlackListMongoDao loginIpBlackListMongoDao) {
+    public CustomerServiceImpl(CustomerHFDao customerHFDao, CustomerSinaDao customerSinaDao, CustomerHFIndexMongoDao customerHFIndexMongoDao, CustomerDao customerDao, SystemSmsLogMongoDao systemSmsLogMongoDao, CustomerMessageMongoDao customerMessageMongoDao, LoginIpBlackListMongoDao loginIpBlackListMongoDao, ExtFailedLoginDao extFailedLoginDao) {
         this.customerHFDao = customerHFDao;
         this.customerSinaDao = customerSinaDao;
         this.customerHFIndexMongoDao = customerHFIndexMongoDao;
@@ -52,6 +54,7 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
         this.systemSmsLogMongoDao = systemSmsLogMongoDao;
         this.customerMessageMongoDao = customerMessageMongoDao;
         this.loginIpBlackListMongoDao = loginIpBlackListMongoDao;
+        this.extFailedLoginDao = extFailedLoginDao;
     }
 
     //region 登录
@@ -62,10 +65,9 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
         }
         String account = model.getAccount();
         // 手机号格式校验
-        if (!RegExpMatcher.matcherMobile(account)) {
+        if (!RegExpMatcher.matcherMobile(model.getAccount())) {
             throw new ApiException(ResultStatus.INVALID_PHONE_ERROR);
         }
-
         Customer customer = customerDao.getCustomerByAccount(account);
         if (customer == null) {
             throw new ApiException(ResultStatus.LOGIN_NO_REGISTER);
@@ -73,8 +75,27 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
         if (!customer.getPassword().equals(ApiUtil.encrypt(model.getPassword()))) {
             throw new ApiException(ResultStatus.LOGIN_INVALID_PWD);
         }
-
         String token = setToken(model.getPlatform(), customer.getId());
+
+        Date now = new Date();
+        LoginIpBlackListMongo loginIpBlackMongo = loginIpBlackListMongoDao.getByIp(model.getIp());
+
+        if (Platform.ANDROID.equals(model.getPlatform()) || Platform.IOS.equals(model.getPlatform())) {
+            ExtFailedLogin extFailedLogin = extFailedLoginDao.getExtFailedLogin(model.getAccount());
+            if (extFailedLogin != null) {
+                int maxCount = 5;
+                if (extFailedLogin.getFailedNum() >= maxCount || loginIpBlackMongo != null) {
+                    if (StringUtil.isNullOrEmpty(model.getCode())) {
+                        throw new ApiException(ResultStatus.PARAMETER_CODE_ERROR);
+                    }
+                    if (!extFailedLogin.getCode().toUpperCase().equals(model.getCode())) {
+                        throw new ApiException(ResultStatus.PARAMETER_CODE_ERROR);
+
+                    }
+                }
+            }
+        }
+
         LoginViewmodel viewmodel = new LoginViewmodel();
         viewmodel.setToken(token);
         return viewmodel;
