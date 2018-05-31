@@ -30,29 +30,23 @@
 //        private String deviceid;
 
         var data = {
-            platform: "03",
-            name: "thirdactivityweibo",
-            param: "{\"imgUrl\":\"http://s.emubao.com/txueimg.png\",\"userId\":4194} "
+
         };
         var data = {
-            platform: "01",
-            account: "15656287151",
-            password: "123456",
-            smsCode: "423169",
-            referenceCode: "Y96588"
+
         };
 
         console.info(JSON.stringify(data));
 
         $.ajax({
             type: "POST",
-            url: "my/readPackage/group",
+            url: "http://192.168.31.202/my/readPackage/group",
             data: JSON.stringify(data),
-            contentType: 'application/json;charset=UTF-8',
+            contentType: 'application/json',
             dataType: "json",                                     //预期服务器返回类型
 
             headers: {
-                Authorization: "YR3D+mEt8SQSBFNpCoOLiJTh/nZMACMncBFB0C35vJjqFv1gVrk2g3uVvIwSPqSoDnnOWSIzPywvYiswNAOmuqyhymtVphmdBnYRvx0H0ricp6x4a49ak7cdo/WWz72h",
+                Authorization: "YR3D+mEt8SQSBFNpCoOLiErO1bYVfohNcvuAOXpD2SJ9hKh1ZrMfDMuGxx2ilgWIUUTLhi9NryCYEZLAv+tdyOYXl2plHrpyyfNznJl8ADE/Q/btDbiAKkgaqHU6uhhWp4CABVfTUIvWPj8mXXsKQxCHDpP8vAqvaZ6bsv3sguFP6eFKJvMCB2mRXzm32lUijWd3cAJvVhAhaWX/Dt6DHA==",
                 platform: "04"
             },
             success: function (data) {
