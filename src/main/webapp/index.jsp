@@ -31,8 +31,8 @@
 
         var data = {
             platform: "03",
-            name: "thirdactivityweixinquan",
-            param: "{\"imgUrl\":\"http://s.emubao.com/txueimg.png\",\"userId\":4194} "
+            pageIndex: 1
+//            id:"5afa79064e3537d91cca4c9a"
         };
 //        var data = {
 //            platform: "01",
@@ -46,7 +46,7 @@
 
         $.ajax({
             type: "POST",
-            url: "system/shareInfo",
+            url: "mp/article",
             data: JSON.stringify(data),
             contentType: 'application/json;charset=UTF-8',
             dataType: "json",                                     //预期服务器返回类型
