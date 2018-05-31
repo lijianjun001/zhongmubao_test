@@ -132,7 +132,15 @@ public class MPShareServiceImpl extends BaseService implements MPShareService {
         }
         countdown = (int) DateUtil.subDateOfSecond(redEnvelopeMongo.getEndTime(), now);
         if (countdown <= 0) {
-            status = RedEnvelopeStatus.FAILED.getName();
+            if(redEnvelopeMongo.getStatus().equals(RedEnvelopeStatus.SUCCESS.getName())){
+                if(currentCustomer.isOpened()){
+                    status = RedEnvelopeStatus.OPENED.getName();
+                }else{
+                    status = RedEnvelopeStatus.SUCCESS.getName();
+                }
+            }else{
+                status = RedEnvelopeStatus.FAILED.getName();
+            }
         } else {
             if (!status.equals(RedEnvelopeStatus.NOT_JOIN.getName())) {
                 if (currentCustomer.isOpened()) {

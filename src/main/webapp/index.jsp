@@ -31,22 +31,22 @@
 
         var data = {
             platform: "03",
-            name: "thirdactivityweibo",
-            param: "{\"imgUrl\":\"http://s.emubao.com/txueimg.png\",\"userId\":4194} "
+            pageIndex: 1
+//            id:"5afa79064e3537d91cca4c9a"
         };
-        var data = {
-            platform: "01",
-            account: "15656287151",
-            password: "123456",
-            smsCode: "423169",
-            referenceCode: "Y96588"
-        };
+//        var data = {
+//            platform: "01",
+//            account:"18888888887",
+//            password:"123456",
+//            smsCode:"423169",
+//            referenceCode: "Y96588"
+//        };
 
         console.info(JSON.stringify(data));
 
         $.ajax({
             type: "POST",
-            url: "my/readPackage/group",
+            url: "mp/article",
             data: JSON.stringify(data),
             contentType: 'application/json;charset=UTF-8',
             dataType: "json",                                     //预期服务器返回类型
