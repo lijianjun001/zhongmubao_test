@@ -12,7 +12,7 @@ public enum RedPackageSortType {
     PRICE {
         @Override
         public String getName() {
-            return "PRICE";
+            return "Price";
         }
     },
     /**
@@ -21,7 +21,7 @@ public enum RedPackageSortType {
     EXPTIME {
         @Override
         public String getName() {
-            return "EXPTIME";
+            return "ExpTime";
         }
     };
 

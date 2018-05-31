@@ -40,7 +40,7 @@ public class ReponseModel<T> {
     public ReponseModel(int code, String message) {
         this.code = code;
         this.message = message;
-        this.data = null;
+        this.data = "";
     }
 
     public ReponseModel(int code, String message, T content) {
@@ -52,7 +52,7 @@ public class ReponseModel<T> {
     public ReponseModel(ResultStatus status) {
         this.code = status.getCode();
         this.message = status.getMessage();
-        this.data = null;
+        this.data = "";
     }
 
     public ReponseModel(ResultStatus status, T content) {

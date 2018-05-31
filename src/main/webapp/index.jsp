@@ -30,6 +30,7 @@
 //        private String deviceid;
 
         var data = {
+
             platform: "03",
             pageIndex: 1
 //            id:"5afa79064e3537d91cca4c9a"
