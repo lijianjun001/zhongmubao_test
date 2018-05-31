@@ -9,7 +9,7 @@ public enum RedPackageSortType {
     /**
      * 按金额排序
      */
-    PRICE {
+    Price {
         @Override
         public String getName() {
             return "Price";
@@ -18,7 +18,7 @@ public enum RedPackageSortType {
     /**
      * 按到期时间排序
      */
-    EXPTIME {
+    ExpTime {
         @Override
         public String getName() {
             return "ExpTime";
