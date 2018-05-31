@@ -63,10 +63,20 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
         if (model == null) {
             throw new ApiException(ResultStatus.PARAMETER_MISSING);
         }
+        String account = model.getAccount();
         // 手机号格式校验
         if (!RegExpMatcher.matcherMobile(model.getAccount())) {
             throw new ApiException(ResultStatus.INVALID_PHONE_ERROR);
         }
+        Customer customer = customerDao.getCustomerByAccount(account);
+        if (customer == null) {
+            throw new ApiException(ResultStatus.LOGIN_NO_REGISTER);
+        }
+        if (!customer.getPassword().equals(ApiUtil.encrypt(model.getPassword()))) {
+            throw new ApiException(ResultStatus.LOGIN_INVALID_PWD);
+        }
+        String token = setToken(model.getPlatform(), customer.getId());
+
         Date now = new Date();
         LoginIpBlackListMongo loginIpBlackMongo = loginIpBlackListMongoDao.getByIp(model.getIp());
 
@@ -86,13 +96,8 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
             }
         }
 
-        //  password 加密方式
-
-        // ip黑名单
-
-        // SMS Code校验
-
         LoginViewmodel viewmodel = new LoginViewmodel();
+        viewmodel.setToken(token);
         return viewmodel;
     }
     //endregion
