@@ -8,7 +8,7 @@ import org.apache.log4j.Logger;
  *
  * @author 孙阿龙
  */
-public class ReponseModel<T> {
+public class ReponseModel {
 
     /**
      * 返回码
@@ -23,7 +23,7 @@ public class ReponseModel<T> {
     /**
      * 返回内容
      */
-    private T data;
+    private Object data;
 
     public int getCode() {
         return code;
@@ -43,7 +43,7 @@ public class ReponseModel<T> {
         this.data = "";
     }
 
-    public ReponseModel(int code, String message, T content) {
+    public ReponseModel(int code, String message, Object content) {
         this.code = code;
         this.message = message;
         this.data = content;
@@ -55,7 +55,7 @@ public class ReponseModel<T> {
         this.data = "";
     }
 
-    public ReponseModel(ResultStatus status, T content) {
+    public ReponseModel(ResultStatus status, Object content) {
         this.code = status.getCode();
         this.message = status.getMessage();
         this.data = content;
