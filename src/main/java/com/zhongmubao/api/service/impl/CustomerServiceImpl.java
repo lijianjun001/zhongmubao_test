@@ -98,39 +98,39 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
             if (Platform.WAP.getName().equals(model.getPlatform()) && testAccount.equals(model.getAccount()) && testPwd.equals(model.getAccount())) {
                 customer = customerDao.getCustomerByAccount(testAccount);
             } else {
-                if (customer == null) {
-                    LoginIpRequestListMongo requestRecord = new LoginIpRequestListMongo(model.getIp(), model.getAccount(), now);
-                    loginIpRequestListMongoDao.save(requestRecord);
-                    // 错误次数
-                    int maxErrorCount = 10;
-                    Date nowMongo = DateUtil.formatMongo(now);
-                    long errorCount = loginIpRequestListMongoDao.getCountByIpAndTime(model.getIp(), DateUtil.addMinute(nowMongo, -10), nowMongo);
-                    if (errorCount >= maxErrorCount) {
-                        if (loginIpBlackMongo == null) {
-                            loginIpBlackMongo = new LoginIpBlackListMongo();
-                            loginIpBlackMongo.setIp(model.getIp());
-                            loginIpBlackMongo.setCreated(DateUtil.formatMongo(now));
-                            loginIpBlackListMongoDao.add(loginIpBlackMongo);
-                        }
-                    }
-                }
-
-                // 记录错误次数
-                ExtFailedLogin extFailedLogin = extFailedLoginDao.getExtFailedLogin(model.getAccount());
-                if (extFailedLogin == null) {
-                    extFailedLogin = new ExtFailedLogin();
-                    extFailedLogin.setAccount(model.getAccount());
-                    extFailedLogin.setFailedNum(1);
-                    extFailedLogin.setModified(DateUtil.formatMongo(now));
-                    extFailedLogin.setCode(Constants.STRING_EMPTY);
-                    extFailedLogin.setCreated(DateUtil.formatMongo(now));
-                    extFailedLoginDao.insert(extFailedLogin);
-                } else {
-                    int failedNum = extFailedLogin.getFailedNum();
-                    extFailedLogin.setFailedNum(failedNum + 1);
-                    extFailedLogin.setModified(DateUtil.formatMongo(now));
-                    extFailedLoginDao.updateFailedNum(model.getAccount(), extFailedLogin.getFailedNum(), DateUtil.formatDefault(extFailedLogin.getModified()));
-                }
+//                if (customer == null) {
+//                    LoginIpRequestListMongo requestRecord = new LoginIpRequestListMongo(model.getIp(), model.getAccount(), now);
+//                    loginIpRequestListMongoDao.save(requestRecord);
+//                    // 错误次数
+//                    int maxErrorCount = 10;
+//                    Date nowMongo = DateUtil.formatMongo(now);
+//                    long errorCount = loginIpRequestListMongoDao.getCountByIpAndTime(model.getIp(), DateUtil.addMinute(nowMongo, -10), nowMongo);
+//                    if (errorCount >= maxErrorCount) {
+//                        if (loginIpBlackMongo == null) {
+//                            loginIpBlackMongo = new LoginIpBlackListMongo();
+//                            loginIpBlackMongo.setIp(model.getIp());
+//                            loginIpBlackMongo.setCreated(DateUtil.formatMongo(now));
+//                            loginIpBlackListMongoDao.add(loginIpBlackMongo);
+//                        }
+//                    }
+//                }
+//
+//                // 记录错误次数
+//                ExtFailedLogin extFailedLogin = extFailedLoginDao.getExtFailedLogin(model.getAccount());
+//                if (extFailedLogin == null) {
+//                    extFailedLogin = new ExtFailedLogin();
+//                    extFailedLogin.setAccount(model.getAccount());
+//                    extFailedLogin.setFailedNum(1);
+//                    extFailedLogin.setModified(DateUtil.formatMongo(now));
+//                    extFailedLogin.setCode(Constants.STRING_EMPTY);
+//                    extFailedLogin.setCreated(DateUtil.formatMongo(now));
+//                    extFailedLoginDao.insert(extFailedLogin);
+//                } else {
+//                    int failedNum = extFailedLogin.getFailedNum();
+//                    extFailedLogin.setFailedNum(failedNum + 1);
+//                    extFailedLogin.setModified(DateUtil.formatMongo(now));
+//                    extFailedLoginDao.updateFailedNum(model.getAccount(), extFailedLogin.getFailedNum(), DateUtil.formatDefault(extFailedLogin.getModified()));
+//                }
 
                 throw new ApiException(ResultStatus.USERNAME_OR_PASSWORD_ERROR);
             }
