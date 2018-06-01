@@ -75,4 +75,11 @@
         WHERE
         Account = #{account} limit 1
     </select>
+
+    <update id="updateOpenId">
+        UPDATE Customer
+        SET OpenId =#{openId},Modified=#{modified}
+        WHERE Id = #{id}
+    </update>
+
 </mapper>

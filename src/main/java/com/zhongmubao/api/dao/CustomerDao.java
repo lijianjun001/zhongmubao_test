@@ -33,4 +33,13 @@ public interface CustomerDao {
      * @param customer 推荐人ID
      */
     void insert(Customer customer);
+
+    /**
+     * 更新微信OpenId
+     *
+     * @param id       客户主键
+     * @param openId   微信Id
+     * @param modified 修改时间
+     */
+    void updateOpenId(@Param("int") int id, @Param("openId") String openId, @Param("modified") String modified);
 }

@@ -9,7 +9,7 @@ import java.util.Date;
 /**
  * 发起红包
  *
- * @author Yekai
+ * @author 米立林
  */
 @Document(collection = "RedEnvelopeMongo")
 public class RedEnvelopeMongo extends BaseModel {

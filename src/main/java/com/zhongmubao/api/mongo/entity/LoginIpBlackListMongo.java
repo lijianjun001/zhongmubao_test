@@ -14,15 +14,15 @@ import java.util.Date;
 @Document(collection = "LoginIpBlackListMongo")
 public class LoginIpBlackListMongo extends BaseModel {
     @Field("Ip")
-    private int ip;
+    private String ip;
     @Field("Created")
     private Date created;
 
-    public int getIp() {
+    public String getIp() {
         return ip;
     }
 
-    public void setIp(int ip) {
+    public void setIp(String ip) {
         this.ip = ip;
     }
 

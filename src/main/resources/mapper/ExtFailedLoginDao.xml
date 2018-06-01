@@ -3,6 +3,7 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.zhongmubao.api.dao.ExtFailedLoginDao">
+
     <select id="getExtFailedLogin" resultType="ExtFailedLogin">
         SELECT
         *
@@ -11,4 +12,33 @@
         WHERE
         account = #{account} limit 1
     </select>
+
+    <update id="update">
+        UPDATE ExtFailedLogin
+        SET Code =#{code},Modified = #{modified}
+        WHERE Account = #{account}
+    </update>
+
+    <insert id="insert">
+        INSERT ignore INTO ExtFailedLogin (
+        Account,
+        Code,
+        FailedNum,
+        Created,
+        Modified
+        )
+        VALUES (
+        #{account},
+        #{code},
+        #{failedNum},
+        #{created},
+        #{modified}
+        )
+    </insert>
+
+    <update id="updateFailedNum">
+        UPDATE ExtFailedLogin
+        SET FailedNum =#{failedNum},Modified = #{modified}
+        WHERE Account = #{account}
+    </update>
 </mapper>

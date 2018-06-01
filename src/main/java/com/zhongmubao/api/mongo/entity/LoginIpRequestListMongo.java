@@ -13,26 +13,35 @@ import java.util.Date;
  */
 @Document(collection = "LoginIpRequestListMongo")
 public class LoginIpRequestListMongo extends BaseModel {
+    public LoginIpRequestListMongo() {
+    }
+
+    public LoginIpRequestListMongo(String ip, String account, Date created) {
+        this.ip = ip;
+        this.account = account;
+        this.created = created;
+    }
+
     @Field("Ip")
-    private int ip;
+    private String ip;
     @Field("Account")
-    private int account;
+    private String account;
     @Field("Created")
     private Date created;
 
-    public int getIp() {
+    public String getIp() {
         return ip;
     }
 
-    public void setIp(int ip) {
+    public void setIp(String ip) {
         this.ip = ip;
     }
 
-    public int getAccount() {
+    public String getAccount() {
         return account;
     }
 
-    public void setAccount(int account) {
+    public void setAccount(String account) {
         this.account = account;
     }
 

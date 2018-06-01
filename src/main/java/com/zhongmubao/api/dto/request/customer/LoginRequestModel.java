@@ -25,6 +25,12 @@ public class LoginRequestModel extends BaseRequest {
      */
     private String ip;
 
+
+    /**
+     * 微信ID
+     */
+    private String openId;
+
     public String getAccount() {
         return account;
     }
@@ -55,5 +61,13 @@ public class LoginRequestModel extends BaseRequest {
 
     public void setIp(String ip) {
         this.ip = ip;
+    }
+
+    public String getOpenId() {
+        return openId;
+    }
+
+    public void setOpenId(String openId) {
+        this.openId = openId;
     }
 }

@@ -17,4 +17,31 @@ public interface ExtFailedLoginDao {
      * @return 登录失败记录
      */
     ExtFailedLogin getExtFailedLogin(@Param("account") String account);
+
+    /**
+     * 添加登录记录
+     * @param loginRecord 实体
+     * @return 0 1
+     */
+    int insert(ExtFailedLogin loginRecord);
+
+    /**
+     * 验证码置空
+     *
+     * @param account  登录手机号
+     * @param code     验证码
+     * @param modified 修改时间
+     * @return 登录失败记录
+     */
+    void update(@Param("account") String account, @Param("code") String code, @Param("modified") String modified);
+
+    /**
+     * 更新登录错误次数
+     *
+     * @param account  登录手机号
+     * @param failedNum     验证码
+     * @param modified 修改时间
+     * @return 登录失败记录
+     */
+    void updateFailedNum(@Param("account") String account, @Param("failedNum") int failedNum, @Param("modified") String modified);
 }
