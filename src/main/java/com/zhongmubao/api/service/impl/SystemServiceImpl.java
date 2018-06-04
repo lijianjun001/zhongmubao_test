@@ -131,6 +131,10 @@ public class SystemServiceImpl extends BaseService implements SystemService {
         String shareThirdactivityweixinquan = "thirdactivityweixinquan";
         String shareThirdactivityweixinpengyou = "thirdactivityweixinpengyou";
         String shareThirdactivityweibo = "thirdactivityweibo";
+        //thirdActivityVoteBoxShareweixinquan thirdActivityVoteBoxShareweibo thirdActivityVoteBoxShareweixinpengyou
+        String thirdActivityVoteBoxShareweixinquan = "thirdactivityvoteboxshareweixinquan";
+        String thirdActivityVoteBoxShareweibo = "thirdactivityvoteboxshareweibo";
+        String thirdActivityVoteBoxShareweixinpengyou = "thirdactivityvoteboxshareweixinpengyou";
         if (shareday.equals(shareName)) {
             // 处理每日分享的图片
             try {
@@ -143,15 +147,13 @@ public class SystemServiceImpl extends BaseService implements SystemService {
             // 分享开标
             String messageId = SerializeUtil.getJsonStringValueByKey(model.getParam(), "messageId");
             url = shareContent.getUrl().replace(Constants.MESSAGEID, messageId).replace(Constants.DOMAIN_PLACEHOLDER, domain);
-        } else if (shareThirdactivityweixinquan.equals(shareName)) {
-            String userId = SerializeUtil.getJsonStringValueByKey(model.getParam(), "userId");
-            url = shareContent.getUrl().replace("{userId}", userId).replace(Constants.DOMAIN_PLACEHOLDER, domain);
-            shareLink = shareContent.getShareSuccessLink().replace("{userId}", userId).replace(Constants.DOMAIN_PLACEHOLDER, domain);
-        } else if (shareThirdactivityweixinpengyou.equals(shareName)) {
-            String userId = SerializeUtil.getJsonStringValueByKey(model.getParam(), "userId");
-            url = shareContent.getUrl().replace("{userId}", userId).replace(Constants.DOMAIN_PLACEHOLDER, domain);
-            shareLink = shareContent.getShareSuccessLink().replace("{userId}", userId).replace(Constants.DOMAIN_PLACEHOLDER, domain);
-        } else if (shareThirdactivityweibo.equals(shareName)) {
+        } else if (
+                shareThirdactivityweixinquan.equals(shareName) ||
+                        shareThirdactivityweixinpengyou.equals(shareName) ||
+                        shareThirdactivityweibo.equals(shareName) ||
+                        thirdActivityVoteBoxShareweixinquan.equals(shareName) ||
+                        thirdActivityVoteBoxShareweibo.equals(shareName) ||
+                        thirdActivityVoteBoxShareweixinpengyou.equals(shareName)) {
             String userId = SerializeUtil.getJsonStringValueByKey(model.getParam(), "userId");
             url = shareContent.getUrl().replace("{userId}", userId).replace(Constants.DOMAIN_PLACEHOLDER, domain);
             shareLink = shareContent.getShareSuccessLink().replace("{userId}", userId).replace(Constants.DOMAIN_PLACEHOLDER, domain);
