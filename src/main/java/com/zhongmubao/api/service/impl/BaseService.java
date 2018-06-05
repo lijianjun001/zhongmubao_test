@@ -14,6 +14,8 @@ import com.zhongmubao.api.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 基础服务
@@ -138,7 +140,8 @@ public class BaseService {
      * @param customerId 用户主键
      * @author 米立林
      */
-    protected String setToken(String platform, int customerId) {
+    protected Map<String, Object> setToken(String platform, int customerId) {
+        Map map = new HashMap(2);
         try {
             Date now = new Date();
             Date mongoNow = DateUtil.formatMongo(now);
@@ -159,9 +162,12 @@ public class BaseService {
                 entity.setModified(mongoNow);
             }
             systemTokenMongoDao.save(entity);
-            return token;
+
+            map.put("token", token);
+            map.put("tokenExpTime", expired.getTime());
+            return map;
         } catch (Exception ignore) {
-            return "";
+            return null;
         }
     }
 }

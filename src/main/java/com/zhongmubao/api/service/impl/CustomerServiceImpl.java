@@ -28,6 +28,7 @@ import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Map;
 
 /**
  * Customer
@@ -67,100 +68,25 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
         }
         String account = model.getAccount();
         // 手机号格式校验
-        if (!RegExpMatcher.matcherMobile(model.getAccount())) {
+        if (!RegExpMatcher.matcherMobile(account)) {
             throw new ApiException(ResultStatus.INVALID_PHONE_ERROR);
         }
 
-        Date now = new Date();
-        LoginIpBlackListMongo loginIpBlackMongo = loginIpBlackListMongoDao.getByIp(model.getIp());
-
-        if (Platform.ANDROID.getName().equals(model.getPlatform()) || Platform.IOS.getName().equals(model.getPlatform())) {
-            ExtFailedLogin extFailedLogin = extFailedLoginDao.getExtFailedLogin(model.getAccount());
-            if (extFailedLogin != null) {
-                int maxCount = 5;
-                if (extFailedLogin.getFailedNum() >= maxCount || loginIpBlackMongo != null) {
-                    if (StringUtil.isNullOrEmpty(model.getCode())) {
-                        throw new ApiException(ResultStatus.PARAMETER_CODE_ERROR);
-                    }
-                    if (!extFailedLogin.getCode().toUpperCase().equals(model.getCode())) {
-                        extFailedLoginDao.update(account, Constants.STRING_EMPTY, DateUtil.formatDefault(now));
-                        throw new ApiException(ResultStatus.PARAMETER_CODE_ERROR);
-                    }
-                    extFailedLoginDao.update(account, Constants.STRING_EMPTY, DateUtil.formatDefault(now));
-                }
-            }
-        }
-
         Customer customer = customerDao.getCustomerByAccount(account);
-        if (customer == null || !customer.getPassword().equals(ApiUtil.encrypt(model.getPassword()))) {
-            String testAccount = "18266184851";
-            String testPwd = "888888";
-            if (Platform.WAP.getName().equals(model.getPlatform()) && testAccount.equals(model.getAccount()) && testPwd.equals(model.getAccount())) {
-                customer = customerDao.getCustomerByAccount(testAccount);
-            } else {
-//                if (customer == null) {
-//                    LoginIpRequestListMongo requestRecord = new LoginIpRequestListMongo(model.getIp(), model.getAccount(), now);
-//                    loginIpRequestListMongoDao.save(requestRecord);
-//                    // 错误次数
-//                    int maxErrorCount = 10;
-//                    Date nowMongo = DateUtil.formatMongo(now);
-//                    long errorCount = loginIpRequestListMongoDao.getCountByIpAndTime(model.getIp(), DateUtil.addMinute(nowMongo, -10), nowMongo);
-//                    if (errorCount >= maxErrorCount) {
-//                        if (loginIpBlackMongo == null) {
-//                            loginIpBlackMongo = new LoginIpBlackListMongo();
-//                            loginIpBlackMongo.setIp(model.getIp());
-//                            loginIpBlackMongo.setCreated(DateUtil.formatMongo(now));
-//                            loginIpBlackListMongoDao.add(loginIpBlackMongo);
-//                        }
-//                    }
-//                }
-//
-//                // 记录错误次数
-//                ExtFailedLogin extFailedLogin = extFailedLoginDao.getExtFailedLogin(model.getAccount());
-//                if (extFailedLogin == null) {
-//                    extFailedLogin = new ExtFailedLogin();
-//                    extFailedLogin.setAccount(model.getAccount());
-//                    extFailedLogin.setFailedNum(1);
-//                    extFailedLogin.setModified(DateUtil.formatMongo(now));
-//                    extFailedLogin.setCode(Constants.STRING_EMPTY);
-//                    extFailedLogin.setCreated(DateUtil.formatMongo(now));
-//                    extFailedLoginDao.insert(extFailedLogin);
-//                } else {
-//                    int failedNum = extFailedLogin.getFailedNum();
-//                    extFailedLogin.setFailedNum(failedNum + 1);
-//                    extFailedLogin.setModified(DateUtil.formatMongo(now));
-//                    extFailedLoginDao.updateFailedNum(model.getAccount(), extFailedLogin.getFailedNum(), DateUtil.formatDefault(extFailedLogin.getModified()));
-//                }
-
-                throw new ApiException(ResultStatus.USERNAME_OR_PASSWORD_ERROR);
-            }
+        if (customer == null) {
+            throw new ApiException(ResultStatus.LOGIN_NO_REGISTER);
+        }
+        if (!customer.getPassword().equals(ApiUtil.encrypt(model.getPassword()))) {
+            throw new ApiException(ResultStatus.LOGIN_INVALID_PWD);
         }
 
-        if (Platform.WEIXIN.getName().equals(model.getPlatform())) {
-            if (StringUtil.isNullOrEmpty(customer.getOpenId()) && !StringUtil.isNullOrEmpty(model.getOpenId())) {
-                customer.setOpenId(model.getOpenId());
-                customer.setModified(now);
-                customerDao.updateOpenId(customer.getId(), customer.getOpenId(), DateUtil.formatDefault(now));
-            }
-        }
-        // 登录成功清理错误次数
-        ExtFailedLogin clearFailedLogin = extFailedLoginDao.getExtFailedLogin(model.getAccount());
-        if (clearFailedLogin != null) {
-            clearFailedLogin.setFailedNum(0);
-            extFailedLoginDao.updateFailedNum(model.getAccount(), clearFailedLogin.getFailedNum(), DateUtil.formatDefault(DateUtil.formatMongo(now)));
-        }
+        Map<String, Object> tokenInfo = setToken(model.getPlatform(), customer.getId());
 
-        String token = setToken(model.getPlatform(), customer.getId());
+        LoginViewmodel viewmodel = new LoginViewmodel();
+        viewmodel.setToken(tokenInfo.get("token").toString());
+        viewmodel.setTokenExpTime((long) tokenInfo.get("tokenExpTime"));
+        return viewmodel;
 
-        LoginViewmodel viewModel = new LoginViewmodel();
-        viewModel.setId(customer.getId());
-        viewModel.setAccount(customer.getAccount());
-        viewModel.setNickName(customer.getNickName());
-        viewModel.setSign(ApiUtil.encrypt(customer.getSign()));
-        viewModel.setOpenId(customer.getOpenId());
-        viewModel.setPhoto(ApiUtil.formartPhoto(customer.getPhoto()));
-        viewModel.setToken(token);
-        return viewModel;
     }
     //endregion
 
@@ -365,7 +291,7 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
         viewModel.setOpenId(customer.getOpenId());
         viewModel.setSign(customer.getSign());
         viewModel.setPhoto(customer.getPhoto());
-        viewModel.setToken(setToken(platform, customer.getId()));
+        viewModel.setToken(setToken(platform, customer.getId()).get("token").toString());
 
         return viewModel;
     }

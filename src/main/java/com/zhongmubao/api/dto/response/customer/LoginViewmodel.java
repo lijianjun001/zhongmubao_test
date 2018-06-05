@@ -10,6 +10,7 @@ public class LoginViewmodel {
     private String account;
     private String nickName;
     private String token;
+    private long tokenExpTime;
     private String sign;
     private String openId;
     private String photo;
@@ -44,6 +45,14 @@ public class LoginViewmodel {
 
     public void setToken(String token) {
         this.token = token;
+    }
+
+    public long getTokenExpTime() {
+        return tokenExpTime;
+    }
+
+    public void setTokenExpTime(long tokenExpTime) {
+        this.tokenExpTime = tokenExpTime;
     }
 
     public String getSign() {
