@@ -17,7 +17,6 @@ import com.zhongmubao.api.dto.response.my.RealNameViewModel;
 import com.zhongmubao.api.entity.Customer;
 import com.zhongmubao.api.entity.CustomerHF;
 import com.zhongmubao.api.entity.CustomerSina;
-import com.zhongmubao.api.entity.ExtFailedLogin;
 import com.zhongmubao.api.exception.ApiException;
 import com.zhongmubao.api.mongo.dao.*;
 import com.zhongmubao.api.mongo.entity.*;
@@ -43,21 +42,15 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
     private final CustomerDao customerDao;
     private final SystemSmsLogMongoDao systemSmsLogMongoDao;
     private final CustomerMessageMongoDao customerMessageMongoDao;
-    private final LoginIpBlackListMongoDao loginIpBlackListMongoDao;
-    private final LoginIpRequestListMongoDao loginIpRequestListMongoDao;
-    private final ExtFailedLoginDao extFailedLoginDao;
 
     @Autowired
-    public CustomerServiceImpl(CustomerHFDao customerHFDao, CustomerSinaDao customerSinaDao, CustomerHFIndexMongoDao customerHFIndexMongoDao, CustomerDao customerDao, SystemSmsLogMongoDao systemSmsLogMongoDao, CustomerMessageMongoDao customerMessageMongoDao, LoginIpBlackListMongoDao loginIpBlackListMongoDao, LoginIpRequestListMongoDao loginIpRequestListMongoDao, ExtFailedLoginDao extFailedLoginDao) {
+    public CustomerServiceImpl(CustomerHFDao customerHFDao, CustomerSinaDao customerSinaDao, CustomerHFIndexMongoDao customerHFIndexMongoDao, CustomerDao customerDao, SystemSmsLogMongoDao systemSmsLogMongoDao, CustomerMessageMongoDao customerMessageMongoDao) {
         this.customerHFDao = customerHFDao;
         this.customerSinaDao = customerSinaDao;
         this.customerHFIndexMongoDao = customerHFIndexMongoDao;
         this.customerDao = customerDao;
         this.systemSmsLogMongoDao = systemSmsLogMongoDao;
         this.customerMessageMongoDao = customerMessageMongoDao;
-        this.loginIpBlackListMongoDao = loginIpBlackListMongoDao;
-        this.loginIpRequestListMongoDao = loginIpRequestListMongoDao;
-        this.extFailedLoginDao = extFailedLoginDao;
     }
 
     //region 登录
