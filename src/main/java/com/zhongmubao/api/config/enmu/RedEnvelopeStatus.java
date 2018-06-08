@@ -78,6 +78,15 @@ public enum RedEnvelopeStatus {
         public String getName() {
             return "07";
         }
+    },
+    /**
+     * 老用户不能参与瓜分活动，只能发起
+     */
+    OLDCUSTOMERNOTJOIN {
+        @Override
+        public String getName() {
+            return "08";
+        }
     };
 
     public abstract String getName();

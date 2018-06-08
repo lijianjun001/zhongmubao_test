@@ -277,6 +277,7 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
         mongo.setCreated(DateUtil.formatMongo(now));
         customerMessageMongoDao.add(mongo);
 
+        //TODO：为小程序分享红包增加新用户注册标识，方便识别新用户
         RegisterViewModel viewModel = new RegisterViewModel();
         viewModel.setId(customer.getId());
         viewModel.setAccount(customer.getAccount());

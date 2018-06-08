@@ -135,6 +135,7 @@ public class MPShareServiceImpl extends BaseService implements MPShareService {
                     status = RedEnvelopeStatus.WAITOPENED.getName();
                 }
             }
+            countdown = 0;
         }
 
         FriendsViewModel viewModel = new FriendsViewModel();
