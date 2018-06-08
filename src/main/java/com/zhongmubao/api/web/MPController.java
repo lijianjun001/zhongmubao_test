@@ -120,7 +120,7 @@ public class MPController {
      * @author 米立林
      */
     @RequestMapping(value = "/friends", method = RequestMethod.POST, consumes = "application/json")
-    @Authorization
+    @Authorization(onlyGetCustomer = true)
     public ResponseEntity<ReponseModel> friends(@CurrentUser Customer customer, HttpEntity<FriendsRequestModel> model) {
         try {
             FriendsViewModel viewModel = mpShareService.friends(customer, model.getBody());

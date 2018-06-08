@@ -64,100 +64,86 @@ public class MPShareServiceImpl extends BaseService implements MPShareService {
         if (null == model || StringUtil.isNullOrEmpty(model.getId())) {
             throw new ApiException(ResultStatus.PARAMETER_MISSING);
         }
-        Date now = new Date();
-        int countdown;
-        boolean flat = false;
-        String status;
-        FriendsViewModel viewModel = new FriendsViewModel();
+
+        if (customer == null) {
+            customer = new Customer();
+            customer.setId(-1);
+        }
+
         RedEnvelopeMongo redEnvelopeMongo = redEnvelopeMongoDao.getById(model.getId());
         if (redEnvelopeMongo == null) {
             throw new ApiException(ResultStatus.INVALID_REC_ENVELOPE_ERROR);
         }
-        status = redEnvelopeMongo.getStatus();
-        ArrayList<RedEnvelopeCustomer> joins = new ArrayList<>();
-        List<RedEnvelopeInfoMongo> redEnvelopeInfoMongos = redEnvelopeInfoMongoDao.getListByRedEnvelopeId(redEnvelopeMongo.id);
 
-        RedEnvelopeInfoMongo currentCustomer = redEnvelopeInfoMongoDao.getOne(customer.getId(), redEnvelopeMongo.id);
+        List<RedEnvelopeInfoMongo> redEnvelopeInfoMongos = redEnvelopeInfoMongoDao.getListByRedEnvelopeId(redEnvelopeMongo.id);
+        RedEnvelopeInfoMongo currentCustomer = redEnvelopeInfoMongoDao.getRedEnvelopeInfoBy(customer.getId(), redEnvelopeMongo.id);
+
+        int countdown = (int) DateUtil.subDateOfSecond(redEnvelopeMongo.getEndTime(), new Date());
+        String status;
         if (currentCustomer == null) {
-            if (redEnvelopeInfoMongos.size() >= redEnvelopeMongo.getHeadcount()) {
+            if (countdown <= 0 || redEnvelopeInfoMongos.size() >= redEnvelopeMongo.getHeadcount()) {
                 status = RedEnvelopeStatus.NOT_JOIN.getName();
             } else {
-                if (redEnvelopeMongo.getStatus().equals(RedEnvelopeStatus.UNDERWAY.getName())) {
-                    // 加入抢红包
-                    flat = true;
-                    currentCustomer = new RedEnvelopeInfoMongo();
-                    currentCustomer.setRedEnvelopeId(redEnvelopeMongo.id);
-                    currentCustomer.setJoinCustomerId(customer.getId());
-                    currentCustomer.setJoinNo(redEnvelopeInfoMongos.size() + 1);
-                    currentCustomer.setOpened(false);
-                    currentCustomer.setCreated(DateUtil.addHours(now, 8));
-                    redEnvelopeInfoMongos.add(currentCustomer);
-                }
-            }
-        }
-
-        for (RedEnvelopeInfoMongo info : redEnvelopeInfoMongos) {
-            Customer joinCustomer = customerDao.getCustomerById(info.getJoinCustomerId());
-            RedEnvelopeCustomer customerInfo = new RedEnvelopeCustomer();
-            customerInfo.setPhoto(ApiUtil.formartPhoto(customerInfo.getPhoto()));
-            customerInfo.setName(joinCustomer.getNickName());
-            customerInfo.setPrice(info.getPrice());
-            joins.add(customerInfo);
-            if (info.getJoinCustomerId() == customer.getId()) {
-                currentCustomer = info;
-            }
-        }
-
-        // 人员满，则分配红包
-        if (redEnvelopeInfoMongos.size() == redEnvelopeMongo.getHeadcount() && redEnvelopeMongo.getStatus().equals(RedEnvelopeStatus.UNDERWAY.getName())) {
-            RedPacketUtil redPacketUtil = new RedPacketUtil();
-            List<Float> prices = redPacketUtil.splitRedPackets(redEnvelopeMongo.getPrice(), redEnvelopeMongo.getHeadcount());
-            // 分配到个人
-            for (int i = 0; i < redEnvelopeInfoMongos.size(); i++) {
-                String price = DoubleUtil.toFixed(prices.get(i), Constants.PRICE_FORMAT);
-                RedEnvelopeInfoMongo mongo = redEnvelopeInfoMongos.get(i);
-                mongo.setPrice(price);
-                redEnvelopeInfoMongoDao.save(mongo);
-                joins.get(i).setPrice(price);
-            }
-
-            // 修改RedEnvelope状态为"完成"
-            redEnvelopeMongo.setStatus(RedEnvelopeStatus.SUCCESS.getName());
-            redEnvelopeMongoDao.update(redEnvelopeMongo);
-        } else {
-            if (flat) {
-                // 把当前用户添加到Mongo
+                currentCustomer = new RedEnvelopeInfoMongo();
+                currentCustomer.setRedEnvelopeId(redEnvelopeMongo.id);
+                currentCustomer.setJoinCustomerId(customer.getId());
+                currentCustomer.setJoinNo(redEnvelopeInfoMongos.size() + 1);
+                currentCustomer.setOpened(false);
+                currentCustomer.setCreated(DateUtil.addHours(new Date(), 8));
+                redEnvelopeInfoMongos.add(currentCustomer);
                 redEnvelopeInfoMongoDao.save(currentCustomer);
-            }
-        }
-        countdown = (int) DateUtil.subDateOfSecond(redEnvelopeMongo.getEndTime(), now);
-        if (countdown <= 0) {
-            if(redEnvelopeMongo.getStatus().equals(RedEnvelopeStatus.SUCCESS.getName())){
-                if(currentCustomer.isOpened()){
-                    status = RedEnvelopeStatus.OPENED.getName();
-                }else{
-                    status = RedEnvelopeStatus.SUCCESS.getName();
-                }
-            }else{
-                status = RedEnvelopeStatus.FAILED.getName();
+
+                status = RedEnvelopeStatus.JOINSUCCESS.getName();
             }
         } else {
-            if (!status.equals(RedEnvelopeStatus.NOT_JOIN.getName())) {
+            status = RedEnvelopeStatus.JOINED.getName();
+        }
+
+        ArrayList<RedEnvelopeCustomer> joins = new ArrayList<>();
+        for (RedEnvelopeInfoMongo redEnvelopeInfoMongo : redEnvelopeInfoMongos) {
+            Customer joinCustomer = customerDao.getCustomerById(redEnvelopeInfoMongo.getJoinCustomerId());
+            RedEnvelopeCustomer redEnvelopeCustomer = new RedEnvelopeCustomer();
+            redEnvelopeCustomer.setPrice(redEnvelopeInfoMongo.getPrice());
+            redEnvelopeCustomer.setName(joinCustomer.getName());
+            redEnvelopeCustomer.setPhoto(ApiUtil.formartPhoto(joinCustomer.getPhoto()));
+            joins.add(redEnvelopeCustomer);
+        }
+
+        int surplus = redEnvelopeMongo.getHeadcount() - joins.size();
+        if (surplus <= 0) {
+            if (!redEnvelopeMongo.getStatus().equals(RedEnvelopeStatus.SUCCESS.getName())) {
+                RedPacketUtil redPacketUtil = new RedPacketUtil();
+                List<Float> prices = redPacketUtil.splitRedPackets(redEnvelopeMongo.getPrice(), redEnvelopeMongo.getHeadcount());
+                // 分配到个人
+                for (int i = 0; i < redEnvelopeInfoMongos.size(); i++) {
+                    String price = DoubleUtil.toFixed(prices.get(i), Constants.PRICE_FORMAT);
+                    RedEnvelopeInfoMongo mongo = redEnvelopeInfoMongos.get(i);
+                    mongo.setPrice(price);
+                    redEnvelopeInfoMongoDao.save(mongo);
+                    joins.get(i).setPrice(price);
+                }
+
+                // 修改RedEnvelope状态为"完成"
+                redEnvelopeMongo.setStatus(RedEnvelopeStatus.SUCCESS.getName());
+                redEnvelopeMongoDao.update(redEnvelopeMongo);
+            }
+            status = RedEnvelopeStatus.SUCCESS.getName();
+            if (currentCustomer != null) {
                 if (currentCustomer.isOpened()) {
                     status = RedEnvelopeStatus.OPENED.getName();
-                } else if (redEnvelopeInfoMongos.size() >= redEnvelopeMongo.getHeadcount()) {
-                    status = RedEnvelopeStatus.SUCCESS.getName();
+                } else {
+                    status = RedEnvelopeStatus.WAITOPENED.getName();
                 }
             }
         }
 
-        int headcount = redEnvelopeMongo.getHeadcount() - joins.size();
+        FriendsViewModel viewModel = new FriendsViewModel();
         viewModel.setStatus(status);
-        viewModel.setSurplus(headcount);
+        viewModel.setSurplus(surplus);
         viewModel.setTotalPrice(String.valueOf(redEnvelopeMongo.getPrice()));
         viewModel.setCountdown(countdown);
         viewModel.setList(joins);
-
+        viewModel.setMy(redEnvelopeMongo.getCustomerId() == customer.getId());
         return viewModel;
     }
 
@@ -168,7 +154,7 @@ public class MPShareServiceImpl extends BaseService implements MPShareService {
         }
         Date now = new Date();
         // 修改已开红包状态
-        RedEnvelopeInfoMongo currentCustomer = redEnvelopeInfoMongoDao.getOne(customer.getId(), model.getId());
+        RedEnvelopeInfoMongo currentCustomer = redEnvelopeInfoMongoDao.getRedEnvelopeInfoBy(customer.getId(), model.getId());
         if (currentCustomer == null) {
             throw new ApiException(ResultStatus.PARAMETER_ERROR);
         }

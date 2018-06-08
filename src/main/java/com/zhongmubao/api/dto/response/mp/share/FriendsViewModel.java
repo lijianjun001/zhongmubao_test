@@ -16,6 +16,7 @@ public class FriendsViewModel {
     private String totalPrice;
     private int countdown;
     private ArrayList<RedEnvelopeCustomer> list;
+    private boolean my;
 
     public String getStatus() {
         return status;
@@ -55,5 +56,13 @@ public class FriendsViewModel {
 
     public void setList(ArrayList<RedEnvelopeCustomer> list) {
         this.list = list;
+    }
+
+    public boolean isMy() {
+        return my;
+    }
+
+    public void setMy(boolean my) {
+        this.my = my;
     }
 }

@@ -30,7 +30,7 @@
 //        private String deviceid;
 
         var data = {
-
+            id: "5afa4f384e3537d91cc9f6d5",
             platform: "03",
             account: "15656287151",
             password: "123456",
@@ -49,7 +49,7 @@
 
         $.ajax({
             type: "POST",
-            url: "customer/login",
+            url: "mp/friends",
             data: JSON.stringify(data),
             contentType: 'application/json;charset=UTF-8',
             dataType: "json",                                     //预期服务器返回类型

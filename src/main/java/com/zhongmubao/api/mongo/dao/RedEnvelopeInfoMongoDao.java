@@ -84,7 +84,7 @@ public class RedEnvelopeInfoMongoDao implements BaseDao<RedEnvelopeInfoMongo> {
      * @return RedEnvelopeInfoMongo
      * @throws Exception Exception
      */
-    public RedEnvelopeInfoMongo getOne(int customerId, String redId) throws Exception {
+    public RedEnvelopeInfoMongo getRedEnvelopeInfoBy(int customerId, String redId) throws Exception {
         Query query = new Query();
         query.addCriteria(Criteria.where("JoinCustomerId").is(customerId));
         query.addCriteria(Criteria.where("redEnvelopeId").is(redId));

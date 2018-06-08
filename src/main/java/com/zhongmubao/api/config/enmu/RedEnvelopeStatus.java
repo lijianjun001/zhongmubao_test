@@ -51,6 +51,33 @@ public enum RedEnvelopeStatus {
         public String getName() {
             return "04";
         }
+    },
+    /**
+     * 已参与
+     */
+    JOINED {
+        @Override
+        public String getName() {
+            return "05";
+        }
+    },
+    /**
+     * 参与成功
+     */
+    JOINSUCCESS {
+        @Override
+        public String getName() {
+            return "06";
+        }
+    },
+    /**
+     * 等待打开
+     */
+    WAITOPENED {
+        @Override
+        public String getName() {
+            return "07";
+        }
     };
 
     public abstract String getName();
