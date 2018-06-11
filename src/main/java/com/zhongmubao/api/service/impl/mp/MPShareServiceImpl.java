@@ -2,6 +2,7 @@ package com.zhongmubao.api.service.impl.mp;
 
 import com.zhongmubao.api.config.Constants;
 import com.zhongmubao.api.config.ResultStatus;
+import com.zhongmubao.api.config.enmu.RedEnvelopeLaunchStatus;
 import com.zhongmubao.api.config.enmu.RedEnvelopeStatus;
 import com.zhongmubao.api.config.enmu.RedPackageType;
 import com.zhongmubao.api.dao.CustomerDao;
@@ -57,6 +58,40 @@ public class MPShareServiceImpl extends BaseService implements MPShareService {
         this.articleMongoDao = articleMongoDao;
         this.sheepOrderDao = sheepOrderDao;
         this.sheepProjectDao = sheepProjectDao;
+    }
+
+    @Override
+    public LaunchViewModel launch(Customer customer) throws Exception {
+        if (customer == null) {
+            throw new ApiException(ResultStatus.USER_NOT_LOGIN);
+        }
+        Date now = new Date();
+        Date mongoNow = DateUtil.formatMongo(now);
+        RedEnvelopeMongo redEnvelopeMongo = redEnvelopeMongoDao.getBy(customer.getId());
+        if (redEnvelopeMongo != null) {
+            redEnvelopeMongo.setEndTime(DateUtil.formatDMongo(redEnvelopeMongo.getEndTime()));
+            if (redEnvelopeMongo.getEndTime().getTime() < now.getTime()) {
+                redEnvelopeMongo = null;
+            }
+        }
+        long time = redEnvelopeMongo.getEndTime().getTime();
+        if (redEnvelopeMongo == null) {
+            redEnvelopeMongo = new RedEnvelopeMongo();
+            redEnvelopeMongo.setCustomerId(customer.getId());
+            redEnvelopeMongo.setPrice((float) 88.00);
+            redEnvelopeMongo.setStartTime(mongoNow);
+            redEnvelopeMongo.setEndTime(DateUtil.addDay(mongoNow, 1));
+            redEnvelopeMongo.setStatus(RedEnvelopeStatus.UNDERWAY.getName());
+            redEnvelopeMongo.setCreated(mongoNow);
+            redEnvelopeMongo.setHeadcount(5);
+            redEnvelopeMongoDao.add(redEnvelopeMongo);
+        }
+
+        LaunchViewModel launchViewModel = new LaunchViewModel();
+        launchViewModel.setStatus(RedEnvelopeLaunchStatus.ING.getName());
+        launchViewModel.setRedEnvelope(redEnvelopeMongo.id);
+
+        return launchViewModel;
     }
 
     @Override

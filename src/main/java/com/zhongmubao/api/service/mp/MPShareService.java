@@ -14,6 +14,15 @@ import com.zhongmubao.api.entity.Customer;
  */
 public interface MPShareService {
 
+
+    /***
+     * 发起分享
+     * @param customer 客户
+     * @return LaunchViewModel
+     * @throws Exception 异常
+     */
+    LaunchViewModel launch(Customer customer) throws Exception;
+
     /**
      * 红包进度
      *

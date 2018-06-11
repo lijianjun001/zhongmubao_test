@@ -8,6 +8,7 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -68,6 +69,18 @@ public class RedEnvelopeMongoDao implements BaseDao<RedEnvelopeMongo> {
     public RedEnvelopeMongo getById(String id) {
         Query query = new Query();
         query.addCriteria(Criteria.where("_id").is(id));
+
+        return mongoTemplate.findOne(query, RedEnvelopeMongo.class);
+    }
+
+    /***
+     * 根据用户获取
+     * @param customerId 客户Id
+     * @return RedEnvelopeMongo
+     */
+    public RedEnvelopeMongo getBy(int customerId) {
+        Query query = new Query();
+        query.addCriteria(Criteria.where("CustomerId").is(customerId));
 
         return mongoTemplate.findOne(query, RedEnvelopeMongo.class);
     }

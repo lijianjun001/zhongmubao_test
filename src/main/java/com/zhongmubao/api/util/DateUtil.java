@@ -127,6 +127,19 @@ public class DateUtil {
     }
 
     /**
+     * 反格式化成Mongo时间
+     *
+     * @param date 时间
+     * @return 新时间
+     */
+    public static Date formatDMongo(Date date) {
+        Calendar calendar = new GregorianCalendar();
+        calendar.setTime(date);
+        calendar.add(Calendar.HOUR_OF_DAY, -8);
+        return calendar.getTime();
+    }
+
+    /**
      * 取当天时间凌晨
      */
     public static Date dayBegin() throws ParseException {

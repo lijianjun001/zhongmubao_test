@@ -6,11 +6,7 @@ import com.zhongmubao.api.dto.request.mp.JsCode2SessionRequestModel;
 import com.zhongmubao.api.dto.request.mp.share.*;
 import com.zhongmubao.api.dto.response.ReponseModel;
 import com.zhongmubao.api.dto.response.mp.JsCode2SessionViewModel;
-import com.zhongmubao.api.dto.response.mp.share.FriendsViewModel;
-import com.zhongmubao.api.dto.response.mp.share.IndexViewModel;
-import com.zhongmubao.api.dto.response.mp.share.ListArticleViewModel;
-import com.zhongmubao.api.dto.response.mp.share.MyPastureViewModel;
-import com.zhongmubao.api.dto.response.mp.share.CalcProfitViewModel;
+import com.zhongmubao.api.dto.response.mp.share.*;
 import com.zhongmubao.api.entity.Customer;
 import com.zhongmubao.api.exception.ApiException;
 import com.zhongmubao.api.service.mp.MPService;
@@ -58,6 +54,23 @@ public class MPController {
     }
 
     //region 小程序分享
+
+    /**
+     * 发起分享
+     */
+    @RequestMapping(value = "/launch", method = RequestMethod.POST, consumes = "application/json")
+    @Authorization
+    public ResponseEntity<ReponseModel> launch(@CurrentUser Customer customer) {
+        try {
+            LaunchViewModel viewModel = mpShareService.launch(customer);
+            return new ResponseEntity<>(ReponseModel.ok(viewModel), HttpStatus.OK);
+        } catch (ApiException ex) {
+            return new ResponseEntity<>(ReponseModel.error(ex.getStatus()), HttpStatus.OK);
+        } catch (Exception ex) {
+            return new ResponseEntity<>(ReponseModel.error(ex, this.getClass()), HttpStatus.OK);
+        }
+    }
+
     /**
      * 我的资产
      *
