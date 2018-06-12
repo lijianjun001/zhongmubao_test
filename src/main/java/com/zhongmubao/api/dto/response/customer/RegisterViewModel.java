@@ -68,4 +68,6 @@ public class RegisterViewModel {
     public void setToken(String token) {
         this.token = token;
     }
+
+
 }

@@ -42,15 +42,17 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
     private final CustomerDao customerDao;
     private final SystemSmsLogMongoDao systemSmsLogMongoDao;
     private final CustomerMessageMongoDao customerMessageMongoDao;
+    private final RedEnvelopeSignMongoDao redEnvelopeSignMongoDao;
 
     @Autowired
-    public CustomerServiceImpl(CustomerHFDao customerHFDao, CustomerSinaDao customerSinaDao, CustomerHFIndexMongoDao customerHFIndexMongoDao, CustomerDao customerDao, SystemSmsLogMongoDao systemSmsLogMongoDao, CustomerMessageMongoDao customerMessageMongoDao) {
+    public CustomerServiceImpl(CustomerHFDao customerHFDao, CustomerSinaDao customerSinaDao, CustomerHFIndexMongoDao customerHFIndexMongoDao, CustomerDao customerDao, SystemSmsLogMongoDao systemSmsLogMongoDao, CustomerMessageMongoDao customerMessageMongoDao, RedEnvelopeSignMongoDao redEnvelopeSignMongoDao) {
         this.customerHFDao = customerHFDao;
         this.customerSinaDao = customerSinaDao;
         this.customerHFIndexMongoDao = customerHFIndexMongoDao;
         this.customerDao = customerDao;
         this.systemSmsLogMongoDao = systemSmsLogMongoDao;
         this.customerMessageMongoDao = customerMessageMongoDao;
+        this.redEnvelopeSignMongoDao = redEnvelopeSignMongoDao;
     }
 
     //region 登录
@@ -277,7 +279,12 @@ public class CustomerServiceImpl extends BaseService implements CustomerService 
         mongo.setCreated(DateUtil.formatMongo(now));
         customerMessageMongoDao.add(mongo);
 
-        //TODO：为小程序分享红包增加新用户注册标识，方便识别新用户
+        //记录小程序新人才能参与主力
+        RedEnvelopeSignMongo redEnvelopeSignMongo = new RedEnvelopeSignMongo();
+        redEnvelopeSignMongo.setCustomerId(customer.getId());
+        redEnvelopeSignMongo.setDeleted(false);
+        redEnvelopeSignMongoDao.add(redEnvelopeSignMongo);
+
         RegisterViewModel viewModel = new RegisterViewModel();
         viewModel.setId(customer.getId());
         viewModel.setAccount(customer.getAccount());

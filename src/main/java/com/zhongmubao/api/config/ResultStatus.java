@@ -38,7 +38,10 @@ public enum ResultStatus {
     OVERTOP_MAX_ERROR(-4009, "该红包已满员"),
     NOW_COMPLETED_ERROR(-4010, "该红包未满员"),
     LOGIN_NO_REGISTER(-5000, "用户没有注册"),
-    LOGIN_INVALID_PWD(-5001, "密码不正确");
+    LOGIN_INVALID_PWD(-5001, "密码不正确"),
+    REDENVELOPE_NOT_EXIT(-6001, "分享红包不存在"),
+    REDENVELOPE_YICANYU(-6002, "已经参与过"),
+    REDENVELOPE_NO_NEW_CUSTOMER(-6003, "不是新用户");
 
     /**
      * 返回码

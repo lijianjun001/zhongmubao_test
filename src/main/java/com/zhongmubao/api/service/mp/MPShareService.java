@@ -1,9 +1,6 @@
 package com.zhongmubao.api.service.mp;
 
-import com.zhongmubao.api.dto.request.mp.share.CalcProfitRequestModel;
-import com.zhongmubao.api.dto.request.mp.share.FriendsRequestModel;
-import com.zhongmubao.api.dto.request.mp.share.OpenRequestModel;
-import com.zhongmubao.api.dto.request.mp.share.PageRequestModel;
+import com.zhongmubao.api.dto.request.mp.share.*;
 import com.zhongmubao.api.dto.response.mp.share.*;
 import com.zhongmubao.api.entity.Customer;
 
@@ -35,6 +32,16 @@ public interface MPShareService {
     FriendsViewModel friends(Customer customer, FriendsRequestModel model) throws Exception;
 
     /**
+     * 助力好友
+     *
+     * @param customer 客户
+     * @param request  请求model
+     * @return HelpViewModel
+     * @throws Exception 异常
+     */
+    HelpViewModel help(Customer customer, HelpRequestModel request) throws Exception;
+
+    /**
      * 拆开红包
      *
      * @param customer 客户
@@ -60,7 +67,7 @@ public interface MPShareService {
      *
      * @param customer 客户
      * @return true or false
-     * @throws Exception
+     * @throws Exception 异常
      */
     IndexViewModel index(Customer customer) throws Exception;
 

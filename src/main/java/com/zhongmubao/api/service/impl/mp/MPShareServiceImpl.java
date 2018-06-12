@@ -8,10 +8,7 @@ import com.zhongmubao.api.config.enmu.RedPackageType;
 import com.zhongmubao.api.dao.CustomerDao;
 import com.zhongmubao.api.dao.SheepOrderDao;
 import com.zhongmubao.api.dao.SheepProjectDao;
-import com.zhongmubao.api.dto.request.mp.share.CalcProfitRequestModel;
-import com.zhongmubao.api.dto.request.mp.share.FriendsRequestModel;
-import com.zhongmubao.api.dto.request.mp.share.OpenRequestModel;
-import com.zhongmubao.api.dto.request.mp.share.PageRequestModel;
+import com.zhongmubao.api.dto.request.mp.share.*;
 import com.zhongmubao.api.dto.response.mp.share.*;
 import com.zhongmubao.api.dto.response.my.ArticleModel;
 import com.zhongmubao.api.entity.Customer;
@@ -20,9 +17,11 @@ import com.zhongmubao.api.exception.ApiException;
 import com.zhongmubao.api.mongo.dao.ArticleMongoDao;
 import com.zhongmubao.api.mongo.dao.RedEnvelopeInfoMongoDao;
 import com.zhongmubao.api.mongo.dao.RedEnvelopeMongoDao;
+import com.zhongmubao.api.mongo.dao.RedEnvelopeSignMongoDao;
 import com.zhongmubao.api.mongo.entity.ArticleMongo;
 import com.zhongmubao.api.mongo.entity.RedEnvelopeInfoMongo;
 import com.zhongmubao.api.mongo.entity.RedEnvelopeMongo;
+import com.zhongmubao.api.mongo.entity.RedEnvelopeSignMongo;
 import com.zhongmubao.api.mongo.entity.base.PageModel;
 import com.zhongmubao.api.service.mp.MPShareService;
 import com.zhongmubao.api.service.impl.BaseService;
@@ -49,15 +48,17 @@ public class MPShareServiceImpl extends BaseService implements MPShareService {
     private final ArticleMongoDao articleMongoDao;
     private final SheepOrderDao sheepOrderDao;
     private final SheepProjectDao sheepProjectDao;
+    private final RedEnvelopeSignMongoDao redEnvelopeSignMongoDao;
 
     @Autowired
-    public MPShareServiceImpl(RedEnvelopeMongoDao redEnvelopeMongoDao, RedEnvelopeInfoMongoDao redEnvelopeInfoMongoDao, CustomerDao customerDao, ArticleMongoDao articleMongoDao, SheepOrderDao sheepOrderDao, SheepProjectDao sheepProjectDao) {
+    public MPShareServiceImpl(RedEnvelopeMongoDao redEnvelopeMongoDao, RedEnvelopeInfoMongoDao redEnvelopeInfoMongoDao, CustomerDao customerDao, ArticleMongoDao articleMongoDao, SheepOrderDao sheepOrderDao, SheepProjectDao sheepProjectDao, RedEnvelopeSignMongoDao redEnvelopeSignMongoDao) {
         this.redEnvelopeMongoDao = redEnvelopeMongoDao;
         this.redEnvelopeInfoMongoDao = redEnvelopeInfoMongoDao;
         this.customerDao = customerDao;
         this.articleMongoDao = articleMongoDao;
         this.sheepOrderDao = sheepOrderDao;
         this.sheepProjectDao = sheepProjectDao;
+        this.redEnvelopeSignMongoDao = redEnvelopeSignMongoDao;
     }
 
     @Override
@@ -85,6 +86,14 @@ public class MPShareServiceImpl extends BaseService implements MPShareService {
             redEnvelopeMongo.setCreated(mongoNow);
             redEnvelopeMongo.setHeadcount(5);
             redEnvelopeMongoDao.add(redEnvelopeMongo);
+            //添加到领取记录里
+            RedEnvelopeInfoMongo currentCustomer = new RedEnvelopeInfoMongo();
+            currentCustomer.setRedEnvelopeId(redEnvelopeMongo.id);
+            currentCustomer.setJoinCustomerId(customer.getId());
+            currentCustomer.setJoinNo(1);
+            currentCustomer.setOpened(false);
+            currentCustomer.setCreated(DateUtil.addHours(new Date(), 8));
+            redEnvelopeInfoMongoDao.save(currentCustomer);
         }
 
         LaunchViewModel launchViewModel = new LaunchViewModel();
@@ -116,20 +125,7 @@ public class MPShareServiceImpl extends BaseService implements MPShareService {
         int countdown = (int) DateUtil.subDateOfSecond(redEnvelopeMongo.getEndTime(), new Date());
         String status;
         if (currentCustomer == null) {
-            if (countdown <= 0 || redEnvelopeInfoMongos.size() >= redEnvelopeMongo.getHeadcount()) {
-                status = RedEnvelopeStatus.NOT_JOIN.getName();
-            } else {
-                currentCustomer = new RedEnvelopeInfoMongo();
-                currentCustomer.setRedEnvelopeId(redEnvelopeMongo.id);
-                currentCustomer.setJoinCustomerId(customer.getId());
-                currentCustomer.setJoinNo(redEnvelopeInfoMongos.size() + 1);
-                currentCustomer.setOpened(false);
-                currentCustomer.setCreated(DateUtil.addHours(new Date(), 8));
-                redEnvelopeInfoMongos.add(currentCustomer);
-                redEnvelopeInfoMongoDao.save(currentCustomer);
-
-                status = RedEnvelopeStatus.JOINSUCCESS.getName();
-            }
+            status = RedEnvelopeStatus.NOT_JOIN.getName();
         } else {
             status = RedEnvelopeStatus.JOINED.getName();
         }
@@ -181,6 +177,44 @@ public class MPShareServiceImpl extends BaseService implements MPShareService {
         viewModel.setList(joins);
         viewModel.setMy(redEnvelopeMongo.getCustomerId() == customer.getId());
         return viewModel;
+    }
+
+    @Override
+    public HelpViewModel help(Customer customer, HelpRequestModel request) throws Exception {
+        RedEnvelopeMongo redEnvelopeMongo = redEnvelopeMongoDao.getById(request.getRedEnvelopeId());
+        if (redEnvelopeMongo == null) {
+            throw new ApiException(ResultStatus.REDENVELOPE_NOT_EXIT);
+        }
+        RedEnvelopeInfoMongo currentCustomer = redEnvelopeInfoMongoDao.getRedEnvelopeInfoBy(customer.getId(), redEnvelopeMongo.id);
+        if (currentCustomer != null) {
+            throw new ApiException(ResultStatus.REDENVELOPE_YICANYU);
+        }
+        RedEnvelopeSignMongo redEnvelopeSignMongo = redEnvelopeSignMongoDao.getBy(customer.getId());
+        if (redEnvelopeSignMongo == null || redEnvelopeSignMongo.isDeleted()) {
+            throw new ApiException(ResultStatus.REDENVELOPE_NO_NEW_CUSTOMER);
+        }
+
+        List<RedEnvelopeInfoMongo> redEnvelopeInfoMongos = redEnvelopeInfoMongoDao.getListByRedEnvelopeId(redEnvelopeMongo.id);
+        int countdown = (int) DateUtil.subDateOfSecond(redEnvelopeMongo.getEndTime(), new Date());
+        if (countdown <= 0 || redEnvelopeInfoMongos.size() >= redEnvelopeMongo.getHeadcount()) {
+            throw new ApiException(ResultStatus.REDENVELOPE_NOT_EXIT);
+        }
+
+        //添加记录
+        currentCustomer = new RedEnvelopeInfoMongo();
+        currentCustomer.setRedEnvelopeId(redEnvelopeMongo.id);
+        currentCustomer.setJoinCustomerId(customer.getId());
+        currentCustomer.setJoinNo(redEnvelopeInfoMongos.size() + 1);
+        currentCustomer.setOpened(false);
+        currentCustomer.setCreated(DateUtil.addHours(new Date(), 8));
+        redEnvelopeInfoMongoDao.save(currentCustomer);
+        //标记已删除
+        redEnvelopeSignMongo.setDeleted(true);
+        redEnvelopeSignMongoDao.save(redEnvelopeSignMongo);
+
+        HelpViewModel helpViewModel = new HelpViewModel();
+        helpViewModel.setSuccess(true);
+        return helpViewModel;
     }
 
     @Override

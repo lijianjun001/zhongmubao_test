@@ -146,6 +146,22 @@ public class MPController {
     }
 
     /**
+     * 助攻
+     */
+    @RequestMapping(value = "/help", method = RequestMethod.POST, consumes = "application/json")
+    @Authorization
+    public ResponseEntity<ReponseModel> help(@CurrentUser Customer customer, HttpEntity<HelpRequestModel> model) {
+        try {
+            HelpViewModel viewModel = mpShareService.help(customer, model.getBody());
+            return new ResponseEntity<>(ReponseModel.ok(viewModel), HttpStatus.OK);
+        } catch (ApiException ex) {
+            return new ResponseEntity<>(ReponseModel.error(ex.getStatus()), HttpStatus.OK);
+        } catch (Exception ex) {
+            return new ResponseEntity<>(ReponseModel.error(ex, this.getClass()), HttpStatus.OK);
+        }
+    }
+
+    /**
      * 拆开红包
      *
      * @param model 请求实体
