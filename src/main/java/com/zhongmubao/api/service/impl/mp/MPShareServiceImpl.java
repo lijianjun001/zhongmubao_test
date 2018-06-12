@@ -75,7 +75,7 @@ public class MPShareServiceImpl extends BaseService implements MPShareService {
                 redEnvelopeMongo = null;
             }
         }
-        long time = redEnvelopeMongo.getEndTime().getTime();
+
         if (redEnvelopeMongo == null) {
             redEnvelopeMongo = new RedEnvelopeMongo();
             redEnvelopeMongo.setCustomerId(customer.getId());
