@@ -119,6 +119,8 @@ public class MPShareServiceImpl extends BaseService implements MPShareService {
             throw new ApiException(ResultStatus.INVALID_REC_ENVELOPE_ERROR);
         }
 
+        redEnvelopeMongo.setEndTime(DateUtil.formatDMongo(redEnvelopeMongo.getEndTime()));
+
         List<RedEnvelopeInfoMongo> redEnvelopeInfoMongos = redEnvelopeInfoMongoDao.getListByRedEnvelopeId(redEnvelopeMongo.id);
         RedEnvelopeInfoMongo currentCustomer = redEnvelopeInfoMongoDao.getRedEnvelopeInfoBy(customer.getId(), redEnvelopeMongo.id);
 
@@ -195,6 +197,8 @@ public class MPShareServiceImpl extends BaseService implements MPShareService {
         }
 
         List<RedEnvelopeInfoMongo> redEnvelopeInfoMongos = redEnvelopeInfoMongoDao.getListByRedEnvelopeId(redEnvelopeMongo.id);
+        redEnvelopeMongo.setEndTime(DateUtil.formatDMongo(redEnvelopeMongo.getEndTime()));
+
         int countdown = (int) DateUtil.subDateOfSecond(redEnvelopeMongo.getEndTime(), new Date());
         if (countdown <= 0 || redEnvelopeInfoMongos.size() >= redEnvelopeMongo.getHeadcount()) {
             throw new ApiException(ResultStatus.REDENVELOPE_NOT_EXIT);
