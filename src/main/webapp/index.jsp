@@ -30,12 +30,8 @@
 //        private String deviceid;
 
         var data = {
-            redEnvelopeId: "5b1e1ba3ca7a40c6c8db855b",
-            platform: "03",
-            account: "15656287151",
-            password: "123456",
-            code: "1597",
-            ip: "222.15.68.10"
+            name: "thirdactivityvoteboxshareweibo",
+            param: "{\"imgUrl\":\"https://s.emubao.com/upload//Thirt/3959ada45ae74508adb1757a5cedb562.png\",\"userId\":323}"
         };
 //        var data = {
 //            platform: "01",
@@ -49,7 +45,7 @@
 
         $.ajax({
             type: "POST",
-            url: "mp/help",
+            url: "system/shareInfo",
             data: JSON.stringify(data),
             contentType: 'application/json;charset=UTF-8',
             dataType: "json",                                     //预期服务器返回类型
