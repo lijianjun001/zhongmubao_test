@@ -103,8 +103,8 @@ public class MessageServiceImpl extends BaseService implements MessageService {
                         CustomerMessageReadMongo readMongo = customerMessageReadMongoDao.getByCustomerIdAndMessageId(customer.getId(), customerMessageModel.getId());
                         if (readMongo == null) {
                             customerMessageModel.setTips(CustomerMessageTips.NEW.getName());
-                            customerMessageModel.setTitle(curWeekPlan);
                         }
+                        customerMessageModel.setTitle(curWeekPlan);
                     }
                 }
                 viewModel.setProjectList(list);
