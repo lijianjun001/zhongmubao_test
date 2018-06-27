@@ -477,6 +477,23 @@ public class CustomerController {
         }
     }
 
-
+    /***
+     * 一键阅读消息
+     * @param customer 客户
+     * @author 孙阿龙
+     * @return ReponseModel
+     */
+    @RequestMapping(value = "/message/oneKeyRed", method = RequestMethod.POST, consumes = "application/json")
+    @Authorization
+    public ResponseEntity<ReponseModel> oneKeyRed(@CurrentUser Customer customer) {
+        try {
+            messageService.oneKeyRed(customer);
+            return new ResponseEntity<>(ReponseModel.ok(), HttpStatus.OK);
+        } catch (ApiException ex) {
+            return new ResponseEntity<>(ReponseModel.error(ex.getStatus()), HttpStatus.OK);
+        } catch (Exception ex) {
+            return new ResponseEntity<>(ReponseModel.error(ex, this.getClass()), HttpStatus.OK);
+        }
+    }
     //endregion
 }

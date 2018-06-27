@@ -83,7 +83,7 @@ public class MessageServiceImpl extends BaseService implements MessageService {
         String weekSection = DateUtil.getWeekSection(now);
         CenterViewModel viewModel = new CenterViewModel();
 
-        List<CustomerMessageMongo> projectMessages = customerMessageMongoDao.getCurrentWeekPlan(CustomerMessageType.OPEN_PROJECT.getName(),weekSection);
+        List<CustomerMessageMongo> projectMessages = customerMessageMongoDao.getCurrentWeekPlan(CustomerMessageType.OPEN_PROJECT.getName(), weekSection);
         List<CustomerMessageMongo> systemMessages = customerMessageMongoDao.getListByCustomerIdAndTypeLimitSize(customerId, defaultPageSize, CustomerMessageType.SYSTEM_MESSAGE.getName());
         List<CustomerMessageMongo> personMessages = customerMessageMongoDao.getListByCustomerIdAndTypeLimitSize(customerId, personPageSize, CustomerMessageType.PERSON_MESSAGE.getName());
 
@@ -209,6 +209,20 @@ public class MessageServiceImpl extends BaseService implements MessageService {
         }
         CustomerMessageMongo message = customerMessageMongoDao.getById(id);
         setRead(customer, message);
+    }
+
+    @Override
+    public void oneKeyRed(Customer customer) throws Exception {
+        List<CustomerMessageMongo> list = customerMessageMongoDao.getListByCustomerIdIsRead(customer.getId(), false);
+        List<CustomerMessageMongo> sysList = customerMessageMongoDao.getListByCustomerIdIsRead(0, false);
+
+        for (CustomerMessageMongo customerMessageMongo : list) {
+            setRead(customer, customerMessageMongo);
+        }
+
+        for (CustomerMessageMongo customerMessageMongo : sysList) {
+            setRead(customer, customerMessageMongo);
+        }
     }
 
     /**

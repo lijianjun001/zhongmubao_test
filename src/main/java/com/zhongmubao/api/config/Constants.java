@@ -189,12 +189,17 @@ public class Constants {
             new SignGift(3, "延时卡", 2, SignGiftType.DELAYED_CARD),
             new SignGift(5, "合并卡", 1, SignGiftType.MERGE_CARD),
             new SignGift(6, "合并卡", 2, SignGiftType.MERGE_CARD),
-            new SignGift(8, "话费卡", 1, SignGiftType.TELEPHONE_CARD),
-            new SignGift(9, "话费卡", 2, SignGiftType.TELEPHONE_CARD),
-            new SignGift(8, "话费卡", 1, SignGiftType.TELEPHONE_CARD),
-            new SignGift(9, "话费卡", 2, SignGiftType.TELEPHONE_CARD),
-            new SignGift(8, "话费卡", 1, SignGiftType.TELEPHONE_CARD),
-            new SignGift(9, "话费卡", 2, SignGiftType.TELEPHONE_CARD)
+            new SignGift(7, "红包", 1, SignGiftType.RED_PACKAGE),
+            new SignGift(8, "红包", 1, SignGiftType.RED_PACKAGE),
+            new SignGift(9, "红包", 1, SignGiftType.RED_PACKAGE),
+            new SignGift(10, "红包", 1, SignGiftType.RED_PACKAGE),
+            new SignGift(11, "红包", 1, SignGiftType.RED_PACKAGE)
+//            new SignGift(8, "话费卡", 1, SignGiftType.TELEPHONE_CARD),
+//            new SignGift(9, "话费卡", 2, SignGiftType.TELEPHONE_CARD),
+//            new SignGift(8, "话费卡", 1, SignGiftType.TELEPHONE_CARD),
+//            new SignGift(9, "话费卡", 2, SignGiftType.TELEPHONE_CARD),
+//            new SignGift(8, "话费卡", 1, SignGiftType.TELEPHONE_CARD),
+//            new SignGift(9, "话费卡", 2, SignGiftType.TELEPHONE_CARD)
     );
 
     /**

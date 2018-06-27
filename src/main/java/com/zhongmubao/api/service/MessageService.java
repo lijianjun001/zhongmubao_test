@@ -68,4 +68,12 @@ public interface MessageService {
      * @throws Exception Exception
      */
     void read(Customer customer, String id) throws Exception;
+
+    /**
+     * 一键设置消息已读
+     *
+     * @param customer 客户
+     * @throws Exception 异常
+     */
+    void oneKeyRed(Customer customer) throws Exception;
 }
