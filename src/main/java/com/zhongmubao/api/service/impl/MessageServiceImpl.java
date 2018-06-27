@@ -93,10 +93,21 @@ public class MessageServiceImpl extends BaseService implements MessageService {
                 CustomerMessageMongo project = optionalCms.get();
                 projectMessages.clear();
                 String curWeekPlan = "本周开标计划";
-                project.setContent(Constants.STRING_EMPTY);
-                project.setTitle(curWeekPlan);
+
+                //project.setTitle(curWeekPlan);
                 projectMessages.add(project);
-                viewModel.setProjectList(formatMessage(customer, projectMessages, method));
+
+                ArrayList<CustomerMessageModel> list = formatMessage(customer, projectMessages, method);
+                for (CustomerMessageModel customerMessageModel : list) {
+                    if (customerMessageModel.getTips().equals(CustomerMessageTips.CURRENT_WEEK.getName())) {
+                        CustomerMessageReadMongo readMongo = customerMessageReadMongoDao.getByCustomerIdAndMessageId(customer.getId(), customerMessageModel.getId());
+                        if (readMongo == null) {
+                            customerMessageModel.setTips(CustomerMessageTips.NEW.getName());
+                            customerMessageModel.setTitle(curWeekPlan);
+                        }
+                    }
+                }
+                viewModel.setProjectList(list);
             }
         }
         if (ArrayUtil.isNull(systemMessages)) {

@@ -45,14 +45,14 @@
 
         $.ajax({
             type: "POST",
-            url: "system/shareInfo",
+            url: "customer/message/center",
             data: JSON.stringify(data),
             contentType: 'application/json;charset=UTF-8',
             dataType: "json",                                     //预期服务器返回类型
 
             headers: {
-                Authorization: "YR3D+mEt8SQSBFNpCoOLiJTh/nZMACMncBFB0C35vJjqFv1gVrk2g3uVvIwSPqSoDnnOWSIzPywvYiswNAOmuqyhymtVphmdBnYRvx0H0ricp6x4a49ak7cdo/WWz72h",
-                platform: "03"
+                Authorization: "YR3D+mEt8SQSBFNpCoOLiE7h/6DZw4ryUhuxJTtM8W4hRBVOgTgEWDMf1KdJhv0XsZhJnF0t1rl1VFsIKyzJj0DocllLjQZX28L3qv2uricwVPTVlyEMfZrkFFtvG0SgQ7I1n26v4uYqtzxvC4Y2aNq6vOUbTezGdK38vZkkFr06DUiDDyCAK6Lz+hcEv0428yQLNOj2ZdSKK427KQAxUQ==",
+                platform: "04"
             },
             success: function (data) {
                 console.log(JSON.stringify(data));
