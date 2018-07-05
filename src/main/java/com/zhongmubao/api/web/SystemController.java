@@ -2,8 +2,10 @@ package com.zhongmubao.api.web;
 
 import com.zhongmubao.api.authorization.annotation.Authorization;
 import com.zhongmubao.api.authorization.annotation.CurrentUser;
+import com.zhongmubao.api.components.hf.CfcaSignature;
 import com.zhongmubao.api.dto.request.system.*;
 import com.zhongmubao.api.dto.response.ReponseModel;
+import com.zhongmubao.api.dto.response.system.HfSignViewModel;
 import com.zhongmubao.api.dto.response.system.ShareInfoViewModel;
 import com.zhongmubao.api.entity.Customer;
 import com.zhongmubao.api.exception.ApiException;
@@ -110,6 +112,34 @@ public class SystemController {
         }
     }
 
+
+    @RequestMapping(value = "/hfEncryptSign", method = RequestMethod.POST, consumes = "application/json")
+    public ResponseEntity<ReponseModel> hfEncryptSign(HttpEntity<HfSignRequestModel> model) {
+        try {
+            String content = CfcaSignature.cfcaSEncrypt(model.getBody().getJsonStr());
+            HfSignViewModel viewModel = new HfSignViewModel();
+            viewModel.content = content;
+            return new ResponseEntity<>(ReponseModel.ok(viewModel), HttpStatus.OK);
+        } catch (ApiException ex) {
+            return new ResponseEntity<>(ReponseModel.error(ex.getStatus()), HttpStatus.OK);
+        } catch (Exception ex) {
+            return new ResponseEntity<>(ReponseModel.error(ex, this.getClass()), HttpStatus.OK);
+        }
+    }
+
+    @RequestMapping(value = "/hfDncryptSign", method = RequestMethod.POST, consumes = "application/json")
+    public ResponseEntity<ReponseModel> hfDncryptSign(HttpEntity<HfSignRequestModel> model) {
+        try {
+            String content = CfcaSignature.cfcaSDncrypt(model.getBody().getJsonStr());
+            HfSignViewModel viewModel = new HfSignViewModel();
+            viewModel.content = content;
+            return new ResponseEntity<>(ReponseModel.ok(viewModel), HttpStatus.OK);
+        } catch (ApiException ex) {
+            return new ResponseEntity<>(ReponseModel.error(ex.getStatus()), HttpStatus.OK);
+        } catch (Exception ex) {
+            return new ResponseEntity<>(ReponseModel.error(ex, this.getClass()), HttpStatus.OK);
+        }
+    }
 
 //    @RequestMapping(value = "/test", method = RequestMethod.POST, consumes = "application/json")
 //    public ResponseEntity<ReponseModel> testTransaction() {

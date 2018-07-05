@@ -31,7 +31,8 @@
 
         var data = {
             name: "thirdactivityvoteboxshareweibo",
-            param: "{\"imgUrl\":\"https://s.emubao.com/upload//Thirt/3959ada45ae74508adb1757a5cedb562.png\",\"userId\":323}"
+            param: "{\"imgUrl\":\"https://s.emubao.com/upload//Thirt/3959ada45ae74508adb1757a5cedb562.png\",\"userId\":323}",
+            jsonStr: "sddddddddddddddddddd"
         };
 //        var data = {
 //            platform: "01",
@@ -45,7 +46,7 @@
 
         $.ajax({
             type: "POST",
-            url: "customer/message/center",
+            url: "system/hfEncryptSign",
             data: JSON.stringify(data),
             contentType: 'application/json;charset=UTF-8',
             dataType: "json",                                     //预期服务器返回类型

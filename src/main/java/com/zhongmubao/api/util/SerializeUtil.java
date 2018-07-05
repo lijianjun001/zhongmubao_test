@@ -1,8 +1,11 @@
 package com.zhongmubao.api.util;
 
+import com.alibaba.fastjson.JSON;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
+
+import java.util.Map;
 
 /**
  * 序列化类
@@ -54,5 +57,14 @@ public class SerializeUtil {
 
         String value = je.getAsJsonObject().has(key) ? je.getAsJsonObject().get(key).toString() : null;
         return value == null ? null : value.replace("\"", "");
+    }
+
+    /***
+     * JSon字符串转字典
+     * @param jsonStr
+     * @return
+     */
+    public static Map<String, Object> jsonStrToMap(String jsonStr) {
+        return JSON.parseObject(jsonStr);
     }
 }

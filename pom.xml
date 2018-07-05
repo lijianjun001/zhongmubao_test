@@ -221,6 +221,8 @@
             <version>2.0.2.RELEASE</version>
         </dependency>
 
+        <!-- hf -->
+
     </dependencies>
     <build>
         <finalName>zhongmubao</finalName>
