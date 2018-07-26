@@ -164,7 +164,7 @@ public class MessageServiceImpl extends BaseService implements MessageService {
 
         Date now = new Date();
         String title = message.getTitle();
-        String text = DateUtil.format(message.getCreated(), Constants.DATETIME_FORMAT_CHINA);
+        String text = DateUtil.format(DateUtil.formatDMongo(message.getCreated()), Constants.DATETIME_FORMAT_CHINA);
         String platform = model.getPlatform();
         String domain = ApiUtil.getDomainByPlatform(platform);
         String content = message.getContent().replace(Constants.DOMAIN_PLACEHOLDER, domain).replace(Constants.RESOURCE, Constants.RESOURES_ADDRESS_IMAGES).replace(Constants.PLATFROM, platform).replace(Constants.MESSAGEID, message.id);

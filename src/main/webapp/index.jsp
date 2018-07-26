@@ -30,9 +30,8 @@
 //        private String deviceid;
 
         var data = {
-            name: "thirdactivityvoteboxshareweibo",
-            param: "{\"imgUrl\":\"https://s.emubao.com/upload//Thirt/3959ada45ae74508adb1757a5cedb562.png\",\"userId\":323}",
-            jsonStr: "sddddddddddddddddddd"
+            id: "5b502b8f51e8123424ee8a0d",
+            platform: "04"
         };
 //        var data = {
 //            platform: "01",
@@ -46,7 +45,7 @@
 
         $.ajax({
             type: "POST",
-            url: "system/hfEncryptSign",
+            url: "/customer/message/detail",
             data: JSON.stringify(data),
             contentType: 'application/json;charset=UTF-8',
             dataType: "json",                                     //预期服务器返回类型
