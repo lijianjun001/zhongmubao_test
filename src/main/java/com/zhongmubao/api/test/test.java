@@ -1,22 +1,25 @@
 package com.zhongmubao.api.test;
 
-import com.gargoylesoftware.htmlunit.*;
+import com.gargoylesoftware.htmlunit.BrowserVersion;
+import com.gargoylesoftware.htmlunit.FailingHttpStatusCodeException;
+import com.gargoylesoftware.htmlunit.NicelyResynchronizingAjaxController;
+import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.html.*;
 import com.gargoylesoftware.htmlunit.util.Cookie;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.junit.Assert;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
-public class WebCaptureController {
+public class test {
+
     public static void main(String[] args) {
 
         try {
             WebClient webClient = new WebClient(BrowserVersion.CHROME);
+
             webClient.getOptions().setJavaScriptEnabled(true);
             webClient.getOptions().setTimeout(10 * 1000);
             webClient.getOptions().setCssEnabled(false);
@@ -47,12 +50,6 @@ public class WebCaptureController {
                 responseCookies.put(c.getName(), c.getValue());
                 System.out.println("------" + c.getName() + ":" + c.getValue());
             }
-            HtmlPage mainPage = webClient.getPage("http://192.168.31.200:46018/Emubao/WebApp#/PastureProfit");
-            for (Cookie c : cookies) {
-                webClient.addCookie(c.toString(),new URL("http://192.168.31.200:46018"),null);
-            }
-//
-            System.out.println(">>>>>>" + mainPage.asXml());
 
 //            HtmlPage htmlPage = webClient.getPage("https://www.baidu.com");
 //            HtmlInput htmlInput = (HtmlInput) htmlPage.getElementById("kw");
@@ -86,23 +83,6 @@ public class WebCaptureController {
         }
     }
 
-    public void test() {
-        try (final WebClient webClient = new WebClient()) {
-            final HtmlPage page = webClient.getPage("http://htmlunit.sourceforge.net");
-            Assert.assertEquals("HtmlUnit - Welcome to HtmlUnit", page.getTitleText());
-
-            final String pageAsXml = page.asXml();
-            Assert.assertTrue(pageAsXml.contains("<body class=\"composite\">"));
-
-            final String pageAsText = page.asText();
-            Assert.assertTrue(pageAsText.contains("Support for the HTTP and HTTPS protocols"));
-        } catch (MalformedURLException e) {
-
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 
     public void submittingForm() throws Exception {
         try (final WebClient webClient = new WebClient()) {
@@ -162,30 +142,9 @@ public class WebCaptureController {
         webClient.waitForBackgroundJavaScript(10000);
         //输出网页内容
         System.out.println(retPage.asXml());
-        //获取cookie
-        Set<Cookie> cookies = webClient.getCookieManager().getCookies();
-        ;
-        Map<String, String> responseCookies = new HashMap<String, String>();
-        for (Cookie c : cookies) {
-            responseCookies.put(c.getName(), c.getValue());
-            System.out.print(c.getName() + ":" + c.getValue());
-        }
-        Document document = null;
-        try {
-            document = Jsoup.connect("http://192.168.31.200:46018/Customer/PersonalCenter").cookies(responseCookies).get();
-            System.out.println("document.head"+document.html());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
         //关闭webclient
         webClient.close();
     }
 
+
 }
-
-
-
-
-
-
-
