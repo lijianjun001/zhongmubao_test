@@ -238,7 +238,11 @@
             <scope>compile</scope>
         </dependency>
         <!-- hf -->
-
+        <dependency>
+            <groupId>com.squareup.okhttp3</groupId>
+            <artifactId>okhttp</artifactId>
+            <version>3.12.1</version>
+        </dependency>
     </dependencies>
     <build>
         <finalName>zhongmubao</finalName>
