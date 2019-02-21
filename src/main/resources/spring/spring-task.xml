@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+    <!-- 线程执行器配置，用于任务注册 -->
+    <bean id="executor" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+
+        <property name="corePoolSize" value="10" />
+
+        <property name="maxPoolSize" value="100" />
+
+        <property name="queueCapacity" value="500" />
+    </bean>
+    <bean id="bizObject" class="com.zhongmubao.api.service.impl.buySheep.CreateOrderTask" />
+
+    <!-- 调度业务 -->
+    <bean id="jobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+
+        <property name="targetObject" ref="bizObject" />
+
+        <property name="targetMethod" value="run" />
+    </bean>
+
+    <bean id="cronTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+
+        <property name="jobDetail" ref="jobDetail" />
+
+        <property name="cronExpression" value="0/1 58 9 * * ?" />
+    </bean>
+
+    <!-- 设置调度 -->
+    <bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+
+        <property name="triggers">
+
+            <list>
+
+                <ref bean="cronTrigger" />
+
+            </list>
+
+        </property>
+
+        <property name="taskExecutor" ref="executor" />
+    </bean>
+</beans>
