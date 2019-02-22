@@ -11,7 +11,6 @@ public class FileUtil {
         char[] chars = new char[128];
 
         int len = reader.read(chars);
-        System.out.println(len);
         while (len != -1) {
             stringBuffer.append(new String(chars, 0, len));
             len = reader.read(chars);

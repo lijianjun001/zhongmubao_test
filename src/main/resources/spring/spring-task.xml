@@ -25,7 +25,7 @@
 
         <property name="jobDetail" ref="jobDetail" />
 
-        <property name="cronExpression" value="0/1 58 9 * * ?" />
+        <property name="cronExpression" value="0/1 0-59 9-10 * * ?" />
     </bean>
 
     <!-- 设置调度 -->

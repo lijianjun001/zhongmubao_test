@@ -14,7 +14,7 @@ public class VcodeUtil {
 //        String result = instance.doOCR(file);
 //        System.out.println(result);
 
-        String command = "tesseract /Users/mac/Desktop/a.png /Users/mac/Desktop/a";
+        String command = "tesseract /Users/mac/Desktop/a.png /Users/mac/Desktop/a";//第一个参数是图片地址，第二个参数是结果输出路劲txt文件
         try {
             Process process = Runtime.getRuntime().exec(command);
 //            BufferedInputStream bis = new BufferedInputStream(
