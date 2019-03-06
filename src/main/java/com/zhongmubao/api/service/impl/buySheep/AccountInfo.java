@@ -11,6 +11,8 @@ public class AccountInfo implements Serializable {
     private String OpenId;
     private String Photo;
 
+    private int projectNum;
+
     public int getId() {
         return Id;
     }
@@ -65,5 +67,13 @@ public class AccountInfo implements Serializable {
 
     public void setPhoto(String photo) {
         Photo = photo;
+    }
+
+    public int getProjectNum() {
+        return projectNum;
+    }
+
+    public void setProjectNum(int projectNum) {
+        this.projectNum = projectNum;
     }
 }

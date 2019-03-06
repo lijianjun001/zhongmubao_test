@@ -3,7 +3,7 @@ package com.zhongmubao.api.dto.request;
 public class RequestModel  {
     private String telephone;
     private String password;
-
+    private int projectNum;
     public String getTelephone() {
         return telephone;
     }
@@ -18,5 +18,13 @@ public class RequestModel  {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public int getProjectNum() {
+        return projectNum;
+    }
+
+    public void setProjectNum(int projectNum) {
+        this.projectNum = projectNum;
     }
 }

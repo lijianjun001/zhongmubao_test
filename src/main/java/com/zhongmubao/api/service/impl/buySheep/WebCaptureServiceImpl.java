@@ -1,6 +1,7 @@
 package com.zhongmubao.api.service.impl.buySheep;
 
 import com.google.gson.Gson;
+import com.zhongmubao.api.config.ResultStatus;
 import com.zhongmubao.api.service.WebCaptureService;
 import okhttp3.*;
 import org.springframework.stereotype.Service;
@@ -11,7 +12,7 @@ import java.io.InputStream;
 @Service
 public class WebCaptureServiceImpl implements WebCaptureService {
     @Override
-    public void autoBuySheep(String tel, String pass) {
+    public void autoBuySheep(String tel, String pass,int projectNum) throws BuySheepException, IOException {
 
         if(AccountManager.getInstance().getUserInfoMap().containsKey(tel)){
             return;
@@ -31,23 +32,26 @@ public class WebCaptureServiceImpl implements WebCaptureService {
 //                .headers(requestHeaders)
                 .post(requestBody)
                 .build();
-        mOkHttpClient.newCall(request).enqueue(new Callback() {
-
-            @Override
-            public void onFailure(Call call, IOException e) {
-
-                System.out.println(e.getMessage());
-            }
-
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                ResponseBody responseBody = response.body();
-                InputStream inputStream = responseBody.byteStream();
-                String str = StringUtils.getString(inputStream);
+        Response response= mOkHttpClient.newCall(request).execute();
+        ResponseBody responseBody = response.body();
+        InputStream inputStream;
+        if (responseBody != null) {
+            inputStream = responseBody.byteStream();
+            String str = StringUtils.getString(inputStream);
+            ResultModel resultModel=new Gson().fromJson(str,ResultModel.class);
+            if (resultModel.getResult()==0){
                 AccountInfo accountInfo =  new Gson().fromJson(str, AccountInfo.class);
+                if (accountInfo!=null){
+                    accountInfo.setProjectNum(projectNum);
+                }
                 AccountManager.getInstance().saveAccountInfo(accountInfo);
+            }else{
+                throw new BuySheepException(ResultStatus.LOGIN_INVALID_PWD);
             }
-        });
+        }else{
+            throw new BuySheepException(ResultStatus.PARAMETER_ERROR);
+        }
+
     }
 
 

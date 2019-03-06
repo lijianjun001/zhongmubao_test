@@ -22,10 +22,23 @@
     </bean>
 
     <bean id="cronTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
-
         <property name="jobDetail" ref="jobDetail" />
+        <property name="cronExpression" value="* * 9 * * ?" />
+    </bean>
 
-        <property name="cronExpression" value="0/1 0-59 9-10 * * ?" />
+    <!-- 调度业务 -->
+    <bean id="jobDetail2" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+
+        <property name="targetObject" ref="bizObject" />
+
+        <property name="targetMethod" value="buySheep" />
+    </bean>
+
+    <bean id="cronTrigger2" class="org.springframework.scheduling.quartz.CronTriggerBean">
+
+        <property name="jobDetail" ref="jobDetail2" />
+
+        <property name="cronExpression" value="0/1 * 10-11 * * ?" />
     </bean>
 
     <!-- 设置调度 -->
@@ -34,9 +47,8 @@
         <property name="triggers">
 
             <list>
-
                 <ref bean="cronTrigger" />
-
+                <ref bean="cronTrigger2" />
             </list>
 
         </property>
