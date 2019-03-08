@@ -12,6 +12,7 @@ public class AccountInfo implements Serializable {
     private String Photo;
 
     private int projectNum;
+    private int sheepCount;
 
     public int getId() {
         return Id;
@@ -75,5 +76,13 @@ public class AccountInfo implements Serializable {
 
     public void setProjectNum(int projectNum) {
         this.projectNum = projectNum;
+    }
+
+    public int getSheepCount() {
+        return sheepCount;
+    }
+
+    public void setSheepCount(int sheepCount) {
+        this.sheepCount = sheepCount;
     }
 }

@@ -23,13 +23,14 @@ public class CreateOrderTask {
     public void buySheep() {
         AccountManager.getInstance().getUserInfoMap().forEach((s, accountInfo) -> {
             ProjectModel2 selectProject;
+            int sheepCount=accountInfo.getSheepCount()>0?accountInfo.getSheepCount():Constant.sheepCount;
             if (accountInfo.getProjectNum() < 1) {
                 selectProject = projectModel2.get(0);
             } else {
                 selectProject = projectModel2.get(accountInfo.getProjectNum() - 1);
             }
             chooseRedPackets(s,
-                    selectProject);
+                    selectProject,sheepCount+"");
         });
     }
 
@@ -67,7 +68,7 @@ public class CreateOrderTask {
         });
     }
 
-    public void chooseRedPackets(String tel, ProjectModel2 projectModel2) {
+    public void chooseRedPackets(String tel, ProjectModel2 projectModel2,String sheepCount) {
         OkHttpClient.Builder mOkHttpClientBuilder = new OkHttpClient.Builder();
         mOkHttpClientBuilder.cookieJar(new MyCookieJar(tel));
         final OkHttpClient mOkHttpClient = mOkHttpClientBuilder.build();
@@ -75,7 +76,7 @@ public class CreateOrderTask {
         FormBody.Builder formBodyBuilder = new FormBody.Builder()
                 .add("r", Math.random() + "")
                 .add("ProjectId", projectModel2.getId())
-                .add("SheepCount", Constant.sheepCount + "")
+                .add("SheepCount", sheepCount)
                 .add("SortType", 0 + "");
         RequestBody requestBody = formBodyBuilder.build();
 
@@ -103,12 +104,12 @@ public class CreateOrderTask {
                 if (resultModel.getResult() == 0) {
                     System.out.println("chooseRedPackets" + resultModel.getData());
                 }
-                createOrder(tel, resultModel.getData(), projectModel2.getId());
+                createOrder(tel, resultModel.getData(), projectModel2.getId(),sheepCount);
             }
         });
     }
 
-    public void createOrder(String tel, BonusModel bonusModel, String projectId) {
+    public void createOrder(String tel, BonusModel bonusModel, String projectId,String sheepCount) {
 
         System.out.println("start createOrder");
         OkHttpClient.Builder mOkHttpClientBuilder = new OkHttpClient.Builder();
@@ -121,7 +122,7 @@ public class CreateOrderTask {
                 .add("libraryCount", 0 + "")
                 .add("bouns", bonusModel.getTotalAmount() + "")
                 .add("redPacketList", bonusModel.getRedPackageList().toArray().toString())
-                .add("count", Constant.sheepCount + "");
+                .add("count", sheepCount);
         RequestBody requestBody = formBodyBuilder.build();
 
         Request request = new Request.Builder()

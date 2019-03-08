@@ -23,7 +23,7 @@
 
     <bean id="cronTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
         <property name="jobDetail" ref="jobDetail" />
-        <property name="cronExpression" value="* * 9 * * ?" />
+        <property name="cronExpression" value="* 55 9 * * ?" />
     </bean>
 
     <!-- 调度业务 -->
@@ -38,7 +38,7 @@
 
         <property name="jobDetail" ref="jobDetail2" />
 
-        <property name="cronExpression" value="0/1 * 10-11 * * ?" />
+        <property name="cronExpression" value="0/1 * 10 * * ?" />
     </bean>
 
     <!-- 设置调度 -->

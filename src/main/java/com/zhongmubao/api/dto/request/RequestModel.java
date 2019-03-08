@@ -1,9 +1,11 @@
 package com.zhongmubao.api.dto.request;
 
-public class RequestModel  {
+public class RequestModel {
     private String telephone;
     private String password;
     private int projectNum;
+    private int sheepCount;
+
     public String getTelephone() {
         return telephone;
     }
@@ -26,5 +28,13 @@ public class RequestModel  {
 
     public void setProjectNum(int projectNum) {
         this.projectNum = projectNum;
+    }
+
+    public int getSheepCount() {
+        return sheepCount;
+    }
+
+    public void setSheepCount(int sheepCount) {
+        this.sheepCount = sheepCount;
     }
 }

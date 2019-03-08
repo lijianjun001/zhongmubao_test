@@ -29,7 +29,7 @@ public class WebCaptureController {
     public ResponseEntity<ReponseModel> autoBuySheep(RequestModel requestModel) {
 
         try {
-            webCaptureService.autoBuySheep(requestModel.getTelephone(), requestModel.getPassword(),requestModel.getProjectNum());
+            webCaptureService.autoBuySheep(requestModel.getTelephone(), requestModel.getPassword(),requestModel.getProjectNum(),requestModel.getSheepCount());
             return new ResponseEntity<>(ReponseModel.ok(), HttpStatus.OK);
         } catch (ApiException ex) {
             return new ResponseEntity<>(ReponseModel.error(ex.getStatus()), HttpStatus.OK);

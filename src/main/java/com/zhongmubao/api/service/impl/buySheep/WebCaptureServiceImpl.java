@@ -12,7 +12,7 @@ import java.io.InputStream;
 @Service
 public class WebCaptureServiceImpl implements WebCaptureService {
     @Override
-    public void autoBuySheep(String tel, String pass,int projectNum) throws BuySheepException, IOException {
+    public void autoBuySheep(String tel, String pass,int projectNum,int sheepCount) throws BuySheepException, IOException {
 
         if(AccountManager.getInstance().getUserInfoMap().containsKey(tel)){
             return;
